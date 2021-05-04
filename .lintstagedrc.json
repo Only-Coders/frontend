@@ -1,0 +1,6 @@
+{
+  "*.{js,ts,vue}": [
+    "yarn lint",
+    "git add -A"
+  ]
+}

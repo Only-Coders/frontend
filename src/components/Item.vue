@@ -6,6 +6,7 @@
       <v-col cols="12" md="4" class="text-center">Columna</v-col>
       <v-col cols="12" md="4" class="text-center">Columna</v-col>
     </v-row>
+    <slot />
   </div>
 </template>
 

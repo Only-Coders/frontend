@@ -5,7 +5,12 @@
     <v-btn @click="sayHeillo">button</v-btn>
     <p ref="elemento-p"></p> -->
     <p>{{ username }}</p>
-    <Item :message="'hola ramiro'"></Item>
+    <Item :message="'hola ramiro'">
+      <p slot="text">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias, odit molestiae ex exercitationem eos laborum
+        laboriosam similique totam illum illo itaque aliquam maxime optio obcaecati, nemo ut suscipit id voluptate!
+      </p>
+    </Item>
   </div>
 </template>
 

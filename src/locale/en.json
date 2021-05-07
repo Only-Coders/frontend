@@ -21,6 +21,8 @@
     },
     "Shared": {
       "nextButton": "Next"
-    }
+    },
+    "signInButton": "Sign in",
+    "passwordReset": "Forgot password?"
   }
 }

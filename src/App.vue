@@ -14,3 +14,9 @@ export default Vue.extend({
   components: { AppLayout }
 });
 </script>
+
+<style>
+html {
+  overflow: auto !important;
+}
+</style>

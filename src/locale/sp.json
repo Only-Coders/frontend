@@ -20,6 +20,8 @@
     },
     "Shared": {
       "nextButton": "Siguiente"
-    }
+    },
+    "signInButton": "Registrarme",
+    "passwordReset": "¿Olvidaste tu contraseña?"
   }
 }

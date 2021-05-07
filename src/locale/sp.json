@@ -1,1 +1,9 @@
-{}
+{
+  "Login": {
+    "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
+    "loginTitle": "Ingreso",
+    "welcomeTitle": "Bienvenido",
+    "loginButton": "Ingresar",
+    "signInButton": "Registrarme"
+  }
+}

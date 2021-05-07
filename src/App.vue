@@ -14,9 +14,3 @@ export default Vue.extend({
   components: { AppLayout }
 });
 </script>
-
-<style>
-.v-text-field--rounded {
-  border-radius: 8px !important;
-}
-</style>

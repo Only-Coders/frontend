@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-main>
+  <div style="height: 100vh">
+    <v-main style="height: 100%">
       <router-view />
     </v-main>
   </div>

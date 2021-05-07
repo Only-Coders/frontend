@@ -5,5 +5,22 @@
     "welcomeTitle": "Welcome",
     "loginButton": "Login",
     "signInButton": "Sign in"
+  },
+  "Onboarding": {
+    "GeneralInformation": {
+      "title": "General Information",
+      "text": "Please enter the information with which you want other users to see you with. ",
+      "nameLabel": "Name",
+      "lastNameLabel": "Last Name",
+      "gitUser": "Git user",
+      "birthDate": "Birth Date",
+      "country": "Country",
+      "city": "City",
+      "description": "About yourself",
+      "nextButton": "Next"
+    },
+    "Shared": {
+      "nextButton": "Next"
+    }
   }
 }

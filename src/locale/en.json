@@ -4,6 +4,7 @@
     "loginTitle": "Log in",
     "welcomeTitle": "Welcome",
     "loginButton": "Login",
-    "signInButton": "Sign in"
+    "signInButton": "Sign in",
+    "passwordReset": "Forgot password?"
   }
 }

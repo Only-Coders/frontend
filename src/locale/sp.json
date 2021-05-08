@@ -4,7 +4,8 @@
     "loginTitle": "Ingreso",
     "welcomeTitle": "Bienvenido",
     "loginButton": "Ingresar",
-    "signInButton": "Registrarme"
+    "signInButton": "Registrarme",
+    "passwordReset": "¿Olvidaste tu contraseña?" 
   },
   "Onboarding": {
     "GeneralInformation": {
@@ -21,7 +22,6 @@
     "Shared": {
       "nextButton": "Siguiente"
     },
-    "signInButton": "Registrarme",
-    "passwordReset": "¿Olvidaste tu contraseña?"
+    "signInButton": "Registrarme"
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100vh">
-    <v-main style="height: 100%">
+    <v-main class="main">
       <router-view />
     </v-main>
   </div>
@@ -13,3 +13,10 @@ export default Vue.extend({
   name: "DefaultLayout"
 });
 </script>
+
+<style scoped>
+.main {
+  overflow: hidden;
+  height: 100%;
+}
+</style>

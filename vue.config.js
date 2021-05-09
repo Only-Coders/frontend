@@ -3,8 +3,7 @@ module.exports = {
   devServer: {
     proxy: {
       "^/api": {
-        //target: `https://api.onlycoders.tech/api`
-        target: `http://190.135.20.252:9000/api`
+        target: `https://api.onlycoders.tech`
       }
     }
   }

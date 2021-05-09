@@ -94,7 +94,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <img src="@/assets/images/undraw_online_resume.svg" alt="online_resume" class="online_resume" />
+    <img src="@/assets/images/Onboarding/undraw_online_resume.svg" alt="online_resume" class="online_resume" />
   </div>
 </template>
 

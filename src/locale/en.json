@@ -13,7 +13,7 @@
       "text": "Please enter the information with which you want other users to see you with. ",
       "nameLabel": "Name",
       "lastNameLabel": "Last Name",
-      "gitUser": "Git user",
+      "gitUser": "Git User",
       "birthDate": "Birth Date",
       "country": "Country",
       "city": "City",
@@ -21,7 +21,21 @@
       "nextButton": "Next"
     },
     "Shared": {
-      "nextButton": "Next"
-    }    
+      "nextButton": "Next",
+      "backButton": "Back",
+      "skipButton": "Skip",
+      "addButtonLabel": "Add",
+      "deleteButtonLabel": "Delete",
+      "editButtonLabel": "Edit"
+    },
+    "WorkExperience": {
+      "title": "Work Experience",
+      "text": "Tell us about your work experience so everyone can know how cool you are",
+      "addExperienceButton": "Add Experience",
+      "companyLabel": "Company",
+      "positionLabel": "Position",
+      "startDateLabel": "Start Date",
+      "endDateLabel": "End Date"
+    }
   }
 }

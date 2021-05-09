@@ -2,7 +2,7 @@
   <div>
     <v-row no-gutters>
       <v-col>
-        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-8"></v-img>
+        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-6 mb-4"></v-img>
       </v-col>
     </v-row>
     <v-row justify="space-around" align="center" no-gutters class="mt-10">
@@ -47,10 +47,10 @@
                 </v-text-field>
               </v-col>
             </v-row>
-            <v-row justify="center" class="mb-8">
+            <v-row justify="center" class="mb-6">
               <a href="#">{{ $i18n.t("Login.passwordReset") }}</a>
             </v-row>
-            <v-row>
+            <v-row class="mb-4">
               <v-col>
                 <v-btn block color="primary" large depressed @click="login">{{ $i18n.t("Login.loginButton") }}</v-btn>
               </v-col>
@@ -59,6 +59,19 @@
                   $i18n.t("Login.signInButton")
                 }}</v-btn>
               </v-col>
+            </v-row>
+
+            <v-divider></v-divider>
+
+            <p class="text-center my-5">O ingresa con</p>
+            <v-row justify="center">
+              <v-btn depressed color="transparent" class="pa-3 mr-3" fab>
+                <v-img src="@/assets/images/google.png" @click="loginGoogle" width="35" alt="google"></v-img>
+              </v-btn>
+
+              <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
+                <v-img src="@/assets/images/github.png" @click="loginGithub" width="35" alt="github"></v-img>
+              </v-btn>
             </v-row>
           </v-form>
         </v-card>
@@ -84,7 +97,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { auth } from "@/plugins/firebaseInit";
+import { auth, google } from "@/plugins/firebaseInit";
+import { authenticate } from "@/services/auth";
+import jwtDecode from "jwt-decode";
 
 export default Vue.extend({
   name: "Home",
@@ -117,14 +132,34 @@ export default Vue.extend({
 
     async login() {
       const result = await auth.signInWithEmailAndPassword(this.email, this.password);
-
       if (result.user && result.user.emailVerified) {
-        result.user.getIdTokenResult;
+        const tokenId = await result.user.getIdTokenResult();
+        console.log(tokenId);
+
+        //pegarle al backend para login
+        const ocToken = await authenticate(tokenId.token);
+
+        //const data = jwtDecode(ocToken);
+
         alert("Successfully logged in");
-        this.$router.push("/home");
+        this.$router.push("/onboarding");
       } else {
         alert("Must verify mail");
       }
+    },
+
+    async loginGoogle() {
+      //alert("Esperá a la 2.0 capo.");
+      const result = await auth.signInWithPopup(google);
+
+      if (result) {
+        //const idToken = await result.user.getIdToken(true);
+        //TODO: Esta obteniendo el token bien, continuar
+      }
+    },
+
+    async loginGithub() {
+      alert("Me encanta, peeeero... esperá a la 2.1 capo.");
     }
   },
 
@@ -155,7 +190,7 @@ body {
 
 .waves {
   position: absolute;
-  bottom: -50px;
+  bottom: -90px;
   z-index: 1;
   height: 450px;
   width: 4000px;

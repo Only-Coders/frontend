@@ -25,7 +25,11 @@
       "skipButton": "Omitir",
       "addButtonLabel": "Agregar",
       "deleteButtonLabel": "Eliminar",
-      "editButtonLabel": "Editar"
+      "editButtonLabel": "Editar",
+      "noData": "Mmm... Parece que todavia no hay datos",
+      "requiredField": "Este campo es obligatorio",
+      "invalidEmail": "Por favor ingrese un email valido",
+      "profileImageSize": "El archivo es muy grande"
     },
     "signInButton": "Registrarme",
     "WorkExperience": {
@@ -35,7 +39,8 @@
       "companyLabel": "Empresa",
       "positionLabel": "Puesto",
       "startDateLabel": "Fecha de inicio",
-      "endDateLabel": "Fecha de fin"
+      "endDateLabel": "Fecha de fin",
+      "addExperienceTitleDialog": "Experiencia"
     }
   }
 }

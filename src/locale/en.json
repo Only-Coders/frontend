@@ -26,7 +26,11 @@
       "skipButton": "Skip",
       "addButtonLabel": "Add",
       "deleteButtonLabel": "Delete",
-      "editButtonLabel": "Edit"
+      "editButtonLabel": "Edit",
+      "noData": "Mmm... Looks like there's no data here",
+      "requiredField": "Required field",
+      "invalidEmail": "Please enter a valid email",
+      "profileImageSize": "File size is too big"
     },
     "WorkExperience": {
       "title": "Work Experience",
@@ -35,7 +39,8 @@
       "companyLabel": "Company",
       "positionLabel": "Position",
       "startDateLabel": "Start Date",
-      "endDateLabel": "End Date"
+      "endDateLabel": "End Date",
+      "addExperienceTitleDialog": "Experience"
     }
   }
 }

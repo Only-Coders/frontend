@@ -29,7 +29,7 @@
                 :label="$i18n.t('Onboarding.GeneralInformation.nameLabel')"
                 rounded
                 filled
-                background-color="#EBEBEB"
+                background-color="grey_input"
               ></v-text-field>
               <v-text-field
                 v-model="lastName"
@@ -37,7 +37,7 @@
                 :label="$i18n.t('Onboarding.GeneralInformation.lastNameLabel')"
                 rounded
                 filled
-                background-color="#EBEBEB"
+                background-color="grey_input"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -50,16 +50,28 @@
                 :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
                 rounded
                 filled
-                background-color="#EBEBEB"
+                background-color="grey_input"
               ></v-text-field>
-              <v-text-field
-                v-model="birthDate"
-                :rules="emailRules"
-                :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
-                rounded
-                filled
-                background-color="#EBEBEB"
-              ></v-text-field>
+
+              <v-menu
+                v-model="showStartDatePicker"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="birthDate"
+                    :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
+                    append-icon="mdi-calendar-month-outline"
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker no-title v-model="birthDate" @input="showStartDatePicker = false"></v-date-picker>
+              </v-menu>
             </v-col>
             <v-col>
               <v-text-field
@@ -68,7 +80,7 @@
                 :label="$i18n.t('Onboarding.GeneralInformation.country')"
                 rounded
                 filled
-                background-color="#EBEBEB"
+                background-color="grey_input"
               ></v-text-field>
               <v-text-field
                 v-model="city"
@@ -76,7 +88,7 @@
                 :label="$i18n.t('Onboarding.GeneralInformation.city')"
                 rounded
                 filled
-                background-color="#EBEBEB"
+                background-color="grey_input"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -85,7 +97,7 @@
             rounded
             filled
             :label="$i18n.t('Onboarding.GeneralInformation.description')"
-            background-color="#EBEBEB"
+            background-color="grey_input"
             rows="3"
             row-height="30"
             counter
@@ -113,7 +125,8 @@ export default Vue.extend({
     birthDate: "",
     country: "",
     city: "",
-    description: ""
+    description: "",
+    showDatePicker: false
   })
 });
 </script>

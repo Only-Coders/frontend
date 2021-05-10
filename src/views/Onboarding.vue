@@ -10,9 +10,6 @@
       <work-experiencie></work-experiencie>
     </div>
     <v-row justify="end" no-gutters class="buttons-row">
-      <v-col cols="1" class="mt-16 mr-6">
-        <v-btn block color="secondary" medium style="opacity: 0.5">{{ $i18n.t("Onboarding.Shared.backButton") }}</v-btn>
-      </v-col>
       <v-col cols="1" class="my-16 mr-16">
         <v-btn block color="primary" medium>{{ $i18n.t("Onboarding.Shared.nextButton") }}</v-btn>
       </v-col>
@@ -24,7 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 // import GeneralInformation from "@/components/Onboarding/GeneralInformation.vue";
-import WorkExperiencie from "@/components/Onboarding/WorkExperiencie.vue";
+import WorkExperiencie from "@/components/Onboarding/WorkExperience/WorkExperiencie.vue";
 
 export default Vue.extend({
   name: "Onboarding",

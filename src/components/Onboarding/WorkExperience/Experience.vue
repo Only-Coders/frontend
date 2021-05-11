@@ -2,12 +2,22 @@
   <v-card class="mb-8">
     <v-row no-gutters align="center">
       <v-col no-gutters>
-        <v-card-title>{{ company }}</v-card-title>
-        <v-card-text class="pb-2">{{ position }}</v-card-text>
-        <v-card-text class="pt-0">{{ startDate }} - {{ endDate }}</v-card-text>
+        <v-card-title class="pb-0">{{
+          hasUpdatedExperience ? updatedExperience.company : workExperience.company
+        }}</v-card-title>
+        <v-card-text class="pb-2">{{
+          hasUpdatedExperience ? updatedExperience.position : workExperience.position
+        }}</v-card-text>
+        <v-card-text class="pt-0"
+          >{{ hasUpdatedExperience ? updatedExperience.startDate : workExperience.startDate }}
+          {{ $i18n.t("Onboarding.Shared.fromDateToAnother") }}
+          {{ hasUpdatedExperience ? updatedExperience.endDate : workExperience.endDate }}</v-card-text
+        >
       </v-col>
       <v-col cols="2" class="mr-6" no-gutters>
-        <v-btn block color="error" small outlined>{{ $i18n.t("Onboarding.Shared.deleteButtonLabel") }}</v-btn>
+        <v-btn block color="error" small @click="showDeleteDialog" outlined>{{
+          $i18n.t("Onboarding.Shared.deleteButtonLabel")
+        }}</v-btn>
       </v-col>
       <v-col cols="2" class="mr-4" no-gutters>
         <v-btn block color="primary" small @click="showUpdateDialog" outlined>{{
@@ -18,37 +28,63 @@
     <update-experience
       v-if="updateDialog"
       v-model="updateDialog"
-      :selectedExperience="{ company: company, position: position, startDate: startDate, endDate: endDate }"
+      :selectedExperience="workExperience"
+      @passExperienceData="handleUpdateExperience"
     ></update-experience>
+    <delete-experience
+      v-if="deleteDialog"
+      v-model="deleteDialog"
+      :selectedExperience="workExperience"
+      @passExperienceData="handleDeleteExperience"
+    ></delete-experience>
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import UpdateExperience from "@/components/Onboarding/WorkExperience/UpdateExperience.vue";
+import DeleteExperience from "@/components/Onboarding/WorkExperience/DeleteExperience.vue";
+import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({
   name: "Experience",
 
-  components: { UpdateExperience },
+  components: { UpdateExperience, DeleteExperience },
 
   props: {
-    company: String,
-    position: String,
-    startDate: String,
-    endDate: String
+    workExperience: Object as PropType<WorkExperience>,
+    selectedIndex: Number
   },
 
   methods: {
     showUpdateDialog() {
-      console.log(this.startDate);
       this.updateDialog = !this.updateDialog;
+    },
+    showDeleteDialog() {
+      this.deleteDialog = !this.deleteDialog;
+    },
+    handleUpdateExperience(data: WorkExperience) {
+      console.log(data);
+      this.hasUpdatedExperience = true;
+      this.updatedExperience = { ...data };
+      this.$emit("passUpdatedExperienceData", {
+        updatedExperience: this.updatedExperience,
+        updatedExperienceIndex: this.selectedIndex
+      });
+    },
+    handleDeleteExperience(isDeletion: boolean) {
+      this.$emit("passDeleteExperienceData", {
+        updatedExperienceIndex: this.selectedIndex
+      });
     }
   },
 
   data: () => ({
     updateDialog: false,
-    selectedExperience: {}
+    deleteDialog: false,
+    selectedExperience: {} as WorkExperience,
+    hasUpdatedExperience: false,
+    updatedExperience: {} as WorkExperience
   })
 });
 </script>

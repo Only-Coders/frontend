@@ -7,7 +7,7 @@
     </v-row>
     <!-- <general-information></general-information> -->
     <div class="content">
-      <work-experiencie></work-experiencie>
+      <work-experience></work-experience>
     </div>
     <v-row justify="end" no-gutters class="buttons-row">
       <v-col cols="1" class="my-16 mr-16">
@@ -21,12 +21,12 @@
 <script lang="ts">
 import Vue from "vue";
 // import GeneralInformation from "@/components/Onboarding/GeneralInformation.vue";
-import WorkExperiencie from "@/components/Onboarding/WorkExperience/WorkExperiencie.vue";
+import WorkExperience from "@/components/Onboarding/WorkExperience/WorkExperience.vue";
 
 export default Vue.extend({
   name: "Onboarding",
 
-  components: { /*GeneralInformation,*/ WorkExperiencie },
+  components: { /*GeneralInformation,*/ WorkExperience },
 
   computed: {}
 });

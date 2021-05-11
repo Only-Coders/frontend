@@ -6,7 +6,7 @@
       </v-col>
     </v-row>
     <v-row justify="center">
-      <v-col cols="6" sm="8" md="6" lg="2" style="text-align: center">
+      <v-col cols="6" sm="8" md="6" lg="2" class="text-center">
         <span>Mmm... Looks like there's no data here</span>
       </v-col>
     </v-row>

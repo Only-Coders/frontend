@@ -13,8 +13,8 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="experience.length" justify="center" no-gutters class="pt-12">
-      <v-col cols="10" sm="8" md="6" lg="4">
+    <v-row v-if="experience.length" justify="center" no-gutters>
+      <v-col cols="10" sm="8" md="6" lg="4" class="pt-12 overflow-y-auto">
         <div v-for="(exp, index) in experience" :key="index">
           <experience
             :workExperience="exp"
@@ -25,12 +25,12 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-else class="pt-8 pb-10" justify="center" no-gutters>
+    <v-row v-else class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
       <v-col>
         <no-data></no-data>
       </v-col>
     </v-row>
-    <v-row justify="center" no-gutters class="">
+    <v-row justify="center" no-gutters>
       <v-col cols="4" sm="3" md="2" lg="1">
         <v-btn text @click="showAddDialog">
           <v-icon left dark> mdi-plus-circle-outline </v-icon>

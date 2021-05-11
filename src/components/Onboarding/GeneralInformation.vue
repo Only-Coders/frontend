@@ -68,6 +68,9 @@
                     append-icon="mdi-calendar-month-outline"
                     v-bind="attrs"
                     v-on="on"
+                    rounded
+                    filled
+                    background-color="grey_input"
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="birthDate" @input="showStartDatePicker = false"></v-date-picker>

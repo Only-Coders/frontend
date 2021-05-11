@@ -30,7 +30,8 @@
       "noData": "Mmm... Looks like there's no data here",
       "requiredField": "Required field",
       "invalidEmail": "Please enter a valid email",
-      "profileImageSize": "File size is too big"
+      "profileImageSize": "File size is too big",
+      "fromDateToAnother": "to"
     },
     "WorkExperience": {
       "title": "Work Experience",
@@ -40,7 +41,10 @@
       "positionLabel": "Position",
       "startDateLabel": "Start Date",
       "endDateLabel": "End Date",
-      "addExperienceTitleDialog": "Experience"
+      "addExperienceTitleDialog": "Experience",
+      "deleteExperienceTitleDialog": "Are you sure you want to delete this experience?",
+      "deleteExperienceTextDialog1": "Deleting your experience at ",
+      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
     }
   }
 }

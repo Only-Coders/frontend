@@ -29,7 +29,8 @@
       "noData": "Mmm... Parece que todavia no hay datos",
       "requiredField": "Este campo es obligatorio",
       "invalidEmail": "Por favor ingrese un email valido",
-      "profileImageSize": "El archivo es muy grande"
+      "profileImageSize": "El archivo es muy grande",
+      "fromDateToAnother": "a"
     },
     "signInButton": "Registrarme",
     "WorkExperience": {
@@ -40,7 +41,10 @@
       "positionLabel": "Puesto",
       "startDateLabel": "Fecha de inicio",
       "endDateLabel": "Fecha de fin",
-      "addExperienceTitleDialog": "Experiencia"
+      "addExperienceTitleDialog": "Experiencia",
+      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia seleccionada?",
+      "deleteExperienceTextDialog1": "Borrar tu experiencia en",
+      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
     }
   }
 }

@@ -31,7 +31,6 @@
       "invalidEmail": "Por favor ingrese un email valido",
       "profileImageSize": "El archivo es muy grande"
     },
-    "signInButton": "Registrarme",
     "WorkExperience": {
       "title": "Experiencia Laboral",
       "text": "Ingresa tus experiencias laborales para que todos sepan que tan cool eres",
@@ -41,6 +40,11 @@
       "startDateLabel": "Fecha de inicio",
       "endDateLabel": "Fecha de fin",
       "addExperienceTitleDialog": "Experiencia"
+    },
+    "Skills": {
+      "title": "Habilidades",
+      "text": "Agrega algunas de tus increíbles habilidades a tu perfil!",
+      "skill": "Escribe una habilidad..."
     }
   }
 }

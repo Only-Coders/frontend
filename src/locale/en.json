@@ -41,6 +41,11 @@
       "startDateLabel": "Start Date",
       "endDateLabel": "End Date",
       "addExperienceTitleDialog": "Experience"
+    },
+    "Skills": {
+      "title": "Skills",
+      "text": "Add some of your awesome skills to your profile!",
+      "skill": "Type a skill..."
     }
   }
 }

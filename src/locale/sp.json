@@ -32,7 +32,6 @@
       "profileImageSize": "El archivo es muy grande",
       "fromDateToAnother": "a"
     },
-    "signInButton": "Registrarme",
     "WorkExperience": {
       "title": "Experiencia Laboral",
       "text": "Ingresa tus experiencias laborales para que todos sepan que tan cool eres",
@@ -45,6 +44,11 @@
       "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
       "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
+    },
+    "Skills": {
+      "title": "Habilidades",
+      "text": "Agrega algunas de tus increíbles habilidades a tu perfil!",
+      "skill": "Escribe una habilidad..."
     }
   }
 }

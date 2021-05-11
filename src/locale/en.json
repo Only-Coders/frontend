@@ -45,6 +45,11 @@
       "deleteExperienceTitleDialog": "Are you sure you want to delete this experience?",
       "deleteExperienceTextDialog1": "Deleting your experience at ",
       "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
+    },
+    "Skills": {
+      "title": "Skills",
+      "text": "Add some of your awesome skills to your profile!",
+      "skill": "Type a skill..."
     }
   }
 }

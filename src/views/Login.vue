@@ -1,10 +1,5 @@
 <template>
   <div>
-    <v-row no-gutters>
-      <v-col>
-        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-6 mb-4"></v-img>
-      </v-col>
-    </v-row>
     <v-row justify="space-around" align="center" no-gutters class="mt-10">
       <v-col class="welcome pl-16 hidden-md-and-down">
         <v-card width="400px" class="mx-auto" flat>

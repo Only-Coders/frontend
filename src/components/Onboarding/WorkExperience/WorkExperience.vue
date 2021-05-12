@@ -1,6 +1,6 @@
 <template>
-  <div style="position: relative; padding-top: 45px; height: 765px">
-    <v-row justify="center" align="center" no-gutters>
+  <div style="position: relative; margin-top: 75px; height: 765px">
+    <v-row justify="center" class="pt-sm-0 pt-16" align="center" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.WorkExperience.title") }}</h2>
       </v-col>
@@ -13,23 +13,25 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" no-gutters class="pt-12">
-      <v-col cols="4">
-        <div v-if="experience.length">
-          <div v-for="(exp, index) in experience" :key="index">
-            <experience
-              :company="exp.company"
-              :position="exp.position"
-              :startDate="exp.startDate"
-              :endDate="exp.endDate"
-            ></experience>
-          </div>
+    <v-row v-if="experience.length" justify="center" no-gutters>
+      <v-col cols="10" sm="8" md="6" lg="4" class="pt-12 overflow-y-auto">
+        <div v-for="(exp, index) in experience" :key="index">
+          <experience
+            :workExperience="exp"
+            :selectedIndex="index"
+            @passUpdatedExperienceData="handleUpdateExperience"
+            @passDeleteExperienceData="handleDeleteExperience"
+          ></experience>
         </div>
-        <no-data v-else></no-data>
       </v-col>
     </v-row>
-    <v-row justify="center" align="center" no-gutters class="pt-6">
-      <v-col cols="1">
+    <v-row v-else class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
+      <v-col>
+        <no-data></no-data>
+      </v-col>
+    </v-row>
+    <v-row justify="center" no-gutters>
+      <v-col cols="4" sm="3" md="2" lg="1">
         <v-btn text @click="showAddDialog">
           <v-icon left dark> mdi-plus-circle-outline </v-icon>
           {{ $i18n.t("Onboarding.WorkExperience.addExperienceButton") }}
@@ -48,6 +50,15 @@ import { WorkExperience } from "@/models/experience";
 import AddExperience from "@/components/Onboarding/WorkExperience/AddExperience.vue";
 import NoData from "@/components/NoData.vue";
 
+type UpdatedExperience = {
+  updatedExperience: WorkExperience;
+  updatedExperienceIndex: number;
+};
+
+type DeleteExperience = {
+  updatedExperienceIndex: number;
+};
+
 export default Vue.extend({
   name: "GeneralInformation",
 
@@ -61,12 +72,19 @@ export default Vue.extend({
     },
     handleAddExperience(data: WorkExperience) {
       this.experience.push(data);
+    },
+    handleUpdateExperience(updatedData: UpdatedExperience) {
+      this.experience[updatedData.updatedExperienceIndex] = updatedData.updatedExperience;
+    },
+    handleDeleteExperience(deleteIndex: DeleteExperience) {
+      this.experience.splice(deleteIndex.updatedExperienceIndex, 1);
     }
   },
 
   data: () => ({
     experience: [] as WorkExperience[],
-    addDialog: false
+    addDialog: false,
+    selectedUpdateIndex: 0
   })
 });
 </script>

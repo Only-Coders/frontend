@@ -13,7 +13,7 @@
         <span class="headline mx-auto">{{ $i18n.t("Onboarding.WorkExperience.addExperienceTitleDialog") }}</span>
       </v-card-title>
       <v-card-text class="pt-10">
-        <form ref="add-experience" lazy-validation>
+        <v-form ref="add-experience" lazy-validation>
           <v-row>
             <v-col cols="6">
               <v-text-field
@@ -76,7 +76,7 @@
               </v-menu>
             </v-col>
           </v-row>
-        </form>
+        </v-form>
       </v-card-text>
       <v-card-actions style="height: 100px">
         <v-row justify="end">
@@ -110,13 +110,15 @@ export default Vue.extend({
       return `${day}-${month}-${year}`;
     },
     emitAddExperience() {
-      this.$emit("passExperienceData", {
-        company: this.company,
-        position: this.position,
-        startDate: this.formatDate(this.startDate),
-        endDate: this.formatDate(this.endDate)
-      });
-      this.close();
+      if ((this.$refs["add-experience"] as HTMLFormElement).validate()) {
+        this.$emit("passExperienceData", {
+          company: this.company,
+          position: this.position,
+          startDate: this.formatDate(this.startDate),
+          endDate: this.formatDate(this.endDate)
+        });
+        this.close();
+      }
     },
     close() {
       this.$emit("input");
@@ -126,7 +128,6 @@ export default Vue.extend({
     company: "",
     position: "",
     startDate: "",
-    startDateWithFormat: "",
     endDate: "",
     showStartDatePicker: false,
     showEndDatePicker: false

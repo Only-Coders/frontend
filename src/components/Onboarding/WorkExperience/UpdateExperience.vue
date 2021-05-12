@@ -13,18 +13,18 @@
         <span class="headline mx-auto">{{ $i18n.t("Onboarding.WorkExperience.addExperienceTitleDialog") }}</span>
       </v-card-title>
       <v-card-text class="pt-10">
-        <form ref="update-experience" lazy-validation>
+        <v-form ref="update-experience" lazy-validation>
           <v-row>
             <v-col cols="6">
               <v-text-field
-                v-model="company"
+                v-model="experience.company"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.companyLabel')"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                v-model="position"
+                v-model="experience.position"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.positionLabel')"
               ></v-text-field>
@@ -42,7 +42,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="startDate"
+                    v-model="experience.startDate"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -50,7 +50,11 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="startDate" @input="showStartDatePicker = false"></v-date-picker>
+                <v-date-picker
+                  no-title
+                  v-model="experience.startDate"
+                  @input="showStartDatePicker = false"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="6">
@@ -64,24 +68,23 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="endDate"
-                    :rules="[rules.required]"
+                    v-model="experience.endDate"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="endDate" @input="showEndDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="experience.endDate" @input="showEndDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
           </v-row>
-        </form>
+        </v-form>
       </v-card-text>
       <v-card-actions style="height: 100px">
         <v-row justify="end">
           <v-col cols="3">
-            <v-btn block color="primary" medium @click.prevent="emitAddExperience">{{
+            <v-btn block color="primary" medium @click.prevent="emitUpdateExperience">{{
               $i18n.t("Onboarding.Shared.editButtonLabel")
             }}</v-btn>
           </v-col>
@@ -91,8 +94,9 @@
   </v-dialog>
 </template>
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { RuleMixin } from "@/mixins/rules";
+import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({
   name: "UpdateExperience",
@@ -101,33 +105,38 @@ export default Vue.extend({
 
   components: {},
 
-  props: { value: Boolean, selectedExperience: Object },
+  props: { value: Boolean, selectedExperience: Object as PropType<WorkExperience> },
 
   methods: {
     formatDate(date: any) {
+      console.log("------------------>", date);
       if (!date) return null;
       const [year, month, day] = date.split("-");
       return `${day}-${month}-${year}`;
     },
-    emitAddExperience() {
-      this.$emit("passExperienceData", {
-        company: this.company,
-        position: this.position,
-        startDate: this.formatDate(this.startDate),
-        endDate: this.formatDate(this.endDate)
-      });
-      this.close();
+    emitUpdateExperience() {
+      if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
+        console.log("---->en update: ", this.experience);
+        this.$emit("passExperienceData", {
+          company: this.experience.company,
+          position: this.experience.position,
+          startDate: this.formatDate(this.experience.startDate),
+          endDate: this.formatDate(this.experience.endDate)
+        });
+        this.close();
+      }
     },
     close() {
       this.$emit("input");
     }
   },
+
+  created() {
+    this.experience = this.selectedExperience;
+  },
+
   data: () => ({
-    company: "",
-    position: "",
-    startDate: "",
-    startDateWithFormat: "",
-    endDate: "",
+    experience: {} as WorkExperience,
     showStartDatePicker: false,
     showEndDatePicker: false
   })

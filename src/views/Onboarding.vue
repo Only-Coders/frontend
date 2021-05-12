@@ -32,18 +32,18 @@
 
 <script lang="ts">
 import Vue from "vue";
+import WorkExperience from "@/components/Onboarding/WorkExperience/WorkExperience.vue";
 import GeneralInformation from "@/components/Onboarding/GeneralInformation.vue";
-import WorkExperiencie from "@/components/Onboarding/WorkExperience/WorkExperiencie.vue";
 import Skills from "@/components/Onboarding/Skills.vue";
 
 export default Vue.extend({
   name: "Onboarding",
 
-  components: { GeneralInformation, WorkExperiencie, Skills },
+  components: { GeneralInformation, WorkExperience, Skills },
 
   data: () => ({
     model: 0,
-    steps: [GeneralInformation, WorkExperiencie, Skills]
+    steps: [GeneralInformation, WorkExperience, Skills]
   })
 });
 </script>

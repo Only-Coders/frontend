@@ -19,6 +19,10 @@
                   cache-items
                   hide-no-data
                   hide-details
+                  item-text="Description"
+                  item-value="API"
+                  placeholder="Start typing to Search"
+                  prepend-icon="mdi-database-search"
                   return-object
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
@@ -66,16 +70,16 @@ export default Vue.extend({
 
   data: function () {
     return {
-      search: "",
+      search: null,
       descriptionLimit: 60,
       entries: [],
       isLoading: false,
       model: null,
       skills: []
     };
-  },
+  }
 
-  methods: {
+  /*  methods: {
     addExperience() {
       if (this.search) {
         this.skills.push(this.search);
@@ -86,9 +90,9 @@ export default Vue.extend({
       console.log(index);
       this.skills.splice(index, 1);
     }
-  }
+  },
 
-  /*computed: {
+  computed: {
     fields() {
       if (!this.model) return [];
 

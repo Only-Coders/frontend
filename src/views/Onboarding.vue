@@ -19,8 +19,6 @@
       </v-col>
     </v-row>
 
-    <span>Current Index: {{ carouselIndex }}</span>
-
     <v-row class="fill-height" align="end" justify="center">
       <v-col class="text-end mr-16">
         <v-btn

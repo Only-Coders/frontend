@@ -14,7 +14,14 @@
     </v-row>
 
     <v-row v-if="experience.length" justify="center" no-gutters>
-      <v-col cols="10" sm="8" md="6" lg="4" class="pt-12 overflow-y-auto">
+      <v-col
+        cols="10"
+        sm="8"
+        md="6"
+        lg="4"
+        class="pt-12 overflow-y-auto"
+        :style="$vuetify.breakpoint.xs ? 'max-height: 240px' : 'max-height: 500px'"
+      >
         <div v-for="(exp, index) in experience" :key="index">
           <experience
             :workExperience="exp"

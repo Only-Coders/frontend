@@ -109,14 +109,12 @@ export default Vue.extend({
 
   methods: {
     formatDate(date: any) {
-      console.log("------------------>", date);
       if (!date) return null;
       const [year, month, day] = date.split("-");
       return `${day}-${month}-${year}`;
     },
     emitUpdateExperience() {
       if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
-        console.log("---->en update: ", this.experience);
         this.$emit("passExperienceData", {
           company: this.experience.company,
           position: this.experience.position,

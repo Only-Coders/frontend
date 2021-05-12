@@ -13,7 +13,6 @@
               <v-col cols="11">
                 <v-autocomplete
                   v-model="model"
-                  :items="items"
                   :loading="isLoading"
                   :search-input.sync="search"
                   cache-items
@@ -69,15 +68,15 @@ export default Vue.extend({
   props: {},
 
   data: () => ({
-    search: null,
+    search: "",
     descriptionLimit: 60,
     entries: [],
     isLoading: false,
     model: null,
     skills: []
-  })
+  }) /*,
 
-  /*  methods: {
+  methods: {
     addExperience() {
       if (this.search) {
         this.skills.push(this.search);
@@ -88,7 +87,7 @@ export default Vue.extend({
       console.log(index);
       this.skills.splice(index, 1);
     }
-  },
+  }
 
   computed: {
     fields() {

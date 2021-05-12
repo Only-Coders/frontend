@@ -5,7 +5,7 @@
     <v-row no-gutters>
       <v-col>
         <v-carousel
-          v-model="model"
+          v-model="carouselIndex"
           height="85vh"
           hide-delimiter-background
           :show-arrows="false"
@@ -13,16 +13,48 @@
           class="carousel ma-0"
         >
           <v-carousel-item v-for="(step, key) in steps" :key="key">
-            <component v-model="actualStep" :is="step" class="steps"> </component>
+            <component :is="step" class="steps"> </component>
           </v-carousel-item>
         </v-carousel>
       </v-col>
     </v-row>
 
+    <span>Current Index: {{ carouselIndex }}</span>
+
     <v-row class="fill-height" align="end" justify="center">
       <v-col class="text-end mr-16">
-        <v-btn @click="model++" color="primary" class="primary--text mx-5" outlined large depressed>Omitir</v-btn>
-        <v-btn @click="model++" color="primary" class="mx-5" large depressed>Siguiente</v-btn>
+        <v-btn
+          @click="changeCarouselStep"
+          color="primary"
+          class="primary--text mx-5"
+          outlined
+          large
+          depressed
+          v-if="carouselIndex != 0"
+        >
+          Omitir
+        </v-btn>
+
+        <v-btn
+          @click="changeCarouselStep"
+          color="primary"
+          class="mx-5"
+          large
+          depressed
+          v-if="carouselIndex != steps.length - 1"
+          >Siguiente</v-btn
+        >
+
+        <v-btn
+          @click="changeCarouselStep"
+          color="primary"
+          class="mx-5"
+          large
+          depressed
+          v-if="carouselIndex == steps.length - 1"
+        >
+          Finalizar
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -42,10 +74,23 @@ export default Vue.extend({
   components: { GeneralInformation, WorkExperience, Skills },
 
   data: () => ({
-    model: 0,
-    steps: [GeneralInformation, WorkExperience, Skills],
-    actualStep: Vue.component
-  })
+    carouselIndex: 0,
+    steps: [GeneralInformation, WorkExperience, Skills]
+  }),
+
+  methods: {
+    changeCarouselStep() {
+      if (this.carouselIndex < this.steps.length - 1) {
+        this.incrementStepIndex();
+      }
+    },
+    finishOnboarding() {
+      console.log("Finish onboarding");
+    },
+    incrementStepIndex() {
+      this.carouselIndex++;
+    }
+  }
 });
 </script>
 

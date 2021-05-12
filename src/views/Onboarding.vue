@@ -12,8 +12,8 @@
           light
           class="carousel ma-0"
         >
-          <v-carousel-item v-for="step in steps" :key="step">
-            <component :is="step" class="steps"> </component>
+          <v-carousel-item v-for="(step, key) in steps" :key="key">
+            <component v-model="actualStep" :is="step" class="steps"> </component>
           </v-carousel-item>
         </v-carousel>
       </v-col>
@@ -21,8 +21,8 @@
 
     <v-row class="fill-height" align="end" justify="center">
       <v-col class="text-end mr-16">
-        <v-btn @click="model++" class="mx-5">Omitir</v-btn>
-        <v-btn @click="model++" class="mx-5">Siguiente</v-btn>
+        <v-btn @click="model++" color="primary" class="primary--text mx-5" outlined large depressed>Omitir</v-btn>
+        <v-btn @click="model++" color="primary" class="mx-5" large depressed>Siguiente</v-btn>
       </v-col>
     </v-row>
 
@@ -43,7 +43,8 @@ export default Vue.extend({
 
   data: () => ({
     model: 0,
-    steps: [GeneralInformation, WorkExperience, Skills]
+    steps: [GeneralInformation, WorkExperience, Skills],
+    actualStep: Vue.component
   })
 });
 </script>

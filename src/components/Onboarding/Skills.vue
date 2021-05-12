@@ -68,16 +68,14 @@ export default Vue.extend({
 
   props: {},
 
-  data: function () {
-    return {
-      search: null,
-      descriptionLimit: 60,
-      entries: [],
-      isLoading: false,
-      model: null,
-      skills: []
-    };
-  }
+  data: () => ({
+    search: null,
+    descriptionLimit: 60,
+    entries: [],
+    isLoading: false,
+    model: null,
+    skills: []
+  })
 
   /*  methods: {
     addExperience() {

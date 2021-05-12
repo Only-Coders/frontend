@@ -14,18 +14,44 @@
     </v-row>
 
     <v-row justify="center" no-gutters class="pt-16">
-      <v-col cols="4">
+      <v-col cols="4" no-gutters>
         <v-form>
-          <v-row>
-            <v-col cols="4">
-              <v-btn class="mx-2 pa-16" fab dark color="primary">
+          <v-row no-gutters>
+            <v-col cols="4" no-gutters>
+              <v-btn
+                v-if="!hasSelectedProfileImage"
+                class="mx-2 pa-16"
+                fab
+                dark
+                color="primary"
+                @click="handleShowFileSelector"
+              >
                 <v-icon dark large> mdi-camera </v-icon>
+                <input
+                  type="file"
+                  ref="input1"
+                  style="display: none"
+                  @change="previewImage"
+                  accept="image/*"
+                  lazy-src
+                />
+              </v-btn>
+              <v-btn v-else class="mx-2 pa-16" fab dark @click="handleShowFileSelector">
+                <v-img height="130" width="130" :src="profileImageToShow" class="profile-img" />
+                <input
+                  type="file"
+                  ref="input1"
+                  style="display: none"
+                  @change="previewImage"
+                  accept="image/*"
+                  lazy-src
+                />
               </v-btn>
             </v-col>
             <v-col cols="8">
               <v-text-field
                 v-model="name"
-                :rules="emailRules"
+                :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.nameLabel')"
                 rounded
                 filled
@@ -33,7 +59,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="lastName"
-                :rules="emailRules"
+                :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.lastNameLabel')"
                 rounded
                 filled
@@ -46,7 +72,7 @@
             <v-col>
               <v-text-field
                 v-model="gitUser"
-                :rules="emailRules"
+                :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
                 rounded
                 filled
@@ -79,7 +105,7 @@
             <v-col>
               <v-text-field
                 v-model="country"
-                :rules="emailRules"
+                :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.country')"
                 rounded
                 filled
@@ -87,7 +113,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="city"
-                :rules="emailRules"
+                :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.city')"
                 rounded
                 filled
@@ -106,22 +132,56 @@
             counter
             no-resize
           ></v-textarea>
+          <v-btn @click="onUpload">upload image</v-btn>
         </v-form>
       </v-col>
     </v-row>
     <img src="@/assets/images/Onboarding/undraw_online_resume.svg" alt="online_resume" class="online_resume" />
   </div>
 </template>
-
 <script lang="ts">
 import Vue from "vue";
+import { RuleMixin } from "@/mixins/rules";
+import { storage } from "@/plugins/firebaseInit";
 
 export default Vue.extend({
   name: "GeneralInformation",
 
   props: {},
 
+  mixins: [RuleMixin],
+
+  methods: {
+    handleShowFileSelector() {
+      (this.$refs.input1 as HTMLButtonElement).click();
+    },
+    previewImage(event: any) {
+      this.hasSelectedProfileImage = true;
+      this.profileImageData = event.target.files[0];
+      this.profileImageToShow = URL.createObjectURL(event.target.files[0]);
+    },
+    async onUpload() {
+      if (this.profileImageData) {
+        const storageRef = await storage
+          .ref(`images/${this.profileImageData.name}`)
+          .put(this.profileImageData)
+          .then(
+            async (snapshot) => {
+              this.profileImageURL = await snapshot.ref.getDownloadURL();
+            },
+            (error) => {
+              console.log(error.message);
+            }
+          );
+      }
+    }
+  },
+
   data: () => ({
+    profileImageData: null as File | null,
+    profileImageToShow: "",
+    profileImageURL: "",
+    uploadValue: 0,
     name: "",
     lastName: "",
     gitUser: "",
@@ -129,12 +189,17 @@ export default Vue.extend({
     country: "",
     city: "",
     description: "",
-    showDatePicker: false
+    showDatePicker: false,
+    hasSelectedProfileImage: false
   })
 });
 </script>
 
 <style lang="scss" scoped>
+.profile-img {
+  border-radius: 50%;
+}
+
 .online_resume {
   width: 260px;
   z-index: 2;

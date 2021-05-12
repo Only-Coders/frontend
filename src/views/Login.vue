@@ -1,5 +1,11 @@
 <template>
   <div>
+    <v-row no-gutters>
+      <v-col>
+        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-8"></v-img>
+      </v-col>
+    </v-row>
+
     <v-row justify="space-around" align="center" no-gutters class="mt-10">
       <v-col class="welcome pl-16 hidden-md-and-down">
         <v-card width="400px" class="mx-auto" flat>
@@ -19,26 +25,9 @@
           <v-form>
             <v-row>
               <v-col>
-                <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
-                  label="Email"
-                  class="large"
-                  rounded
-                  filled
-                  background-color="grey_input"
-                >
+                <v-text-field v-model="email" label="Email" class="large" rounded filled background-color="grey_input">
                 </v-text-field>
-                <v-text-field
-                  v-model="password"
-                  :rules="emailRules"
-                  label="Password"
-                  :type="show2 ? 'text' : 'password'"
-                  rounded
-                  filled
-                  flat
-                  background-color="grey_input"
-                >
+                <v-text-field v-model="password" label="Password" rounded filled flat background-color="grey_input">
                 </v-text-field>
               </v-col>
             </v-row>
@@ -95,16 +84,15 @@ import Vue from "vue";
 import { auth, google } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
+import { setHeaders } from "@/plugins/axios";
 
 export default Vue.extend({
   name: "Home",
 
-  data: function () {
-    return {
-      email: "",
-      password: ""
-    };
-  },
+  data: () => ({
+    email: "",
+    password: ""
+  }),
 
   methods: {
     async register() {
@@ -134,10 +122,13 @@ export default Vue.extend({
         //pegarle al backend para login
         const ocToken = await authenticate(tokenId.token);
 
+        localStorage.setItem("accessToken", ocToken.token);
+        setHeaders(ocToken.token);
+
         //const data = jwtDecode(ocToken);
 
         alert("Successfully logged in");
-        this.$router.push("/onboarding");
+        //this.$router.push("/onboarding");
       } else {
         alert("Must verify mail");
       }

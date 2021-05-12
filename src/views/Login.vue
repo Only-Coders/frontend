@@ -127,8 +127,7 @@ export default Vue.extend({
 
         //const data = jwtDecode(ocToken);
 
-        alert("Successfully logged in");
-        //this.$router.push("/onboarding");
+        this.$router.push("/onboarding");
       } else {
         alert("Must verify mail");
       }

@@ -73,8 +73,8 @@ export default Vue.extend({
     entries: [],
     isLoading: false,
     model: null,
-    skills: []
-  }) /*,
+    skills: [] as string[]
+  }),
 
   methods: {
     addExperience() {
@@ -89,7 +89,7 @@ export default Vue.extend({
     }
   }
 
-  computed: {
+  /*computed: {
     fields() {
       if (!this.model) return [];
 
@@ -144,7 +144,7 @@ export default Vue.extend({
   width: 260px;
   z-index: 2;
   position: absolute;
-  bottom: 250px;
+  bottom: 120px;
   left: 100px;
 }
 </style>

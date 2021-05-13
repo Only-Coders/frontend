@@ -2,7 +2,7 @@
   <div>
     <v-row no-gutters>
       <v-col>
-        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-8"></v-img>
+        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="mx-8 mt-6"></v-img>
       </v-col>
     </v-row>
 
@@ -25,9 +25,14 @@
           <v-form>
             <v-row>
               <v-col>
-                <v-text-field v-model="email" label="Email" class="large" rounded filled background-color="grey_input">
+                <v-text-field v-model="email" label="Email" :rules="[rules.required]" v-bind="{ ...inputProps }">
                 </v-text-field>
-                <v-text-field v-model="password" label="Password" rounded filled flat background-color="grey_input">
+                <v-text-field
+                  v-model="password"
+                  label="Password"
+                  :rules="[rules.minPassword]"
+                  v-bind="{ ...inputProps }"
+                >
                 </v-text-field>
               </v-col>
             </v-row>
@@ -81,6 +86,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { RuleMixin } from "@/mixins/rules";
+import { inputMixin } from "@/mixins/inputProps";
 import { auth, google } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
@@ -88,6 +95,10 @@ import { setHeaders } from "@/plugins/axios";
 
 export default Vue.extend({
   name: "Home",
+
+  mixins: [RuleMixin, inputMixin],
+
+  components: {},
 
   data: () => ({
     email: "",
@@ -146,11 +157,7 @@ export default Vue.extend({
     async loginGithub() {
       alert("Me encanta, peeeero... esperá a la 2.1 capo.");
     }
-  },
-
-  components: {},
-
-  computed: {}
+  }
 });
 </script>
 

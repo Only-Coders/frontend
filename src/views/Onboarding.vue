@@ -1,60 +1,46 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container fluid class="pa-0 main-container">
     <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-8 logo"></v-img>
 
-    <v-row no-gutters>
-      <v-col>
-        <v-carousel
-          v-model="carouselIndex"
-          height="85vh"
-          hide-delimiter-background
-          :show-arrows="false"
-          light
-          class="carousel ma-0"
-        >
-          <v-carousel-item v-for="(step, key) in steps" :key="key">
-            <component :is="step" class="steps"> </component>
-          </v-carousel-item>
-        </v-carousel>
-      </v-col>
-    </v-row>
+    <div justify="center" align="center" no-gutters>
+      <v-row no-gutters>
+        <v-col>
+          <v-carousel
+            v-model="carouselIndex"
+            height="100vh"
+            hide-delimiter-background
+            :show-arrows="false"
+            light
+            class="carousel ma-0"
+          >
+            <v-carousel-item v-for="(step, key) in steps" :key="key">
+              <component :is="step" class="steps"> </component>
+            </v-carousel-item>
+          </v-carousel>
+        </v-col>
+      </v-row>
+    </div>
 
-    <v-row class="fill-height" align="end" justify="center">
-      <v-col class="text-end mr-16">
-        <v-btn
-          @click="changeCarouselStep"
-          color="primary"
-          class="primary--text mx-5"
-          outlined
-          large
-          depressed
-          v-if="carouselIndex != 0"
-        >
-          Omitir
-        </v-btn>
+    <v-btn
+      @click="changeCarouselStep"
+      color="primary"
+      class="stepButtons"
+      large
+      depressed
+      v-if="carouselIndex != steps.length - 1"
+      >Siguiente</v-btn
+    >
 
-        <v-btn
-          @click="changeCarouselStep"
-          color="primary"
-          class="mx-5"
-          large
-          depressed
-          v-if="carouselIndex != steps.length - 1"
-          >Siguiente</v-btn
-        >
-
-        <v-btn
-          @click="changeCarouselStep"
-          color="primary"
-          class="mx-5"
-          large
-          depressed
-          v-if="carouselIndex == steps.length - 1"
-        >
-          Finalizar
-        </v-btn>
-      </v-col>
-    </v-row>
+    <v-btn
+      @click="changeCarouselStep"
+      color="primary"
+      class="stepButtons"
+      large
+      depressed
+      v-if="carouselIndex == steps.length - 1"
+    >
+      Finalizar
+    </v-btn>
 
     <img src="@/assets/images/semi_circle.png" alt="semi_circle_wave" class="semi_circle_wave" />
   </v-container>
@@ -101,6 +87,10 @@ export default Vue.extend({
   pointer-events: none !important;
 }
 
+.main-container {
+  z-index: 0;
+}
+
 .semi_circle_wave {
   position: absolute;
   bottom: 0;
@@ -114,10 +104,19 @@ export default Vue.extend({
 }
 
 .v-carousel__controls {
-  margin-bottom: 0;
+  margin-bottom: 40px;
 }
 
 .carousel {
   z-index: 2;
+}
+
+.stepButtons {
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  bottom: 0;
+  margin-right: 80px;
+  margin-bottom: 40px;
 }
 </style>

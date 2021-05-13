@@ -20,7 +20,7 @@
             <v-col cols="4" no-gutters>
               <v-btn
                 v-if="!hasSelectedProfileImage"
-                class="mx-2 pa-16"
+                class="ml-0 pa-16"
                 fab
                 dark
                 color="primary"
@@ -36,7 +36,7 @@
                   lazy-src
                 />
               </v-btn>
-              <v-btn v-else class="mx-2 pa-16" fab dark @click="handleShowFileSelector">
+              <v-btn v-else class="mr-2 pa-16" fab dark @click="handleShowFileSelector">
                 <v-img height="130" width="130" :src="profileImageToShow" class="profile-img" />
                 <input
                   type="file"
@@ -53,30 +53,24 @@
                 v-model="name"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.nameLabel')"
-                rounded
-                filled
-                background-color="grey_input"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
               <v-text-field
                 v-model="lastName"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.lastNameLabel')"
-                rounded
-                filled
-                background-color="grey_input"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
           </v-row>
 
-          <v-row>
-            <v-col>
+          <v-row class="mt-0">
+            <v-col class="pt-0">
               <v-text-field
                 v-model="gitUser"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
-                rounded
-                filled
-                background-color="grey_input"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
 
               <v-menu
@@ -92,32 +86,25 @@
                     v-model="birthDate"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="attrs"
+                    v-bind="(attrs, { ...inputProps })"
                     v-on="on"
-                    rounded
-                    filled
-                    background-color="grey_input"
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="birthDate" @input="showStartDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col>
+            <v-col class="pt-0">
               <v-text-field
                 v-model="country"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.country')"
-                rounded
-                filled
-                background-color="grey_input"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
               <v-text-field
                 v-model="city"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.city')"
-                rounded
-                filled
-                background-color="grey_input"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -142,6 +129,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { RuleMixin } from "@/mixins/rules";
+import { inputMixin } from "@/mixins/inputProps";
 import { storage } from "@/plugins/firebaseInit";
 
 export default Vue.extend({
@@ -149,7 +137,7 @@ export default Vue.extend({
 
   props: {},
 
-  mixins: [RuleMixin],
+  mixins: [RuleMixin, inputMixin],
 
   methods: {
     handleShowFileSelector() {

@@ -14,7 +14,7 @@
             class="carousel ma-0"
           >
             <v-carousel-item v-for="(step, key) in steps" :key="key">
-              <component :is="step" class="steps"> </component>
+              <component ref="childref" :is="step" class="steps"> </component>
             </v-carousel-item>
           </v-carousel>
         </v-col>
@@ -22,7 +22,7 @@
     </div>
 
     <v-btn
-      @click="changeCarouselStep"
+      @click="$refs.childref.prueba"
       color="primary"
       class="stepButtons"
       large

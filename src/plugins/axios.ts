@@ -12,9 +12,11 @@ export function setHeaders(token: string): void {
 
 instance.interceptors.response.use(
   (response) => {
+    console.log("Entra al interceptor en response");
     return response;
   },
   async (error) => {
+    console.log("Entra al interceptor en error");
     if (error.response.status != "401") {
       throw error;
     }

@@ -76,6 +76,9 @@ export default Vue.extend({
       this.$emit("passDeleteExperienceData", {
         updatedExperienceIndex: this.selectedIndex
       });
+    },
+    prueba() {
+      console.log("Estoy en Experience");
     }
   },
 

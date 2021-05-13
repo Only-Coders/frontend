@@ -189,6 +189,9 @@ export default Vue.extend({
             }
           );
       }
+    },
+    prueba() {
+      console.log("Estoy en General information");
     }
   },
 

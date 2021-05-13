@@ -136,7 +136,8 @@ export default Vue.extend({
         localStorage.setItem("accessToken", ocToken.token);
         setHeaders(ocToken.token);
 
-        //const data = jwtDecode(ocToken);
+        const data = jwtDecode(ocToken.token);
+        console.log(data);
 
         this.$router.push("/onboarding");
       } else {

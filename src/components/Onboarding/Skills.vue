@@ -12,16 +12,11 @@
             <v-row>
               <v-col cols="11">
                 <v-autocomplete
-                  v-model="model"
                   :loading="isLoading"
                   :search-input.sync="search"
                   cache-items
                   hide-no-data
                   hide-details
-                  item-text="Description"
-                  item-value="API"
-                  placeholder="Start typing to Search"
-                  prepend-icon="mdi-database-search"
                   return-object
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
@@ -66,6 +61,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { get } from "@/services/skill";
 
 export default Vue.extend({
   name: "Skills",
@@ -85,12 +81,20 @@ export default Vue.extend({
     addExperience() {
       if (this.search) {
         this.skills.push(this.search);
+        console.log("Buscare: " + this.search);
+        const result = get(this.search);
+        console.log(result);
         this.search = "";
       }
     },
+
     deleteSkill(index: number) {
       console.log(index);
       this.skills.splice(index, 1);
+    },
+
+    prueba() {
+      console.log("Estoy en General information");
     }
   }
 

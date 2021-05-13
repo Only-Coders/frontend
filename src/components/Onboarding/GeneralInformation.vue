@@ -1,6 +1,6 @@
 <template>
-  <div style="position: relative; padding-top: 45px">
-    <v-row justify="center" align="center" no-gutters>
+  <div style="position: relative; padding-top: 85px">
+    <v-row justify="center" align="center" class="pt-sm-0 pt-16" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.GeneralInformation.title") }}</h2>
       </v-col>
@@ -13,14 +13,19 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" no-gutters class="pt-16">
-      <v-col cols="4" no-gutters>
+    <v-row
+      justify="center"
+      no-gutters
+      class="overflow-y-auto"
+      :style="$vuetify.breakpoint.xs ? 'max-height: 450px' : 'max-height: 550px'"
+    >
+      <v-col cols="10" md="6" lg="4" no-gutters>
         <v-form>
-          <v-row no-gutters>
-            <v-col cols="4" no-gutters>
+          <v-row no-gutters align="center">
+            <v-col class="py-2 py-sm-6 py-md-0" cols="12" md="4" lg="4" no-gutters>
               <v-btn
                 v-if="!hasSelectedProfileImage"
-                class="ml-0 pa-16"
+                class="pa-12 pa-md-14 pa-lg-16"
                 fab
                 dark
                 color="primary"
@@ -36,8 +41,13 @@
                   lazy-src
                 />
               </v-btn>
-              <v-btn v-else class="mr-2 pa-16" fab dark @click="handleShowFileSelector">
-                <v-img height="130" width="130" :src="profileImageToShow" class="profile-img" />
+              <v-btn v-else class="pa-12 pa-md-14 pa-lg-16" fab dark @click="handleShowFileSelector">
+                <v-img
+                  :height="$vuetify.breakpoint.xs ? '100' : '130'"
+                  :width="$vuetify.breakpoint.xs ? '100' : '130'"
+                  :src="profileImageToShow"
+                  class="profile-img"
+                />
                 <input
                   type="file"
                   ref="input1"
@@ -48,7 +58,7 @@
                 />
               </v-btn>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="12" md="8" lg="8">
               <v-text-field
                 v-model="name"
                 :rules="[rules.required]"
@@ -65,7 +75,7 @@
           </v-row>
 
           <v-row class="mt-0">
-            <v-col class="pt-0">
+            <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="gitUser"
                 :rules="[rules.required]"
@@ -93,7 +103,7 @@
                 <v-date-picker no-title v-model="birthDate" @input="showStartDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col class="pt-0">
+            <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="country"
                 :rules="[rules.required]"
@@ -123,7 +133,11 @@
         </v-form>
       </v-col>
     </v-row>
-    <img src="@/assets/images/Onboarding/undraw_online_resume.svg" alt="online_resume" class="online_resume" />
+    <img
+      class="online_resume hidden-md-and-down"
+      src="@/assets/images/Onboarding/undraw_online_resume.svg"
+      alt="online_resume"
+    />
   </div>
 </template>
 <script lang="ts">

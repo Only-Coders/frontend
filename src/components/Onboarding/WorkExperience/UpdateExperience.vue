@@ -20,6 +20,7 @@
                 v-model="experience.company"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.companyLabel')"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
@@ -27,6 +28,7 @@
                 v-model="experience.position"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.positionLabel')"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -39,6 +41,7 @@
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
+                left
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
@@ -46,7 +49,7 @@
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="attrs"
+                    v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -65,13 +68,14 @@
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
+                left
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
                     v-model="experience.endDate"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="attrs"
+                    v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; margin-top: 75px; height: 765px">
+  <div style="position: relative; margin-top: 85px; height: 765px">
     <v-row justify="center" class="pt-sm-0 pt-16" align="center" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.WorkExperience.title") }}</h2>
@@ -46,7 +46,11 @@
       </v-col>
     </v-row>
     <add-experience v-if="addDialog" v-model="addDialog" @passExperienceData="handleAddExperience"></add-experience>
-    <img src="@/assets/images/Onboarding/undraw_Designer.svg" alt="online_resume" class="online_resume" />
+    <img
+      class="online_resume hidden-md-and-down"
+      src="@/assets/images/Onboarding/undraw_Designer.svg"
+      alt="online_resume"
+    />
   </div>
 </template>
 

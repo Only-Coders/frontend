@@ -20,6 +20,7 @@
                 v-model="company"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.companyLabel')"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
@@ -27,6 +28,7 @@
                 v-model="position"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.WorkExperience.positionLabel')"
+                v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -39,6 +41,7 @@
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
+                left
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
@@ -46,7 +49,7 @@
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="attrs"
+                    v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -61,6 +64,7 @@
                 transition="scale-transition"
                 offset-y
                 min-width="auto"
+                left
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
@@ -68,7 +72,7 @@
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="attrs"
+                    v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -93,6 +97,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { RuleMixin } from "@/mixins/rules";
+import { inputMixin } from "@/mixins/inputProps";
 
 export default Vue.extend({
   name: "AddExperience",

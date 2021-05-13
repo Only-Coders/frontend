@@ -1,6 +1,6 @@
 <template>
-  <div class="pa-16">
-    <v-row>
+  <div style="position: relative; margin-top: 85px; height: 765px">
+    <v-row class="pt-sm-0 pt-16">
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.Skills.title") }}</h2>
         <p>
@@ -55,7 +55,12 @@
       </v-col>
     </v-row>
 
-    <img src="@/assets/images/Onboarding/undraw_developer_activity.svg" alt="skills" class="skill_img" />
+    <img
+      :style="$vuetify.breakpoint.xs ? 'display: none' : ''"
+      src="@/assets/images/Onboarding/undraw_developer_activity.svg"
+      alt="skills"
+      class="skill_img hidden-md-and-down"
+    />
   </div>
 </template>
 

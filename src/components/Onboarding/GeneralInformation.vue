@@ -76,44 +76,52 @@
 
           <v-row class="mt-0">
             <v-col class="pt-0" cols="12" lg="6">
+              <v-select
+                v-model="selectedGitPlatform"
+                :items="gitPlatforms"
+                :label="$i18n.t('Onboarding.GeneralInformation.gitPlatformLabel')"
+                v-bind="{ ...inputProps }"
+              >
+                <template v-slot:selection="{ item }">
+                  <img width="15" style="margin-right: 10px" :src="item.platformImage" />{{ item.platformName }}
+                </template>
+                <template v-slot:item="{ item }">
+                  <img width="25" style="margin-right: 10px" :src="item.platformImage" />{{ item.platformName }}
+                </template>
+              </v-select>
+
+              <v-menu
+                v-model="showDatePicker"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                left
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="birthDate"
+                    :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
+                    append-icon="mdi-calendar-month-outline"
+                    v-bind="(attrs, { ...inputProps })"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker no-title v-model="birthDate" @input="showDatePicker = false"></v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="gitUser"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
-
-              <v-menu
-                v-model="showStartDatePicker"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="birthDate"
-                    :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
-                    append-icon="mdi-calendar-month-outline"
-                    v-bind="(attrs, { ...inputProps })"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker no-title v-model="birthDate" @input="showStartDatePicker = false"></v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="country"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.country')"
-                v-bind="{ ...inputProps }"
-              ></v-text-field>
-              <v-text-field
-                v-model="city"
-                :rules="[rules.required]"
-                :label="$i18n.t('Onboarding.GeneralInformation.city')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
@@ -180,16 +188,22 @@ export default Vue.extend({
   },
 
   data: () => ({
+    selectedGitPlatform: {},
+    gitPlatforms: [
+      { platformName: "Github", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
+      { platformName: "GitLab", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
+      { platformName: "GitBucket", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
+    ],
     profileImageData: null as File | null,
     profileImageToShow: "",
     profileImageURL: "",
     uploadValue: 0,
     name: "",
     lastName: "",
+    gitPlatform: "",
     gitUser: "",
     birthDate: "",
     country: "",
-    city: "",
     description: "",
     showDatePicker: false,
     hasSelectedProfileImage: false

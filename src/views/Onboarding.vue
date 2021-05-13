@@ -42,7 +42,7 @@
       Finalizar
     </v-btn>
 
-    <img src="@/assets/images/semi_circle.png" alt="semi_circle_wave" class="semi_circle_wave" />
+    <img src="@/assets/images/semi_circle.png" alt="semi_circle_wave" class="semi_circle_wave hidden-md-and-down" />
   </v-container>
 </template>
 

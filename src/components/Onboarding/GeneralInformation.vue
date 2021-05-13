@@ -6,7 +6,7 @@
       </v-col>
     </v-row>
     <v-row justify="center" align="center" no-gutters>
-      <v-col align="center" cols="6">
+      <v-col align="center" cols="10" md="8" lg="6">
         <p>
           {{ $i18n.t("Onboarding.GeneralInformation.text") }}
         </p>
@@ -17,7 +17,7 @@
       justify="center"
       no-gutters
       class="overflow-y-auto"
-      :style="$vuetify.breakpoint.xs ? 'max-height: 450px' : 'max-height: 550px'"
+      :style="$vuetify.breakpoint.xs ? 'max-height: 365px' : 'max-height: 550px'"
     >
       <v-col cols="10" md="6" lg="4" no-gutters>
         <v-form>
@@ -89,7 +89,18 @@
                   <img width="25" style="margin-right: 10px" :src="item.platformImage" />{{ item.platformName }}
                 </template>
               </v-select>
-
+            </v-col>
+            <v-col class="pt-0" cols="12" lg="6">
+              <v-text-field
+                v-model="gitUser"
+                :rules="[rules.required]"
+                :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
+                v-bind="{ ...inputProps }"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col class="pt-0" cols="12" lg="6">
               <v-menu
                 v-model="showDatePicker"
                 :close-on-content-click="false"
@@ -112,12 +123,6 @@
               </v-menu>
             </v-col>
             <v-col class="pt-0" cols="12" lg="6">
-              <v-text-field
-                v-model="gitUser"
-                :rules="[rules.required]"
-                :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
-                v-bind="{ ...inputProps }"
-              ></v-text-field>
               <v-text-field
                 v-model="country"
                 :rules="[rules.required]"

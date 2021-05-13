@@ -18,7 +18,8 @@
       "country": "Country",
       "city": "City",
       "description": "About yourself",
-      "nextButton": "Next"
+      "nextButton": "Next",
+      "gitPlatformLabel": "Git Platform"
     },
     "Shared": {
       "nextButton": "Next",

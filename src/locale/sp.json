@@ -17,7 +17,8 @@
       "birthDate": "Fecha de Nacimiento",
       "country": "Pais",
       "city": "Ciudad",
-      "description": "Cuentanos sobre ti"
+      "description": "Cuentanos sobre ti",
+      "gitPlatformLabel": "Platforma Git"
     },
     "Shared": {
       "nextButton": "Siguiente",

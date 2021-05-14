@@ -32,6 +32,7 @@
                   label="Password"
                   :rules="[rules.minPassword]"
                   v-bind="{ ...inputProps }"
+                  type="password"
                 >
                 </v-text-field>
               </v-col>

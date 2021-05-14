@@ -21,7 +21,7 @@
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
                   background-color="grey_input"
-                  @keypress.enter="addExperience"
+                  @keypress.enter.prevent="addExperience"
                 ></v-autocomplete>
               </v-col>
               <v-col cols="1">

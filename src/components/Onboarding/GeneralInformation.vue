@@ -162,9 +162,31 @@ import { storage } from "@/plugins/firebaseInit";
 export default Vue.extend({
   name: "GeneralInformation",
 
-  props: {},
+  props: { stepAction: Number },
 
   mixins: [RuleMixin, inputMixin],
+
+  data: () => ({
+    selectedGitPlatform: {},
+    gitPlatforms: [
+      { platformName: "Github", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
+      { platformName: "GitLab", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
+      { platformName: "GitBucket", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
+    ],
+    profileImageData: null as File | null,
+    profileImageToShow: "",
+    profileImageURL: "",
+    uploadValue: 0,
+    name: "",
+    lastName: "",
+    gitPlatform: "",
+    gitUser: "",
+    birthDate: "",
+    country: "",
+    description: "",
+    showDatePicker: false,
+    hasSelectedProfileImage: false
+  }),
 
   methods: {
     handleShowFileSelector() {
@@ -189,33 +211,15 @@ export default Vue.extend({
             }
           );
       }
-    },
-    prueba() {
-      console.log("Estoy en General information");
     }
   },
 
-  data: () => ({
-    selectedGitPlatform: {},
-    gitPlatforms: [
-      { platformName: "Github", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
-      { platformName: "GitLab", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
-      { platformName: "GitBucket", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
-    ],
-    profileImageData: null as File | null,
-    profileImageToShow: "",
-    profileImageURL: "",
-    uploadValue: 0,
-    name: "",
-    lastName: "",
-    gitPlatform: "",
-    gitUser: "",
-    birthDate: "",
-    country: "",
-    description: "",
-    showDatePicker: false,
-    hasSelectedProfileImage: false
-  })
+  watch: {
+    stepAction() {
+      this.$emit("moveNextStep");
+      this.$destroy();
+    }
+  }
 });
 </script>
 

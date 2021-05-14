@@ -21,6 +21,7 @@
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
                   background-color="grey_input"
+                  @keypress.enter="addExperience"
                 ></v-autocomplete>
               </v-col>
               <v-col cols="1">
@@ -66,11 +67,10 @@ import { get } from "@/services/skill";
 export default Vue.extend({
   name: "Skills",
 
-  props: {},
+  props: { stepAction: Number },
 
   data: () => ({
     search: "",
-    descriptionLimit: 60,
     entries: [],
     isLoading: false,
     model: null,
@@ -78,11 +78,11 @@ export default Vue.extend({
   }),
 
   methods: {
-    addExperience() {
+    async addExperience() {
       if (this.search) {
         this.skills.push(this.search);
         console.log("Buscare: " + this.search);
-        const result = get(this.search);
+        const result = await get(this.search);
         console.log(result);
         this.search = "";
       }
@@ -91,14 +91,10 @@ export default Vue.extend({
     deleteSkill(index: number) {
       console.log(index);
       this.skills.splice(index, 1);
-    },
-
-    prueba() {
-      console.log("Estoy en General information");
     }
-  }
+  },
 
-  /*computed: {
+  /* computed: {
     fields() {
       if (!this.model) return [];
 
@@ -119,10 +115,11 @@ export default Vue.extend({
         return Object.assign({}, entry, { Description });
       });
     }
-  },
+  }, */
 
   watch: {
-    search(val) {
+    /* search(val) {
+      console.log("Entra a buscar");
       // Items have already been loaded
       if (this.items.length > 0) return;
 
@@ -143,8 +140,21 @@ export default Vue.extend({
           console.log(err);
         })
         .finally(() => (this.isLoading = false));
+    } */
+    search() {
+      /* console.log("Entra a buscar");
+      console.log(this.search);
+      this.isLoading = true;
+
+      setTimeout(() => {
+        console.log("World!");
+      }, 2000); */
+    },
+    stepAction() {
+      this.$emit("moveNextStep");
+      this.$destroy();
     }
-  } */
+  }
 });
 </script>
 

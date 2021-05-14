@@ -11,6 +11,7 @@
             hide-delimiter-background
             :show-arrows="false"
             light
+            touchless
             class="carousel ma-0"
           >
             <v-carousel-item v-for="(step, key) in steps" :key="key">

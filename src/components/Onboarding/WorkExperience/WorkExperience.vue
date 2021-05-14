@@ -71,11 +71,11 @@ type DeleteExperience = {
 };
 
 export default Vue.extend({
-  name: "GeneralInformation",
+  name: "WorkExperience",
 
   components: { Experience, AddExperience, NoData },
 
-  props: {},
+  props: { stepAction: Number },
 
   methods: {
     showAddDialog() {
@@ -96,7 +96,14 @@ export default Vue.extend({
     experience: [] as WorkExperience[],
     addDialog: false,
     selectedUpdateIndex: 0
-  })
+  }),
+
+  watch: {
+    stepAction() {
+      this.$emit("moveNextStep");
+      this.$destroy();
+    }
+  }
 });
 </script>
 

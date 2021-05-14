@@ -14,7 +14,8 @@
             class="carousel ma-0"
           >
             <v-carousel-item v-for="(step, key) in steps" :key="key">
-              <component ref="childref" :is="step" class="steps"> </component>
+              <component :stepAction="childStepAction" @moveNextStep="changeCarouselStep" :is="step" class="steps">
+              </component>
             </v-carousel-item>
           </v-carousel>
         </v-col>
@@ -22,7 +23,7 @@
     </div>
 
     <v-btn
-      @click="$refs.childref.prueba"
+      @click="noticeChild"
       color="primary"
       class="stepButtons"
       large
@@ -32,7 +33,7 @@
     >
 
     <v-btn
-      @click="changeCarouselStep"
+      @click="noticeChild"
       color="primary"
       class="stepButtons"
       large
@@ -59,19 +60,21 @@ export default Vue.extend({
 
   data: () => ({
     carouselIndex: 0,
-    steps: [GeneralInformation, WorkExperience, Skills]
+    steps: [GeneralInformation, WorkExperience, Skills],
+    childStepAction: false
   }),
 
   methods: {
+    noticeChild() {
+      this.childStepAction = !this.childStepAction;
+    },
     changeCarouselStep() {
       if (this.carouselIndex < this.steps.length - 1) {
-        this.incrementStepIndex();
+        this.carouselIndex++;
       }
     },
     finishOnboarding() {
       console.log("Finish onboarding");
-    },
-    incrementStepIndex() {
       this.carouselIndex++;
     }
   }

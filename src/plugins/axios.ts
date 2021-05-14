@@ -33,4 +33,12 @@ instance.interceptors.response.use(
   }
 );
 
+instance.interceptors.request.use((request) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    setHeaders(token);
+  }
+  return request;
+});
+
 export default instance;

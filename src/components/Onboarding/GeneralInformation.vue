@@ -20,7 +20,7 @@
       :style="$vuetify.breakpoint.xs ? 'max-height: 365px' : 'max-height: 550px'"
     >
       <v-col cols="10" md="6" lg="4" no-gutters>
-        <v-form>
+        <v-form ref="register-user" lazy-validation>
           <v-row no-gutters align="center">
             <v-col class="py-2 py-sm-6 py-md-0" cols="12" md="4" lg="4" no-gutters>
               <v-btn
@@ -60,13 +60,13 @@
             </v-col>
             <v-col cols="12" md="8" lg="8">
               <v-text-field
-                v-model="name"
+                v-model="user.firstName"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.nameLabel')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
               <v-text-field
-                v-model="lastName"
+                v-model="user.lastName"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.lastNameLabel')"
                 v-bind="{ ...inputProps }"
@@ -77,10 +77,11 @@
           <v-row class="mt-0">
             <v-col class="pt-0" cols="12" lg="6">
               <v-select
-                v-model="selectedGitPlatform"
+                v-model="user.gitProfile.platform"
                 :items="gitPlatforms"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitPlatformLabel')"
                 v-bind="{ ...inputProps }"
+                item-value="platformName"
               >
                 <template v-slot:selection="{ item }">
                   <img width="15" style="margin-right: 10px" :src="item.platformImage" />{{ item.platformName }}
@@ -92,7 +93,7 @@
             </v-col>
             <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
-                v-model="gitUser"
+                v-model="user.gitProfile.userName"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
                 v-bind="{ ...inputProps }"
@@ -112,27 +113,30 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="birthDate"
+                    v-model="user.birthDate"
                     :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="birthDate" @input="showDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="user.birthDate" @input="showDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col class="pt-0" cols="12" lg="6">
-              <v-text-field
-                v-model="country"
+              <v-select
+                v-model="user.country.code"
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.GeneralInformation.country')"
                 v-bind="{ ...inputProps }"
-              ></v-text-field>
+                :items="countries"
+                item-text="name"
+                item-value="code"
+              ></v-select>
             </v-col>
           </v-row>
           <v-textarea
-            v-model="description"
+            v-model="user.description"
             rounded
             filled
             :label="$i18n.t('Onboarding.GeneralInformation.description')"
@@ -142,7 +146,6 @@
             counter
             no-resize
           ></v-textarea>
-          <v-btn @click="onUpload">upload image</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -158,6 +161,11 @@ import Vue from "vue";
 import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { storage } from "@/plugins/firebaseInit";
+import { GitPlatform } from "@/models/gitPlatforms";
+import { Country } from "@/models/country";
+import { RegisterUser } from "@/models/registerUser";
+import { getCountries } from "@/services/countries";
+import { register } from "@/services/auth";
 
 export default Vue.extend({
   name: "GeneralInformation",
@@ -169,26 +177,36 @@ export default Vue.extend({
   data: () => ({
     selectedGitPlatform: {},
     gitPlatforms: [
-      { platformName: "Github", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
-      { platformName: "GitLab", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
-      { platformName: "GitBucket", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
+      { platformName: "GITHUB", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
+      { platformName: "GITLAB", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
+      { platformName: "GITBUCKET", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
     ],
+    countries: [] as Country[],
     profileImageData: null as File | null,
     profileImageToShow: "",
     profileImageURL: "",
-    uploadValue: 0,
-    name: "",
-    lastName: "",
-    gitPlatform: "",
-    gitUser: "",
-    birthDate: "",
-    country: "",
-    description: "",
+    user: {
+      birthDate: "",
+      description: "",
+      gitProfile: {
+        platform: "",
+        userName: ""
+      },
+      firstName: "",
+      lastName: "",
+      imageURI: "",
+      country: {
+        code: ""
+      }
+    } as RegisterUser,
     showDatePicker: false,
     hasSelectedProfileImage: false
   }),
 
   methods: {
+    async getCountries() {
+      this.countries = await getCountries();
+    },
     handleShowFileSelector() {
       (this.$refs.input1 as HTMLButtonElement).click();
     },
@@ -211,14 +229,28 @@ export default Vue.extend({
             }
           );
       }
+    },
+    async handleRegisterUser() {
+      if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
+        await this.onUpload();
+        this.user.imageURI = this.profileImageURL;
+        this.user.birthDate = new Date(this.user.birthDate).toISOString().replace("T", " ").replace(/\..*/, "");
+        console.log(this.user);
+        await register(this.user);
+      }
     }
   },
 
   watch: {
-    stepAction() {
+    async stepAction() {
+      await this.handleRegisterUser();
       this.$emit("moveNextStep");
       this.$destroy();
     }
+  },
+
+  created() {
+    this.getCountries();
   }
 });
 </script>

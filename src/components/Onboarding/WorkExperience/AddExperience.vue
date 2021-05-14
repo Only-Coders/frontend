@@ -108,6 +108,15 @@ export default Vue.extend({
 
   props: { value: Boolean },
 
+  data: () => ({
+    company: "",
+    position: "",
+    startDate: "",
+    endDate: "",
+    showStartDatePicker: false,
+    showEndDatePicker: false
+  }),
+
   methods: {
     formatDate(date: any) {
       if (!date) return null;
@@ -128,15 +137,7 @@ export default Vue.extend({
     close() {
       this.$emit("input");
     }
-  },
-  data: () => ({
-    company: "",
-    position: "",
-    startDate: "",
-    endDate: "",
-    showStartDatePicker: false,
-    showEndDatePicker: false
-  })
+  }
 });
 </script>
 

@@ -75,7 +75,13 @@ export default Vue.extend({
 
   components: { Experience, AddExperience, NoData },
 
-  props: { stepAction: Number },
+  props: { stepAction: Boolean },
+
+  data: () => ({
+    experience: [] as WorkExperience[],
+    addDialog: false,
+    selectedUpdateIndex: 0
+  }),
 
   methods: {
     showAddDialog() {
@@ -91,12 +97,6 @@ export default Vue.extend({
       this.experience.splice(deleteIndex.updatedExperienceIndex, 1);
     }
   },
-
-  data: () => ({
-    experience: [] as WorkExperience[],
-    addDialog: false,
-    selectedUpdateIndex: 0
-  }),
 
   watch: {
     stepAction() {

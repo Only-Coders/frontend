@@ -170,7 +170,7 @@ import { register } from "@/services/auth";
 export default Vue.extend({
   name: "GeneralInformation",
 
-  props: { stepAction: Number },
+  props: { stepAction: Boolean },
 
   mixins: [RuleMixin, inputMixin],
 

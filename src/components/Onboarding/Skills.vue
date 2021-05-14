@@ -14,6 +14,7 @@
                 <v-autocomplete
                   :loading="isLoading"
                   :search-input.sync="search"
+                  :items="skills"
                   cache-items
                   hide-no-data
                   hide-details
@@ -25,7 +26,7 @@
                 ></v-autocomplete>
               </v-col>
               <v-col cols="1">
-                <v-btn fab color="primary" @click="addExperience">
+                <v-btn fab color="primary" @click.prevent="addExperience">
                   <v-icon> mdi-plus </v-icon>
                 </v-btn>
               </v-col>
@@ -36,7 +37,7 @@
         <v-row align="center" justify="center" class="mt-10">
           <v-col cols="6">
             <v-chip
-              v-for="(skill, index) in skills"
+              v-for="(skill, index) in selectedSkills"
               :key="index"
               class="ma-2"
               close
@@ -67,88 +68,46 @@ import { get } from "@/services/skill";
 export default Vue.extend({
   name: "Skills",
 
-  props: { stepAction: Number },
+  props: { stepAction: Boolean },
 
   data: () => ({
     search: "",
-    entries: [],
     isLoading: false,
     model: null,
-    skills: [] as string[]
+    skills: [] as string[],
+    selectedSkills: [] as string[],
+    timer: 0
   }),
 
   methods: {
     async addExperience() {
       if (this.search) {
-        this.skills.push(this.search);
-        console.log("Buscare: " + this.search);
-        const result = await get(this.search);
-        console.log(result);
+        this.selectedSkills.push(this.search);
+        //const result = await get(this.search);
+        //console.log(result);
         this.search = "";
       }
     },
 
     deleteSkill(index: number) {
-      console.log(index);
       this.skills.splice(index, 1);
     }
   },
 
-  /* computed: {
-    fields() {
-      if (!this.model) return [];
-
-      return Object.keys(this.model).map((key) => {
-        return {
-          key,
-          value: this.model[key] || "n/a"
-        };
-      });
-    },
-    items() {
-      return this.entries.map((entry) => {
-        const Description =
-          entry.Description.length > this.descriptionLimit
-            ? entry.Description.slice(0, this.descriptionLimit) + "..."
-            : entry.Description;
-
-        return Object.assign({}, entry, { Description });
-      });
-    }
-  }, */
-
   watch: {
-    /* search(val) {
-      console.log("Entra a buscar");
-      // Items have already been loaded
-      if (this.items.length > 0) return;
-
-      // Items have already been requested
-      if (this.isLoading) return;
-
-      this.isLoading = true;
-
-      // Lazily load input items
-      fetch("https://api.publicapis.org/entries")
-        .then((res) => res.json())
-        .then((res) => {
-          const { count, entries } = res;
-          this.count = count;
-          this.entries = entries;
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => (this.isLoading = false));
-    } */
     search() {
-      /* console.log("Entra a buscar");
-      console.log(this.search);
-      this.isLoading = true;
+      if (this.search && this.search != "") {
+        this.isLoading = true;
+        clearTimeout(this.timer);
 
-      setTimeout(() => {
-        console.log("World!");
-      }, 2000); */
+        this.timer = setTimeout(() => {
+          const result = fetch("https://api.publicapis.org/entries");
+          if (result) {
+            this.isLoading = false;
+            this.skills = ["Java", "JavaFx", "Javascript"];
+          }
+        }, 2500);
+      }
     },
     stepAction() {
       this.$emit("moveNextStep");

@@ -111,6 +111,16 @@ export default Vue.extend({
 
   props: { value: Boolean, selectedExperience: Object as PropType<WorkExperience> },
 
+  created() {
+    this.experience = this.selectedExperience;
+  },
+
+  data: () => ({
+    experience: {} as WorkExperience,
+    showStartDatePicker: false,
+    showEndDatePicker: false
+  }),
+
   methods: {
     formatDate(date: any) {
       if (!date) return null;
@@ -131,17 +141,7 @@ export default Vue.extend({
     close() {
       this.$emit("input");
     }
-  },
-
-  created() {
-    this.experience = this.selectedExperience;
-  },
-
-  data: () => ({
-    experience: {} as WorkExperience,
-    showStartDatePicker: false,
-    showEndDatePicker: false
-  })
+  }
 });
 </script>
 

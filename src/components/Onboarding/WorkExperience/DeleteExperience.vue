@@ -43,6 +43,14 @@ export default Vue.extend({
 
   props: { value: Boolean, selectedExperience: Object as PropType<WorkExperience> },
 
+  created() {
+    this.experience = this.selectedExperience;
+  },
+
+  data: () => ({
+    experience: {} as WorkExperience
+  }),
+
   methods: {
     emitDeleteExperience() {
       this.$emit("passExperienceData", {
@@ -53,15 +61,7 @@ export default Vue.extend({
     close() {
       this.$emit("input");
     }
-  },
-
-  created() {
-    this.experience = this.selectedExperience;
-  },
-
-  data: () => ({
-    experience: {} as WorkExperience
-  })
+  }
 });
 </script>
 

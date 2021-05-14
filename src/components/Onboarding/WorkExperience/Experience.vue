@@ -56,6 +56,14 @@ export default Vue.extend({
     selectedIndex: Number
   },
 
+  data: () => ({
+    updateDialog: false,
+    deleteDialog: false,
+    selectedExperience: {} as WorkExperience,
+    hasUpdatedExperience: false,
+    updatedExperience: {} as WorkExperience
+  }),
+
   methods: {
     showUpdateDialog() {
       this.updateDialog = !this.updateDialog;
@@ -76,19 +84,8 @@ export default Vue.extend({
       this.$emit("passDeleteExperienceData", {
         updatedExperienceIndex: this.selectedIndex
       });
-    },
-    prueba() {
-      console.log("Estoy en Experience");
     }
-  },
-
-  data: () => ({
-    updateDialog: false,
-    deleteDialog: false,
-    selectedExperience: {} as WorkExperience,
-    hasUpdatedExperience: false,
-    updatedExperience: {} as WorkExperience
-  })
+  }
 });
 </script>
 

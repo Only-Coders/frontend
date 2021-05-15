@@ -15,14 +15,14 @@
                   :loading="isLoading"
                   :search-input.sync="search"
                   :items="skills"
-                  cache-items
+                  item-value="canonicalName"
+                  item-text="name"
                   hide-no-data
                   hide-details
-                  return-object
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
                   background-color="grey_input"
-                  @keypress.enter.prevent="addExperience"
+                  @keydown.enter.prevent="addExperience"
                 ></v-autocomplete>
               </v-col>
               <v-col cols="1">
@@ -63,7 +63,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { get } from "@/services/skill";
+import { get, post } from "@/services/skill";
+import { Skill } from "@/models/skills";
 
 export default Vue.extend({
   name: "Skills",
@@ -73,43 +74,58 @@ export default Vue.extend({
   data: () => ({
     search: "",
     isLoading: false,
-    model: null,
-    skills: [] as string[],
+    skills: [] as Skill[],
     selectedSkills: [] as string[],
     timer: 0
   }),
 
   methods: {
-    async addExperience() {
+    addExperience() {
       if (this.search) {
-        this.selectedSkills.push(this.search);
-        //const result = await get(this.search);
-        //console.log(result);
+        if (this.selectedSkills.includes(this.search.toUpperCase()) === false) {
+          this.selectedSkills.push(this.search.toUpperCase());
+        }
         this.search = "";
+        this.skills = [];
       }
     },
 
     deleteSkill(index: number) {
-      this.skills.splice(index, 1);
+      this.selectedSkills.splice(index, 1);
     }
   },
 
   watch: {
     search() {
-      if (this.search && this.search != "") {
+      if (this.search) {
         this.isLoading = true;
-        clearTimeout(this.timer);
+        if (this.timer != 0) {
+          clearTimeout(this.timer);
+          this.isLoading = false;
+        }
 
-        this.timer = setTimeout(() => {
-          const result = fetch("https://api.publicapis.org/entries");
-          if (result) {
+        this.timer = setTimeout(async () => {
+          try {
+            const result = await get(this.search);
+
+            this.skills = result.content;
+          } catch (error) {
+            clearTimeout(this.timer);
+          } finally {
             this.isLoading = false;
-            this.skills = ["Java", "JavaFx", "Javascript"];
           }
-        }, 2500);
+        }, 200);
+
+        this.timer = 0;
       }
     },
-    stepAction() {
+    async stepAction() {
+      await Promise.all(
+        this.selectedSkills.map((skill) => {
+          return post(skill);
+        })
+        //TODO: resolver asociacion usuario/skill
+      );
       this.$emit("moveNextStep");
       this.$destroy();
     }

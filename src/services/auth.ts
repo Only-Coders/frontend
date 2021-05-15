@@ -15,6 +15,7 @@ export async function refreshToken(): Promise<{ token: string }> {
 }
 
 export async function register(user: RegisterUser): Promise<{ token: string }> {
+  console.log("Entro a registrarse");
   const { data } = await axios.post(`/api/auth/register`, user);
   return data;
 }

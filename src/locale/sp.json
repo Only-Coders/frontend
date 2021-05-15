@@ -13,7 +13,7 @@
       "text": "Ingresa tu información con la que deseas que los otros usuarios te vean.",
       "nameLabel": "Nombre",
       "lastNameLabel": "Apellido",
-      "gitUser": "Usuario de Git",
+      "gitProfile": "Perfil de Git",
       "birthDate": "Fecha de Nacimiento",
       "country": "Pais",
       "city": "Ciudad",

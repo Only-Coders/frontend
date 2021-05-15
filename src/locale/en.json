@@ -13,7 +13,7 @@
       "text": "Please enter the information with which you want other users to see you with. ",
       "nameLabel": "Name",
       "lastNameLabel": "Last Name",
-      "gitUser": "Git User",
+      "gitProfile": "Git Profile",
       "birthDate": "Birth Date",
       "country": "Country",
       "city": "City",

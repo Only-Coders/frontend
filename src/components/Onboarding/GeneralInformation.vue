@@ -94,8 +94,7 @@
             <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="user.gitProfile.userName"
-                :rules="[rules.required]"
-                :label="$i18n.t('Onboarding.GeneralInformation.gitUser')"
+                :label="$i18n.t('Onboarding.GeneralInformation.gitProfile')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
@@ -176,11 +175,7 @@ export default Vue.extend({
 
   data: () => ({
     selectedGitPlatform: {},
-    gitPlatforms: [
-      { platformName: "GITHUB", platformImage: require("@/assets/images/Onboarding/github-icon-1.svg") },
-      { platformName: "GITLAB", platformImage: require("@/assets/images/Onboarding/gitlab.svg") },
-      { platformName: "GITBUCKET", platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg") }
-    ],
+    gitPlatforms: GitPlatform.gitPlatforms,
     countries: [] as Country[],
     profileImageData: null as File | null,
     profileImageToShow: "",
@@ -234,7 +229,7 @@ export default Vue.extend({
       if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
         await this.onUpload();
         this.user.imageURI = this.profileImageURL;
-        this.user.birthDate = new Date(this.user.birthDate).toISOString().replace("T", " ").replace(/\..*/, "");
+        this.user.birthDate = new Date(this.user.birthDate).toISOString();
         console.log(this.user);
         await register(this.user);
       }

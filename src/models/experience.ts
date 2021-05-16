@@ -1,5 +1,5 @@
 export type WorkExperience = {
-  company: string;
+  organization: string;
   position: string;
   startDate: Date;
   endDate: Date;

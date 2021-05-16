@@ -1,13 +1,15 @@
 import axios from "axios";
 import { refreshToken } from "@/services/auth";
+import store from "@/store/index";
 
 const config = {
   baseURL: process.env.apiURL
 };
 const instance = axios.create(config);
 
-export function setHeaders(token: string): void {
+export function setHeaders(token: string, appLanguage: string): void {
   instance.defaults.headers.common["Authorization"] = "Bearer " + token;
+  instance.defaults.headers.common["Accept-Language"] = appLanguage;
 }
 
 instance.interceptors.response.use(
@@ -26,7 +28,7 @@ instance.interceptors.response.use(
 
     const data = await refreshToken();
     localStorage.setItem("accessToken", data.token);
-    setHeaders(data.token);
+    setHeaders(data.token, store.state.lang);
     return instance.request(error.config);
   }
 );
@@ -34,7 +36,7 @@ instance.interceptors.response.use(
 instance.interceptors.request.use((request) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
-    setHeaders(token);
+    setHeaders(token, store.state.lang);
   }
   return request;
 });

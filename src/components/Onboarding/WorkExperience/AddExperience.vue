@@ -16,12 +16,21 @@
         <v-form ref="add-experience" lazy-validation>
           <v-row>
             <v-col cols="6">
-              <v-text-field
-                v-model="company"
-                :rules="[rules.required]"
-                :label="$i18n.t('Onboarding.WorkExperience.companyLabel')"
+              <v-autocomplete
+                :value="organization"
+                :loading="isLoading"
+                :search-input.sync="search"
+                :items="organizations"
+                item-value="name"
+                item-text="name"
+                hide-no-data
+                hide-details
                 v-bind="{ ...inputProps }"
-              ></v-text-field>
+                :label="$i18n.t('Onboarding.WorkExperience.organizationLabel')"
+                :rules="[rules.required]"
+                @keydown.enter.prevent="addOrganization"
+                @keypress="pepe"
+              ></v-autocomplete>
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -45,7 +54,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="startDate"
+                    :value="formatDate(startDate)"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -68,7 +77,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="endDate"
+                    :value="formatDate(endDate)"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -98,44 +107,81 @@
 import Vue from "vue";
 import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
+import { dateMixin } from "@/mixins/formattedDate";
+import { Organization } from "@/models/organization";
+import { getOrganizations, postOrganization } from "@/services/workExperience";
 
 export default Vue.extend({
   name: "AddExperience",
 
-  mixins: [RuleMixin],
+  mixins: [RuleMixin, inputMixin, dateMixin],
 
   components: {},
 
   props: { value: Boolean },
 
   data: () => ({
-    company: "",
+    organization: "",
     position: "",
     startDate: "",
     endDate: "",
     showStartDatePicker: false,
-    showEndDatePicker: false
+    showEndDatePicker: false,
+    search: "",
+    isLoading: false,
+    organizations: [] as Organization[],
+    timer: 0
   }),
 
   methods: {
-    formatDate(date: any) {
-      if (!date) return null;
-      const [year, month, day] = date.split("-");
-      return `${day}-${month}-${year}`;
+    pepe() {
+      console.log(this.organization);
     },
-    emitAddExperience() {
+    async addOrganization() {
+      await postOrganization(this.search);
+    },
+    async emitAddExperience() {
       if ((this.$refs["add-experience"] as HTMLFormElement).validate()) {
+        // pegarle a la api y agregar la organization si no existe
+        await this.addOrganization();
         this.$emit("passExperienceData", {
-          company: this.company,
+          organization: this.organization,
           position: this.position,
-          startDate: this.formatDate(this.startDate),
-          endDate: this.formatDate(this.endDate)
+          startDate: this.startDate,
+          endDate: this.endDate
         });
         this.close();
       }
     },
     close() {
       this.$emit("input");
+    }
+  },
+
+  watch: {
+    search() {
+      if (this.search) {
+        this.organization = this.search;
+        this.isLoading = true;
+        if (this.timer != 0) {
+          clearTimeout(this.timer);
+          this.isLoading = false;
+        }
+
+        this.timer = setTimeout(async () => {
+          try {
+            const result = await getOrganizations(this.search);
+
+            this.organizations = result.content;
+          } catch (error) {
+            clearTimeout(this.timer);
+          } finally {
+            this.isLoading = false;
+          }
+        }, 2000);
+
+        this.timer = 0;
+      }
     }
   }
 });

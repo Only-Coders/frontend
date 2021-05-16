@@ -112,7 +112,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="user.birthDate"
+                    :value="formatDate(user.birthDate)"
                     :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="(attrs, { ...inputProps })"
@@ -159,6 +159,7 @@
 import Vue from "vue";
 import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
+import { dateMixin } from "@/mixins/formattedDate";
 import { storage } from "@/plugins/firebaseInit";
 import { GitPlatform } from "@/models/gitPlatforms";
 import { Country } from "@/models/country";
@@ -171,7 +172,7 @@ export default Vue.extend({
 
   props: { stepAction: Boolean },
 
-  mixins: [RuleMixin, inputMixin],
+  mixins: [RuleMixin, inputMixin, dateMixin],
 
   data: () => ({
     selectedGitPlatform: {},
@@ -238,9 +239,16 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
-      await this.handleRegisterUser();
-      this.$emit("moveNextStep");
-      this.$destroy();
+      this.$emit("showButtonLoader", true);
+      try {
+        await this.handleRegisterUser();
+        this.$emit("moveNextStep");
+        this.$destroy();
+      } catch (error) {
+        this.$router.push("/login");
+      } finally {
+        this.$emit("showButtonLoader", false);
+      }
     }
   },
 

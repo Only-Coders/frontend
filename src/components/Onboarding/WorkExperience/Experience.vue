@@ -2,13 +2,13 @@
   <v-card class="mb-8">
     <v-row no-gutters align="center">
       <v-col no-gutters>
-        <v-card-title class="pb-0">{{
-          hasUpdatedExperience ? updatedExperience.company : workExperience.company
+        <v-card-title class="pb-0 text-left">{{
+          hasUpdatedExperience ? updatedExperience.organization : workExperience.organization
         }}</v-card-title>
-        <v-card-text class="pb-2">{{
+        <v-card-text class="pb-2 text-left">{{
           hasUpdatedExperience ? updatedExperience.position : workExperience.position
         }}</v-card-text>
-        <v-card-text class="pt-0"
+        <v-card-text class="pt-0 text-left"
           >{{ hasUpdatedExperience ? updatedExperience.startDate : workExperience.startDate }}
           {{ $i18n.t("Onboarding.Shared.fromDateToAnother") }}
           {{ hasUpdatedExperience ? updatedExperience.endDate : workExperience.endDate }}</v-card-text
@@ -54,6 +54,10 @@ export default Vue.extend({
   props: {
     workExperience: Object as PropType<WorkExperience>,
     selectedIndex: Number
+  },
+
+  created() {
+    console.log(this.workExperience);
   },
 
   data: () => ({

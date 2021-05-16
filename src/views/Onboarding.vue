@@ -15,7 +15,13 @@
             class="carousel ma-0"
           >
             <v-carousel-item v-for="(step, key) in steps" :key="key">
-              <component :stepAction="childStepAction" @moveNextStep="changeCarouselStep" :is="step" class="steps">
+              <component
+                :stepAction="childStepAction"
+                @moveNextStep="changeCarouselStep"
+                @showButtonLoader="showActionLoader"
+                :is="step"
+                class="steps"
+              >
               </component>
             </v-carousel-item>
           </v-carousel>
@@ -62,10 +68,14 @@ export default Vue.extend({
   data: () => ({
     carouselIndex: 0,
     steps: [GeneralInformation, WorkExperience, Skills],
-    childStepAction: false
+    childStepAction: false,
+    isLoading: false
   }),
 
   methods: {
+    showActionLoader(shouldLoad: boolean) {
+      this.isLoading = shouldLoad;
+    },
     noticeChild() {
       this.childStepAction = !this.childStepAction;
     },

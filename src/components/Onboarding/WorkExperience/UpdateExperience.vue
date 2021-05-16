@@ -17,9 +17,9 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-                v-model="experience.company"
+                v-model="experience.organization"
                 :rules="[rules.required]"
-                :label="$i18n.t('Onboarding.WorkExperience.companyLabel')"
+                :label="$i18n.t('Onboarding.WorkExperience.organizationLabel')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
@@ -45,7 +45,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="experience.startDate"
+                    :value="formatDate(experience.startDate)"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -72,7 +72,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="experience.endDate"
+                    :value="formatDate(experience.endDate)"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="(attrs, { ...inputProps })"
@@ -101,11 +101,13 @@
 import Vue, { PropType } from "vue";
 import { RuleMixin } from "@/mixins/rules";
 import { WorkExperience } from "@/models/experience";
+import { dateMixin } from "@/mixins/formattedDate";
+import { inputMixin } from "@/mixins/inputProps";
 
 export default Vue.extend({
   name: "UpdateExperience",
 
-  mixins: [RuleMixin],
+  mixins: [RuleMixin, inputMixin, dateMixin],
 
   components: {},
 
@@ -122,18 +124,13 @@ export default Vue.extend({
   }),
 
   methods: {
-    formatDate(date: any) {
-      if (!date) return null;
-      const [year, month, day] = date.split("-");
-      return `${day}-${month}-${year}`;
-    },
     emitUpdateExperience() {
       if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
         this.$emit("passExperienceData", {
-          company: this.experience.company,
+          organization: this.experience.organization,
           position: this.experience.position,
-          startDate: this.formatDate(this.experience.startDate),
-          endDate: this.formatDate(this.experience.endDate)
+          startDate: this.experience.startDate,
+          endDate: this.experience.endDate
         });
         this.close();
       }

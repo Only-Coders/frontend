@@ -14,7 +14,7 @@
       </v-card-title>
       <v-card-text class="pt-10">
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog1") }}
-        <span class="font-weight-bold">{{ experience.company }}</span>
+        <span class="font-weight-bold">{{ experience.organization }}</span>
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog2") }}
       </v-card-text>
       <v-card-actions style="height: 100px">

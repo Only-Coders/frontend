@@ -67,7 +67,7 @@ import { get, post } from "@/services/skill";
 import { Skill } from "@/models/skills";
 
 export default Vue.extend({
-  name: "Skills",
+  name: "Skill",
 
   props: { stepAction: Boolean },
 
@@ -101,22 +101,21 @@ export default Vue.extend({
         this.isLoading = true;
         if (this.timer != 0) {
           clearTimeout(this.timer);
-          this.isLoading = false;
         }
 
         this.timer = setTimeout(async () => {
           try {
-            const result = await get(this.search);
+            if (this.search) {
+              const result = await get(this.search);
 
-            this.skills = result.content;
+              this.skills = result.content;
+            }
           } catch (error) {
             clearTimeout(this.timer);
           } finally {
             this.isLoading = false;
           }
         }, 200);
-
-        this.timer = 0;
       }
     },
     async stepAction() {

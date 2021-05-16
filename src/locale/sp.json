@@ -50,6 +50,11 @@
       "title": "Habilidades",
       "text": "Agrega algunas de tus increíbles habilidades a tu perfil!",
       "skill": "Escribe una habilidad..."
+    },
+    "Tag": {
+      "title": "Temas",
+      "text": "Sigue temas para mantenerte informado sobre lo que te gusta.",
+      "follow": "Seguir"
     }
   }
 }

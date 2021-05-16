@@ -1,5 +1,5 @@
 import axios from "@/plugins/axios";
-import { SkillPagination } from "@/models/skillsPagination";
+import { SkillPagination } from "@/models/Pagination/skillsPagination";
 import { Skill } from "@/models/skills";
 
 export async function get(skillName: string): Promise<SkillPagination> {

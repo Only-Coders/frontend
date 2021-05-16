@@ -51,6 +51,11 @@
       "title": "Skills",
       "text": "Add some of your awesome skills to your profile!",
       "skill": "Type a skill..."
+    },
+    "Tag": {
+      "title": "Tags",
+      "text": "Follow tags to stay informed about what you like.",
+      "follow": "Follow"
     }
   }
 }

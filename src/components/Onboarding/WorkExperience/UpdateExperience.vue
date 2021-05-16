@@ -14,8 +14,8 @@
       </v-card-title>
       <v-card-text class="pt-10">
         <v-form ref="update-experience" lazy-validation>
-          <v-row>
-            <v-col cols="6">
+          <v-row justify="center">
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="experience.organization"
                 :rules="[rules.required]"
@@ -23,7 +23,7 @@
                 v-bind="{ ...inputProps }"
               ></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="experience.position"
                 :rules="[rules.required]"
@@ -32,8 +32,8 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="6">
+          <v-row justify="center">
+            <v-col cols="12" md="6">
               <v-menu
                 v-model="showStartDatePicker"
                 :close-on-content-click="false"
@@ -60,7 +60,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-menu
                 v-model="showEndDatePicker"
                 :close-on-content-click="false"

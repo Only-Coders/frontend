@@ -14,10 +14,9 @@
       </v-card-title>
       <v-card-text class="pt-10">
         <v-form ref="add-experience" lazy-validation>
-          <v-row>
-            <v-col cols="6">
+          <v-row justify="center">
+            <v-col cols="12" md="6">
               <v-autocomplete
-                :value="organization"
                 :loading="isLoading"
                 :search-input.sync="search"
                 :items="organizations"
@@ -32,7 +31,7 @@
                 @keypress="pepe"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="position"
                 :rules="[rules.required]"
@@ -41,8 +40,8 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="6">
+          <v-row justify="center">
+            <v-col cols="12" md="6">
               <v-menu
                 v-model="showStartDatePicker"
                 :close-on-content-click="false"
@@ -65,7 +64,7 @@
                 <v-date-picker no-title v-model="startDate" @input="showStartDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" md="6" x>
               <v-menu
                 v-model="showEndDatePicker"
                 :close-on-content-click="false"

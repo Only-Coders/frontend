@@ -38,7 +38,7 @@
       "title": "Work Experience",
       "text": "Tell us about your work experience so everyone can know how cool you are",
       "addExperienceButton": "Add Experience",
-      "companyLabel": "Company",
+      "organizationLabel": "Organization",
       "positionLabel": "Position",
       "startDateLabel": "Start Date",
       "endDateLabel": "End Date",

@@ -3,15 +3,17 @@
     <v-row no-gutters align="center">
       <v-col no-gutters>
         <v-card-title class="pb-0 text-left">{{
-          hasUpdatedExperience ? updatedExperience.organization : workExperience.organization
+          hasUpdatedExperience ? updatedExperience.organization : workExperience.name
         }}</v-card-title>
         <v-card-text class="pb-2 text-left">{{
           hasUpdatedExperience ? updatedExperience.position : workExperience.position
         }}</v-card-text>
         <v-card-text class="pt-0 text-left"
-          >{{ hasUpdatedExperience ? updatedExperience.startDate : workExperience.startDate }}
+          >{{ hasUpdatedExperience ? formatDate(updatedExperience.since) : formatDate(workExperience.since) }}
           {{ $i18n.t("Onboarding.Shared.fromDateToAnother") }}
-          {{ hasUpdatedExperience ? updatedExperience.endDate : workExperience.endDate }}</v-card-text
+          {{
+            hasUpdatedExperience ? formatDate(updatedExperience.until) : formatDate(workExperience.until)
+          }}</v-card-text
         >
       </v-col>
       <v-col cols="2" class="mr-6" no-gutters>
@@ -45,9 +47,12 @@ import Vue, { PropType } from "vue";
 import UpdateExperience from "@/components/Onboarding/WorkExperience/UpdateExperience.vue";
 import DeleteExperience from "@/components/Onboarding/WorkExperience/DeleteExperience.vue";
 import { WorkExperience } from "@/models/experience";
+import { dateMixin } from "@/mixins/formattedDate";
 
 export default Vue.extend({
   name: "Experience",
+
+  mixins: [dateMixin],
 
   components: { UpdateExperience, DeleteExperience },
 
@@ -84,7 +89,7 @@ export default Vue.extend({
         updatedExperienceIndex: this.selectedIndex
       });
     },
-    handleDeleteExperience(isDeletion: boolean) {
+    handleDeleteExperience() {
       this.$emit("passDeleteExperienceData", {
         updatedExperienceIndex: this.selectedIndex
       });

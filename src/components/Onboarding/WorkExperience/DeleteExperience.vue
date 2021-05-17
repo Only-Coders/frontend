@@ -4,17 +4,19 @@
     :value="value"
     @input="close"
     width="auto"
-    max-width="650"
+    max-width="670"
     overlay-opacity="0.8"
     overlay-color="#bbbbbb"
   >
     <v-card class="px-6 pt-2">
       <v-card-title>
-        <span class="headline mx-auto">{{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTitleDialog") }}</span>
+        <span class="text-center headline mx-auto">{{
+          $i18n.t("Onboarding.WorkExperience.deleteExperienceTitleDialog")
+        }}</span>
       </v-card-title>
       <v-card-text class="pt-10">
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog1") }}
-        <span class="font-weight-bold">{{ experience.organization }}</span>
+        <span class="font-weight-bold">{{ experience.name }}</span>
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog2") }}
       </v-card-text>
       <v-card-actions style="height: 100px">
@@ -53,9 +55,7 @@ export default Vue.extend({
 
   methods: {
     emitDeleteExperience() {
-      this.$emit("passExperienceData", {
-        delete: true
-      });
+      this.$emit("passExperienceData");
       this.close();
     },
     close() {

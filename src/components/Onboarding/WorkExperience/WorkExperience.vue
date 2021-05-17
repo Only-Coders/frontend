@@ -13,7 +13,7 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="experience.length" justify="center" no-gutters>
+    <v-row v-if="experiences.length" justify="center" no-gutters>
       <v-col
         cols="10"
         sm="8"
@@ -22,7 +22,7 @@
         class="pt-12 overflow-y-auto"
         :style="$vuetify.breakpoint.xs ? 'max-height: 240px' : 'max-height: 500px'"
       >
-        <div v-for="(exp, index) in experience" :key="index">
+        <div v-for="(exp, index) in experiences" :key="index">
           <experience
             :workExperience="exp"
             :selectedIndex="index"
@@ -60,6 +60,7 @@ import Experience from "@/components/Onboarding/WorkExperience/Experience.vue";
 import { WorkExperience } from "@/models/experience";
 import AddExperience from "@/components/Onboarding/WorkExperience/AddExperience.vue";
 import NoData from "@/components/NoData.vue";
+import { postOrganization } from "@/services/workExperience";
 
 type UpdatedExperience = {
   updatedExperience: WorkExperience;
@@ -78,7 +79,7 @@ export default Vue.extend({
   props: { stepAction: Boolean },
 
   data: () => ({
-    experience: [] as WorkExperience[],
+    experiences: [] as WorkExperience[],
     addDialog: false,
     selectedUpdateIndex: 0
   }),
@@ -88,18 +89,24 @@ export default Vue.extend({
       this.addDialog = !this.addDialog;
     },
     handleAddExperience(data: WorkExperience) {
-      this.experience.push(data);
+      this.experiences.push(data);
     },
     handleUpdateExperience(updatedData: UpdatedExperience) {
-      this.experience[updatedData.updatedExperienceIndex] = updatedData.updatedExperience;
+      this.experiences[updatedData.updatedExperienceIndex] = updatedData.updatedExperience;
     },
     handleDeleteExperience(deleteIndex: DeleteExperience) {
-      this.experience.splice(deleteIndex.updatedExperienceIndex, 1);
+      this.experiences.splice(deleteIndex.updatedExperienceIndex, 1);
     }
   },
 
   watch: {
-    stepAction() {
+    async stepAction() {
+      console.log(this.experiences);
+      await Promise.all(
+        this.experiences.map((experience) => {
+          return postOrganization(experience);
+        })
+      );
       this.$emit("moveNextStep");
       this.$destroy();
     }

@@ -9,14 +9,12 @@
     overlay-color="#bbbbbb"
   >
     <v-card class="px-6 pt-2">
-      <v-card-title>
-        <span class="headline mx-auto">{{ $i18n.t("Onboarding.WorkExperience.addExperienceTitleDialog") }}</span>
-      </v-card-title>
-      <v-card-text class="pt-10">
+      <v-card-text class="pt-16">
         <v-form ref="add-experience" lazy-validation>
           <v-row justify="center">
             <v-col cols="12" md="6">
-              <v-autocomplete
+              <v-combobox
+                auto-select-first
                 :loading="isLoading"
                 :search-input.sync="search"
                 :items="organizations"
@@ -27,9 +25,7 @@
                 v-bind="{ ...inputProps }"
                 :label="$i18n.t('Onboarding.WorkExperience.organizationLabel')"
                 :rules="[rules.required]"
-                @keydown.enter.prevent="addOrganization"
-                @keypress="pepe"
-              ></v-autocomplete>
+              ></v-combobox>
             </v-col>
             <v-col cols="12" md="6">
               <v-text-field
@@ -53,7 +49,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formatDate(startDate)"
+                    :value="formatDate(since)"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -61,7 +57,7 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="startDate" @input="showStartDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="since" @input="showStartDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="12" md="6" x>
@@ -76,7 +72,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formatDate(endDate)"
+                    :value="formatDate(until)"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -84,7 +80,7 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="endDate" @input="showEndDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="until" @input="showEndDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
           </v-row>
@@ -108,7 +104,8 @@ import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { dateMixin } from "@/mixins/formattedDate";
 import { Organization } from "@/models/organization";
-import { getOrganizations, postOrganization } from "@/services/workExperience";
+import { getOrganizations } from "@/services/workExperience";
+import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({
   name: "AddExperience",
@@ -120,10 +117,9 @@ export default Vue.extend({
   props: { value: Boolean },
 
   data: () => ({
-    organization: "",
     position: "",
-    startDate: "",
-    endDate: "",
+    since: "",
+    until: "",
     showStartDatePicker: false,
     showEndDatePicker: false,
     search: "",
@@ -133,22 +129,17 @@ export default Vue.extend({
   }),
 
   methods: {
-    pepe() {
-      console.log(this.organization);
-    },
-    async addOrganization() {
-      await postOrganization(this.search);
-    },
     async emitAddExperience() {
       if ((this.$refs["add-experience"] as HTMLFormElement).validate()) {
-        // pegarle a la api y agregar la organization si no existe
-        await this.addOrganization();
-        this.$emit("passExperienceData", {
-          organization: this.organization,
+        const organization: WorkExperience = {
+          name: this.organizations.length === 0 ? this.search : this.organizations[0].name,
           position: this.position,
-          startDate: this.startDate,
-          endDate: this.endDate
-        });
+          since: this.since,
+          until: this.until
+        };
+        if (this.organizations.length) organization.id = this.organizations[0].id;
+
+        this.$emit("passExperienceData", organization);
         this.close();
       }
     },
@@ -160,11 +151,9 @@ export default Vue.extend({
   watch: {
     search() {
       if (this.search) {
-        this.organization = this.search;
         this.isLoading = true;
         if (this.timer != 0) {
           clearTimeout(this.timer);
-          this.isLoading = false;
         }
 
         this.timer = setTimeout(async () => {
@@ -177,9 +166,7 @@ export default Vue.extend({
           } finally {
             this.isLoading = false;
           }
-        }, 2000);
-
-        this.timer = 0;
+        }, 200);
       }
     }
   }

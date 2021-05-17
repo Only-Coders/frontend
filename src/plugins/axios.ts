@@ -7,7 +7,7 @@ const config = {
 };
 const instance = axios.create(config);
 
-export function setHeaders(token: string, appLanguage: string): void {
+export function setHeaders(token: string, appLanguage?: string): void {
   instance.defaults.headers.common["Authorization"] = "Bearer " + token;
   instance.defaults.headers.common["Accept-Language"] = appLanguage;
 }

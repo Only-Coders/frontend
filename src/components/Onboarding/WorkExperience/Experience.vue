@@ -3,7 +3,7 @@
     <v-row no-gutters align="center">
       <v-col no-gutters>
         <v-card-title class="pb-0 text-left">{{
-          hasUpdatedExperience ? updatedExperience.organization : workExperience.name
+          hasUpdatedExperience ? updatedExperience.name : workExperience.name
         }}</v-card-title>
         <v-card-text class="pb-2 text-left">{{
           hasUpdatedExperience ? updatedExperience.position : workExperience.position
@@ -61,10 +61,6 @@ export default Vue.extend({
     selectedIndex: Number
   },
 
-  created() {
-    console.log(this.workExperience);
-  },
-
   data: () => ({
     updateDialog: false,
     deleteDialog: false,
@@ -81,7 +77,6 @@ export default Vue.extend({
       this.deleteDialog = !this.deleteDialog;
     },
     handleUpdateExperience(data: WorkExperience) {
-      console.log(data);
       this.hasUpdatedExperience = true;
       this.updatedExperience = { ...data };
       this.$emit("passUpdatedExperienceData", {

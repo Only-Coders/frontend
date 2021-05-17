@@ -56,8 +56,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import WorkExperience from "@/components/Onboarding/WorkExperience/WorkExperience.vue";
 import GeneralInformation from "@/components/Onboarding/GeneralInformation.vue";
+import WorkExperience from "@/components/Onboarding/WorkExperience/WorkExperience.vue";
 import Skill from "@/components/Onboarding/Skill.vue";
 import TagStep from "@/components/Onboarding/TagStep.vue";
 

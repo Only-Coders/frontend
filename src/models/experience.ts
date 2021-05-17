@@ -1,6 +1,7 @@
 export type WorkExperience = {
-  organization: string;
+  id?: string;
+  name: string;
   position: string;
-  startDate: Date;
-  endDate: Date;
+  since: string;
+  until: string;
 };

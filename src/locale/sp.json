@@ -35,14 +35,14 @@
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",
-      "text": "Ingresa tus experiencias laborales para que todos sepan que tan cool eres",
+      "text": "Ingresa tus experiencias laborales para que todos sepan que tan cool eres !",
       "addExperienceButton": "Agregar Experiencia",
       "organizationLabel": "Organizacion",
       "positionLabel": "Puesto",
       "startDateLabel": "Fecha de inicio",
-      "endDateLabel": "Fecha de fin",
+      "endDateLabel": "Fecha de finalizacion",
       "addExperienceTitleDialog": "Experiencia",
-      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia seleccionada?",
+      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia laboral seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
       "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
     },
@@ -55,6 +55,19 @@
       "title": "Temas",
       "text": "Sigue temas para mantenerte informado sobre lo que te gusta.",
       "follow": "Seguir"
+    },
+    "StudyExperience": {
+      "title": "Experiencia Academica",
+      "text": "Ingresa tus experiencias academicas para que todos sepan que conocimientos tienes !",
+      "addExperienceButton": "Agregar Experiencia",
+      "institutionLabel": "Institucion",
+      "degreeLabel": "Titulo",
+      "startDateLabel": "Fecha de inicio",
+      "endDateLabel": "Fecha de finalizacion",
+      "addExperienceTitleDialog": "Experiencia",
+      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia academica seleccionada?",
+      "deleteExperienceTextDialog1": "Borrar tu experiencia en",
+      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
     }
   }
 }

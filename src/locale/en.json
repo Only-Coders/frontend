@@ -36,14 +36,14 @@
     },
     "WorkExperience": {
       "title": "Work Experience",
-      "text": "Tell us about your work experience so everyone can know how cool you are",
+      "text": "Tell us about your work experience, so everyone can know how cool you are !",
       "addExperienceButton": "Add Experience",
       "organizationLabel": "Organization",
       "positionLabel": "Position",
-      "startDateLabel": "Start Date",
-      "endDateLabel": "End Date",
+      "startDateLabel": "Start date",
+      "endDateLabel": "Finish date",
       "addExperienceTitleDialog": "Experience",
-      "deleteExperienceTitleDialog": "Are you sure you want to delete this experience?",
+      "deleteExperienceTitleDialog": "Are you sure you want to delete this work experience?",
       "deleteExperienceTextDialog1": "Deleting your experience at ",
       "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
     },
@@ -56,6 +56,19 @@
       "title": "Tags",
       "text": "Follow tags to stay informed about what you like.",
       "follow": "Follow"
+    },
+    "StudyExperience": {
+      "title": "Academic Experience",
+      "text": "Tell us about your academic experience, so everyone can know how much you know !",
+      "addExperienceButton": "Add Experience",
+      "institutionLabel": "Institution",
+      "degreeLabel": "Degree",
+      "startDateLabel": "Start date",
+      "endDateLabel": "Finish date",
+      "addExperienceTitleDialog": "Experience",
+      "deleteExperienceTitleDialog": "Are you sure you want to delete this academic experience?",
+      "deleteExperienceTextDialog1": "Deleting your experience at ",
+      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
     }
   }
 }

@@ -55,7 +55,8 @@
     "Tag": {
       "title": "Tags",
       "text": "Follow tags to stay informed about what you like.",
-      "follow": "Follow"
+      "follow": "Follow",
+      "cardText": " persons following this tag"
     },
     "StudyExperience": {
       "title": "Academic Experience",

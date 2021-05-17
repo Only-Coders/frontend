@@ -22,7 +22,7 @@
     </v-row>
 
     <v-row align="center" justify="center">
-      <v-col cols="4">
+      <v-col sm="9" md="6" lg="5">
         <div v-for="(tag, index) in tags" :key="index">
           <TagComponent :tagName="tag.canonicalName"></TagComponent>
         </div>
@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { get, post } from "@/services/tag";
+import { get } from "@/services/tag";
 import { Tag } from "@/models/tag";
 import TagComponent from "@/components/Tag.vue";
 
@@ -56,14 +56,14 @@ export default Vue.extend({
   }),
 
   methods: {
-    async addTags() {
+    /* async addTags() {
       const algo = ["Javascript", "Java", "Vue", "React", "Angular", "Node"];
       await Promise.all(
         algo.map((tag) => {
           return post(tag);
         })
       );
-    }
+    } */
   },
 
   watch: {
@@ -74,7 +74,7 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await get("a");
+    const result = await get("a", 3);
     this.tags = result.content;
   }
 });

@@ -10,6 +10,7 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "feed" */ "../views/Feed.vue"),
     meta: {
       layout: "HeaderLayout"
+      //requiresAuth: true
     }
   },
   {
@@ -20,7 +21,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/onboarding",
     name: "Onboarding",
-    component: () => import(/* webpackChunkName: "onboarding" */ "../views/Onboarding.vue")
+    component: () => import(/* webpackChunkName: "onboarding" */ "../views/Onboarding.vue"),
+    meta: {
+      //requiresAuth: true
+    }
   },
   {
     path: "/about",

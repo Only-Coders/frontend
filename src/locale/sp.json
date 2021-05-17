@@ -54,7 +54,8 @@
     "Tag": {
       "title": "Temas",
       "text": "Sigue temas para mantenerte informado sobre lo que te gusta.",
-      "follow": "Seguir"
+      "follow": "Seguir",
+      "cardText": " personas siguiendo este tema"
     },
     "StudyExperience": {
       "title": "Experiencia Academica",

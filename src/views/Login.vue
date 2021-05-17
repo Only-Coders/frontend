@@ -93,6 +93,18 @@ import { auth, google } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
 import { setHeaders } from "@/plugins/axios";
+import { Role } from "@/models/Enums/role";
+
+type User = {
+  sub: string;
+  roles: Role;
+  id: string;
+  complete: boolean;
+  exp: number;
+  ttl: number;
+  iat: number;
+  canonicalName: string;
+};
 
 export default Vue.extend({
   name: "Home",
@@ -137,10 +149,19 @@ export default Vue.extend({
         localStorage.setItem("accessToken", ocToken.token);
         setHeaders(ocToken.token);
 
-        const data = jwtDecode(ocToken.token);
-        console.log(data);
+        const user: User = jwtDecode(ocToken.token);
 
-        this.$router.push("/onboarding");
+        switch (user.roles) {
+          case Role.USER:
+            //user.complete ? this.$router.push("/") : this.$router.push("/onboarding");
+            this.$router.push("/onboarding");
+            break;
+          case Role.ADMIN:
+            this.$router.push("/about");
+            break;
+          default:
+            alert("Error de role");
+        }
       } else {
         alert("Must verify mail");
       }

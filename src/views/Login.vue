@@ -146,16 +146,19 @@ export default Vue.extend({
 
         const user: User = jwtDecode(ocToken.token);
 
-        switch (user.roles) {
-          case Role.USER:
-            //user.complete ? this.$router.push("/") : this.$router.push("/onboarding");
-            this.$router.push("/onboarding");
-            break;
-          case Role.ADMIN:
-            this.$router.push("/about");
-            break;
-          default:
-            alert("Error de role");
+        if (!user.complete) {
+          this.$router.push("/onboarding");
+        } else {
+          switch (user.roles) {
+            case Role.USER:
+              this.$router.push("/onboarding");
+              break;
+            case Role.ADMIN:
+              this.$router.push("/about");
+              break;
+            default:
+              alert("Error de role");
+          }
         }
       } else {
         alert("Must verify mail");

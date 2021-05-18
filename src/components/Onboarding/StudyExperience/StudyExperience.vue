@@ -74,6 +74,7 @@ import AddExperience from "@/components/Onboarding/StudyExperience/AddExperience
 import UpdateExperience from "@/components/Onboarding/StudyExperience/UpdateExperience.vue";
 import DeleteExperience from "@/components/Onboarding/StudyExperience/DeleteExperience.vue";
 import NoData from "@/components/NoData.vue";
+import { postInstitute } from "@/services/studyExperience";
 
 type ExperienceAction = {
   experience: StudyExperience;
@@ -124,11 +125,11 @@ export default Vue.extend({
   watch: {
     async stepAction() {
       console.log(this.experiences);
-      // await Promise.all(
-      //   this.experiences.map((experience) => {
-      //     return postOrganization(experience);
-      //   })
-      // );
+      await Promise.all(
+        this.experiences.map((experience) => {
+          return postInstitute(experience);
+        })
+      );
       this.$emit("moveNextStep");
       this.$destroy();
     }

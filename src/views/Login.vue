@@ -96,13 +96,8 @@ import { setHeaders } from "@/plugins/axios";
 import { Role } from "@/models/Enums/role";
 
 type User = {
-  sub: string;
   roles: Role;
-  id: string;
   complete: boolean;
-  exp: number;
-  ttl: number;
-  iat: number;
   canonicalName: string;
 };
 

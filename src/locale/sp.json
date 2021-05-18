@@ -57,6 +57,12 @@
       "follow": "Seguir",
       "cardText": " personas siguiendo este tema"
     },
+    "SuggestedContacts": {
+      "title": "Red personal",
+      "text": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias.",
+      "follow": "Seguir",
+      "add": "Agregar"
+    },
     "StudyExperience": {
       "title": "Experiencia Academica",
       "text": "Ingresa tus experiencias academicas para que todos sepan que conocimientos tienes !",

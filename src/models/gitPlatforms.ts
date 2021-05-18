@@ -9,7 +9,7 @@ export class GitPlatform {
       platformImage: require("@/assets/images/Onboarding/gitlab.svg")
     },
     {
-      platformName: "GITBUCKET",
+      platformName: "BITBUCKET",
       platformImage: require("@/assets/images/Onboarding/bitbucket-icon.svg")
     }
   ];

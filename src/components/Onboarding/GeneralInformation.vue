@@ -166,6 +166,7 @@ import { Country } from "@/models/country";
 import { RegisterUser } from "@/models/registerUser";
 import { getCountries } from "@/services/countries";
 import { register } from "@/services/auth";
+import Compressor from "compressorjs";
 
 export default Vue.extend({
   name: "GeneralInformation",
@@ -213,17 +214,24 @@ export default Vue.extend({
     },
     async onUpload() {
       if (this.profileImageData) {
-        const storageRef = await storage
-          .ref(`images/${this.profileImageData.name}`)
-          .put(this.profileImageData)
-          .then(
-            async (snapshot) => {
-              this.profileImageURL = await snapshot.ref.getDownloadURL();
-            },
-            (error) => {
-              console.log(error.message);
-            }
-          );
+        let profileImageUrl = "";
+        new Compressor(this.profileImageData, {
+          quality: 0.2,
+          async success(result: File) {
+            const storageRef = await storage
+              .ref(`images/${result.name}`)
+              .put(result)
+              .then(
+                async (snapshot) => {
+                  profileImageUrl = await snapshot.ref.getDownloadURL();
+                },
+                (error) => {
+                  console.log(error.message);
+                }
+              );
+          }
+        });
+        this.profileImageURL = profileImageUrl;
       }
     },
     async handleRegisterUser() {

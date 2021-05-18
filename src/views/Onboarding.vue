@@ -60,15 +60,16 @@ import GeneralInformation from "@/components/Onboarding/GeneralInformation.vue";
 import WorkExperience from "@/components/Onboarding/WorkExperience/WorkExperience.vue";
 import Skill from "@/components/Onboarding/Skill.vue";
 import TagStep from "@/components/Onboarding/TagStep.vue";
+import SuggestedContactsStep from "@/components/Onboarding/SuggestedContactsStep.vue";
 
 export default Vue.extend({
   name: "Onboarding",
 
-  components: { GeneralInformation, WorkExperience, Skill, TagStep },
+  components: { GeneralInformation, WorkExperience, Skill, TagStep, SuggestedContactsStep },
 
   data: () => ({
     carouselIndex: 0,
-    steps: [GeneralInformation, WorkExperience, Skill, TagStep],
+    steps: [GeneralInformation, WorkExperience, Skill, TagStep, SuggestedContactsStep],
     childStepAction: false,
     isLoading: false
   }),

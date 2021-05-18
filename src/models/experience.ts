@@ -5,3 +5,11 @@ export type WorkExperience = {
   since: string;
   until: string;
 };
+
+export type StudyExperience = {
+  id?: string;
+  name: string;
+  degree: string;
+  since: string;
+  until: string;
+};

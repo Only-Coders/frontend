@@ -14,6 +14,7 @@
           <v-row justify="center">
             <v-col cols="12" md="6">
               <v-combobox
+                v-model="experience.name"
                 auto-select-first
                 :loading="isLoading"
                 :search-input.sync="search"
@@ -140,7 +141,7 @@ export default Vue.extend({
         };
         if (this.organizations.length === 0) organization.id = this.organizations[0].id;
 
-        this.$emit("passExperienceData", organization);
+        this.$emit("updateExperienceData", organization);
 
         this.close();
       }
@@ -182,9 +183,5 @@ export default Vue.extend({
   position: absolute;
   bottom: 0;
   left: 100px;
-}
-
-.work-experience__add-text {
-  color: #858585;
 }
 </style>

@@ -46,6 +46,18 @@
       </v-col>
     </v-row>
     <add-experience v-if="addDialog" v-model="addDialog" @passExperienceData="handleAddExperience"></add-experience>
+    <update-experience
+      v-if="updateDialog"
+      v-model="updateDialog"
+      :selectedExperience="selectedWork"
+      @updateExperienceData="updateExperience"
+    ></update-experience>
+    <delete-experience
+      v-if="deleteDialog"
+      v-model="deleteDialog"
+      :selectedExperienceName="selectedWork.name"
+      @deleteExperienceData="deleteExperience"
+    ></delete-experience>
     <img
       class="online_resume hidden-md-and-down"
       src="@/assets/images/Onboarding/undraw_Designer.svg"
@@ -59,29 +71,30 @@ import Vue from "vue";
 import Experience from "@/components/Onboarding/WorkExperience/Experience.vue";
 import { WorkExperience } from "@/models/experience";
 import AddExperience from "@/components/Onboarding/WorkExperience/AddExperience.vue";
+import UpdateExperience from "@/components/Onboarding/WorkExperience/UpdateExperience.vue";
+import DeleteExperience from "@/components/Onboarding/WorkExperience/DeleteExperience.vue";
 import NoData from "@/components/NoData.vue";
 import { postOrganization } from "@/services/workExperience";
 
-type UpdatedExperience = {
-  updatedExperience: WorkExperience;
-  updatedExperienceIndex: number;
-};
-
-type DeleteExperience = {
-  updatedExperienceIndex: number;
+type ExperienceAction = {
+  experience: WorkExperience;
+  experienceIndex: number;
 };
 
 export default Vue.extend({
   name: "WorkExperience",
 
-  components: { Experience, AddExperience, NoData },
+  components: { Experience, AddExperience, UpdateExperience, DeleteExperience, NoData },
 
   props: { stepAction: Boolean },
 
   data: () => ({
     experiences: [] as WorkExperience[],
     addDialog: false,
-    selectedUpdateIndex: 0
+    updateDialog: false,
+    deleteDialog: false,
+    selectedIndex: 0,
+    selectedWork: {} as WorkExperience
   }),
 
   methods: {
@@ -91,17 +104,26 @@ export default Vue.extend({
     handleAddExperience(data: WorkExperience) {
       this.experiences.push(data);
     },
-    handleUpdateExperience(updatedData: UpdatedExperience) {
-      this.experiences[updatedData.updatedExperienceIndex] = updatedData.updatedExperience;
+    handleUpdateExperience(updatedData: ExperienceAction) {
+      this.selectedWork = updatedData.experience;
+      this.selectedIndex = updatedData.experienceIndex;
+      this.updateDialog = !this.updateDialog;
     },
-    handleDeleteExperience(deleteIndex: DeleteExperience) {
-      this.experiences.splice(deleteIndex.updatedExperienceIndex, 1);
+    updateExperience(experience: WorkExperience) {
+      this.experiences[this.selectedIndex] = experience;
+    },
+    handleDeleteExperience(deleteData: ExperienceAction) {
+      this.selectedWork = deleteData.experience;
+      this.selectedIndex = deleteData.experienceIndex;
+      this.deleteDialog = !this.deleteDialog;
+    },
+    deleteExperience() {
+      this.experiences.splice(this.selectedIndex, 1);
     }
   },
 
   watch: {
     async stepAction() {
-      console.log(this.experiences);
       await Promise.all(
         this.experiences.map((experience) => {
           return postOrganization(experience);
@@ -121,9 +143,5 @@ export default Vue.extend({
   position: absolute;
   bottom: 0;
   left: 100px;
-}
-
-.work-experience__add-text {
-  color: #858585;
 }
 </style>

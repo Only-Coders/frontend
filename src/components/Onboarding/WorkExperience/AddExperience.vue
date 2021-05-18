@@ -181,8 +181,4 @@ export default Vue.extend({
   bottom: 0;
   left: 100px;
 }
-
-.work-experience__add-text {
-  color: #858585;
-}
 </style>

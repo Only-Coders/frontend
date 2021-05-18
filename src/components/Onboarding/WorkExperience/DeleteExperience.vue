@@ -16,7 +16,7 @@
       </v-card-title>
       <v-card-text class="pt-10">
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog1") }}
-        <span class="font-weight-bold">{{ experience.name }}</span>
+        <span class="font-weight-bold">{{ $props.selectedExperienceName }}</span>
         {{ $i18n.t("Onboarding.WorkExperience.deleteExperienceTextDialog2") }}
       </v-card-text>
       <v-card-actions style="height: 100px">
@@ -43,19 +43,11 @@ export default Vue.extend({
 
   components: {},
 
-  props: { value: Boolean, selectedExperience: Object as PropType<WorkExperience> },
-
-  created() {
-    this.experience = this.selectedExperience;
-  },
-
-  data: () => ({
-    experience: {} as WorkExperience
-  }),
+  props: { value: Boolean, selectedExperienceName: String },
 
   methods: {
     emitDeleteExperience() {
-      this.$emit("passExperienceData");
+      this.$emit("deleteExperienceData");
       this.close();
     },
     close() {
@@ -72,9 +64,5 @@ export default Vue.extend({
   position: absolute;
   bottom: 0;
   left: 100px;
-}
-
-.work-experience__add-text {
-  color: #858585;
 }
 </style>

@@ -212,28 +212,25 @@ export default Vue.extend({
       this.profileImageData = event.target.files[0];
       this.profileImageToShow = URL.createObjectURL(event.target.files[0]);
     },
+
     async onUpload() {
-      if (this.profileImageData) {
-        let profileImageUrl = "";
-        new Compressor(this.profileImageData, {
+      const profileImageData = this.profileImageData as File;
+      const imageCompresor = new Promise<string>((resolve, reject) => {
+        new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const storageRef = await storage
-              .ref(`images/${result.name}`)
-              .put(result)
-              .then(
-                async (snapshot) => {
-                  profileImageUrl = await snapshot.ref.getDownloadURL();
-                },
-                (error) => {
-                  console.log(error.message);
-                }
-              );
+            const snapshot = await storage.ref(`images/${result.name}`).put(result);
+            const profileImageUrl = await snapshot.ref.getDownloadURL();
+            resolve(profileImageUrl);
+          },
+          error(err) {
+            reject(err);
           }
         });
-        this.profileImageURL = profileImageUrl;
-      }
+      });
+      this.profileImageURL = await imageCompresor;
     },
+
     async handleRegisterUser() {
       if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
         await this.onUpload();

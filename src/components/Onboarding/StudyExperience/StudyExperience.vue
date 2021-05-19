@@ -20,7 +20,7 @@
         md="6"
         lg="4"
         class="pt-12 overflow-y-auto"
-        :style="$vuetify.breakpoint.xs ? 'max-height: 240px' : 'max-height: 500px'"
+        :style="$vuetify.breakpoint.xs ? 'max-height: 290px' : 'max-height: 580px'"
       >
         <div v-for="(exp, index) in experiences" :key="index">
           <experience

@@ -10,7 +10,13 @@
     </v-row>
 
     <v-row align="center" justify="center">
-      <v-col sm="9" md="6" lg="5">
+      <v-col
+        cols="11"
+        md="6"
+        lg="5"
+        class="overflow-y-auto"
+        :style="$vuetify.breakpoint.xs ? 'max-height: 350px' : 'max-height: 600px'"
+      >
         <div v-for="(tag, index) in tags" :key="index">
           <TagComponent :canonicalName="tag.canonicalName"></TagComponent>
         </div>

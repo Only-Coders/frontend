@@ -6,25 +6,13 @@
         <p>
           {{ $i18n.t("Onboarding.Tag.text") }}
         </p>
-
-        <!--  <v-row align="center" justify="center" class="mt-16">
-          <v-form>
-            <v-row>
-              <v-col cols="12">
-                <v-btn fab color="primary" @click.prevent="addTags">
-                  <v-icon> mdi-plus </v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-row> -->
       </v-col>
     </v-row>
 
     <v-row align="center" justify="center">
       <v-col sm="9" md="6" lg="5">
         <div v-for="(tag, index) in tags" :key="index">
-          <TagComponent :tagName="tag.canonicalName"></TagComponent>
+          <TagComponent :canonicalName="tag.canonicalName"></TagComponent>
         </div>
       </v-col>
     </v-row>
@@ -55,16 +43,7 @@ export default Vue.extend({
     tags: [] as Tag[]
   }),
 
-  methods: {
-    /* async addTags() {
-      const algo = ["Javascript", "Java", "Vue", "React", "Angular", "Node"];
-      await Promise.all(
-        algo.map((tag) => {
-          return post(tag);
-        })
-      );
-    } */
-  },
+  methods: {},
 
   watch: {
     async stepAction() {
@@ -74,7 +53,7 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await get("a", 3);
+    const result = await get("a", 8);
     this.tags = result.content;
   }
 });

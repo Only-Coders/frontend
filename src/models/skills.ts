@@ -1,4 +1,4 @@
 export type Skill = {
-  name: "string";
-  canonicalName: "string";
+  name: string;
+  canonicalName?: string;
 };

@@ -45,7 +45,7 @@
               outlined
               @click:close="deleteSkill(index)"
             >
-              {{ skill }}</v-chip
+              {{ skill.name }}</v-chip
             >
           </v-col>
         </v-row>
@@ -67,7 +67,7 @@ import { get, post } from "@/services/skill";
 import { Skill } from "@/models/skills";
 
 export default Vue.extend({
-  name: "Skill",
+  name: "SkillStep",
 
   props: { stepAction: Boolean },
 
@@ -75,16 +75,21 @@ export default Vue.extend({
     search: "",
     isLoading: false,
     skills: [] as Skill[],
-    selectedSkills: [] as string[],
+    selectedSkills: [] as Skill[],
     timer: 0
   }),
 
   methods: {
     addExperience() {
       if (this.search) {
-        if (this.selectedSkills.includes(this.search.toUpperCase()) === false) {
-          this.selectedSkills.push(this.search.toUpperCase());
+        const skill = this.skills.find((skill) => skill.canonicalName === this.search.toLowerCase());
+
+        if (!skill) {
+          this.selectedSkills.push({ name: this.search });
+        } else {
+          this.selectedSkills.push(skill);
         }
+
         this.search = "";
         this.skills = [];
       }

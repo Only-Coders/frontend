@@ -7,7 +7,7 @@ export async function get(skillName: string): Promise<SkillPagination> {
   return response.data;
 }
 
-export async function post(name: string): Promise<Skill> {
-  const response = await axios.post(`/api/skills`, { name });
+export async function post(skill: Skill): Promise<void> {
+  const response = await axios.post(`/api/users/skills`, skill);
   return response.data;
 }

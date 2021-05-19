@@ -6,24 +6,12 @@
         <p>
           {{ $i18n.t("Onboarding.SuggestedContacts.text") }}
         </p>
-
-        <!--  <v-row align="center" justify="center" class="mt-16">
-          <v-form>
-            <v-row>
-              <v-col cols="12">
-                <v-btn fab color="primary" @click.prevent="addTags">
-                  <v-icon> mdi-plus </v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-row> -->
       </v-col>
     </v-row>
 
-    <v-row align="center" justify="center">
-      <v-col sm="9" md="6" lg="12" v-for="(suggestedContact, index) in suggestedContacts" :key="index">
-        <Contact :contactName="suggestedContact.firstName" :contactLastName="suggestedContact.lastName"></Contact>
+    <v-row align="center" justify="center" class="flex-column">
+      <v-col sm="9" md="6" lg="5" v-for="(suggestedContact, index) in suggestedContacts" :key="index">
+        <Contact v-bind="{ ...suggestedContact }"></Contact>
       </v-col>
     </v-row>
 
@@ -53,16 +41,7 @@ export default Vue.extend({
     suggestedContacts: [] as SuggestedContact[]
   }),
 
-  methods: {
-    /* async addTags() {
-      const algo = ["Javascript", "Java", "Vue", "React", "Angular", "Node"];
-      await Promise.all(
-        algo.map((tag) => {
-          return post(tag);
-        })
-      );
-    } */
-  },
+  methods: {},
 
   watch: {
     async stepAction() {
@@ -74,7 +53,6 @@ export default Vue.extend({
   async created() {
     const result = await get(10);
     this.suggestedContacts = result;
-    console.log(this.suggestedContacts);
   }
 });
 </script>

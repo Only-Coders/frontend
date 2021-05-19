@@ -1,3 +1,3 @@
 export type Tag = {
-  canonicalName: "string";
+  canonicalName: string;
 };

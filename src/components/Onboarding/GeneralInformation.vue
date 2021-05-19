@@ -253,6 +253,7 @@ export default Vue.extend({
         this.$emit("moveNextStep");
         this.$destroy();
       } catch (error) {
+        console.log(error);
         this.$router.push("/login");
       } finally {
         this.$emit("showButtonLoader", false);

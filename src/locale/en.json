@@ -45,7 +45,8 @@
       "addExperienceTitleDialog": "Experience",
       "deleteExperienceTitleDialog": "Are you sure you want to delete this work experience?",
       "deleteExperienceTextDialog1": "Deleting your experience at ",
-      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
+      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?",
+      "currentLabel": "Current"
     },
     "Skills": {
       "title": "Skills",
@@ -75,7 +76,8 @@
       "addExperienceTitleDialog": "Experience",
       "deleteExperienceTitleDialog": "Are you sure you want to delete this academic experience?",
       "deleteExperienceTextDialog1": "Deleting your experience at ",
-      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?"
+      "deleteExperienceTextDialog2": "will be a permanent action, are you sure?",
+      "currentLabel": "Current"
     }
   }
 }

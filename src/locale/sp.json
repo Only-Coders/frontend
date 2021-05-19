@@ -44,7 +44,8 @@
       "addExperienceTitleDialog": "Experiencia",
       "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia laboral seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
-      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
+      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?",
+      "currentLabel": "Al dia"
     },
     "Skills": {
       "title": "Habilidades",
@@ -74,7 +75,8 @@
       "addExperienceTitleDialog": "Experiencia",
       "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia academica seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
-      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?"
+      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?",
+      "currentLabel": "Al dia"
     }
   }
 }

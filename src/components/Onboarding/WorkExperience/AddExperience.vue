@@ -73,7 +73,6 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
                     :value="formatDate(until)"
-                    :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="(attrs, { ...inputProps })"

@@ -144,6 +144,7 @@
             row-height="30"
             counter
             no-resize
+            maxlength="256"
           ></v-textarea>
         </v-form>
       </v-col>
@@ -233,7 +234,9 @@ export default Vue.extend({
 
     async handleRegisterUser() {
       if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
-        await this.onUpload();
+        if (this.profileImageURL !== "") {
+          await this.onUpload();
+        }
         this.user.imageURI = this.profileImageURL;
         this.user.birthDate = new Date(this.user.birthDate).toISOString();
         console.log(this.user);

@@ -7,7 +7,11 @@
         <v-card-text class="pt-0 text-left"
           >{{ formatDate(workExperience.since) }}
           {{ $i18n.t("Onboarding.Shared.fromDateToAnother") }}
-          {{ formatDate(workExperience.until) }}</v-card-text
+          {{
+            workExperience.until === ""
+              ? $i18n.t("Onboarding.WorkExperience.currentLabel")
+              : formatDate(workExperience.until)
+          }}</v-card-text
         >
       </v-col>
       <v-col cols="2" class="mr-6" no-gutters>

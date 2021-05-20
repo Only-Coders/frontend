@@ -35,6 +35,7 @@
       class="stepButtons"
       large
       depressed
+      :loading="isLoading"
       v-if="carouselIndex != steps.length - 1"
       >Siguiente</v-btn
     >
@@ -45,6 +46,7 @@
       class="stepButtons"
       large
       depressed
+      :loading="isLoading"
       v-if="carouselIndex == steps.length - 1"
     >
       Finalizar
@@ -76,8 +78,8 @@ export default Vue.extend({
   }),
 
   methods: {
-    showActionLoader(shouldLoad: boolean) {
-      this.isLoading = shouldLoad;
+    showActionLoader() {
+      this.isLoading = true;
     },
     noticeChild() {
       this.childStepAction = !this.childStepAction;
@@ -86,6 +88,7 @@ export default Vue.extend({
       if (this.carouselIndex < this.steps.length - 1) {
         this.carouselIndex++;
       }
+      this.isLoading = false;
     },
     finishOnboarding() {
       console.log("Finish onboarding");

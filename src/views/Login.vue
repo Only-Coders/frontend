@@ -44,7 +44,9 @@
             </v-row>
             <v-row class="mb-4">
               <v-col>
-                <v-btn block color="primary" large depressed @click="login">{{ $i18n.t("Login.loginButton") }}</v-btn>
+                <v-btn block color="primary" large depressed :loading="isLoading" @click="login">
+                  {{ $i18n.t("Login.loginButton") }}
+                </v-btn>
               </v-col>
               <v-col>
                 <v-btn block color="primary_light" class="primary--text" large depressed @click="register">{{
@@ -114,7 +116,8 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
 
   data: () => ({
     email: "",
-    password: ""
+    password: "",
+    isLoading: false
   }),
 
   methods: {
@@ -142,7 +145,9 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
     },
 
     async login() {
-      const result = await auth.signInWithEmailAndPassword(this.email, this.password);
+      this.isLoading = true;
+      /* const result = await auth.signInWithEmailAndPassword(this.email, this.password);
+      
       if (result.user && result.user.emailVerified) {
         const tokenId = await result.user.getIdTokenResult();
         console.log(tokenId);
@@ -167,11 +172,56 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
               break;
             default:
               this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
+              this.isLoading = false;
           }
         }
       } else {
         this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
-      }
+        this.isLoading = false;
+      } */
+      //this.isLoading = false;
+
+      auth
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(async (result) => {
+          if (result.user && result.user.emailVerified) {
+            const tokenId = await result.user.getIdTokenResult();
+            console.log(tokenId);
+
+            //pegarle al backend para login
+            const ocToken = await authenticate(tokenId.token);
+
+            localStorage.setItem("accessToken", ocToken.token);
+            setHeaders(ocToken.token);
+
+            const user: User = jwtDecode(ocToken.token);
+            this.success("", `Wellcome back ${user.canonicalName}`, 2000);
+            if (!user.complete) {
+              this.$router.push("/onboarding");
+            } else {
+              switch (user.roles) {
+                case Role.USER:
+                  this.$router.push("/onboarding");
+                  break;
+                case Role.ADMIN:
+                  this.$router.push("/about");
+                  break;
+                default:
+                  this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
+                  this.isLoading = false;
+              }
+            }
+          } else {
+            this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
+            this.isLoading = false;
+          }
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorMessage);
+          this.isLoading = false;
+        });
     },
 
     async loginGoogle() {

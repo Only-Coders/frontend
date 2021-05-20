@@ -21,6 +21,18 @@
       </v-col>
     </transition-group>
 
+    <transition
+      name="aaa"
+      v-if="suggestedContacts.length == 0"
+      class="pb-md-8 pb-lg-12 pb-8"
+      justify="center"
+      no-gutters
+    >
+      <v-col>
+        <no-data></no-data>
+      </v-col>
+    </transition>
+
     <img
       :style="$vuetify.breakpoint.xs ? 'display: none' : ''"
       src="@/assets/images/Onboarding/undraw_social_friends.svg"
@@ -35,11 +47,12 @@ import Vue from "vue";
 import Contact from "@/components/Contact.vue";
 import { get } from "@/services/suggestedContact";
 import { SuggestedContact } from "@/models/suggestedContact";
+import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "SuggestedContactsStep",
 
-  components: { Contact },
+  components: { Contact, NoData },
 
   props: { stepAction: Boolean },
 
@@ -56,6 +69,7 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
+      this.$emit("showButtonLoader");
       this.$emit("moveNextStep");
       this.$destroy();
     }
@@ -81,7 +95,8 @@ export default Vue.extend({
 .list-leave-active {
   transition: all 0.4s;
 }
-.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+.list-enter,
+.list-leave-to {
   transform: scale(0);
 }
 </style>

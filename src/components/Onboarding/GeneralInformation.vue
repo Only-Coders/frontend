@@ -250,7 +250,7 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
-      this.$emit("showButtonLoader", true);
+      this.$emit("showButtonLoader");
       try {
         await this.handleRegisterUser();
         this.$emit("moveNextStep");
@@ -258,8 +258,6 @@ export default Vue.extend({
       } catch (error) {
         console.log(error);
         this.$router.push("/login");
-      } finally {
-        this.$emit("showButtonLoader", false);
       }
     }
   },

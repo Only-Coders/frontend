@@ -20,7 +20,7 @@
           {{ $i18n.t("Onboarding.SuggestedContacts.follow") }}
         </v-btn>
 
-        <v-btn color="primary" width="35%" class="mx-3" small @click="sendContactRequest">
+        <v-btn color="primary" width="35%" class="mx-3" small depressed @click="sendContactRequest">
           {{ $i18n.t("Onboarding.SuggestedContacts.add") }}
         </v-btn>
       </v-col>

@@ -124,11 +124,11 @@ export default Vue.extend({
       }
     },
     async stepAction() {
+      this.$emit("showButtonLoader");
       await Promise.all(
         this.selectedSkills.map((skill) => {
           return post(skill);
         })
-        //TODO: resolver asociacion usuario/skill
       );
       this.$emit("moveNextStep");
       this.$destroy();

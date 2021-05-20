@@ -22,6 +22,11 @@
         <TagComponent :canonicalName="tag.canonicalName" @remove="removeTag(index)"></TagComponent>
       </v-col>
     </transition-group>
+    <v-row v-if="tags.length == 0" class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
+      <v-col>
+        <no-data></no-data>
+      </v-col>
+    </v-row>
 
     <img
       :style="$vuetify.breakpoint.xs ? 'display: none' : ''"
@@ -37,11 +42,12 @@ import Vue from "vue";
 import { get } from "@/services/tag";
 import { Tag } from "@/models/tag";
 import TagComponent from "@/components/Tag.vue";
+import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "Tag",
 
-  components: { TagComponent },
+  components: { TagComponent, NoData },
 
   props: { stepAction: Boolean },
 
@@ -57,13 +63,14 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
+      this.$emit("showButtonLoader");
       this.$emit("moveNextStep");
       this.$destroy();
     }
   },
 
   async created() {
-    const result = await get("a", 8);
+    const result = await get("a", 10);
     this.tags = result.content;
   }
 });

@@ -124,6 +124,7 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
+      this.$emit("showButtonLoader");
       await Promise.all(
         this.experiences.map((experience) => {
           return postInstitute(experience);

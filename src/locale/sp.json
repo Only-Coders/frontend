@@ -7,6 +7,15 @@
     "signInButton": "Registrarme",
     "passwordReset": "¿Olvidaste tu contraseña?"
   },
+  "ForgotPassword": {
+    "forgotTitle": "Olvidaste tu contraseña ?",
+    "forgotMessage": "No te preocupes, le pasa hasta a los mejores.",
+    "forgotMessage2": "Enviaremos un enlace de recuperacion de contraseña al correo electronico indicado.",
+    "buttonLabel": "confirmar",
+    "successNotificationTitle": "Recuperacion de contraseña",
+    "successNotificationMessage": "Hemos enviado un enlace de recuperacion de contraseña al correo electronico indicado.",
+    "errorNotificationMessage": "Ha ocurrido un error con tu solicitud, por favor intentalo nuvamente."
+  },
   "Onboarding": {
     "GeneralInformation": {
       "title": "Informacion General",
@@ -35,7 +44,7 @@
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",
-      "text": "Ingresa tus experiencias laborales para que todos sepan que tan cool eres !",
+      "text": "Cuentanos sobre tus experiencias laborales para que los reclutadores sepan mas de ti !",
       "addExperienceButton": "Agregar Experiencia",
       "organizationLabel": "Organizacion",
       "positionLabel": "Puesto",
@@ -77,6 +86,13 @@
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
       "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?",
       "currentLabel": "A la Fecha"
+    },
+    "Notifications": {
+      "somethingWentWrong": "Oops, algo salio mal :(",
+      "emailVerificationTitle": "Verificacion de correo electronico",
+      "emailVerificationMessage": "Te hemos enviado un correo electronico",
+      "askForEmailVerification": "Por favor, verifique su direccion electronica",
+      "rolErrorMessage": "Ha ocurrido un error con su rol"
     }
   }
 }

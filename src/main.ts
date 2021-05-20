@@ -5,8 +5,10 @@ import store from "@/store/index";
 import vuetify from "./plugins/vuetify";
 import VueI18n from "vue-i18n";
 import Locale from "@/locale/index";
+import Notifications from "vue-notification";
 
 Vue.use(VueI18n);
+Vue.use(Notifications);
 
 Vue.config.productionTip = false;
 

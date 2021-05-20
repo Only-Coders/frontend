@@ -19,7 +19,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="6" class="pr-lg-16">
+      <v-col cols="9" md="6" class="pr-lg-16">
         <v-card width="400px" class="mx-auto" flat>
           <h1 class="mb-4 text-center">{{ $i18n.t("Login.loginTitle") }}</h1>
           <v-form>
@@ -38,7 +38,9 @@
               </v-col>
             </v-row>
             <v-row justify="center" class="mb-6">
-              <a href="#">{{ $i18n.t("Login.passwordReset") }}</a>
+              <a @click="$router.push('/forgot')" style="text-decoration: underline">{{
+                $i18n.t("Login.passwordReset")
+              }}</a>
             </v-row>
             <v-row class="mb-4">
               <v-col>
@@ -87,6 +89,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { VueConstructor } from "vue/types/umd";
 import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { auth, google } from "@/plugins/firebaseInit";
@@ -94,6 +97,7 @@ import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
 import { setHeaders } from "@/plugins/axios";
 import { Role } from "@/models/Enums/role";
+import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 
 type User = {
   roles: Role;
@@ -101,10 +105,10 @@ type User = {
   canonicalName: string;
 };
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
   name: "Home",
 
-  mixins: [RuleMixin, inputMixin],
+  mixins: [RuleMixin, inputMixin, notificationsMixin],
 
   components: {},
 
@@ -125,10 +129,15 @@ export default Vue.extend({
           };
           if (result.user && !result.user.emailVerified) {
             result.user.sendEmailVerification(actionCodeSettings);
+            this.success(
+              this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
+              this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
+              2000
+            );
           }
         }
       } catch (error) {
-        alert(error);
+        this.errorHandling(error, this.$i18n.t("Onboarding.Notifications.somethingWentWrong").toString());
       }
     },
 
@@ -145,7 +154,7 @@ export default Vue.extend({
         setHeaders(ocToken.token);
 
         const user: User = jwtDecode(ocToken.token);
-
+        this.success("", `Wellcome back ${user.canonicalName}`, 2000);
         if (!user.complete) {
           this.$router.push("/onboarding");
         } else {
@@ -157,11 +166,11 @@ export default Vue.extend({
               this.$router.push("/about");
               break;
             default:
-              alert("Error de role");
+              this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
           }
         }
       } else {
-        alert("Must verify mail");
+        this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
       }
     },
 
@@ -175,7 +184,7 @@ export default Vue.extend({
       }
     },
 
-    async loginGithub() {
+    loginGithub() {
       alert("Me encanta, peeeero... esperá a la 2.1 capo.");
     }
   }

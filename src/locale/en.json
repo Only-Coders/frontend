@@ -7,6 +7,15 @@
     "signInButton": "Sign in",
     "passwordReset": "Forgot password?"
   },
+  "ForgotPassword": {
+    "forgotTitle": "Forgot password ?",
+    "forgotMessage": "Don't worry, happens to the best of us.",
+    "forgotMessage2": "We'll send a password recovery link to the provided email.",
+    "buttonLabel": "confirm",
+    "successNotificationTitle": "Password recovery",
+    "successNotificationMessage": "We've sent a password recovery link to the provided email",
+    "errorNotificationMessage": "There's been an error with your request, please try again."
+  },
   "Onboarding": {
     "GeneralInformation": {
       "title": "General Information",
@@ -36,7 +45,7 @@
     },
     "WorkExperience": {
       "title": "Work Experience",
-      "text": "Tell us about your work experience, so everyone can know how cool you are !",
+      "text": "Tell us about your work experiences so recruiters can know more about you !",
       "addExperienceButton": "Add Experience",
       "organizationLabel": "Organization",
       "positionLabel": "Position",
@@ -78,6 +87,13 @@
       "deleteExperienceTextDialog1": "Deleting your experience at ",
       "deleteExperienceTextDialog2": "will be a permanent action, are you sure?",
       "currentLabel": "Current Time"
+    },
+    "Notifications": {
+      "somethingWentWrong": "Oops, something went wrong :(",
+      "emailVerificationTitle": "Email verification",
+      "emailVerificationMessage": "We sent you an email",
+      "askForEmailVerification": "Please, verify your email",
+      "rolErrorMessage": "There's been an error with your role"
     }
   }
 }

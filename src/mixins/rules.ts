@@ -8,7 +8,7 @@ export class RuleMixin extends Vue {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return pattern.test(value) || this.$i18n.t("Onboarding.Shared.invalidEmail");
     },
-    minPassword: (v: string) => v.length >= 8 || "Minimo 8 caracteres",
+    minPassword: (v: string) => v.length >= 8 || "Minimo 6 caracteres",
     fileSize: (value: File) => !value || value.size < 1000000 || this.$i18n.t("Onboarding.Shared.profileImageSize"),
     selectRule: (v: []) => !v || v.length >= 1 || this.$i18n.t("Onboarding.Shared.requiredField")
   };

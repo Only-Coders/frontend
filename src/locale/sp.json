@@ -90,9 +90,12 @@
     "Notifications": {
       "somethingWentWrong": "Oops, algo salio mal :(",
       "emailVerificationTitle": "Verificacion de correo electronico",
-      "emailVerificationMessage": "Te hemos enviado un correo electronico",
+      "emailVerificationMessage": "Te hemos enviado un correo electronico de verificacion",
       "askForEmailVerification": "Por favor, verifique su direccion electronica",
-      "rolErrorMessage": "Ha ocurrido un error con su rol"
+      "rolErrorMessage": "Ha ocurrido un error con su rol",
+      "invalidCredential": "Tu correo electronico o contraseña es incorrecto",
+      "emailAlreadyExists": "Este correo electronico ya esta en uso",
+      "invalidEmail": "Correo electronico incorrecto"
     }
   }
 }

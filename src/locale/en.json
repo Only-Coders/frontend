@@ -4,7 +4,7 @@
     "loginTitle": "Log in",
     "welcomeTitle": "Welcome",
     "loginButton": "Login",
-    "signInButton": "Sign in",
+    "signInButton": "Sign up",
     "passwordReset": "Forgot password?"
   },
   "ForgotPassword": {
@@ -91,9 +91,12 @@
     "Notifications": {
       "somethingWentWrong": "Oops, something went wrong :(",
       "emailVerificationTitle": "Email verification",
-      "emailVerificationMessage": "We sent you an email",
+      "emailVerificationMessage": "We've sent you a verification email",
       "askForEmailVerification": "Please, verify your email",
-      "rolErrorMessage": "There's been an error with your role"
+      "rolErrorMessage": "There's been an error with your role",
+      "invalidCredential": "Your email or password are invalid",
+      "emailAlreadyExists": "This email is already taken",
+      "invalidEmail": "Wrong email"
     }
   }
 }

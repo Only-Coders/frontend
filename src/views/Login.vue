@@ -22,10 +22,16 @@
       <v-col cols="9" md="6" class="pr-lg-16">
         <v-card width="400px" class="mx-auto" flat>
           <h1 class="mb-4 text-center">{{ $i18n.t("Login.loginTitle") }}</h1>
-          <v-form>
+          <v-form ref="login-register">
             <v-row>
               <v-col>
-                <v-text-field v-model="email" label="Email" :rules="[rules.required]" v-bind="{ ...inputProps }">
+                <v-text-field
+                  v-model="email"
+                  label="Email"
+                  :rules="[rules.required, rules.mail]"
+                  v-bind="{ ...inputProps }"
+                  validate-on-blur
+                >
                 </v-text-field>
                 <v-text-field
                   v-model="password"
@@ -33,6 +39,7 @@
                   :rules="[rules.minPassword]"
                   v-bind="{ ...inputProps }"
                   type="password"
+                  validate-on-blur
                 >
                 </v-text-field>
               </v-col>
@@ -99,6 +106,7 @@ import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
 import { setHeaders } from "@/plugins/axios";
 import { Role } from "@/models/Enums/role";
+import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 
 type User = {
@@ -140,53 +148,30 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
           }
         }
       } catch (error) {
-        this.errorHandling(error, this.$i18n.t("Onboarding.Notifications.somethingWentWrong").toString());
+        switch (error.code) {
+          case FirebaseErrors.INVALID_EMAIL:
+            this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
+            break;
+
+          case FirebaseErrors.EMAIL_EXISTS:
+          case FirebaseErrors.EMAIL_IN_USE:
+            this.error("Error", this.$i18n.t("Onboarding.Notifications.emailAlreadyExists").toString());
+            break;
+
+          default:
+            break;
+        }
       }
     },
 
     async login() {
       this.isLoading = true;
-      /* const result = await auth.signInWithEmailAndPassword(this.email, this.password);
-      
-      if (result.user && result.user.emailVerified) {
-        const tokenId = await result.user.getIdTokenResult();
-        console.log(tokenId);
+      if ((this.$refs["login-register"] as HTMLFormElement).validate()) {
+        try {
+          const result = await auth.signInWithEmailAndPassword(this.email, this.password);
 
-        //pegarle al backend para login
-        const ocToken = await authenticate(tokenId.token);
-
-        localStorage.setItem("accessToken", ocToken.token);
-        setHeaders(ocToken.token);
-
-        const user: User = jwtDecode(ocToken.token);
-        this.success("", `Wellcome back ${user.canonicalName}`, 2000);
-        if (!user.complete) {
-          this.$router.push("/onboarding");
-        } else {
-          switch (user.roles) {
-            case Role.USER:
-              this.$router.push("/onboarding");
-              break;
-            case Role.ADMIN:
-              this.$router.push("/about");
-              break;
-            default:
-              this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
-              this.isLoading = false;
-          }
-        }
-      } else {
-        this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
-        this.isLoading = false;
-      } */
-      //this.isLoading = false;
-
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(async (result) => {
           if (result.user && result.user.emailVerified) {
             const tokenId = await result.user.getIdTokenResult();
-            console.log(tokenId);
 
             //pegarle al backend para login
             const ocToken = await authenticate(tokenId.token);
@@ -201,10 +186,10 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             } else {
               switch (user.roles) {
                 case Role.USER:
-                  this.$router.push("/onboarding");
+                  this.$router.push("/onboarding"); //push to feed
                   break;
                 case Role.ADMIN:
-                  this.$router.push("/about");
+                  this.$router.push("/about"); //push to backoffice view
                   break;
                 default:
                   this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
@@ -213,15 +198,24 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             }
           } else {
             this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
-            this.isLoading = false;
           }
-        })
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(errorMessage);
+        } catch (error) {
+          switch (error.code) {
+            case FirebaseErrors.INVALID_CREDENTIALS:
+              this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidCredential").toString());
+              break;
+
+            case FirebaseErrors.INVALID_EMAIL:
+              this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
+              break;
+
+            default:
+              break;
+          }
+        } finally {
           this.isLoading = false;
-        });
+        }
+      }
     },
 
     async loginGoogle() {

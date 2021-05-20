@@ -9,11 +9,17 @@
       </v-col>
     </v-row>
 
-    <v-row align="center" justify="center" class="flex-column">
-      <v-col sm="9" md="6" lg="5" v-for="(suggestedContact, index) in suggestedContacts" :key="index">
-        <Contact v-bind="{ ...suggestedContact }"></Contact>
+    <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
+      <v-col
+        cols="10"
+        md="8"
+        lg="5"
+        v-for="(suggestedContact, index) in suggestedContacts.slice(0, 4)"
+        :key="suggestedContact.canonicalName"
+      >
+        <Contact v-bind="{ ...suggestedContact }" @remove="removeSuggestedContact(index)"></Contact>
       </v-col>
-    </v-row>
+    </transition-group>
 
     <img
       :style="$vuetify.breakpoint.xs ? 'display: none' : ''"
@@ -41,7 +47,12 @@ export default Vue.extend({
     suggestedContacts: [] as SuggestedContact[]
   }),
 
-  methods: {},
+  methods: {
+    removeSuggestedContact(index: number) {
+      console.log(index);
+      this.suggestedContacts.splice(index, 1);
+    }
+  },
 
   watch: {
     async stepAction() {
@@ -64,5 +75,13 @@ export default Vue.extend({
   position: absolute;
   bottom: 120px;
   left: 100px;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.4s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  transform: scale(0);
 }
 </style>

@@ -34,9 +34,11 @@ instance.interceptors.response.use(
 );
 
 instance.interceptors.request.use((request) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    setHeaders(token, store.state.lang);
+  if (!request.headers.common["Authorization"]) {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setHeaders(token, store.state.lang);
+    }
   }
   return request;
 });

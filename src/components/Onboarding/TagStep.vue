@@ -9,19 +9,19 @@
       </v-col>
     </v-row>
 
-    <v-row align="center" justify="center">
+    <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
       <v-col
-        cols="11"
-        md="6"
+        cols="10"
+        md="8"
         lg="5"
         class="overflow-y-auto"
         :style="$vuetify.breakpoint.xs ? 'max-height: 350px' : 'max-height: 600px'"
+        v-for="(tag, index) in tags.slice(0, 4)"
+        :key="tag.canonicalName"
       >
-        <div v-for="(tag, index) in tags" :key="index">
-          <TagComponent :canonicalName="tag.canonicalName"></TagComponent>
-        </div>
+        <TagComponent :canonicalName="tag.canonicalName" @remove="removeTag(index)"></TagComponent>
       </v-col>
-    </v-row>
+    </transition-group>
 
     <img
       :style="$vuetify.breakpoint.xs ? 'display: none' : ''"
@@ -49,7 +49,11 @@ export default Vue.extend({
     tags: [] as Tag[]
   }),
 
-  methods: {},
+  methods: {
+    removeTag(index: number) {
+      this.tags.splice(index, 1);
+    }
+  },
 
   watch: {
     async stepAction() {
@@ -72,5 +76,15 @@ export default Vue.extend({
   position: absolute;
   bottom: 120px;
   left: 100px;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.4s;
+}
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

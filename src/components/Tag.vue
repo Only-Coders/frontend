@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-8 py-1" max-height="96">
+  <v-card class="mb-2 py-1" max-height="96">
     <v-row no-gutters align="center">
       <v-col class="pl-6 align-start">
         <v-card-title class="pb-1"> {{ canonicalName }} </v-card-title>
@@ -24,6 +24,7 @@ export default Vue.extend({
   methods: {
     followTag() {
       post(this.canonicalName);
+      this.$emit("remove");
     }
   }
 });

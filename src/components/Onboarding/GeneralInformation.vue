@@ -168,6 +168,7 @@ import { RegisterUser } from "@/models/registerUser";
 import { getCountries } from "@/services/countries";
 import { register } from "@/services/auth";
 import Compressor from "compressorjs";
+import { setHeaders } from "@/plugins/axios";
 
 export default Vue.extend({
   name: "GeneralInformation",
@@ -240,7 +241,9 @@ export default Vue.extend({
         this.user.imageURI = this.profileImageURL;
         this.user.birthDate = new Date(this.user.birthDate).toISOString();
         console.log(this.user);
-        await register(this.user);
+        const ocToken = await register(this.user);
+        localStorage.setItem("accessToken", ocToken.token);
+        setHeaders(ocToken.token);
       }
     }
   },

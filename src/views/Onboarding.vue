@@ -41,7 +41,7 @@
     >
 
     <v-btn
-      @click="noticeChild"
+      @click="finishOnboarding"
       color="primary"
       class="stepButtons"
       large
@@ -89,6 +89,9 @@ export default Vue.extend({
         this.carouselIndex++;
       }
       this.isLoading = false;
+    },
+    finishOnboarding() {
+      this.$router.push("/feed");
     }
   }
 });

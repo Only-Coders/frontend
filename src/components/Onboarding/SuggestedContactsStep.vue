@@ -54,23 +54,13 @@ export default Vue.extend({
 
   components: { Contact, NoData },
 
-  props: { stepAction: Boolean },
-
   data: () => ({
     suggestedContacts: [] as SuggestedContact[]
   }),
 
   methods: {
     removeSuggestedContact(index: number) {
-      console.log(index);
       this.suggestedContacts.splice(index, 1);
-    }
-  },
-
-  watch: {
-    async stepAction() {
-      this.$emit("showButtonLoader");
-      //redirect to to feed
     }
   },
 

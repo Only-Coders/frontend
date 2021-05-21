@@ -10,50 +10,51 @@
   "ForgotPassword": {
     "forgotTitle": "Olvidaste tu contraseña ?",
     "forgotMessage": "No te preocupes, le pasa hasta a los mejores.",
-    "forgotMessage2": "Enviaremos un enlace de recuperacion de contraseña al correo electronico indicado.",
+    "forgotMessage2": "Enviaremos un enlace de recuperación de contraseña al correo electrónico indicado.",
     "buttonLabel": "confirmar",
-    "successNotificationTitle": "Recuperacion de contraseña",
-    "successNotificationMessage": "Hemos enviado un enlace de recuperacion de contraseña al correo electronico indicado.",
-    "errorNotificationMessage": "Ha ocurrido un error con tu solicitud, por favor intentalo nuvamente."
+    "successNotificationTitle": "Recuperación de contraseña",
+    "successNotificationMessage": "Hemos enviado un enlace de recuperación de contraseña al correo electrónico indicado.",
+    "errorNotificationMessage": "Ha ocurrido un error con tu solicitud, por favor inténtalo nuevamente."
   },
   "Onboarding": {
     "GeneralInformation": {
-      "title": "Informacion General",
+      "title": "Información General",
       "text": "Ingresa tu información con la que deseas que los otros usuarios te vean.",
       "nameLabel": "Nombre",
       "lastNameLabel": "Apellido",
       "gitProfile": "Perfil de Git",
       "birthDate": "Fecha de Nacimiento",
-      "country": "Pais",
+      "country": "País",
       "city": "Ciudad",
-      "description": "Cuentanos sobre ti",
+      "description": "Cuentanos sobre tí",
+      "nextButton": "Siguiente",
       "gitPlatformLabel": "Platforma Git"
     },
     "Shared": {
       "nextButton": "Siguiente",
-      "backButton": "Atras",
+      "backButton": "Atrás",
       "skipButton": "Omitir",
       "addButtonLabel": "Agregar",
       "deleteButtonLabel": "Eliminar",
       "editButtonLabel": "Editar",
-      "noData": "Mmm... Parece que todavia no hay datos",
+      "noData": "Mmm... Parece que todavía no hay datos",
       "requiredField": "Este campo es obligatorio",
-      "invalidEmail": "Por favor ingrese un email valido",
+      "invalidEmail": "Por favor ingrese un email válido",
       "profileImageSize": "El archivo es muy grande",
       "fromDateToAnother": "a"
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",
-      "text": "Cuentanos sobre tus experiencias laborales para que los reclutadores sepan mas de ti !",
+      "text": "Cuéntanos sobre tus experiencias laborales para que los reclutadores sepan más de tí !",
       "addExperienceButton": "Agregar Experiencia",
-      "organizationLabel": "Organizacion",
+      "organizationLabel": "Organización",
       "positionLabel": "Puesto",
       "startDateLabel": "Fecha de inicio",
-      "endDateLabel": "Fecha de finalizacion",
+      "endDateLabel": "Fecha de finalización",
       "addExperienceTitleDialog": "Experiencia",
-      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia laboral seleccionada?",
+      "deleteExperienceTitleDialog": "Estás seguro de que quieres borrar la experiencia laboral seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
-      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?",
+      "deleteExperienceTextDialog2": "será algo permanente, estás seguro?",
       "currentLabel": "A la Fecha"
     },
     "Skills": {
@@ -69,7 +70,7 @@
     },
     "SuggestedContacts": {
       "title": "Red personal",
-      "text": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias.",
+      "text": "Agrega personas a tu red de contactos o síguelas para enterarte de las últimas tendencias.",
       "follow": "Seguir",
       "unfollow": "No seguir",
       "add": "Agregar",
@@ -77,27 +78,27 @@
     },
     "StudyExperience": {
       "title": "Experiencia Academica",
-      "text": "Ingresa tus experiencias academicas para que todos sepan que conocimientos tienes !",
+      "text": "Ingresa tus experiencias académicas para que todos sepan qué conocimientos tienes!",
       "addExperienceButton": "Agregar Experiencia",
-      "institutionLabel": "Institucion",
-      "degreeLabel": "Titulo",
+      "institutionLabel": "Institución",
+      "degreeLabel": "Título",
       "startDateLabel": "Fecha de inicio",
-      "endDateLabel": "Fecha de finalizacion",
+      "endDateLabel": "Fecha de finalización",
       "addExperienceTitleDialog": "Experiencia",
-      "deleteExperienceTitleDialog": "Estas seguro de que quieres borrar la experiencia academica seleccionada?",
+      "deleteExperienceTitleDialog": "Estás seguro de que quieres borrar la experiencia académica seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
-      "deleteExperienceTextDialog2": "sera algo permanente, estas seguro?",
+      "deleteExperienceTextDialog2": "será algo permanente, estás seguro?",
       "currentLabel": "A la Fecha"
     },
     "Notifications": {
-      "somethingWentWrong": "Oops, algo salio mal :(",
-      "emailVerificationTitle": "Verificacion de correo electronico",
-      "emailVerificationMessage": "Te hemos enviado un correo electronico de verificacion",
-      "askForEmailVerification": "Por favor, verifique su direccion electronica",
+      "somethingWentWrong": "Oops, algo salió mal :(",
+      "emailVerificationTitle": "Verificación de correo electrónico",
+      "emailVerificationMessage": "Te hemos enviado un correo electrónico de verificación",
+      "askForEmailVerification": "Por favor, verifique su dirección electrónica",
       "rolErrorMessage": "Ha ocurrido un error con su rol",
-      "invalidCredential": "Tu correo electronico o contraseña es incorrecto",
-      "emailAlreadyExists": "Este correo electronico ya esta en uso",
-      "invalidEmail": "Correo electronico incorrecto"
+      "invalidCredential": "Tu correo electrónico o contraseña es incorrecto",
+      "emailAlreadyExists": "Este correo electrónico ya está en uso",
+      "invalidEmail": "Correo electrónico incorrecto"
     }
   }
 }

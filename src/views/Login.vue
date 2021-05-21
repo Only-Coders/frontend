@@ -198,7 +198,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             } else {
               switch (user.roles) {
                 case Role.USER:
-                  this.$router.push("/onboarding"); //push to feed
+                  this.$router.push("/feed"); //push to feed
                   break;
                 case Role.ADMIN:
                   this.$router.push("/about"); //push to backoffice view

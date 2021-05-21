@@ -242,7 +242,6 @@ export default Vue.extend({
         }
         this.user.imageURI = this.profileImageURL;
         this.user.birthDate = new Date(this.user.birthDate).toISOString();
-        console.log(this.user);
         const ocToken = await register(this.user);
         setHeaders(ocToken.token);
         const user: UserData = jwtDecode(ocToken.token);
@@ -253,13 +252,12 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
-      // this.$emit("showButtonLoader");
+      this.$emit("showButtonLoader");
       try {
         await this.handleRegisterUser();
         this.$emit("moveNextStep");
         this.$destroy();
       } catch (error) {
-        console.log(error);
         this.$router.push("/login");
       }
     }

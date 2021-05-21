@@ -188,10 +188,10 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             //pegarle al backend para login
             const ocToken = await authenticate(tokenId.token);
 
-            localStorage.setItem("accessToken", ocToken.token);
             setHeaders(ocToken.token);
-
             const user: User = jwtDecode(ocToken.token);
+            this.$store.commit("userModule/SET_USER", user);
+
             this.success("", `Wellcome back ${user.canonicalName}`, 2000);
             if (!user.complete) {
               this.$router.push("/onboarding");

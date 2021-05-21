@@ -89,10 +89,6 @@ export default Vue.extend({
         this.carouselIndex++;
       }
       this.isLoading = false;
-    },
-    finishOnboarding() {
-      console.log("Finish onboarding");
-      this.carouselIndex++;
     }
   }
 });

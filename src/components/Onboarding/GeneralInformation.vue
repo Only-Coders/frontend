@@ -169,6 +169,8 @@ import { getCountries } from "@/services/countries";
 import { register } from "@/services/auth";
 import Compressor from "compressorjs";
 import { setHeaders } from "@/plugins/axios";
+import jwtDecode from "jwt-decode";
+import { UserData } from "@/store/modules/user";
 
 export default Vue.extend({
   name: "GeneralInformation",
@@ -242,15 +244,16 @@ export default Vue.extend({
         this.user.birthDate = new Date(this.user.birthDate).toISOString();
         console.log(this.user);
         const ocToken = await register(this.user);
-        localStorage.setItem("accessToken", ocToken.token);
         setHeaders(ocToken.token);
+        const user: UserData = jwtDecode(ocToken.token);
+        this.$store.commit("userModule/SET_USER", user);
       }
     }
   },
 
   watch: {
     async stepAction() {
-      this.$emit("showButtonLoader");
+      // this.$emit("showButtonLoader");
       try {
         await this.handleRegisterUser();
         this.$emit("moveNextStep");

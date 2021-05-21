@@ -125,11 +125,11 @@ export default Vue.extend({
     },
     async stepAction() {
       this.$emit("showButtonLoader");
-      await Promise.all(
-        this.selectedSkills.map((skill) => {
-          return post(skill);
-        })
-      );
+      // await Promise.all(
+      //   this.selectedSkills.map((skill) => {
+      //     return post(skill);
+      //   })
+      // );
       this.$emit("moveNextStep");
       this.$destroy();
     }

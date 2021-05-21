@@ -51,14 +51,21 @@
             </v-row>
             <v-row class="mb-4">
               <v-col>
-                <v-btn block color="primary" large depressed :loading="isLoading" @click="login">
+                <v-btn block color="primary" large depressed :loading="isLoadingLogin" @click="login">
                   {{ $i18n.t("Login.loginButton") }}
                 </v-btn>
               </v-col>
               <v-col>
-                <v-btn block color="primary_light" class="primary--text" large depressed @click="register">{{
-                  $i18n.t("Login.signInButton")
-                }}</v-btn>
+                <v-btn
+                  block
+                  color="primary_light"
+                  class="primary--text"
+                  large
+                  depressed
+                  :loading="isLoadingRegister"
+                  @click="register"
+                  >{{ $i18n.t("Login.signInButton") }}</v-btn
+                >
               </v-col>
             </v-row>
 
@@ -125,12 +132,14 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
   data: () => ({
     email: "",
     password: "",
-    isLoading: false
+    isLoadingLogin: false,
+    isLoadingRegister: false
   }),
 
   methods: {
     async register() {
       try {
+        this.isLoadingRegister = true;
         const result = await auth.createUserWithEmailAndPassword(this.email, this.password);
 
         if (result.user && result.user.email) {
@@ -147,6 +156,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             );
           }
         }
+        this.isLoadingRegister = false;
       } catch (error) {
         switch (error.code) {
           case FirebaseErrors.INVALID_EMAIL:
@@ -161,12 +171,14 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
           default:
             break;
         }
+      } finally {
+        this.isLoadingRegister = false;
       }
     },
 
     async login() {
-      this.isLoading = true;
       if ((this.$refs["login-register"] as HTMLFormElement).validate()) {
+        this.isLoadingLogin = true;
         try {
           const result = await auth.signInWithEmailAndPassword(this.email, this.password);
 
@@ -193,11 +205,12 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
                   break;
                 default:
                   this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
-                  this.isLoading = false;
+                  this.isLoadingLogin = false;
               }
             }
           } else {
             this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
+            this.isLoadingLogin = false;
           }
         } catch (error) {
           switch (error.code) {
@@ -212,8 +225,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             default:
               break;
           }
-        } finally {
-          this.isLoading = false;
+          this.isLoadingLogin = false;
         }
       }
     },

@@ -72,7 +72,9 @@
       "title": "Contact network",
       "text": "Add people to your network of contacts or follow them to find out the latest trends.",
       "follow": "Follow",
-      "add": "Add"
+      "unfollow": "Unfollow",
+      "add": "Add",
+      "cancelAdd": "Cancel"
     },
     "StudyExperience": {
       "title": "Academic Experience",

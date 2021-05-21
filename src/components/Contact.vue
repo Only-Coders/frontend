@@ -16,12 +16,27 @@
       </v-col>
 
       <v-col cols="12" sm="4" class="mt-sm-0 mt-4">
-        <v-btn color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
+        <v-btn v-if="!followed" color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
           {{ $i18n.t("Onboarding.SuggestedContacts.follow") }}
         </v-btn>
+        <v-btn v-else color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
+          {{ $i18n.t("Onboarding.SuggestedContacts.unfollow") }}
+        </v-btn>
 
-        <v-btn color="primary" width="35%" class="mx-3" small depressed @click="sendContactRequest">
+        <v-btn
+          v-if="!contactRequestSended"
+          color="primary"
+          width="35%"
+          class="mx-3"
+          small
+          depressed
+          @click="sendContactRequest"
+        >
           {{ $i18n.t("Onboarding.SuggestedContacts.add") }}
+        </v-btn>
+
+        <v-btn v-else color="primary" width="35%" class="mx-3" small depressed @click="sendContactRequest">
+          {{ $i18n.t("Onboarding.SuggestedContacts.cancelAdd") }}
         </v-btn>
       </v-col>
     </v-row>
@@ -30,20 +45,35 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { post } from "@/services/contact";
-import { post_follow } from "@/services/follow";
+import { post_contact_request, delete_contact_request } from "@/services/contact";
+import { post_follow, delete_follow } from "@/services/follow";
 
 export default Vue.extend({
   name: "Contact",
 
   props: { firstName: String, lastName: String, imageURI: String, canonicalName: String },
 
+  data: () => ({
+    contactRequestSended: false,
+    followed: false
+  }),
+
   methods: {
     followUser() {
-      post_follow(this.canonicalName);
+      if (this.followed) {
+        delete_follow(this.canonicalName);
+      } else {
+        post_follow(this.canonicalName);
+      }
+      this.followed = !this.followed;
     },
     sendContactRequest() {
-      post({ canonicalName: this.canonicalName });
+      if (this.contactRequestSended) {
+        delete_contact_request(this.canonicalName);
+      } else {
+        post_contact_request({ canonicalName: this.canonicalName });
+      }
+      this.contactRequestSended = !this.contactRequestSended;
     },
     closeSuggestedContact() {
       this.$emit("remove");

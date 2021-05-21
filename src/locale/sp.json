@@ -71,7 +71,9 @@
       "title": "Red personal",
       "text": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias.",
       "follow": "Seguir",
-      "add": "Agregar"
+      "unfollow": "No seguir",
+      "add": "Agregar",
+      "cancelAdd": "Cancelar"
     },
     "StudyExperience": {
       "title": "Experiencia Academica",

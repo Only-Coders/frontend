@@ -31,7 +31,7 @@ import { StudyExperience } from "@/models/experience";
 import { dateMixin } from "@/mixins/formattedDate";
 
 export default Vue.extend({
-  name: "Experience",
+  name: "StudyExperienceItem",
 
   mixins: [dateMixin],
 

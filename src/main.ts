@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 
 const i18n = new VueI18n({
   locale: store.state.lang,
-  messages: { sp: Locale.sp, en: Locale.en }
+  messages: { es: Locale.es, en: Locale.en }
 });
 
 new Vue({

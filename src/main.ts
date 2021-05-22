@@ -5,14 +5,16 @@ import store from "@/store/index";
 import vuetify from "./plugins/vuetify";
 import VueI18n from "vue-i18n";
 import Locale from "@/locale/index";
+import Notifications from "vue-notification";
 
 Vue.use(VueI18n);
+Vue.use(Notifications);
 
 Vue.config.productionTip = false;
 
 const i18n = new VueI18n({
   locale: store.state.lang,
-  messages: { sp: Locale.sp, en: Locale.en }
+  messages: { es: Locale.es, en: Locale.en }
 });
 
 new Vue({

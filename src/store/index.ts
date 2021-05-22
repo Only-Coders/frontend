@@ -1,12 +1,32 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPersist from "vuex-persist";
+import UserModule from "@/store/modules/user";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+type State = {
+  userModule?: UserModule;
+  lang: string;
+};
+
+const persist = new VuexPersist({
+  storage: window.localStorage,
+  reducer: (state: State) => ({
+    userModule: {
+      user: state.userModule?.user
+    }
+  })
+});
+
+export default new Vuex.Store<State>({
   state: {
-    lang: "sp"
+    lang: "en"
   },
   mutations: {},
-  actions: {}
+  actions: {},
+  modules: {
+    userModule: UserModule
+  },
+  plugins: [persist.plugin]
 });

@@ -1,7 +1,7 @@
 import en from "./en.json";
-import sp from "./sp.json";
+import es from "./es.json";
 
 export default {
-  sp,
+  es,
   en
 };

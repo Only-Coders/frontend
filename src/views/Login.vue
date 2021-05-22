@@ -192,7 +192,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             const user: User = jwtDecode(ocToken.token);
             this.$store.commit("userModule/SET_USER", user);
 
-            this.success("", `Wellcome back ${user.canonicalName}`, 2000);
+            this.success("", `Welcome back ${user.canonicalName}`, 2000);
             if (!user.complete) {
               this.$router.push("/onboarding");
             } else {

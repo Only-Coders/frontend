@@ -91,7 +91,7 @@ export default Vue.extend({
       this.isLoading = false;
     },
     finishOnboarding() {
-      this.$router.push("/feed");
+      this.$router.push("/");
     }
   }
 });

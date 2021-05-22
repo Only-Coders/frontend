@@ -106,7 +106,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
-import { RuleMixin } from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { auth, google } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
@@ -115,6 +114,7 @@ import { setHeaders } from "@/plugins/axios";
 import { Role } from "@/models/Enums/role";
 import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
+import RuleMixin from "@/mixins/rules";
 
 type User = {
   roles: Role;
@@ -194,11 +194,14 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
 
             this.success("", `Welcome back ${user.canonicalName}`, 2000);
             if (!user.complete) {
+              console.log("entre al if");
               this.$router.push("/onboarding");
             } else {
+              console.log("entre al else");
+
               switch (user.roles) {
                 case Role.USER:
-                  this.$router.push("/feed"); //push to feed
+                  this.$router.push("/"); //push to feed
                   break;
                 case Role.ADMIN:
                   this.$router.push("/about"); //push to backoffice view

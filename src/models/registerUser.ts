@@ -1,5 +1,3 @@
-// import { GitPlatform } from "./gitPlatforms";
-
 export type RegisterUser = {
   birthDate: string;
   description: string;

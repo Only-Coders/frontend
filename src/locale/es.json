@@ -41,7 +41,8 @@
       "requiredField": "Este campo es obligatorio",
       "invalidEmail": "Por favor ingrese un email válido",
       "profileImageSize": "El archivo es muy grande",
-      "fromDateToAnother": "a"
+      "fromDateToAnother": "a",
+      "passwordRule": "La contraseña debe contener 6 caracteres como minimo"
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",

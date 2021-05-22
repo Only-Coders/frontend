@@ -100,7 +100,7 @@
 </template>
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { RuleMixin } from "@/mixins/rules";
+import RuleMixin from "@/mixins/rules";
 import { StudyExperience } from "@/models/experience";
 import { dateMixin } from "@/mixins/formattedDate";
 import { inputMixin } from "@/mixins/inputProps";

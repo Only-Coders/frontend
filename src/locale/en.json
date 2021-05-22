@@ -41,7 +41,8 @@
       "requiredField": "Required field",
       "invalidEmail": "Please enter a valid email",
       "profileImageSize": "File size is too big",
-      "fromDateToAnother": "to"
+      "fromDateToAnother": "to",
+      "passwordRule": "Password must have at least 6 characters"
     },
     "WorkExperience": {
       "title": "Work Experience",

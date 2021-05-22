@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { RuleMixin } from "@/mixins/rules";
+import RuleMixin from "@/mixins/rules";
 
 export default Vue.extend({
   name: "DeleteStudyExperience",

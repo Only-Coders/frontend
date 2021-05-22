@@ -64,7 +64,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
-import { RuleMixin } from "@/mixins/rules";
+import RuleMixin from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { auth } from "@/plugins/firebaseInit";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
@@ -85,7 +85,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
       try {
         if ((this.$refs["forgot-password"] as HTMLFormElement).validate()) {
           const actionCodeSettings = {
-            url: `http://localhost:8080/login`,
+            url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
             handleCodeInApp: true
           };
           const result = await auth.sendPasswordResetEmail(this.email, actionCodeSettings);

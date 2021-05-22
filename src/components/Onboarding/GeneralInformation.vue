@@ -158,11 +158,11 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { RuleMixin } from "@/mixins/rules";
+import RuleMixin from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { dateMixin } from "@/mixins/formattedDate";
 import { storage } from "@/plugins/firebaseInit";
-import { GitPlatform } from "@/models/gitPlatforms";
+import GitPlatform from "@/mixins/gitPlatforms";
 import { Country } from "@/models/country";
 import { RegisterUser } from "@/models/registerUser";
 import { getCountries } from "@/services/countries";
@@ -177,11 +177,10 @@ export default Vue.extend({
 
   props: { stepAction: Boolean },
 
-  mixins: [RuleMixin, inputMixin, dateMixin],
+  mixins: [RuleMixin, inputMixin, dateMixin, GitPlatform],
 
   data: () => ({
     selectedGitPlatform: {},
-    gitPlatforms: GitPlatform.gitPlatforms,
     countries: [] as Country[],
     profileImageData: null as File | null,
     profileImageToShow: "",
@@ -211,10 +210,13 @@ export default Vue.extend({
     handleShowFileSelector() {
       (this.$refs.input1 as HTMLButtonElement).click();
     },
-    previewImage(event: any) {
-      this.hasSelectedProfileImage = true;
-      this.profileImageData = event.target.files[0];
-      this.profileImageToShow = URL.createObjectURL(event.target.files[0]);
+    previewImage(event: Event) {
+      const target = event.target as HTMLInputElement;
+      if (target.files) {
+        this.hasSelectedProfileImage = true;
+        this.profileImageData = target.files[0];
+        this.profileImageToShow = URL.createObjectURL(target.files[0]);
+      }
     },
 
     async onUpload() {

@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { RuleMixin } from "@/mixins/rules";
+import RuleMixin from "@/mixins/rules";
 import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({

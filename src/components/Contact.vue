@@ -1,6 +1,6 @@
 <template>
   <v-card class="py-1">
-    <v-btn class="btn_cross mr-2 mt-1" icon small @click="closeSuggestedContact">
+    <v-btn class="btn_cross mr-2 mt-1" absolute icon small @click="closeSuggestedContact">
       <v-icon size="20"> mdi-close </v-icon>
     </v-btn>
     <v-row align="center" no-gutters class="mt-3 mb-2">
@@ -12,7 +12,10 @@
 
       <v-col class="align-start mr-10 mt" cols="7" sm="5">
         <v-card-title class="pb-1 pl-0"> {{ firstName }} {{ lastName }} </v-card-title>
-        <v-card-text class="text-start pl-0"> La descripcion de la persona </v-card-text>
+        <v-card-text class="text-start pl-0">
+          {{ currentPosition != null ? currentPosition.workplace.name + " | " : "" }}
+          {{ currentPosition != null ? currentPosition.position : "" }}
+        </v-card-text>
       </v-col>
 
       <v-col cols="12" sm="4" class="mt-sm-0 mt-4">
@@ -44,14 +47,21 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { post_contact_request, delete_contact_request } from "@/services/contact";
 import { post_follow, delete_follow } from "@/services/follow";
+import { CurrentPosition } from "@/models/currentPosition";
 
 export default Vue.extend({
   name: "Contact",
 
-  props: { firstName: String, lastName: String, imageURI: String, canonicalName: String },
+  props: {
+    firstName: String,
+    lastName: String,
+    imageURI: String,
+    canonicalName: String,
+    currentPosition: Object as PropType<CurrentPosition>
+  },
 
   data: () => ({
     contactRequestSended: false,
@@ -89,7 +99,6 @@ export default Vue.extend({
 }
 
 .btn_cross {
-  position: absolute !important;
   right: 0;
   top: 0;
 }

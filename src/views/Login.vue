@@ -198,7 +198,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             } else {
               switch (user.roles) {
                 case Role.USER:
-                  this.$router.push("/feed"); //push to feed
+                  this.$router.push("/onboarding"); //push to feed
                   break;
                 case Role.ADMIN:
                   this.$router.push("/about"); //push to backoffice view
@@ -219,6 +219,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
               break;
 
             case FirebaseErrors.INVALID_EMAIL:
+            case FirebaseErrors.EMAIL_NOT_FOUND:
               this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
               break;
 

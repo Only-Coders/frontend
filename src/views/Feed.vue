@@ -1,13 +1,16 @@
 <template>
   <div>
-    <p>Feed</p>
+    <Profile></Profile>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import Profile from "@/components/Feed/Profile.vue";
+
 export default Vue.extend({
-  name: "Feed"
+  name: "Feed",
+  components: { Profile }
 });
 </script>
 

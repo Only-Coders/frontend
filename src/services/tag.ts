@@ -7,6 +7,5 @@ export async function get(tagName: string, size: number): Promise<TagPagination>
 }
 
 export async function post(canonicalName: string): Promise<void> {
-  const response = await axios.post(`/api/users/tags/${canonicalName}`);
-  return response.data;
+  await axios.post(`/api/users/tags/${canonicalName}`);
 }

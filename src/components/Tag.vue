@@ -17,7 +17,7 @@ import Vue from "vue";
 import { post } from "@/services/tag";
 
 export default Vue.extend({
-  name: "Tag",
+  name: "TagItem",
 
   props: { canonicalName: String, followerQuantity: Number },
 

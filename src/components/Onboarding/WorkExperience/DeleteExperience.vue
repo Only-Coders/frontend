@@ -37,7 +37,7 @@ import RuleMixin from "@/mixins/rules";
 import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({
-  name: "UpdateExperience",
+  name: "DeleteWorkExperience",
 
   mixins: [RuleMixin],
 

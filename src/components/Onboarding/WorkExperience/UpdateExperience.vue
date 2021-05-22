@@ -108,7 +108,7 @@ import { Organization } from "@/models/organization";
 import { getOrganizations } from "@/services/workExperience";
 
 export default Vue.extend({
-  name: "UpdateExperience",
+  name: "UpdateWorkExperience",
 
   mixins: [RuleMixin, inputMixin, dateMixin],
 

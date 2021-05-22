@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; padding-top: 85px">
+  <div class="general-information">
     <v-row justify="center" align="center" class="pt-sm-0 pt-16" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.GeneralInformation.title") }}</h2>
@@ -270,6 +270,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.general-information {
+  position: relative;
+  padding-top: 85px;
+}
 .profile-img {
   border-radius: 50%;
 }

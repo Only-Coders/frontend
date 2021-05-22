@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; margin-top: 85px; height: 765px">
+  <div class="study-experience">
     <v-row justify="center" class="pt-sm-0 pt-16" align="center" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.StudyExperience.title") }}</h2>
@@ -138,6 +138,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.study-experience {
+  position: relative;
+  margin-top: 85px;
+  height: 765px;
+}
+
 .online_resume {
   width: 260px;
   z-index: 2;

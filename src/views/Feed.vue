@@ -9,6 +9,10 @@
           <Suggestions></Suggestions>
         </v-row>
       </v-col>
+
+      <v-col cols="5 ml-3">
+        <PostContainer></PostContainer>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -17,10 +21,12 @@
 import Vue from "vue";
 import Profile from "@/components/Feed/Profile.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
+import PostContainer from "@/components/Post/PostContainer.vue";
 
 export default Vue.extend({
   name: "Feed",
-  components: { Profile, Suggestions }
+
+  components: { Profile, Suggestions, PostContainer }
 });
 </script>
 

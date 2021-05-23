@@ -18,3 +18,10 @@ export default Vue.extend({
   components: { Header }
 });
 </script>
+<style scoped>
+.main {
+  overflow: hidden;
+  height: 100%;
+  background: #f4f4f4;
+}
+</style>

@@ -110,5 +110,11 @@
     "contacts": "contacts",
     "viewProfile": "view profile",
     "seeMore": "see more"
+  },
+  "CreatePost": {
+    "PrivacyPost": {
+      "public": "To anyone",
+      "private": "To my contacts"
+    }
   }
 }

@@ -110,5 +110,12 @@
     "contacts": "contactos",
     "viewProfile": "ver perfil",
     "seeMore": "ver mas"
+  },
+
+  "CreatePost": {
+    "PrivacyPost": {
+      "public": "Cualquiera",
+      "private": "Mis contactos"
+    }
   }
 }

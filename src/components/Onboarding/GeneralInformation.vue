@@ -239,7 +239,7 @@ export default Vue.extend({
 
     async handleRegisterUser() {
       if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
-        if (this.profileImageURL !== "") {
+        if (this.profileImageToShow !== "") {
           await this.onUpload();
         }
         this.user.imageURI = this.profileImageURL;

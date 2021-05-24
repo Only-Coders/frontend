@@ -1,12 +1,12 @@
 import { Module, VuexModule, Mutation } from "vuex-module-decorators";
+import { Role } from "@/models/Enums/role";
 
 export type UserData = {
   imageURI: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   canonicalName: string;
-  role: string;
-  completed: string;
+  roles: Role;
+  complete: string;
 };
 
 @Module({ name: "userModule", namespaced: true })

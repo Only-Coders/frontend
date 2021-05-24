@@ -3,11 +3,11 @@
     <v-card max-width="220">
       <div class="profile__banner">
         <v-avatar size="90" class="profile__banner__avatar">
-          <v-img alt="user" src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg" />
+          <v-img alt="user" :src="userData.imageURI" />
         </v-avatar>
       </div>
       <v-row class="pt-16" justify="center">
-        <v-card-title class="pt-2">Mateo Sayas</v-card-title>
+        <v-card-title class="pt-2">{{ userData.fullName }}</v-card-title>
         <v-card-subtitle><p align="center">Front-end developer en Kaizen Softworks</p></v-card-subtitle>
       </v-row>
       <v-row justify="center"> MEDALS </v-row>
@@ -30,7 +30,7 @@
         </v-col>
       </v-row>
       <v-row justify="center" class="pb-2">
-        <v-btn text color="secondary" class="v-btn__content" @click="showAddDialog"> ver perfil </v-btn>
+        <v-btn text color="secondary" class="v-btn__content"> ver perfil </v-btn>
       </v-row>
     </v-card>
   </v-row>
@@ -38,13 +38,18 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { UserData } from "@/store/modules/user";
 
 export default Vue.extend({
   name: "Profile",
 
-  props: {},
+  data: () => ({
+    userData: {} as UserData
+  }),
 
-  data: () => ({})
+  created() {
+    this.userData = this.$store.state.userModule.user; //esta data luego se va a obtener de la api: /api/users/{canonicalName}
+  }
 });
 </script>
 

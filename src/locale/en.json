@@ -1,4 +1,6 @@
 {
+  "cancel": "cancel",
+  "add": "add",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -115,6 +117,7 @@
     "PrivacyPost": {
       "public": "To anyone",
       "private": "To my contacts"
-    }
+    },
+    "InsertLink": "Insert link"
   }
 }

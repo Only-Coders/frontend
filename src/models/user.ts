@@ -1,6 +1,6 @@
 import { CurrentPosition } from "./currentPosition";
 
-export type SuggestedContact = {
+export type User = {
   canonicalName: string;
   firstName: string;
   lastName: string;

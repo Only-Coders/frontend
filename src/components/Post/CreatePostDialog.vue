@@ -1,71 +1,74 @@
 <template>
-  <v-dialog v-model="show" transition="dialog-top-transition" max-width="800" height="90vh">
+  <v-dialog :value="value" @input="close" transition="dialog-top-transition" max-width="800" height="90vh">
     <v-card class="d-flex flex-column">
       <v-toolbar color="primary" dark>
         <h2 class="ml-4">Crear publicación</h2>
         <v-spacer></v-spacer>
-        <v-btn class="mr-2 mt-1" icon @click.stop="show = false">
+        <v-btn class="mr-2 mt-1" icon @click="close">
           <v-icon size="27"> mdi-close </v-icon>
         </v-btn>
       </v-toolbar>
 
       <v-card-text>
-        <v-textarea
-          placeholder="Escribe un mensaje..."
-          v-model="post.message"
-          auto-grow
-          maxlength="2048"
-          class="mt-4"
-          flat
-          solo
-          counter
-        ></v-textarea>
+        <Mentions :post="post" @addLink="showLinkPreview"></Mentions>
+
         <div v-if="imageToShow">
           <v-btn class="btn_cross mr-2 mt-1" fab small absolute color="secondary" @click="deleteImage">
-            <v-icon size="22" color="white"> mdi-close </v-icon>
+            <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
           <v-img v-if="imageToShow" :src="imageToShow" />
         </div>
 
-        <FileType></FileType>
+        <FileType v-if="fileToShow" @deleteFile="deleteFileShowed" :name="fileData.name"></FileType>
+
+        <div v-if="urlForPreview">
+          <v-btn class="btn_cross mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
+            <v-icon size="16" color="white"> mdi-close </v-icon>
+          </v-btn>
+          <LinkPreview v-if="urlForPreview" :url="urlForPreview" @click="handleClick"></LinkPreview>
+        </div>
       </v-card-text>
 
       <v-divider></v-divider>
       <v-card-actions class="my-1">
-        <input type="file" ref="imageUp" style="display: none" @change="previewImage" />
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="$refs.imageUp.click()">
+        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="handleShowImageSelector">
+          <input type="file" ref="imageUp" @change="previewImage" style="display: none" lazy-src />
           <v-icon size="30"> mdi-image </v-icon>
         </v-btn>
 
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large>
+        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="handleShowFileSelector">
+          <input type="file" ref="fileUp" @change="previewFile" style="display: none" lazy-src />
           <v-icon size="30">mdi-rotate-270 mdi-attachment </v-icon>
         </v-btn>
 
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large>
+        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="insertCodeExample">
           <v-icon size="30"> mdi-code-braces </v-icon>
         </v-btn>
 
+        <v-btn icon class="mx-2" large :disabled="!enabledButtons" @click="showLinkDialog = true">
+          <v-icon size="30"> mdi-link-variant </v-icon>
+        </v-btn>
+        <LinkModal @addLink="showLinkPreview" v-model="showLinkDialog"></LinkModal>
         <v-divider vertical class="ml-2"></v-divider>
-        <v-combobox
-          v-model="selectedPrivacy"
+
+        <v-select
+          v-model="post.isPublic"
           :items="privacyOptions"
+          item-text="text"
+          item-value="public"
           label="Privacy"
-          :value="post.isPublic"
           rounded
           outlined
           dense
           class="privacy_combo ml-6"
           hide-details
         >
-          <v-icon size="20" slot="prepend-inner">
+          <v-icon size="20" class="pt-1" slot="prepend-inner">
             {{ post.isPublic ? "mdi-earth" : "mdi-account" }}
           </v-icon>
-        </v-combobox>
+        </v-select>
 
         <v-spacer></v-spacer>
-        <!-- <v-btn class="mx-10" fab dark color="primary" @click="createPost" @click.stop="show = false">
-          <v-icon dark> mdi-send </v-icon>
-        </v-btn> -->
         <v-btn
           color="primary"
           depressed
@@ -87,24 +90,44 @@ import { Post } from "@/models/post";
 import Compressor from "compressorjs";
 import { storage } from "@/plugins/firebaseInit";
 import FileType from "@/components/Post/FileType.vue";
+import Mentions from "@/components/Post/Mentions.vue";
+import LinkModal from "@/components/Post/LinkModal.vue";
+import LinkPreview from "@/components/Post/LinkPreview.vue";
+import { VueConstructor } from "vue/types/umd";
+import commonMethodsMixin, { CommonMethodsMixin } from "@/mixins/commonMethods";
 
-export default Vue.extend({
+type PrivacyOption = {
+  text: string;
+  public: boolean;
+};
+
+export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
   name: "CreatePostDialog",
 
-  components: { FileType },
+  components: { FileType, Mentions, LinkModal, LinkPreview },
 
-  props: { visible: Boolean },
+  props: { value: Boolean },
+
+  mixins: [commonMethodsMixin],
 
   data: () => ({
     imageData: null as File | null,
     imageToShow: "",
+    fileData: null as File | null,
+    fileToShow: "",
     enabledButtons: true,
-    privacyOptions: [] as string[],
-    selectedPrivacy: "",
+    privacyOptions: [] as PrivacyOption[],
+    isTypingName: false,
+    items: [] as string[],
+    timer: 0,
+    search: "",
+    codeExample: "```javascript\n//Put your code here...\n```",
+    urlForPreview: "",
+    showLinkDialog: false,
     post: {
       message: "",
       type: PostType.TEXT,
-      isPublic: false,
+      isPublic: true,
       url: "",
       mentionCanonicalNames: [],
       tagNames: []
@@ -112,19 +135,34 @@ export default Vue.extend({
   }),
 
   methods: {
+    handleShowImageSelector() {
+      (this.$refs.imageUp as HTMLButtonElement).click();
+    },
     handleShowFileSelector() {
-      (this.$refs.input1 as HTMLButtonElement).click();
+      (this.$refs.fileUp as HTMLButtonElement).click();
     },
     previewImage(event: Event) {
       const target = event.target as HTMLInputElement;
+      console.log(target);
       if (target.files && (target.files[0]["type"] === "image/jpeg" || target.files[0]["type"] === "image/png")) {
         this.imageData = target.files[0];
         this.imageToShow = URL.createObjectURL(target.files[0]);
         this.enabledButtons = false;
         this.post.type = PostType.IMAGE;
       }
+      target.value = "";
     },
-    async onUpload() {
+    previewFile(event: Event) {
+      const target = event.target as HTMLInputElement;
+      if (target.files) {
+        this.fileData = target.files[0];
+        this.fileToShow = URL.createObjectURL(target.files[0]);
+        this.enabledButtons = false;
+        this.post.type = PostType.FILE;
+      }
+      target.value = "";
+    },
+    async onUploadImage() {
       //TODO: Pasar a mixin
       const imageData = this.imageData as File;
       const imageCompresor = new Promise<string>((resolve, reject) => {
@@ -142,40 +180,77 @@ export default Vue.extend({
       });
       this.post.url = await imageCompresor;
     },
+    async onUploadFile() {
+      if (this.fileData) {
+        const response = await storage.ref(`files/${this.fileData.name}`).put(this.fileData);
+        this.post.url = await response.ref.getDownloadURL();
+      }
+    },
     deleteImage() {
       this.enabledButtons = true;
       this.imageToShow = "";
       this.imageData = null;
       this.post.type = PostType.TEXT;
     },
+    deleteFileShowed() {
+      this.enabledButtons = true;
+      this.fileToShow = "";
+      this.fileData = null;
+      this.post.type = PostType.TEXT;
+    },
     async createPost() {
       try {
         if (this.post.type == PostType.IMAGE) {
-          await this.onUpload();
+          await this.onUploadImage();
+        } else if (this.post.type == PostType.FILE) {
+          await this.onUploadFile();
         }
-        post(this.post);
+        this.post.tagNames = this.post.tagNames.filter((tagName) => {
+          return this.post.message.includes(tagName);
+        });
+
+        this.post.mentionCanonicalNames = this.post.mentionCanonicalNames.filter((name) => {
+          return this.post.message.includes(name);
+        });
+        await post(this.post);
+        this.close();
       } catch (error) {
         console.log(error);
       }
-    }
-  },
-
-  computed: {
-    show: {
-      get() {
-        return this.visible;
-      },
-      set(value) {
-        if (!value) {
-          this.$emit("close");
-        }
+    },
+    insertCodeExample() {
+      this.post.message = this.post.message + "\n" + this.codeExample;
+    },
+    showLinkPreview(url: string, evt: ClipboardEvent) {
+      if (!this.urlForPreview && this.validURL(url)) {
+        this.urlForPreview = url;
+        this.post.type = PostType.LINK;
+        this.enabledButtons = false;
+        evt.preventDefault();
       }
+    },
+    deleteLinkPreview() {
+      this.urlForPreview = "";
+      this.post.type = PostType.TEXT;
+      this.enabledButtons = true;
+    },
+    close() {
+      this.$emit("input");
     }
   },
 
   created() {
-    this.privacyOptions.push(this.$i18n.t("CreatePost.PrivacyPost.public").toString());
-    this.privacyOptions.push(this.$i18n.t("CreatePost.PrivacyPost.private").toString());
+    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.public").toString(), public: true });
+    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.private").toString(), public: false });
+
+    this.post = {
+      message: "",
+      type: PostType.TEXT,
+      isPublic: true, //TODO: Obtenerlo del feed
+      url: "",
+      mentionCanonicalNames: [],
+      tagNames: []
+    };
   }
 });
 </script>

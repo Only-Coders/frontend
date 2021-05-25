@@ -1,6 +1,7 @@
 export enum PostType {
-  TEXT,
-  IMAGE,
-  LINK,
-  ARTICLE
+  TEXT = "TEXT",
+  IMAGE = "IMAGE",
+  FILE = "FILE",
+  LINK = "LINK",
+  ARTICLE = "ARTICLE"
 }

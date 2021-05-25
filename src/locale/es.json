@@ -1,4 +1,6 @@
 {
+  "cancel": "cancelar",
+  "add": "agregar",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Ingreso",
@@ -116,6 +118,7 @@
     "PrivacyPost": {
       "public": "Cualquiera",
       "private": "Mis contactos"
-    }
+    },
+    "InsertLink": "Agregar enlace"
   }
 }

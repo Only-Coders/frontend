@@ -37,7 +37,7 @@
       </v-row>
     </v-card>
 
-    <CreatePostDialog :visible="createDialog" @close="createDialog = false"></CreatePostDialog>
+    <CreatePostDialog v-model="createDialog"></CreatePostDialog>
   </div>
 </template>
 

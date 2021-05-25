@@ -14,6 +14,7 @@
         <PostContainer></PostContainer>
       </v-col>
     </v-row>
+
   </div>
 </template>
 

@@ -6,7 +6,7 @@
           <Profile></Profile>
         </v-row>
         <v-row class="pt-16">
-          <Suggestions></Suggestions>
+          <Suggestions class="d-sm-none d-md-flex"></Suggestions>
         </v-row>
       </v-col>
     </v-row>

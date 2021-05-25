@@ -101,5 +101,8 @@
       "emailAlreadyExists": "Este correo electrónico ya está en uso",
       "invalidEmail": "Correo electrónico incorrecto"
     }
+  },
+  "Feed": {
+    "noSuggestions": "No tenemos sugerencias para ti :("
   }
 }

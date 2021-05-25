@@ -1,23 +1,27 @@
 <template>
-  <v-row justify="center" class="py-1" style="max-width: 220px">
-    <v-col cols="2" class="pa-0 pl-1">
-      <v-avatar size="50">
-        <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
-      </v-avatar>
-    </v-col>
+  <v-list-item class="pr-0">
+    <v-list-item-avatar size="55">
+      <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
+    </v-list-item-avatar>
 
-    <v-col class="pa-0 pl-4">
-      <v-card-title class="font-weight-light subtitle-2"> {{ firstName }} {{ lastName }} </v-card-title>
-      <v-card-text class="text-start font-weight-thin">
-        {{ currentPosition != null ? currentPosition.position : "" }}
-      </v-card-text>
-    </v-col>
-    <v-col class="pa-0 px-2" cols="1">
-      <v-btn absolute icon small @click="closeSuggestedContact">
-        <v-icon size="20"> mdi-close </v-icon>
+    <v-list-item-content>
+      <v-list-item-title>
+        <h3 class="pa-0 font-weight-light text-truncate">{{ firstName }} {{ lastName }}</h3>
+      </v-list-item-title>
+
+      <v-list-item-subtitle>
+        <h4 class="pa-0 pt-1 font-weight-light">
+          {{ currentPosition != null ? currentPosition.position : "" }}
+        </h4>
+      </v-list-item-subtitle>
+    </v-list-item-content>
+
+    <v-list-item-action class="ma-0">
+      <v-btn icon @click="closeSuggestedContact">
+        <v-icon size="18">mdi-close</v-icon>
       </v-btn>
-    </v-col>
-  </v-row>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script lang="ts">

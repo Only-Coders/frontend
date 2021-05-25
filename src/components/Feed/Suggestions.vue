@@ -1,17 +1,29 @@
 <template>
   <v-row justify="center">
-    <v-card max-width="220">
+    <v-card width="250">
       <v-row justify="space-between" align="center">
         <v-card-title class="pt-4 pl-6 font-weight-light">Suggestions</v-card-title>
         <v-btn icon color="black"><v-icon>mdi-dots-vertical</v-icon></v-btn>
       </v-row>
       <v-divider></v-divider>
-      <v-row justify="center" class="pt-4">
-        <div class="pt-2" v-for="(contact, index) in suggestedContacts" :key="contact">
+      <div v-if="suggestedContacts.length !== 0">
+        <v-list v-for="(contact, index) in suggestedContacts" :key="contact.canonicalName">
           <Contact v-bind="{ ...contact }" @remove="removeSuggestedContact(index)"></Contact>
-        </div>
+          <v-divider v-if="index < suggestedContacts.length - 1" :key="index"></v-divider>
+        </v-list>
+      </div>
+      <v-row justify="center" v-if="suggestedContacts.length === 0">
+        <v-col>
+          <v-img
+            class="mx-auto mt-6 mb-2"
+            src="@/assets/images/undraw_empty_box.svg"
+            width="180"
+            alt="no data :("
+          ></v-img>
+          <h4 class="text-center pt-4 pb-2 font-weight-light text-truncate">{{ $i18n.t("Feed.noSuggestions") }}</h4>
+        </v-col>
       </v-row>
-      <v-row justify="center" class="pb-2">
+      <v-row v-if="suggestedContacts.length !== 0" justify="center" class="pb-2">
         <v-btn text color="primary" class="v-btn__content"> ver mas </v-btn>
       </v-row>
     </v-card>

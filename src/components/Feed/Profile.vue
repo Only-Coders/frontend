@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-card max-width="220">
+    <v-card max-width="250">
       <div class="profile__banner">
         <v-avatar size="90" class="profile__banner__avatar">
           <v-img alt="user" :src="userData.imageURI" />
@@ -68,6 +68,6 @@ export default Vue.extend({
 .v-btn__content {
   text-transform: lowercase !important;
   font-weight: bold !important;
-  font-size: 18px !important;
+  font-size: 16px !important;
 }
 </style>

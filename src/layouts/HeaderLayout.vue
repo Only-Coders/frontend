@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark> </v-app-bar>
+    <Header></Header>
 
     <v-main>
       <router-view />
@@ -10,8 +10,11 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Header from "@/components/Layout/Header.vue";
 
 export default Vue.extend({
-  name: "HeaderLayout"
+  name: "HeaderLayout",
+
+  components: { Header }
 });
 </script>

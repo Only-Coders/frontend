@@ -101,5 +101,14 @@
       "emailAlreadyExists": "Este correo electrónico ya está en uso",
       "invalidEmail": "Correo electrónico incorrecto"
     }
+  },
+  "Feed": {
+    "noSuggestions": "No tenemos sugerencias para ti :(",
+    "suggestions": "Sugerencias",
+    "posts": "posteos",
+    "followers": "seguidores",
+    "contacts": "contactos",
+    "viewProfile": "ver perfil",
+    "seeMore": "ver mas"
   }
 }

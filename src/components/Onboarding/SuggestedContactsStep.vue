@@ -67,7 +67,6 @@ export default Vue.extend({
   async created() {
     const result = await get(10);
     this.suggestedContacts = result;
-    console.log(this.suggestedContacts);
   }
 });
 </script>

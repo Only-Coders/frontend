@@ -117,9 +117,11 @@ import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import RuleMixin from "@/mixins/rules";
 
 type User = {
-  roles: Role;
-  complete: boolean;
+  imageURI: string;
+  fullName: string;
   canonicalName: string;
+  roles: Role;
+  complete: string;
 };
 
 export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
@@ -192,15 +194,16 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             const user: User = jwtDecode(ocToken.token);
             this.$store.commit("userModule/SET_USER", user);
 
-            this.success("", `Welcome back ${user.canonicalName}`, 2000);
             if (!user.complete) {
               this.$router.push("/onboarding");
             } else {
               switch (user.roles) {
                 case Role.USER:
+                  this.success("", `Welcome back ${user.canonicalName}`, 2000);
                   this.$router.push("/"); //push to feed
                   break;
                 case Role.ADMIN:
+                  this.success("", `Welcome back ${user.canonicalName}`, 2000);
                   this.$router.push("/about"); //push to backoffice view
                   break;
                 default:

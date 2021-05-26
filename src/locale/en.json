@@ -101,5 +101,14 @@
       "emailAlreadyExists": "This email is already taken",
       "invalidEmail": "Wrong email"
     }
+  },
+  "Feed": {
+    "noSuggestions": "We have no suggestions for you :(",
+    "suggestions": "Suggestions",
+    "posts": "posts",
+    "followers": "followers",
+    "contacts": "contacts",
+    "viewProfile": "view profile",
+    "seeMore": "see more"
   }
 }

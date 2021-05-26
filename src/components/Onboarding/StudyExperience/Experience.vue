@@ -7,8 +7,12 @@
         <v-card-text class="pt-0 text-left"
           >{{ formatDate(studyExperience.since) }}
           {{ $i18n.t("Onboarding.Shared.fromDateToAnother") }}
-          {{ studyExperience.until === "" ? CURRENT : formatDate(studyExperience.until) }}</v-card-text
-        >
+          {{
+            studyExperience.until === ""
+              ? $i18n.t("Onboarding.StudyExperience.currentLabel")
+              : formatDate(studyExperience.until)
+          }}
+        </v-card-text>
       </v-col>
       <v-col cols="2" class="mr-6" no-gutters>
         <v-btn block color="error" small @click="showDeleteDialog" outlined>{{

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-row class="pt-16">
+    <v-row class="pt-16 hidden-sm-and-down">
       <v-col cols="4">
         <v-row>
           <Profile></Profile>
         </v-row>
         <v-row class="pt-16">
-          <Suggestions class="d-sm-none d-md-flex"></Suggestions>
+          <Suggestions></Suggestions>
         </v-row>
       </v-col>
     </v-row>

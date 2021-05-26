@@ -103,6 +103,12 @@
     }
   },
   "Feed": {
-    "noSuggestions": "No tenemos sugerencias para ti :("
+    "noSuggestions": "No tenemos sugerencias para ti :(",
+    "suggestions": "Sugerencias",
+    "posts": "posteos",
+    "followers": "seguidores",
+    "contacts": "contactos",
+    "viewProfile": "ver perfil",
+    "seeMore": "ver mas"
   }
 }

@@ -2,8 +2,7 @@
   <v-row justify="center">
     <v-card width="250">
       <v-row justify="space-between" align="center">
-        <v-card-title class="pt-4 pl-6 font-weight-light">Suggestions</v-card-title>
-        <v-btn icon color="black"><v-icon>mdi-dots-vertical</v-icon></v-btn>
+        <v-card-title class="pt-4 pl-6 font-weight-light">{{ $i18n.t("Feed.suggestions") }}</v-card-title>
       </v-row>
       <v-divider></v-divider>
       <div v-if="suggestedContacts.length !== 0">
@@ -24,7 +23,7 @@
         </v-col>
       </v-row>
       <v-row v-if="suggestedContacts.length !== 0" justify="center" class="pb-2">
-        <v-btn text color="primary" class="v-btn__content"> ver mas </v-btn>
+        <v-btn text color="primary" class="v-btn__content">{{ $i18n.t("Feed.seeMore") }} </v-btn>
       </v-row>
     </v-card>
   </v-row>

@@ -14,7 +14,7 @@
             />
           </router-link>
         </v-col>
-        <v-col cols="10" md="6" lg="4">
+        <v-col cols="10" md="8" lg="4">
           <v-text-field
             style="width: 400px"
             v-model="searchParameters"
@@ -28,9 +28,10 @@
           ></v-text-field>
         </v-col>
         <v-col cols="2" class="d-flex justify-end pa-0">
-          <v-btn text rounded plain class="hidden-sm-and-down"
-            ><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn
-          >
+          <div class="icon-container hidden-sm-and-down">
+            <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
+            <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
+          </div>
           <v-btn text rounded plain
             ><v-icon :size="$vuetify.breakpoint.xs ? '33' : '24'" color="navbar_icon" class="mt-6 mr-4 mt-sm-0 mr-sm-0"
               >mdi-message-text</v-icon
@@ -41,7 +42,7 @@
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
         </v-col>
-        <v-col cols="2" class="d-flex flex-row-reverse hidden-sm-and-down">
+        <v-col cols="2" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
           <div class="hidden-sm-and-down">
             <transition name="scale-transition" mode="out-in" appear>
               <v-menu transition="slide-y-transition" nudge-bottom="45px" bottom avatar>
@@ -195,5 +196,19 @@ export default Vue.extend({
   text-decoration: none !important;
   cursor: pointer !important;
   color: #000000 !important;
+}
+
+.icon-container {
+  position: relative !important;
+}
+
+.indicator {
+  position: absolute !important;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 2px;
+  background: white;
 }
 </style>

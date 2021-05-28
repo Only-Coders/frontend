@@ -1,4 +1,5 @@
 import axios from "@/plugins/axios";
+import httpClient from "axios";
 import { RegisterUser } from "@/models/registerUser";
 
 export async function authenticate(firebaseToken: string): Promise<{ token: string }> {
@@ -6,8 +7,10 @@ export async function authenticate(firebaseToken: string): Promise<{ token: stri
   return response.data;
 }
 
-export async function refreshToken(): Promise<{ token: string }> {
-  const { data } = await axios.post(`/api/auth/refresh`);
+export async function refreshToken(token: string | null): Promise<{ token: string }> {
+  const { data } = await httpClient.post<{ token: string }>(`/api/auth/refresh`, null, {
+    headers: { authorization: "Bearer " + token }
+  });
   return data;
 }
 

@@ -15,7 +15,10 @@ export default new Vuetify({
         success: "#619d4b",
         warning: "#f9a825",
         primary_light: "#dcf8f3",
-        grey_input: "#ebebeb"
+        grey_input: "#ebebeb",
+        navbar: "#34374B",
+        searchInput: "#494C62",
+        navbar_icon: "#EDEDED"
       }
     },
     options: {

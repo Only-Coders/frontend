@@ -1,5 +1,4 @@
 import axios from "@/plugins/axios";
-import store from "@/store";
 import { Country } from "@/models/country";
 
 export async function getCountries(): Promise<Country[]> {

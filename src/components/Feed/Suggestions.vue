@@ -22,7 +22,7 @@
     </v-row>
 
     <v-btn v-if="suggestedContacts.length !== 0" text color="primary" block class="text-caption"
-      >{{ $i18n.t("Feed.seeMore") }}
+      >{{ $i18n.t("seeMore") }}
     </v-btn>
   </v-card>
 </template>

@@ -1,6 +1,9 @@
 {
   "cancel": "cancelar",
   "add": "agregar",
+  "accept": "aceptar",
+  "reject": "rechazar",
+  "seeMore": "ver más",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Ingreso",
@@ -110,8 +113,7 @@
     "posts": "posteos",
     "followers": "seguidores",
     "contacts": "contactos",
-    "viewProfile": "ver perfil",
-    "seeMore": "ver mas"
+    "viewProfile": "ver perfil"
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -124,5 +126,13 @@
     "noResults": "no hay resultados",
     "createPost": "Crear publicación",
     "createPostBtn": "Crear"
+  },
+  "ViewProfile": {
+    "contactRequests": "Solicitudes de contactos",
+    "Posts": "Publicaciones",
+    "Contacts": "Contactos",
+    "Favorites": "Favoritos",
+    "Data": "Datos",
+    "Tags": "Temas"
   }
 }

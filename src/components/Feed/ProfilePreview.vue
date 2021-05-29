@@ -2,7 +2,10 @@
   <v-card>
     <div class="profile__banner">
       <v-avatar size="90" class="profile__banner__avatar">
-        <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
+        <v-img
+          alt="user"
+          :src="userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')"
+        />
       </v-avatar>
     </div>
 

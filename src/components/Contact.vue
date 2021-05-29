@@ -10,7 +10,7 @@
         </v-avatar>
       </v-col>
 
-      <v-col class="align-start mr-10 mt" cols="7" sm="5">
+      <v-col class="align-start mr-10" cols="7" sm="5">
         <v-card-title class="pb-1 pl-0"> {{ firstName }} {{ lastName }} </v-card-title>
         <v-card-text class="text-start pl-0">
           {{ currentPosition != null ? currentPosition.workplace.name + " | " : "" }}

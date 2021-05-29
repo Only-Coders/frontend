@@ -24,12 +24,19 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { Component } from "vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
 import ContactsTab from "@/components/Profile/Tabs/ContactsTab.vue";
 import TagsTab from "@/components/Profile/Tabs/TagsTab.vue";
 import FavoritesTab from "@/components/Profile/Tabs/FavoritesTab.vue";
 import DataTab from "@/components/Profile/Tabs/DataTab.vue";
+import { i18n } from "@/main";
+
+type TabsTitles = {
+  tab: string;
+  content: Component;
+  icon: string;
+};
 
 export default Vue.extend({
   name: "ProfileTabs",
@@ -45,12 +52,24 @@ export default Vue.extend({
   data: () => ({
     tab: null,
     items: [
-      { tab: "Posts", content: PostContainer, icon: "mdi-code-tags" },
-      { tab: "Contacts", content: ContactsTab, icon: "mdi-account-multiple" },
-      { tab: "Favorites", content: FavoritesTab, icon: "mdi-bookmark" },
-      { tab: "Data", content: DataTab, icon: "mdi-account-box" },
-      { tab: "Tags", content: TagsTab, icon: "mdi-pound" }
-    ]
+      {
+        tab: i18n.t("ViewProfile.Posts").toString(),
+        content: PostContainer,
+        icon: "mdi-code-tags"
+      },
+      {
+        tab: i18n.t("ViewProfile.Contacts").toString(),
+        content: ContactsTab,
+        icon: "mdi-account-multiple"
+      },
+      {
+        tab: i18n.t("ViewProfile.Favorites").toString(),
+        content: FavoritesTab,
+        icon: "mdi-bookmark"
+      },
+      { tab: i18n.t("ViewProfile.Data").toString(), content: DataTab, icon: "mdi-account-box" },
+      { tab: i18n.t("ViewProfile.Tags").toString(), content: TagsTab, icon: "mdi-pound" }
+    ] as TabsTitles[]
   })
 });
 </script>

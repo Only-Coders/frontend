@@ -36,6 +36,7 @@ jobs:
           VUE_APP_MSG_SENDER_ID: ${{secrets.VUE_APP_MSG_SENDER_ID}}
           VUE_APP_ID: ${{secrets.VUE_APP_ID}}
           VUE_APP_FORGOT_PASSWORD_REDIRECT: ${{secrets.VUE_APP_FORGOT_PASSWORD_REDIRECT}}
+          VUE_APP_API_URI: ${{secrets.VUE_APP_API_URI}}
         run: yarn build
 
       - name: Deploy

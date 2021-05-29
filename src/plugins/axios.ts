@@ -4,7 +4,7 @@ import store from "@/store/index";
 import Router from "@/router/index";
 
 const config = {
-  baseURL: process.env.apiURL
+  baseURL: process.env.VUE_APP_API_URI
 };
 const instance = axios.create(config);
 

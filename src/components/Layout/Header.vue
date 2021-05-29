@@ -73,12 +73,15 @@
                           </v-col>
                           <v-col>
                             <v-list-item-title class="pl-4">
-                              <span class="d-inline-block text-truncate font-weight-medium"
-                                >{{ userData.firstName }} {{ userData.lastName }}</span
-                              >
-                              <h4 class="font-weight-light">
-                                {{ userData.currentPosition ? userData.currentPosition.position : "asdasd" }}
+                              <span class="d-inline-block text-truncate font-weight-medium">{{
+                                userData.fullName
+                              }}</span>
+                              <h4 class="font-weight-light text--secondary">
+                                {{ userCurrentPosition.company }}
                               </h4>
+                              <h5 class="font-weight-light text--secondary">
+                                {{ userCurrentPosition.position }}
+                              </h5>
                             </v-list-item-title>
                           </v-col>
                         </v-row>
@@ -155,8 +158,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Profile } from "@/models/profile";
-import { getUserByCanonicalName } from "@/services/user";
+import { UserData } from "@/store/modules/user";
 
 export default Vue.extend({
   name: "Header",
@@ -164,13 +166,20 @@ export default Vue.extend({
   props: {},
 
   data: () => ({
-    userData: {} as Profile,
+    userData: {} as UserData,
+    userCurrentPosition: { company: "", position: "" },
     searchParameters: ""
   }),
 
   methods: {
     async getUserProfile() {
-      this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
+      this.userData = this.$store.state.userModule.user;
+      if (this.userData.currentPosition !== "") {
+        this.userCurrentPosition = {
+          company: this.userData.currentPosition.split(" - ")[0],
+          position: this.userData.currentPosition.split(" - ")[1]
+        };
+      }
     }
   },
 

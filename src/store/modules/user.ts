@@ -9,6 +9,7 @@ export type UserData = {
   complete: string;
   defaultPrivacy: boolean;
   sub: string;
+  currentPosition: string;
 };
 
 @Module({ name: "userModule", namespaced: true })

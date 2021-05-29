@@ -2,7 +2,7 @@
   <v-dialog :value="value" @input="close" transition="dialog-top-transition" max-width="800" height="90vh">
     <v-card class="d-flex flex-column">
       <v-toolbar color="primary" dark>
-        <h2 class="ml-4">Crear publicación</h2>
+        <h2 class="ml-4">{{ $i18n.t("CreatePost.createPost") }}</h2>
         <v-spacer></v-spacer>
         <v-btn class="mr-2 mt-1" icon @click="close">
           <v-icon size="27"> mdi-close </v-icon>
@@ -13,7 +13,7 @@
         <Mentions :post="post" @addLink="showLinkPreview"></Mentions>
 
         <div v-if="imageToShow">
-          <v-btn class="btn_cross mr-2 mt-1" fab small absolute color="secondary" @click="deleteImage">
+          <v-btn class="mr-2 mt-1" fab small absolute color="secondary" @click="deleteImage">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
           <v-img v-if="imageToShow" :src="imageToShow" />
@@ -22,7 +22,7 @@
         <FileType v-if="fileToShow" @deleteFile="deleteFileShowed" :name="fileData.name"></FileType>
 
         <div v-if="urlForPreview">
-          <v-btn class="btn_cross mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
+          <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
           <LinkPreview v-if="urlForPreview" :url="urlForPreview" @click="handleClick"></LinkPreview>
@@ -75,7 +75,7 @@
           class="mr-3"
           :disabled="enabledButtons && post.message == ''"
           @click="createPost"
-          >Publicar</v-btn
+          >{{ $i18n.t("CreatePost.createPostBtn") }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -117,10 +117,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
     fileToShow: "",
     enabledButtons: true,
     privacyOptions: [] as PrivacyOption[],
-    isTypingName: false,
-    items: [] as string[],
-    timer: 0,
-    search: "",
     codeExample: "```javascript\n//Put your code here...\n```",
     urlForPreview: "",
     showLinkDialog: false,
@@ -143,7 +139,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
     },
     previewImage(event: Event) {
       const target = event.target as HTMLInputElement;
-      console.log(target);
       if (target.files && (target.files[0]["type"] === "image/jpeg" || target.files[0]["type"] === "image/png")) {
         this.imageData = target.files[0];
         this.imageToShow = URL.createObjectURL(target.files[0]);
@@ -243,34 +238,14 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
     this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.public").toString(), public: true });
     this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.private").toString(), public: false });
 
-    this.post = {
-      message: "",
-      type: PostType.TEXT,
-      isPublic: true, //TODO: Obtenerlo del feed
-      url: "",
-      mentionCanonicalNames: [],
-      tagNames: []
-    };
+    this.post.isPublic = this.$store.state.userModule.user.defaultPrivacy;
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.v-card__text {
-  flex: 1 1 auto;
-}
-.v-toolbar {
-  flex: 0;
-}
-.v-textarea {
-  font-size: 1.2rem;
-}
-.btn_cross {
-  color: white;
-  right: 0;
-}
 .privacy_combo {
   border-radius: 50px !important;
-  max-width: 220px;
+  max-width: 240px;
 }
 </style>

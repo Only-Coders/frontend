@@ -113,12 +113,16 @@
     "viewProfile": "ver perfil",
     "seeMore": "ver mas"
   },
-
   "CreatePost": {
     "PrivacyPost": {
       "public": "Cualquiera",
       "private": "Mis contactos"
     },
-    "InsertLink": "Agregar enlace"
+    "InsertLink": "Agregar enlace",
+    "typeMessage": "Escribe un mensaje...",
+    "loading": "cargando...",
+    "noResults": "no hay resultados",
+    "createPost": "Crear publicación",
+    "createPostBtn": "Crear"
   }
 }

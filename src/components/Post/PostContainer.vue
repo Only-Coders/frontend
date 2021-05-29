@@ -16,7 +16,10 @@ import Post from "./Post.vue";
 export default Vue.extend({
   name: "PostContainer",
 
-  components: { CreatePost, Post },
+  components: {
+    CreatePost,
+    Post
+  },
 
   data: () => ({
     posts: []

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div>
-      <v-btn class="btn_cross ml-8" fab color="secondary" @click="deleteFile">
-        <v-icon size="10" color="white"> mdi-close </v-icon>
-      </v-btn>
-    </div>
+    <v-btn class="btn_cross ml-8" fab color="secondary" @click="deleteFile">
+      <v-icon size="10" color="white"> mdi-close </v-icon>
+    </v-btn>
+
     <div>
       <v-icon size="35"> mdi-file </v-icon>
       <p class="mb-0">{{ name }}</p>

@@ -118,6 +118,11 @@
       "public": "To anyone",
       "private": "To my contacts"
     },
-    "InsertLink": "Insert link"
+    "InsertLink": "Insert link",
+    "typeMessage": "Type a message...",
+    "loading": "loading...",
+    "noResults": "no result",
+    "createPost": "Create post",
+    "createPostBtn": "Create"
   }
 }

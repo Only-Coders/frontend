@@ -1,20 +1,16 @@
 <template>
   <div>
-    <v-row class="pt-16 hidden-sm-and-down">
-      <v-col cols="4">
-        <v-row>
-          <Profile></Profile>
-        </v-row>
-        <v-row class="pt-16">
-          <Suggestions></Suggestions>
-        </v-row>
+    <v-row class="mt-14" no-gutters>
+      <v-col cols="2 offset-1" sm="3" lg="2" class="hidden-sm-and-down">
+        <Profile></Profile>
+
+        <Suggestions class="mt-16"></Suggestions>
       </v-col>
 
-      <v-col cols="5 ml-3">
+      <v-col cols="10 offset-1" md="5">
         <PostContainer></PostContainer>
       </v-col>
     </v-row>
-
   </div>
 </template>
 

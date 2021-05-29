@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-card>
-      <v-row class="px-6 py-3" align="center">
+      <v-row class="px-7 py-3" align="center" no-gutters>
         <v-col cols="2">
-          <v-avatar size="70">
+          <v-avatar size="60">
             <v-img
               alt="user"
               :src="
@@ -14,21 +14,10 @@
             />
           </v-avatar>
         </v-col>
-        <v-col cols="10" class="pr-14">
-          <!-- <v-btn
-            class="pa-2 pl-5 btn_create"
-            block
-            outlined
-            height="60"
-            color="#888888"
-            x-large
-            @click.stop="createDialog = true"
-          >
-            <span class="btn_create_text">Crear publicación</span>
-          </v-btn> -->
+        <v-col cols="10" class="pr-4">
           <v-text-field
             class="create_post_input"
-            placeholder="Crear publicación"
+            :placeholder="$i18n.t('CreatePost.createPost')"
             autocomplete="off"
             @click.stop="createDialog = true"
             readonly
@@ -37,7 +26,7 @@
       </v-row>
     </v-card>
 
-    <CreatePostDialog v-model="createDialog"></CreatePostDialog>
+    <CreatePostDialog v-if="createDialog" v-model="createDialog"></CreatePostDialog>
   </div>
 </template>
 
@@ -48,7 +37,9 @@ import CreatePostDialog from "./CreatePostDialog.vue";
 export default Vue.extend({
   name: "CreatePost",
 
-  components: { CreatePostDialog },
+  components: {
+    CreatePostDialog
+  },
 
   data: () => ({
     createDialog: false

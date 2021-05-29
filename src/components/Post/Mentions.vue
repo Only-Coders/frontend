@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div>
     <Mentionable
       :keys="['#', '@']"
       :items="items"
@@ -10,7 +10,7 @@
       @apply="addMention"
     >
       <v-textarea
-        placeholder="Escribe un mensaje..."
+        :placeholder="$i18n.t('CreatePost.typeMessage')"
         v-model="post.message"
         auto-grow
         maxlength="2048"
@@ -18,13 +18,12 @@
         flat
         solo
         counter
+        no-resize
         @paste="onPaste"
       ></v-textarea>
 
       <template #no-result>
-        <div class="dim">
-          {{ loading ? "Loading..." : "No result" }}
-        </div>
+        <div class="dim">{{ loading ? $i18n.t("CreatePost.loading") : $i18n.t("CreatePost.noResults") }}</div>
       </template>
 
       <template #item-#="{ item }">
@@ -117,7 +116,6 @@ export default Vue.extend({
     },
     onPaste(evt: ClipboardEvent) {
       if (evt.clipboardData) {
-        console.log("En mentions: " + this.post.message);
         this.$emit("addLink", evt.clipboardData.getData("text"), evt);
       }
     }
@@ -126,10 +124,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.demo {
-  margin: 24px 0;
-}
-
 .user-name {
   display: flex !important;
   align-items: center !important;

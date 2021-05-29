@@ -1,7 +1,8 @@
 import axios from "@/plugins/axios";
-import { TagPagination } from "@/models/Pagination/tagPagination";
+import { Pagination } from "@/models/Pagination/pagination";
+import { Tag } from "@/models/tag";
 
-export async function get(tagName: string, size: number): Promise<TagPagination> {
+export async function getTag(tagName: string, size: number): Promise<Pagination<Tag>> {
   const response = await axios.get(`/api/tags`, { params: { tagName, size } });
   return response.data;
 }

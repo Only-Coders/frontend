@@ -1,79 +1,58 @@
 <template>
-  <v-row justify="center">
-    <v-card width="250">
-      <div class="profile__banner">
-        <v-avatar size="90" class="profile__banner__avatar">
-          <v-img alt="user" :src="userData.imageURI" />
-        </v-avatar>
-      </div>
-      <v-row class="pt-14" justify="center">
-        <h2 class="pt-4 font-weight-regular">
-          {{ userData.firstName }}
-          {{ userData.lastName }}
-        </h2>
-      </v-row>
-      <v-row justify="center">
-        <h4>
-          <h4 class="center subtitle-1 text--secondary">
-            {{ userData.currentPosition ? userData.currentPosition.position : "" }}
-          </h4>
-        </h4>
-      </v-row>
-      <v-row justify="center" class="mt-8">
-        <v-col cols="2" class="px-0 pl-6">
-          <v-row>
-            <v-col class="pa-0">
-              <v-img alt="user" width="20" src="@/assets/images/gold-medal.png" />
-            </v-col>
-            <v-col class="pa-0">
-              <h5 class="pa-0 font-weight-light">{{ medals.gold }}</h5>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="2" class="px-0 pl-6">
-          <v-row>
-            <v-col class="pa-0">
-              <v-img alt="user" width="20" src="@/assets/images/silver-medal.png" />
-            </v-col>
-            <v-col class="pa-0">
-              <h5 class="pa-0 font-weight-light">{{ medals.silver }}</h5>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="2" class="px-0 pl-6">
-          <v-row>
-            <v-col class="pa-0">
-              <v-img alt="user" width="20" src="@/assets/images/bronce-medal.png" />
-            </v-col>
-            <v-col class="pa-0">
-              <h5 class="pa-0 font-weight-light">{{ medals.bronce }}</h5>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-card-title class="pb-2">{{ userData.postQty }}</v-card-title>
-      </v-row>
-      <p class="pt-0" align="center">{{ $i18n.t("Feed.posts") }}</p>
-      <v-row justify="center">
-        <v-col cols="6" class="pl-6">
-          <v-row justify="center">
-            <v-card-title class="pb-2">{{ userData.followerQty }}</v-card-title>
-          </v-row>
-          <p class="pt-0" align="center">{{ $i18n.t("Feed.followers") }}</p>
-        </v-col>
-        <v-col cols="6" class="pr-6">
-          <v-row justify="center">
-            <v-card-title class="pb-2">{{ userData.contactQty }}</v-card-title>
-          </v-row>
-          <p class="pt-0" align="center">{{ $i18n.t("Feed.contacts") }}</p>
-        </v-col>
-      </v-row>
-      <v-row justify="center" class="pb-2">
-        <v-btn text color="secondary" class="v-btn__content">{{ $i18n.t("Feed.viewProfile") }} </v-btn>
-      </v-row>
-    </v-card>
-  </v-row>
+  <v-card>
+    <div class="profile__banner">
+      <v-avatar size="90" class="profile__banner__avatar">
+        <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
+      </v-avatar>
+    </div>
+
+    <h2 class="pt-15 font-weight-regular text-center">
+      {{ userData.firstName }}
+      {{ userData.lastName }}
+    </h2>
+
+    <h4 class="center subtitle-1 text--secondary text-center">
+      {{ userData.currentPosition ? userData.currentPosition.position : "" }}
+    </h4>
+
+    <v-row justify="center" class="mt-5" no-gutters>
+      <v-col class="d-flex justify-center">
+        <div class="pl-2">
+          <v-img alt="gold-medal" width="20" src="@/assets/images/gold-medal.png" />
+        </div>
+
+        <span class="font-weight-light pr-3 pl-1 text-caption">{{ medals.gold }}</span>
+
+        <div>
+          <v-img alt="silver-medal" width="20" src="@/assets/images/silver-medal.png" />
+        </div>
+        <span class="font-weight-light pr-3 pl-1 text-caption">{{ medals.silver }}</span>
+
+        <div>
+          <v-img alt="bronce-medal" width="20" src="@/assets/images/bronce-medal.png" />
+        </div>
+        <span class="font-weight-light pl-1 text-caption">{{ medals.bronce }}</span>
+      </v-col>
+    </v-row>
+
+    <v-card-title class="py-1 justify-center mt-6">{{ userData.postQty }}</v-card-title>
+    <p class="pt-0" align="center">{{ $i18n.t("Feed.posts") }}</p>
+
+    <v-row justify="center" class="mb-1" no-gutters>
+      <v-col cols="6">
+        <v-card-title class="py-1 justify-center">{{ userData.followerQty }}</v-card-title>
+
+        <p class="pt-0" align="center">{{ $i18n.t("Feed.followers") }}</p>
+      </v-col>
+      <v-col cols="6">
+        <v-card-title class="py-1 justify-center">{{ userData.contactQty }}</v-card-title>
+
+        <p class="pt-0" align="center">{{ $i18n.t("Feed.contacts") }}</p>
+      </v-col>
+    </v-row>
+
+    <v-btn text color="secondary" block class="text-caption">{{ $i18n.t("Feed.viewProfile") }} </v-btn>
+  </v-card>
 </template>
 
 <script lang="ts">

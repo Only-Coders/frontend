@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { get } from "@/services/tag";
+import { getTag } from "@/services/tag";
 import { Tag } from "@/models/tag";
 import TagComponent from "@/components/Tag.vue";
 import NoData from "@/components/NoData.vue";
@@ -70,7 +70,7 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await get("", 10);
+    const result = await getTag("", 10);
     this.tags = result.content;
   }
 });

@@ -7,6 +7,8 @@ export type UserData = {
   canonicalName: string;
   roles: Role;
   complete: string;
+  defaultPrivacy: boolean;
+  sub: string;
 };
 
 @Module({ name: "userModule", namespaced: true })

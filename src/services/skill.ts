@@ -1,8 +1,8 @@
 import axios from "@/plugins/axios";
-import { SkillPagination } from "@/models/Pagination/skillsPagination";
 import { Skill } from "@/models/skills";
+import { Pagination } from "@/models/Pagination/pagination";
 
-export async function get(skillName: string): Promise<SkillPagination> {
+export async function get(skillName: string): Promise<Pagination<Skill>> {
   const response = await axios.get(`/api/skills`, { params: { skillName } });
   return response.data;
 }

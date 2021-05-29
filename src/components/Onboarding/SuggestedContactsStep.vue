@@ -46,7 +46,7 @@
 import Vue from "vue";
 import Contact from "@/components/Contact.vue";
 import { get } from "@/services/suggestedContact";
-import { SuggestedContact } from "@/models/suggestedContact";
+import { User } from "@/models/user";
 import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
@@ -55,7 +55,7 @@ export default Vue.extend({
   components: { Contact, NoData },
 
   data: () => ({
-    suggestedContacts: [] as SuggestedContact[]
+    suggestedContacts: [] as User[]
   }),
 
   methods: {

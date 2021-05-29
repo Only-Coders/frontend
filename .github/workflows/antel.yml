@@ -1,0 +1,55 @@
+name: Build and Deploy to Antel
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Build app 
+        env:
+          VUE_APP_API_KEY: ${{secrets.VUE_APP_API_KEY}}
+          VUE_APP_AUTH_DOMAIN: ${{secrets.VUE_APP_AUTH_DOMAIN}}
+          VUE_APP_DATABASE_URL: ${{secrets.VUE_APP_DATABASE_URL}}
+          VUE_APP_PROJECT_ID: ${{secrets.VUE_APP_PROJECT_ID}}
+          VUE_APP_STORAGE_BUCKET: ${{secrets.VUE_APP_STORAGE_BUCKET}}
+          VUE_APP_MSG_SENDER_ID: ${{secrets.VUE_APP_MSG_SENDER_ID}}
+          VUE_APP_ID: ${{secrets.VUE_APP_ID}}
+          VUE_APP_FORGOT_PASSWORD_REDIRECT: ${{secrets.VUE_APP_FORGOT_PASSWORD_REDIRECT}}
+        run: yarn build
+
+      - name: Deploy
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          path: dist
+          remote_path: /home/viruscontrol/onlycoders/
+          remote_host: onlycoders.tech
+          remote_user: viruscontrol
+          remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Slack Notify
+        uses: rtCamp/action-slack-notify@v2.1.3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

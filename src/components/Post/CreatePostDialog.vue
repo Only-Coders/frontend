@@ -95,6 +95,7 @@ import LinkModal from "@/components/Post/LinkModal.vue";
 import LinkPreview from "@/components/Post/LinkPreview.vue";
 import { VueConstructor } from "vue/types/umd";
 import commonMethodsMixin, { CommonMethodsMixin } from "@/mixins/commonMethods";
+import { i18n } from "@/main";
 
 type PrivacyOption = {
   text: string;
@@ -116,7 +117,10 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
     fileData: null as File | null,
     fileToShow: "",
     enabledButtons: true,
-    privacyOptions: [] as PrivacyOption[],
+    privacyOptions: [
+      { text: i18n.t("CreatePost.PrivacyPost.public").toString(), public: true },
+      { text: i18n.t("CreatePost.PrivacyPost.private").toString(), public: false }
+    ] as PrivacyOption[],
     codeExample: "```javascript\n//Put your code here...\n```",
     urlForPreview: "",
     showLinkDialog: false,
@@ -235,9 +239,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
   },
 
   created() {
-    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.public").toString(), public: true });
-    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.private").toString(), public: false });
-
     this.post.isPublic = this.$store.state.userModule.user.defaultPrivacy;
   }
 });

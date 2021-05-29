@@ -12,7 +12,7 @@ Vue.use(Notifications);
 
 Vue.config.productionTip = false;
 
-const i18n = new VueI18n({
+export const i18n = new VueI18n({
   locale: store.state.lang,
   messages: { es: Locale.es, en: Locale.en }
 });

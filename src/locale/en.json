@@ -1,6 +1,9 @@
 {
   "cancel": "cancel",
   "add": "add",
+  "accept": "accept",
+  "reject": "reject",
+  "seeMore": "see more",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -110,8 +113,7 @@
     "posts": "posts",
     "followers": "followers",
     "contacts": "contacts",
-    "viewProfile": "view profile",
-    "seeMore": "see more"
+    "viewProfile": "view profile"
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -124,5 +126,13 @@
     "noResults": "no result",
     "createPost": "Create post",
     "createPostBtn": "Create"
+  },
+  "ViewProfile": {
+    "contactRequests": "Contact requests",
+    "Posts": "Posts",
+    "Contacts": "Contacts",
+    "Favorites": "Favorites",
+    "Data": "Data",
+    "Tags": "Tags"
   }
 }

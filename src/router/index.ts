@@ -32,6 +32,15 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
+    meta: {
+      layout: "HeaderLayout"
+      //requiresAuth: true
+    }
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

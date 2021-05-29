@@ -2,7 +2,7 @@
   <div>
     <v-row class="mt-14" no-gutters>
       <v-col cols="2 offset-1" sm="3" lg="2" class="hidden-sm-and-down">
-        <Profile></Profile>
+        <ProfilePreview></ProfilePreview>
 
         <Suggestions class="mt-16"></Suggestions>
       </v-col>
@@ -16,14 +16,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Profile from "@/components/Feed/Profile.vue";
+import ProfilePreview from "@/components/Feed/ProfilePreview.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
 
 export default Vue.extend({
   name: "Feed",
 
-  components: { Profile, Suggestions, PostContainer }
+  components: { ProfilePreview, Suggestions, PostContainer }
 });
 </script>
 

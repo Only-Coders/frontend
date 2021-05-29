@@ -62,7 +62,7 @@ import { Medals } from "@/models/medals";
 import { get } from "@/services/user";
 
 export default Vue.extend({
-  name: "Profile",
+  name: "ProfilePreview",
 
   data: () => ({
     userData: {} as Profile,

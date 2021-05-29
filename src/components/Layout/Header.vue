@@ -22,7 +22,7 @@
             prepend-inner-icon="mdi-magnify"
             background-color="searchInput"
             rounded
-            height="35"
+            height="50"
             class="mt-sm-6 mt-11 mx-auto"
             placeholder="Search"
           ></v-text-field>

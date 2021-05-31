@@ -61,7 +61,7 @@
                     </v-tooltip>
                   </span>
                 </template>
-                <v-card width="240px">
+                <v-card width="250px">
                   <v-list rounded>
                     <v-list-item two-line class="px-0 pl-2">
                       <v-list-item-content class="justify-center">
@@ -71,15 +71,15 @@
                               <v-img alt="user avatar" :src="userData.imageURI" />
                             </v-avatar>
                           </v-col>
-                          <v-col>
+                          <v-col class="pa-0 pl-2">
                             <v-list-item-title class="pl-4">
-                              <span class="d-inline-block text-truncate font-weight-medium">{{
-                                userData.fullName
-                              }}</span>
-                              <h4 class="font-weight-light text--secondary">
+                              <h3 class="d-inline-block text-truncate font-weight-medium">
+                                {{ userData.fullName }}
+                              </h3>
+                              <h4 class="font-weight-light text-truncate text--secondary">
                                 {{ userCurrentPosition.company }}
                               </h4>
-                              <h5 class="font-weight-light text--secondary">
+                              <h5 class="font-weight-light text-truncate text--secondary">
                                 {{ userCurrentPosition.position }}
                               </h5>
                             </v-list-item-title>
@@ -169,9 +169,9 @@ export default Vue.extend({
   }),
 
   methods: {
-    async getUserProfile() {
+    async getUserProfileFromToken() {
       this.userData = this.$store.state.userModule.user;
-      if (this.userData.currentPosition !== "") {
+      if (this.userData.currentPosition !== "" && typeof this.userData.currentPosition !== undefined) {
         this.userCurrentPosition = {
           company: this.userData.currentPosition.split(" - ")[0],
           position: this.userData.currentPosition.split(" - ")[1]
@@ -181,7 +181,8 @@ export default Vue.extend({
   },
 
   async created() {
-    await this.getUserProfile();
+    await this.getUserProfileFromToken();
+    console.log(this.userData);
   }
 });
 </script>

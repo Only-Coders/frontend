@@ -21,11 +21,11 @@
 
         <FileType v-if="fileToShow" @deleteFile="deleteFileShowed" :name="fileData.name"></FileType>
 
-        <div v-if="urlForPreview">
+        <div v-if="post.url">
           <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
-          <LinkPreview v-if="urlForPreview" :url="urlForPreview" @click="handleClick"></LinkPreview>
+          <LinkPreview v-if="post.url" :url="post.url" @click="handleClick"></LinkPreview>
         </div>
       </v-card-text>
 
@@ -118,7 +118,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
     enabledButtons: true,
     privacyOptions: [] as PrivacyOption[],
     codeExample: "```javascript\n//Put your code here...\n```",
-    urlForPreview: "",
     showLinkDialog: false,
     post: {
       message: "",
@@ -217,15 +216,15 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
       this.post.message = this.post.message + "\n" + this.codeExample;
     },
     showLinkPreview(url: string, evt: ClipboardEvent) {
-      if (!this.urlForPreview && this.validURL(url)) {
-        this.urlForPreview = url;
+      if (!this.post.url && this.validURL(url)) {
+        this.post.url = url;
         this.post.type = PostType.LINK;
         this.enabledButtons = false;
         evt.preventDefault();
       }
     },
     deleteLinkPreview() {
-      this.urlForPreview = "";
+      this.post.url = "";
       this.post.type = PostType.TEXT;
       this.enabledButtons = true;
     },

@@ -8,14 +8,7 @@
       </v-col>
 
       <v-col cols="10 offset-1" md="5">
-        <PostContainer></PostContainer>
-
-        <div v-if="posts.length === 0">
-          <h1>No posts yet :(</h1>
-        </div>
-        <div v-else v-for="(post, index) in posts" :key="index" class="mt-16">
-          <ViewPost :post="post"></ViewPost>
-        </div>
+        <PostContainer :posts="posts"></PostContainer>
       </v-col>
     </v-row>
   </div>
@@ -26,14 +19,13 @@ import Vue from "vue";
 import Profile from "@/components/Feed/Profile.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
-import ViewPost from "@/components/Post/ViewPost.vue";
 import { getPost } from "@/services/post";
 import { GetPost } from "@/models/post";
 
 export default Vue.extend({
   name: "Feed",
 
-  components: { Profile, Suggestions, PostContainer, ViewPost },
+  components: { Profile, Suggestions, PostContainer },
 
   data: () => ({
     posts: {} as GetPost[]
@@ -48,7 +40,6 @@ export default Vue.extend({
 
   async created() {
     await this.fetchPosts();
-    console.log("posts: ", this.posts);
   }
 });
 </script>

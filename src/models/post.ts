@@ -17,6 +17,7 @@ type Publisher = {
   firstName: string;
   lastName: string;
   imageURI: string;
+  amountOfMedals: number;
   currentPosition: CurrentPosition;
 };
 

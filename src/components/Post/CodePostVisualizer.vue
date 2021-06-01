@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto mt-10 pb-5" max-width="600">
+  <v-card class="mx-auto pb-5" flat>
     <v-card-text>
       <div ref="container"></div>
     </v-card-text>
@@ -61,7 +61,7 @@ export default Vue.extend({
     }
   },
 
-  created() {
+  mounted() {
     this.codePost = this.code;
     this.formatCodePost();
   }

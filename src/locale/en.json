@@ -127,7 +127,13 @@
     "posts": "posts",
     "followers": "followers",
     "contacts": "contacts",
-    "viewProfile": "view profile"
+    "viewProfile": "view profile",
+    "seeMore": "see more",
+    "onPlace": "at",
+    "save": "Save",
+    "unsave": "Delete",
+    "report": "Report",
+    "comments": "Comments"
   },
   "CreatePost": {
     "PrivacyPost": {

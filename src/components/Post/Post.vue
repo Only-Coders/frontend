@@ -37,24 +37,58 @@
               </v-col>
             </div>
             <v-col cols="auto">
-              <v-btn depressed text icon large tile> <v-icon>mdi-dots-horizontal</v-icon> </v-btn>
+              <v-menu bottom left offset-x transition="slide-y-transition">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn dark icon v-bind="attrs" v-on="on">
+                    <v-icon color="#5E5E5E" size="30">mdi-dots-horizontal</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title
+                      ><v-btn depressed class="pa-0" @click="savePostAsFavorite">
+                        <v-icon class="pr-2" color="#5E5E5E">{{
+                          isPostFavorite ? "mdi-bookmark-plus" : "mdi-bookmark-plus-outline"
+                        }}</v-icon>
+                        <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
+                          {{ isPostFavorite ? $i18n.t("Feed.unsave") : $i18n.t("Feed.save") }}
+                        </h3>
+                      </v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title
+                      ><v-btn depressed class="pa-0">
+                        <v-icon class="pr-2" color="#5E5E5E">mdi-alert-octagon</v-icon>
+                        <h3 class="my-auto text-capitalize" style="color: #5e5e5e">{{ $i18n.t("Feed.report") }}</h3>
+                      </v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-col>
           </v-row>
           <v-card-subtitle class="py-0"
             >{{ post.publisher.currentPosition ? post.publisher.currentPosition.position : "" }}
-
+            {{ post.publisher.currentPosition ? $i18n.t("Feed.onPlace") : "" }}
             {{
-              post.publisher.currentPosition && post.publisher.currentPosition.position
-                ? post.publisher.currentPosition.position.workPlace
+              post.publisher.currentPosition && post.publisher.currentPosition.workplace
+                ? post.publisher.currentPosition.workplace.name
                 : ""
             }}
           </v-card-subtitle>
           <v-card-subtitle class="py-0">{{ formattedPostDate }}</v-card-subtitle>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col class="py-0 px-10 font-weight-regular text--secondary">
-          <p>{{ post.message }}</p>
+      <v-row v-if="!postIsCode">
+        <v-col class="py-0 px-10">
+          <component :is="message"></component>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col class="pt-2 pb-0 px-10">
+          <CodePostVisualizer :code="post.message"></CodePostVisualizer>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'IMAGE'">
@@ -67,9 +101,31 @@
           <LinkPreview :url="post.url"></LinkPreview>
         </v-col>
       </v-row>
-      <v-row v-if="postIsCode">
-        <v-col class="pt-2 pb-6 px-10">
-          <CodePostVisualizer :code="post.message"></CodePostVisualizer>
+      <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
+        <div class="d-flex align-center">
+          <v-col cols="auto" class="pa-0">
+            <v-btn depressed rounded outlined color="#E0E0E0">
+              <v-img alt="approve" width="25" src="@/assets/images/chevron-up.png" />
+              <p class="my-auto" style="color: #00cdae">
+                {{ post.reactions[0].quantity }}
+              </p>
+            </v-btn>
+          </v-col>
+          <v-col cols="auto" class="pa-0">
+            <v-btn depressed rounded outlined color="#E0E0E0">
+              <v-img alt="reject" width="25" src="@/assets/images/chevron-down.png" />
+              <p class="my-auto" style="color: #ff0f0f">
+                {{ post.reactions[1].quantity }}
+              </p>
+            </v-btn>
+          </v-col>
+        </div>
+        <v-col cols="auto">
+          <v-btn depressed rounded outlined color="#E0E0E0"
+            ><p class="font-weight-regular text--secondary text-capitalize my-auto">
+              {{ post.commentQuantity }} {{ $i18n.t("Feed.comments") }}
+            </p></v-btn
+          >
         </v-col>
       </v-row>
     </v-card>
@@ -85,6 +141,7 @@ import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 import { formatDistance } from "date-fns";
 import LinkPreview from "@/components/Post/LinkPreview.vue";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
+import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Post",
@@ -99,8 +156,18 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     createDialog: false,
     medals: {} as Medals,
     formattedPostDate: "",
-    postIsCode: false
+    postIsCode: false,
+    isPostFavorite: false,
+    template: ""
   }),
+
+  computed: {
+    message: {
+      get(): { template: string } {
+        return { template: this.template };
+      }
+    }
+  },
 
   methods: {
     formatPostDate() {
@@ -110,14 +177,44 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     },
     checkIfPostIsCode() {
       const regex = /^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$/gm;
-      const match = regex.exec(this.post.message);
-      this.postIsCode = match?.length === 0 ? false : true;
+      this.postIsCode = !!regex.exec(this.post.message);
+    },
+    async savePostAsFavorite() {
+      if (this.isPostFavorite) {
+        await deletePostFromFavorite(this.post.id);
+        this.isPostFavorite = !this.isPostFavorite;
+      } else {
+        await postSavePostAsFavorite(this.post.id);
+        this.isPostFavorite = !this.isPostFavorite;
+      }
+    },
+    formatTagsAndMentions() {
+      if (this.post.tags.length !== 0) {
+        this.post.tags.forEach((tag) => {
+          const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
+          this.post.message = this.post.message.replace(
+            regex,
+            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName}</router-link>`
+          );
+        });
+      }
+      if (this.post.mentions.length !== 0) {
+        this.post.mentions.forEach((mention) => {
+          const regex = new RegExp(`@${mention.canonicalName}`, "g");
+          this.post.message = this.post.message.replace(
+            regex,
+            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName}</router-link>`
+          );
+        });
+      }
     }
   },
 
   created() {
     this.checkIfPostIsCode();
     this.formatPostDate();
+    this.formatTagsAndMentions();
+    this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
     this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
   }
 });

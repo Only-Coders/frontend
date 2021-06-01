@@ -28,7 +28,7 @@ export default Vue.extend({
   components: { FeedProfilePreview, Suggestions, PostContainer, ViewPost },
 
   data: () => ({
-    posts: {} as GetPost[]
+    posts: [] as GetPost[]
   }),
 
   methods: {

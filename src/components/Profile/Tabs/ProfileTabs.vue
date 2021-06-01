@@ -10,7 +10,7 @@
     >
       <v-tabs-slider></v-tabs-slider>
 
-      <v-tab background-color="primary" v-for="item in items" :key="item.tab">
+      <v-tab background-color="primary" v-for="item in items.filter((tab) => tab.visible)" :key="item.tab">
         {{ item.tab }} <v-icon>{{ item.icon }}</v-icon></v-tab
       >
     </v-tabs>
@@ -33,13 +33,17 @@ import DataTab from "@/components/Profile/Tabs/DataTab.vue";
 import { i18n } from "@/main";
 
 type TabsTitles = {
+  name?: string;
   tab: string;
   content: Component;
   icon: string;
+  visible: boolean;
 };
 
 export default Vue.extend({
   name: "ProfileTabs",
+
+  props: { isSelfProfile: Boolean },
 
   components: {
     PostContainer,
@@ -55,28 +59,40 @@ export default Vue.extend({
       {
         tab: i18n.t("ViewProfile.Posts").toString(),
         content: PostContainer,
-        icon: "mdi-code-tags"
+        icon: "mdi-code-tags",
+        visible: true
       },
       {
+        name: "contacts",
         tab: i18n.t("ViewProfile.Contacts").toString(),
         content: ContactsTab,
-        icon: "mdi-account-multiple"
+        icon: "mdi-account-multiple",
+        visible: false
       },
       {
+        name: "favorites",
         tab: i18n.t("ViewProfile.Favorites").toString(),
         content: FavoritesTab,
-        icon: "mdi-bookmark"
+        icon: "mdi-bookmark",
+        visible: false
       },
-      { tab: i18n.t("ViewProfile.Data").toString(), content: DataTab, icon: "mdi-account-box" },
-      { tab: i18n.t("ViewProfile.Tags").toString(), content: TagsTab, icon: "mdi-pound" }
+      { tab: i18n.t("ViewProfile.Data").toString(), content: DataTab, icon: "mdi-account-box", visible: true },
+      { tab: i18n.t("ViewProfile.Tags").toString(), content: TagsTab, icon: "mdi-pound", visible: true }
     ] as TabsTitles[]
-  })
+  }),
+
+  created() {
+    this.items.find((item) => {
+      if (this.isSelfProfile && (item.name === "contacts" || item.name === "favorites")) {
+        item.visible = true;
+      }
+    });
+  }
 });
 </script>
 
 <style scoped>
 .tab-container {
-  background-color: #ffffff !important;
   border-top: 3px solid var(--v-primary-base) !important;
 }
 </style>

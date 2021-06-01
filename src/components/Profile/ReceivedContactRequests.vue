@@ -1,5 +1,9 @@
 <template>
-  <v-card class="contact-requests">
+  <v-sheet v-if="loading" color="grey lighten-4" class="pa-3">
+    <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
+  </v-sheet>
+
+  <v-card v-else class="contact-requests">
     <v-card-title>
       <h4>{{ $i18n.t("ViewProfile.contactRequests") }}</h4>
     </v-card-title>
@@ -37,7 +41,8 @@ export default Vue.extend({
   data: () => ({
     receivedContactRequests: [] as ContactRequester[],
     currentPage: 0,
-    totalPages: 0
+    totalPages: 0,
+    loading: true
   }),
 
   methods: {
@@ -53,14 +58,15 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await getContactRequests(0, 1);
+    const result = await getContactRequests(0, 5);
+    this.loading = false;
     this.receivedContactRequests = result.content;
     this.totalPages = result.totalPages;
   },
 
   watch: {
-    receivedContactRequests(_oldValue: [], newValue: []) {
-      if (newValue.length == 0) {
+    receivedContactRequests() {
+      if (this.receivedContactRequests.length == 0) {
         this.$emit("hideContactsRequests");
       }
     }

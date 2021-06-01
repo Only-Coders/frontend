@@ -48,8 +48,8 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import { post_contact_request, delete_contact_request } from "@/services/contact";
-import { post_follow, delete_follow } from "@/services/follow";
+import { postContactRequest, deleteContactRequest } from "@/services/contact";
+import { postFollow, deleteFollow } from "@/services/follow";
 import { CurrentPosition } from "@/models/currentPosition";
 
 export default Vue.extend({
@@ -71,17 +71,17 @@ export default Vue.extend({
   methods: {
     followUser() {
       if (this.followed) {
-        delete_follow(this.canonicalName);
+        deleteFollow(this.canonicalName);
       } else {
-        post_follow(this.canonicalName);
+        postFollow(this.canonicalName);
       }
       this.followed = !this.followed;
     },
     sendContactRequest() {
       if (this.contactRequestSended) {
-        delete_contact_request(this.canonicalName);
+        deleteContactRequest(this.canonicalName);
       } else {
-        post_contact_request({ canonicalName: this.canonicalName });
+        postContactRequest({ canonicalName: this.canonicalName });
       }
       this.contactRequestSended = !this.contactRequestSended;
     },

@@ -1,4 +1,4 @@
-export type Contact = {
+export type ContactRequest = {
   canonicalName: string;
   message?: string;
 };

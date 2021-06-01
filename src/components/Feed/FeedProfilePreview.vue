@@ -54,7 +54,9 @@
       </v-col>
     </v-row>
 
-    <v-btn text color="secondary" block class="text-caption">{{ $i18n.t("Feed.viewProfile") }} </v-btn>
+    <v-btn text color="secondary" block class="text-caption" @click="$router.push('profile/' + userData.canonicalName)"
+      >{{ $i18n.t("Feed.viewProfile") }}
+    </v-btn>
   </v-card>
 </template>
 
@@ -62,10 +64,10 @@
 import Vue from "vue";
 import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
-import { get } from "@/services/user";
+import { getUserByCanonicalName } from "@/services/user";
 
 export default Vue.extend({
-  name: "ProfilePreview",
+  name: "FeedProfilePreview",
 
   data: () => ({
     userData: {} as Profile,
@@ -74,7 +76,7 @@ export default Vue.extend({
 
   methods: {
     async getUserProfile() {
-      this.userData = await get(this.$store.state.userModule.user.canonicalName);
+      this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
     },
 
     calculateMedals(approves: number): Medals {

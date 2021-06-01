@@ -38,7 +38,18 @@ const routes: Array<RouteConfig> = [
     meta: {
       layout: "HeaderLayout"
       //requiresAuth: true
-    }
+    },
+    children: [
+      {
+        name: "ProfileChild",
+        path: ":user",
+        component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
+        meta: {
+          layout: "HeaderLayout"
+          //requiresAuth: true
+        }
+      }
+    ]
   },
   {
     path: "/about",

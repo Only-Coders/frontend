@@ -87,7 +87,10 @@
                     <v-divider></v-divider>
                     <v-list-item class="ma-0 mt-4">
                       <v-list-item-content class="justify-center py-0">
-                        <router-link to="/profile" class="list-item__router-link">
+                        <router-link
+                          :to="{ name: 'ProfileChild', params: { user: userData.canonicalName } }"
+                          class="list-item__router-link"
+                        >
                           <v-row align="center" class="mb-0">
                             <v-col cols="2">
                               <v-list-item-icon class="ma-0">
@@ -153,7 +156,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Profile } from "@/models/profile";
-import { get } from "@/services/user";
+import { getUserByCanonicalName } from "@/services/user";
 
 export default Vue.extend({
   name: "Header",
@@ -167,7 +170,7 @@ export default Vue.extend({
 
   methods: {
     async getUserProfile() {
-      this.userData = await get(this.$store.state.userModule.user.canonicalName);
+      this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
     }
   },
 

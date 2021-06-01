@@ -3,7 +3,7 @@ import { Profile } from "@/models/profile";
 import { Pagination } from "@/models/Pagination/pagination";
 import { User } from "@/models/user";
 
-export async function get(canonicalName: string): Promise<Profile> {
+export async function getUserByCanonicalName(canonicalName: string): Promise<Profile> {
   const response = await axios.get(`/api/users/${canonicalName}`);
   return response.data;
 }

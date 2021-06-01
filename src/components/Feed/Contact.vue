@@ -6,7 +6,9 @@
 
     <v-list-item-content>
       <v-list-item-title>
-        <h3 class="pa-0 font-weight-light text-truncate">{{ firstName }} {{ lastName }}</h3>
+        <h3 class="pa-0 font-weight-light text-truncate user_name" @click="$router.push('profile/' + canonicalName)">
+          {{ firstName }} {{ lastName }}
+        </h3>
       </v-list-item-title>
 
       <v-list-item-subtitle>
@@ -51,4 +53,11 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.user_name {
+  cursor: pointer;
+}
+.user_name:hover {
+  text-decoration: underline;
+}
+</style>

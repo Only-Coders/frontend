@@ -28,7 +28,7 @@ export default Vue.extend({
   components: { Profile, Suggestions, PostContainer },
 
   data: () => ({
-    posts: {} as GetPost[]
+    posts: [] as GetPost[]
   }),
 
   methods: {

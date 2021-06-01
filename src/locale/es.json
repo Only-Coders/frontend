@@ -111,7 +111,12 @@
     "followers": "seguidores",
     "contacts": "contactos",
     "viewProfile": "ver perfil",
-    "seeMore": "ver mas"
+    "seeMore": "ver mas",
+    "onPlace": "at",
+    "save": "Guardar",
+    "unsave": "Borrar",
+    "report": "Reportar",
+    "comments": "Comentarios"
   },
   "CreatePost": {
     "PrivacyPost": {

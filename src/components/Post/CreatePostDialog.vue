@@ -206,7 +206,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
         this.post.mentionCanonicalNames = this.post.mentionCanonicalNames.filter((name) => {
           return this.post.message.includes(name);
         });
-        await post(this.post);
+        const createdPost = await post(this.post);
+        this.$emit("passPostToCreatePost", createdPost);
         this.close();
       } catch (error) {
         console.log(error);

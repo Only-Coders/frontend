@@ -1,11 +1,8 @@
 <template>
   <div>
-    <CreatePost />
+    <CreatePost @passPostToPostContainer="addPostToFeed" />
 
-    <div v-if="posts.length === 0">
-      <h1>No posts yet :(</h1>
-    </div>
-    <div v-else v-for="(post, index) in $props.posts" :key="index" class="my-16">
+    <div v-for="(post, index) in posts" :key="index" class="my-16">
       <Post :post="post" />
     </div>
   </div>
@@ -25,11 +22,15 @@ export default Vue.extend({
     Post
   },
 
-  props: { posts: Object as PropType<GetPost> },
+  props: { posts: Array as PropType<GetPost[]> },
 
-  data: () => ({
-    posts: []
-  })
+  data: () => ({}),
+
+  methods: {
+    addPostToFeed(post: GetPost) {
+      this.posts.unshift(post);
+    }
+  }
 });
 </script>
 

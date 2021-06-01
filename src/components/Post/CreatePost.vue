@@ -26,13 +26,18 @@
       </v-row>
     </v-card>
 
-    <CreatePostDialog v-if="createDialog" v-model="createDialog"></CreatePostDialog>
+    <CreatePostDialog
+      v-if="createDialog"
+      v-model="createDialog"
+      @passPostToCreatePost="passPostToPostContainer"
+    ></CreatePostDialog>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import CreatePostDialog from "./CreatePostDialog.vue";
+import { GetPost } from "@/models/post";
 
 export default Vue.extend({
   name: "CreatePost",
@@ -45,7 +50,11 @@ export default Vue.extend({
     createDialog: false
   }),
 
-  methods: {}
+  methods: {
+    passPostToPostContainer(post: GetPost) {
+      this.$emit("passPostToPostContainer", post);
+    }
+  }
 });
 </script>
 

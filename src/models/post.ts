@@ -33,5 +33,6 @@ export type GetPost = {
   commentQuantity: number;
   myReaction: Reaction;
   createdAt: string;
+  isFavorite: boolean;
   id: string;
 };

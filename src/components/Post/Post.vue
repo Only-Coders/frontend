@@ -14,11 +14,11 @@
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title class="font-weight-ligth pr-2"
+                <v-card-title class="font-weight-ligth pr-2 pb-0"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
-              <v-col cols="3" class="d-flex justify-start pa-0">
+              <v-col cols="auto" class="d-flex justify-start pa-0 pt-4">
                 <div class="pl-2">
                   <v-img alt="gold-medal" width="20" src="@/assets/images/gold-medal.png" />
                 </div>
@@ -107,7 +107,7 @@
             <v-btn depressed rounded outlined color="#E0E0E0">
               <v-img alt="approve" width="25" src="@/assets/images/chevron-up.png" />
               <p class="my-auto" style="color: #00cdae">
-                {{ post.reactions[0].quantity }}
+                {{ post.reactions ? post.reactions[0].quantity : 0 }}
               </p>
             </v-btn>
           </v-col>
@@ -115,7 +115,7 @@
             <v-btn depressed rounded outlined color="#E0E0E0">
               <v-img alt="reject" width="25" src="@/assets/images/chevron-down.png" />
               <p class="my-auto" style="color: #ff0f0f">
-                {{ post.reactions[1].quantity }}
+                {{ post.reactions ? post.reactions[1].quantity : 0 }}
               </p>
             </v-btn>
           </v-col>
@@ -123,7 +123,7 @@
         <v-col cols="auto">
           <v-btn depressed rounded outlined color="#E0E0E0"
             ><p class="font-weight-regular text--secondary text-capitalize my-auto">
-              {{ post.commentQuantity }} {{ $i18n.t("Feed.comments") }}
+              {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
           >
         </v-col>
@@ -216,6 +216,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
     this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
+    this.isPostFavorite = this.post.isFavorite;
   }
 });
 </script>

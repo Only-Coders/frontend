@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-app-bar app color="navbar" dark>
-      <v-row align="center" justify="space-between">
-        <v-col cols="4 hidden-sm-and-down">
+      <v-row align="center" justify="space-between" no-gutters>
+        <v-col cols="4" md="4" class="hidden-sm-and-down">
           <router-link to="/">
             <v-img
               alt="OnlyCoders logo"
-              class="shrink ml-16"
+              class="shrink ml-md-0 ml-lg-16"
               contain
               src="@/assets/images/only-coders-logo-side-text.png"
               transition="scale-transition"
@@ -14,26 +14,32 @@
             />
           </router-link>
         </v-col>
-        <v-col cols="10" md="8" lg="4">
+        <v-col cols="10" md="4" lg="5">
           <v-text-field
-            style="width: 400px"
+            hide-details
             v-model="searchParameters"
             label=""
             prepend-inner-icon="mdi-magnify"
             background-color="searchInput"
             rounded
-            height="50"
-            class="mt-sm-6 mt-11 mx-auto"
+            height="35"
+            class="mx-auto"
             placeholder="Search"
           ></v-text-field>
         </v-col>
-        <v-col cols="2" class="d-flex justify-end pa-0">
+        <v-col
+          cols="2"
+          md="3"
+          lg="2"
+          class="d-flex pa-0"
+          :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
+        >
           <div class="icon-container hidden-sm-and-down">
             <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
           <v-btn text rounded plain
-            ><v-icon :size="$vuetify.breakpoint.xs ? '33' : '24'" color="navbar_icon" class="mt-6 mr-4 mt-sm-0 mr-sm-0"
+            ><v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon"
               >mdi-message-text</v-icon
             ></v-btn
           >
@@ -42,7 +48,7 @@
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
         </v-col>
-        <v-col cols="2" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
+        <v-col cols="2" md="1" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
           <div class="hidden-sm-and-down">
             <transition name="scale-transition" mode="out-in" appear>
               <v-menu transition="slide-y-transition" nudge-bottom="45px" bottom avatar>
@@ -172,7 +178,7 @@ export default Vue.extend({
   }),
 
   methods: {
-    async getUserProfileFromToken() {
+    getUserProfileFromToken() {
       this.userData = this.$store.state.userModule.user;
       if (this.userData.currentPosition !== "" && typeof this.userData.currentPosition !== undefined) {
         this.userCurrentPosition = {
@@ -183,9 +189,8 @@ export default Vue.extend({
     }
   },
 
-  async created() {
-    await this.getUserProfileFromToken();
-    console.log(this.userData);
+  created() {
+    this.getUserProfileFromToken();
   }
 });
 </script>

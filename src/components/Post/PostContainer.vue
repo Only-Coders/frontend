@@ -2,7 +2,7 @@
   <div>
     <CreatePost @passPostToPostContainer="addPostToFeed" />
 
-    <div v-for="(post, index) in posts" :key="index" class="my-16">
+    <div v-for="post in posts" :key="post.id" class="my-16">
       <Post :post="post" />
     </div>
   </div>
@@ -23,8 +23,6 @@ export default Vue.extend({
   },
 
   props: { posts: Array as PropType<GetPost[]> },
-
-  data: () => ({}),
 
   methods: {
     addPostToFeed(post: GetPost) {

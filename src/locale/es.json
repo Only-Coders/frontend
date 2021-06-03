@@ -133,7 +133,9 @@
     "save": "Guardar",
     "unsave": "Borrar",
     "report": "Reportar",
-    "comments": "Comentarios"
+    "comments": "Comentarios",
+    "savedFavorite": "Guardado como favorito !",
+    "errorFavorite": "Opps... Hubo un error inesperado, por favor intentalo nuevamente"
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -145,7 +147,9 @@
     "loading": "cargando...",
     "noResults": "no hay resultados",
     "createPost": "Crear publicación",
-    "createPostBtn": "Crear"
+    "createPostBtn": "Crear",
+    "successfullCreation": "Tu post se ha creado con exito !",
+    "errorCreation": "Opps... Hubo un error inesperado, por favor intentalo nuevamente"
   },
   "ViewProfile": {
     "contactRequests": "Solicitudes de contactos",

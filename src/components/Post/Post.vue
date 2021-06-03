@@ -2,15 +2,15 @@
   <div>
     <v-card>
       <v-row class="px-7 py-3" align="start" no-gutters>
-        <v-col cols="1" class="pt-4">
-          <v-avatar size="60">
+        <v-col cols="1" md="2" lg="1" class="pt-4">
+          <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '45'">
             <v-img
               alt="user"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
             />
           </v-avatar>
         </v-col>
-        <v-col cols="11" class="ma-0 pl-4">
+        <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
@@ -142,13 +142,14 @@ import { formatDistance } from "date-fns";
 import LinkPreview from "@/components/Post/LinkPreview.vue";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
+import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 
-export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
+export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
   components: { LinkPreview, CodePostVisualizer },
 
-  mixins: [medalsMixin],
+  mixins: [medalsMixin, notificationsMixin],
 
   props: { post: Object as PropType<GetPost> },
 
@@ -183,9 +184,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       if (this.isPostFavorite) {
         await deletePostFromFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
+        this.success("", this.$i18n.t("Onboarding.Feed.savedFavorite").toString(), 2000);
       } else {
         await postSavePostAsFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
+        this.error("Error", this.$i18n.t("Onboarding.Feed.errorFavorite").toString());
       }
     },
     formatTagsAndMentions() {

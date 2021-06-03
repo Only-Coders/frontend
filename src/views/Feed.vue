@@ -11,6 +11,7 @@
         <PostContainer :posts="posts"></PostContainer>
       </v-col>
     </v-row>
+    <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
   </div>
 </template>
 
@@ -19,22 +20,41 @@ import Vue from "vue";
 import FeedProfilePreview from "@/components/Feed/FeedProfilePreview.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
+import InfiniteLoading from "vue-infinite-loading";
 import { getPost } from "@/services/post";
 import { GetPost } from "@/models/post";
 
 export default Vue.extend({
   name: "Feed",
 
-  components: { FeedProfilePreview, Suggestions, PostContainer, ViewPost },
+  components: { FeedProfilePreview, Suggestions, PostContainer, InfiniteLoading },
 
   data: () => ({
-    posts: [] as GetPost[]
+    posts: [] as GetPost[],
+    currentPage: 1,
+    enableInfiniteScroll: false
   }),
 
   methods: {
     async fetchPosts() {
-      const result = await getPost();
+      const result = await getPost(this.currentPage, 5);
       this.posts = result.content;
+      if (result.totalElements !== 0) {
+        this.enableInfiniteScroll = true;
+      }
+    },
+
+    async loadMore($state: { loaded: () => void; complete: () => void }) {
+      setTimeout(async () => {
+        const result = await getPost(this.currentPage, 5);
+        if (result.content.length) {
+          this.currentPage += 1;
+          this.posts = this.posts.concat(result.content);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      }, 1250);
     }
   },
 

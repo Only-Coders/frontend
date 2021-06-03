@@ -8,7 +8,7 @@ export async function post(post: Post): Promise<GetPost> {
   return response.data;
 }
 
-export async function getPost(): Promise<Pagination<GetPost>> {
-  const response = await axios.get(`/api/feed-posts`);
+export async function getPost(page: number, size: number): Promise<Pagination<GetPost>> {
+  const response = await axios.get(`/api/feed-posts`, { params: { page, size } });
   return response.data;
 }

@@ -11,8 +11,13 @@
   "deleteContact": "Delete contact",
   "areYouSureDeleteContact": "Are you sure you want to delete ",
   "fromYourContacts": "from your contacts?",
+  "areYouSureUnfollowUser": "Are you sure you want to unfollow ",
   "at": " at",
   "unfollow": "Unfollow",
+  "searchFilters": "Search filters",
+  "apply": "apply",
+  "fullname": "Fullname",
+  "medals": "Medals",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -139,9 +144,11 @@
   "ViewProfile": {
     "contactRequests": "Contact requests",
     "Posts": "Posts",
-    "Contacts": "Contacts",
+    "MyNetwork": "My Network",
     "Favorites": "Favorites",
     "Data": "Data",
-    "Tags": "Tags"
+    "Tags": "Tags",
+    "contacts": "Contacts",
+    "followings": "Followings"
   }
 }

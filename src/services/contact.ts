@@ -11,8 +11,17 @@ export async function deleteContactRequest(canonicalName: string): Promise<void>
   await axios.delete(`/api/users/contact-request/${canonicalName}`);
 }
 
-export async function getContacts(page: number, size: number): Promise<Pagination<User>> {
-  const response = await axios.get(`/api/users/contacts`, { params: { page, size } });
+export async function getContacts(
+  page: number,
+  size: number,
+  orderBy: string,
+  partialName?: string,
+  countryName?: string,
+  skillName?: string
+): Promise<Pagination<User>> {
+  const response = await axios.get(`/api/users/contacts`, {
+    params: { page, size, orderBy, partialName, countryName, skillName }
+  });
   return response.data;
 }
 

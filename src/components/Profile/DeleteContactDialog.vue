@@ -10,7 +10,12 @@
 
     <v-card class="px-6 pt-8">
       <v-card-text>
-        <h4>
+        <h4 v-if="isFollow">
+          {{ $i18n.t("areYouSureUnfollowUser") }}
+          <span class="font-weight-black user_name">{{ firstName }} {{ lastName }}</span>
+        </h4>
+
+        <h4 v-else>
           {{ $i18n.t("areYouSureDeleteContact") }}
           <span class="font-weight-black user_name">{{ firstName }} {{ lastName }}</span>
           {{ $i18n.t("fromYourContacts") }}
@@ -22,7 +27,7 @@
 
         <v-btn color="error" text @click="close"> {{ $i18n.t("cancel") }} </v-btn>
 
-        <v-btn color="primary" text class="ml-6" @click="deleteContact"> {{ $i18n.t("delete") }} </v-btn>
+        <v-btn color="primary" text class="ml-6" @click="deleteFromNetwork"> {{ $i18n.t("delete") }} </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -34,7 +39,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "DeleteContactDialog",
 
-  props: { value: Boolean, firstName: String, lastName: String },
+  props: { value: Boolean, firstName: String, lastName: String, isFollow: Boolean },
 
   data: () => ({}),
 
@@ -42,8 +47,8 @@ export default Vue.extend({
     close() {
       this.$emit("input");
     },
-    deleteContact() {
-      this.$emit("confirmContactDeletion");
+    deleteFromNetwork() {
+      this.$emit("deleteFromNetwork");
       this.close();
     }
   }

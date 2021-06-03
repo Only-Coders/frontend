@@ -19,4 +19,5 @@ export type Profile = {
   connected: boolean;
   following: boolean;
   pendingRequest: boolean;
+  requestHasBeenSent: boolean;
 };

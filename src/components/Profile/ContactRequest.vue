@@ -8,7 +8,9 @@
       </v-col>
 
       <v-col class="align-start justify-center" cols="8">
-        <v-card-title class="pa-0 pr-2"> {{ firstName }} {{ lastName }} </v-card-title>
+        <v-card-title class="pa-0 pr-2 user_data user_name" @click="$router.push(canonicalName)"
+          >{{ firstName }} {{ lastName }}
+        </v-card-title>
         <v-card-text class="text-start pa-0 pr-2">
           {{ currentPosition != null ? currentPosition.workplace.name + " | " : "" }}
           {{ currentPosition != null ? currentPosition.position : "" }}
@@ -56,6 +58,7 @@ export default Vue.extend({
         acceptContact: true
       } as ContactRequestResponse);
       this.removeContactRequest();
+      this.$emit("incrementContacts");
     },
     rejectContactRequest() {
       postContactRequestResponse({
@@ -75,5 +78,15 @@ export default Vue.extend({
 .v-card.v-sheet.theme--light {
   background-color: #ffffff !important;
   border-left: 5px solid var(--v-secondary-base) !important;
+}
+.user_data {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.user_name {
+  cursor: pointer;
+}
+.user_name:hover {
+  text-decoration: underline;
 }
 </style>

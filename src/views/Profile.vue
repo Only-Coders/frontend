@@ -6,10 +6,11 @@
         class="mt-8"
         @hideContactsRequests="showContactsRequests = false"
         v-if="isSelfProfile && showContactsRequests"
+        @incrementContacts="incrementContacts"
       ></ReceivedContactRequests>
     </v-col>
     <v-col cols="12" md="7">
-      <ProfileTabs class="mx-7" :isSelfProfile="isSelfProfile"></ProfileTabs>
+      <ProfileTabs class="mx-7" :isSelfProfile="isSelfProfile" @decrementContact="decrementContacts"></ProfileTabs>
     </v-col>
   </v-row>
 </template>
@@ -32,6 +33,15 @@ export default Vue.extend({
     showContactsRequests: true,
     isSelfProfile: false
   }),
+
+  methods: {
+    incrementContacts() {
+      this.userData.contactQty++;
+    },
+    decrementContacts() {
+      this.userData.contactQty--;
+    }
+  },
 
   async created() {
     this.isSelfProfile = this.$route.params.user == this.$store.state.userModule.user.canonicalName;

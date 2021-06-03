@@ -41,12 +41,7 @@
 
       <v-row no-gutters class="card-actions">
         <v-col cols="12 text-center" class="mb-6">
-          <v-btn height="35" width="80%" color="#ee5e5e" depressed dark small @click.stop="createDialog = true">
-            {{ $i18n.t("delete") }}
-          </v-btn>
-
-          <!-- <v-btn
-          TODO
+          <v-btn
             height="35"
             width="80%"
             color="primary"
@@ -54,10 +49,15 @@
             dark
             small
             outlined
+            v-if="isFollow"
             @click.stop="createDialog = true"
           >
             {{ $i18n.t("unfollow") }}
-          </v-btn> -->
+          </v-btn>
+
+          <v-btn height="35" width="80%" color="#ee5e5e" depressed dark small v-else @click.stop="createDialog = true">
+            {{ $i18n.t("delete") }}
+          </v-btn>
         </v-col>
       </v-row>
     </v-card>
@@ -67,7 +67,8 @@
       :lastName="lastName"
       v-if="createDialog"
       v-model="createDialog"
-      @confirmContactDeletion="deleteContact"
+      @deleteFromNetwork="deleteFromNetwork"
+      :isFollow="isFollow"
     ></DeleteContactDialog>
   </div>
 </template>
@@ -89,7 +90,8 @@ export default Vue.extend({
     imageURI: String,
     canonicalName: String,
     currentPosition: Object as PropType<CurrentPosition>,
-    amountOfMedals: Number
+    amountOfMedals: Number,
+    isFollow: Boolean
   },
 
   data: () => ({
@@ -99,8 +101,8 @@ export default Vue.extend({
   }),
 
   methods: {
-    deleteContact() {
-      this.$emit("confirmContactDeletion");
+    deleteFromNetwork() {
+      this.$emit("deleteFromNetwork");
     },
     calculateMedals(approves: number): Medals {
       const bronce = approves % 100;
@@ -126,8 +128,6 @@ export default Vue.extend({
   word-break: break-word;
 }
 .user_name {
-  white-space: pre-wrap;
-  word-break: break-word;
   cursor: pointer;
 }
 .user_name:hover {

@@ -116,7 +116,9 @@
     "save": "Save",
     "unsave": "Delete",
     "report": "Report",
-    "comments": "Comments"
+    "comments": "Comments",
+    "savedFavorite": "Successfully saved as favorite !",
+    "errorFavorite": "Oops... There was an unexpected error"
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -128,6 +130,8 @@
     "loading": "loading...",
     "noResults": "no result",
     "createPost": "Create post",
-    "createPostBtn": "Create"
+    "createPostBtn": "Create",
+    "successfullCreation": "Your post has been successfully created !",
+    "errorCreation": "Opps... There was an unexpected error, please try again"
   }
 }

@@ -14,6 +14,7 @@
           <ContactRequest
             @remove="removeContactRequest(index)"
             v-bind="{ ...contactRequest.requester }"
+            @incrementContacts="$emit('incrementContacts')"
           ></ContactRequest>
         </v-col>
       </transition-group>

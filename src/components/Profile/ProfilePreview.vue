@@ -1,23 +1,23 @@
 <template>
   <div>
-    <v-card class="card_profile" v-if="userData">
+    <v-card class="card_profile" v-if="userDataComputed">
       <div class="d-flex justify-center mt-9">
         <v-avatar size="160">
           <v-img
             alt="user"
-            :src="userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')"
+            :src="userDataComputed.imageURI ? userDataComputed.imageURI : require('@/assets/images/default-avatar.png')"
           />
         </v-avatar>
       </div>
 
       <h2 class="mt-5 text-center font-weight-medium">
-        {{ userData.firstName }}
-        {{ userData.lastName }}
+        {{ userDataComputed.firstName }}
+        {{ userDataComputed.lastName }}
       </h2>
 
       <h4 class="center subtitle-1 text--secondary text-center">
-        {{ userData.currentPosition ? userData.currentPosition.position + " " + $i18n.t("at") : "" }}
-        {{ userData.currentPosition ? userData.currentPosition.workplace.name : "" }}
+        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.position + " " + $i18n.t("at") : "" }}
+        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.workplace.name : "" }}
       </h4>
 
       <v-row justify="center" class="mt-5" no-gutters>
@@ -42,16 +42,16 @@
 
       <v-row justify="center" class="mb-1 mt-6" no-gutters>
         <v-col cols="4">
-          <v-card-title class="py-1 justify-center">{{ userData.postQty }}</v-card-title>
+          <v-card-title class="py-1 justify-center">{{ userDataComputed.postQty }}</v-card-title>
           <p class="pt-0" align="center">{{ $i18n.t("Feed.posts") }}</p>
         </v-col>
         <v-col cols="4">
-          <v-card-title class="py-1 justify-center">{{ userData.followerQty }}</v-card-title>
+          <v-card-title class="py-1 justify-center">{{ userDataComputed.followerQty }}</v-card-title>
 
           <p class="pt-0" align="center">{{ $i18n.t("Feed.followers") }}</p>
         </v-col>
         <v-col cols="4">
-          <v-card-title class="py-1 justify-center">{{ userData.contactQty }}</v-card-title>
+          <v-card-title class="py-1 justify-center">{{ userDataComputed.contactQty }}</v-card-title>
 
           <p class="pt-0" align="center">{{ $i18n.t("Feed.contacts") }}</p>
         </v-col>
@@ -113,7 +113,7 @@
           </v-btn>
 
           <v-btn
-            v-if="!contactRequestSended && !isContact"
+            v-if="!contactRequestSended && !contactRequestReceived && !isContact"
             color="primary"
             height="35"
             width="35%"
@@ -124,12 +124,25 @@
           >
             {{ $i18n.t("Onboarding.SuggestedContacts.add") }}
           </v-btn>
+
+          <v-btn
+            v-if="contactRequestReceived && !isContact"
+            color="primary"
+            height="35"
+            width="35%"
+            class="mx-4"
+            small
+            depressed
+            @click="sendContactRequest"
+          >
+            {{ $i18n.t("accept") }}
+          </v-btn>
         </v-col>
       </v-row>
     </v-card>
 
     <DeleteContactDialog
-      v-bind="{ ...userData }"
+      v-bind="{ ...userDataComputed }"
       v-if="createDialog"
       v-model="createDialog"
       @confirmContactDeletion="deleteContact"
@@ -155,6 +168,7 @@ export default Vue.extend({
   data: () => ({
     medals: {} as Medals,
     contactRequestSended: false,
+    contactRequestReceived: false,
     followed: false,
     isContact: false,
     createDialog: false
@@ -172,8 +186,10 @@ export default Vue.extend({
     async followUser() {
       if (this.followed) {
         await deleteFollow(this.userData.canonicalName);
+        this.userData.followerQty--;
       } else {
         await postFollow(this.userData.canonicalName);
+        this.userData.followerQty++;
       }
       this.followed = !this.followed;
     },
@@ -188,22 +204,21 @@ export default Vue.extend({
     async deleteContact() {
       await deleteContact(this.userData.canonicalName);
       this.isContact = false;
+      this.userData.contactQty--;
     }
   },
 
-  watch: {
-    userData() {
-      this.medals = this.calculateMedals(this.userData.medalQty);
-      this.isContact = this.userData.connected;
-      this.contactRequestSended = this.userData.pendingRequest;
-      this.followed = this.userData.following;
+  computed: {
+    userDataComputed() {
+      return this.userData;
     }
   },
 
   created() {
     if (!this.isSelfProfile && this.userData) {
       this.isContact = this.userData.connected;
-      this.contactRequestSended = this.userData.pendingRequest;
+      this.contactRequestReceived = this.userData.pendingRequest;
+      this.contactRequestSended = this.userData.requestHasBeenSent;
       this.followed = this.userData.following;
     }
   }

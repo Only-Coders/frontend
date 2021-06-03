@@ -11,8 +11,13 @@
   "deleteContact": "Eliminar contacto",
   "areYouSureDeleteContact": "Está seguro de que desea eliminar a ",
   "fromYourContacts": "de sus contactos?",
+  "areYouSureUnfollowUser": "Está seguro de que desea dejar de seguir a ",
   "at": " en",
   "unfollow": "No seguir",
+  "searchFilters": "Filtros de búsqueda",
+  "apply": "aplicar",
+  "fullname": "Nombre/Apellido",
+  "medals": "Medallas",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Ingreso",
@@ -139,9 +144,11 @@
   "ViewProfile": {
     "contactRequests": "Solicitudes de contactos",
     "Posts": "Publicaciones",
-    "Contacts": "Contactos",
+    "MyNetwork": "Mi Red",
     "Favorites": "Favoritos",
     "Data": "Datos",
-    "Tags": "Temas"
+    "Tags": "Temas",
+    "contacts": "Contactos",
+    "followings": "Seguidos"
   }
 }

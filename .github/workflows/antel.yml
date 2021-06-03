@@ -43,10 +43,10 @@ jobs:
         uses: burnett01/rsync-deployments@4.1
         with:
           switches: -avzr --delete
-          path: dist
-          remote_path: /home/viruscontrol/onlycoders/
+          path: dist/*
+          remote_path: /usr/share/caddy
           remote_host: onlycoders.tech
-          remote_user: viruscontrol
+          remote_user: mzunino
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Slack Notification

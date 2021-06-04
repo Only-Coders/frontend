@@ -12,7 +12,7 @@ export type Post = {
   tagNames: string[];
 };
 
-type Publisher = {
+export type Publisher = {
   canonicalName: string;
   firstName: string;
   lastName: string;

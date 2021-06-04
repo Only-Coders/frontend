@@ -88,7 +88,7 @@
       </v-row>
       <v-row v-else>
         <v-col class="pt-2 pb-0 px-10">
-          <CodePostVisualizer :code="post.message"></CodePostVisualizer>
+          <CodePostVisualizer :code="post.message" :tags="post.tags" :mentions="post.mentions"></CodePostVisualizer>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'IMAGE'">
@@ -203,7 +203,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
-          const regex = new RegExp(`@${mention.canonicalName}`, "g");
+          const regex = new RegExp(`@${mention.canonicalName}`, "g"); //cambiar este regex
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName}</router-link>`
@@ -216,7 +216,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   created() {
     this.checkIfPostIsCode();
     this.formatPostDate();
-    this.formatTagsAndMentions();
+    !this.postIsCode && this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
     this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
     this.isPostFavorite = this.post.isFavorite;

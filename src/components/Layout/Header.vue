@@ -74,19 +74,24 @@
                         <v-row align="center">
                           <v-col cols="3">
                             <v-avatar size="60">
-                              <v-img alt="user avatar" :src="userData.imageURI" />
+                              <v-img
+                                alt="user avatar"
+                                :src="
+                                  userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                                "
+                              />
                             </v-avatar>
                           </v-col>
                           <v-col class="pa-0 pl-2">
                             <v-list-item-title class="pl-4">
                               <h3 class="d-inline-block text-truncate font-weight-medium">
-                                {{ userData.fullName }}
+                                {{ userData.fullName ? userData.fullName : "" }}
                               </h3>
                               <h4 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.company }}
+                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
                               </h4>
                               <h5 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.position }}
+                                {{ userCurrentPosition.position ? userCurrentPosition.position : "" }}
                               </h5>
                             </v-list-item-title>
                           </v-col>
@@ -177,7 +182,7 @@ export default Vue.extend({
   methods: {
     getUserProfileFromToken() {
       this.userData = this.$store.state.userModule.user;
-      if (this.userData.currentPosition !== "" && typeof this.userData.currentPosition !== undefined) {
+      if (this.userData.currentPosition !== "" && this.userData.currentPosition) {
         this.userCurrentPosition = {
           company: this.userData.currentPosition.split(" - ")[0],
           position: this.userData.currentPosition.split(" - ")[1]

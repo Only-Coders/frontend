@@ -146,7 +146,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
 
         if (result.user && result.user.email) {
           const actionCodeSettings = {
-            url: `http://localhost:8080/login`,
+            url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
             handleCodeInApp: true
           };
           if (result.user && !result.user.emailVerified) {

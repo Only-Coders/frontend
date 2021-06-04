@@ -18,6 +18,9 @@
   "apply": "apply",
   "fullname": "Fullname",
   "medals": "Medals",
+  "filterTags": "Filter tags...",
+  "areYouSureUnfollowTag": "Are you sure you want to unfollow ",
+  "unfollowUser": "Unfollow user",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",

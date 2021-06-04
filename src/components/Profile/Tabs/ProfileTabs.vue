@@ -18,7 +18,13 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in filteredTabs" :key="item.tab">
-        <component :is="item.content" class="mt-7" @decrementContact="$emit('decrementContact')"> </component>
+        <component
+          :is="item.content"
+          class="mt-7"
+          @decrementContact="$emit('decrementContact')"
+          :isSelfProfile="isSelfProfile"
+        >
+        </component>
       </v-tab-item>
     </v-tabs-items>
   </v-card>

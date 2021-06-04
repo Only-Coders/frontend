@@ -70,7 +70,7 @@
             width="65%"
             color="#ee5e5e"
             class="mx-4"
-            v-if="isContact"
+            v-if="userDataComputed.connected"
             depressed
             dark
             small
@@ -80,7 +80,7 @@
           </v-btn>
 
           <v-btn
-            v-if="followed && !isContact"
+            v-if="userDataComputed.following && !userDataComputed.connected"
             color="primary"
             height="35"
             width="35%"
@@ -93,7 +93,7 @@
           </v-btn>
 
           <v-btn
-            v-if="!followed && !isContact"
+            v-if="!userDataComputed.following && !userDataComputed.connected"
             color="primary"
             height="35"
             width="35%"
@@ -106,7 +106,7 @@
           </v-btn>
 
           <v-btn
-            v-if="contactRequestSended && !isContact"
+            v-if="userDataComputed.requestHasBeenSent && !userDataComputed.connected"
             color="primary"
             height="35"
             width="35%"
@@ -119,7 +119,9 @@
           </v-btn>
 
           <v-btn
-            v-if="!contactRequestSended && !contactRequestReceived && !isContact"
+            v-if="
+              !userDataComputed.requestHasBeenSent && !userDataComputed.pendingRequest && !userDataComputed.connected
+            "
             color="primary"
             height="35"
             width="35%"
@@ -132,7 +134,7 @@
           </v-btn>
 
           <v-btn
-            v-if="contactRequestReceived && !isContact"
+            v-if="userDataComputed.pendingRequest && !userDataComputed.connected"
             color="primary"
             height="35"
             width="35%"
@@ -194,26 +196,26 @@ export default Vue.extend({
     },
 
     async followUser() {
-      if (this.followed) {
+      if (this.userDataComputed.following) {
         await deleteFollow(this.userData.canonicalName);
         this.userData.followerQty--;
       } else {
         await postFollow(this.userData.canonicalName);
         this.userData.followerQty++;
       }
-      this.followed = !this.followed;
+      this.userDataComputed.following = !this.userDataComputed.following;
     },
     async sendContactRequest() {
-      if (this.contactRequestSended) {
+      if (this.userDataComputed.requestHasBeenSent) {
         await deleteContactRequest(this.userData.canonicalName);
       } else {
         await postContactRequest({ canonicalName: this.userData.canonicalName });
       }
-      this.contactRequestSended = !this.contactRequestSended;
+      this.userDataComputed.requestHasBeenSent = !this.userDataComputed.requestHasBeenSent;
     },
     async deleteContact() {
       await deleteContact(this.userData.canonicalName);
-      this.isContact = false;
+      this.userDataComputed.connected = false;
       this.userData.contactQty--;
     }
   },

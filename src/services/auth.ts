@@ -18,3 +18,7 @@ export async function register(user: RegisterUser): Promise<{ token: string }> {
   const { data } = await axios.post(`/api/auth/register`, user);
   return data;
 }
+
+export async function logout(): Promise<void> {
+  await axios.post(`/api/auth/logout`);
+}

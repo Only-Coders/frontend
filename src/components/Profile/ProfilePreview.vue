@@ -26,17 +26,23 @@
             <v-img alt="gold-medal" width="20" src="@/assets/images/gold-medal.png" />
           </div>
 
-          <span class="font-weight-light pr-5 pl-1 text-caption">{{ medals.gold }}</span>
+          <span class="font-weight-light pr-5 pl-1 text-caption">{{
+            calculateMedals(userDataComputed.medalQty).gold
+          }}</span>
 
           <div>
             <v-img alt="silver-medal" width="20" src="@/assets/images/silver-medal.png" />
           </div>
-          <span class="font-weight-light pr-5 pl-1 text-caption">{{ medals.silver }}</span>
+          <span class="font-weight-light pr-5 pl-1 text-caption">{{
+            calculateMedals(userDataComputed.medalQty).silver
+          }}</span>
 
           <div>
             <v-img alt="bronce-medal" width="20" src="@/assets/images/bronce-medal.png" />
           </div>
-          <span class="font-weight-light pl-1 text-caption">{{ medals.bronce }}</span>
+          <span class="font-weight-light pl-1 text-caption">{{
+            calculateMedals(userDataComputed.medalQty).bronce
+          }}</span>
         </v-col>
       </v-row>
 
@@ -176,11 +182,15 @@ export default Vue.extend({
 
   methods: {
     calculateMedals(approves: number): Medals {
-      const bronce = approves % 100;
-      approves = (approves - bronce) / 100;
-      const silver = approves % 100;
-      const gold = (approves - silver) / 100;
-      return { gold, silver, bronce };
+      if (approves) {
+        const bronce = approves % 100;
+        approves = (approves - bronce) / 100;
+        const silver = approves % 100;
+        const gold = (approves - silver) / 100;
+        return { gold, silver, bronce };
+      } else {
+        return { gold: 0, silver: 0, bronce: 0 };
+      }
     },
 
     async followUser() {

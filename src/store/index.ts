@@ -3,6 +3,8 @@ import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 import UserModule from "@/store/modules/user";
 import UserPaginationModule from "@/store/modules/userPagination";
+import { logout } from "@/services/auth";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -26,7 +28,14 @@ export default new Vuex.Store<State>({
     lang: "en"
   },
   mutations: {},
-  actions: {},
+  actions: {
+    logout: async (context) => {
+      context.commit("userModule/CLEAR_USER");
+      await logout();
+      window.localStorage.clear();
+      router.push("/login");
+    }
+  },
   modules: {
     userModule: UserModule,
     userPaginationModule: UserPaginationModule

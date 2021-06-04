@@ -3,7 +3,7 @@
     <CreatePost v-if="showCreateProfile" @passPostToPostContainer="addPostToFeed" />
 
     <div v-for="post in posts" :key="post.id" class="my-16">
-      <Post :post="post" />
+      <Post :post="post" @passDeletedPostAsFavorite="passDeletedPostAsFavorite" :isInFavoritesTab="isInFavoritesTab" />
     </div>
   </div>
 </template>
@@ -22,11 +22,14 @@ export default Vue.extend({
     Post
   },
 
-  props: { posts: Array as PropType<GetPost[]>, showCreateProfile: Boolean },
+  props: { posts: Array as PropType<GetPost[]>, showCreateProfile: Boolean, isInFavoritesTab: Boolean },
 
   methods: {
     addPostToFeed(post: GetPost) {
       this.posts.unshift(post);
+    },
+    passDeletedPostAsFavorite(postId: string) {
+      this.$emit("passDeletedPost", postId);
     }
   }
 });

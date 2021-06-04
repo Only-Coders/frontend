@@ -1,8 +1,13 @@
 <template>
   <div>
-    <v-row class="mt-14" no-gutters>
-      <v-col cols="10 offset-1" md="5">
-        <PostContainer :posts="posts" :showCreateProfile="showCreateProfile"></PostContainer>
+    <v-row no-gutters>
+      <v-col cols="10 offset-1">
+        <PostContainer
+          :posts="posts"
+          :showCreateProfile="showCreateProfile"
+          :isInFavoritesTab="true"
+          @passDeletedPost="deleteFavoritePost"
+        ></PostContainer>
       </v-col>
     </v-row>
     <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
@@ -50,6 +55,12 @@ export default Vue.extend({
           $state.complete();
         }
       }, 1250);
+    },
+    deleteFavoritePost(postId: string) {
+      const postIndex = this.posts.findIndex((post) => post.id == postId);
+      if (postIndex >= 0) {
+        this.posts.splice(postIndex, 1);
+      }
     }
   },
 

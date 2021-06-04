@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn class="btn_cross ml-8" fab color="secondary" @click="deleteFile">
+    <v-btn v-if="!isVisualizingPost" class="btn_cross ml-8" fab color="secondary" @click="deleteFile">
       <v-icon size="10" color="white"> mdi-close </v-icon>
     </v-btn>
 
@@ -17,7 +17,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "FileType",
 
-  props: { name: String },
+  props: { name: String, isVisualizingPost: Boolean },
 
   methods: {
     deleteFile() {

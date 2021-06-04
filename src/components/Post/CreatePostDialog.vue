@@ -19,7 +19,12 @@
           <v-img v-if="imageToShow" :src="imageToShow" />
         </div>
 
-        <FileType v-if="fileToShow" @deleteFile="deleteFileShowed" :name="fileData.name"></FileType>
+        <FileType
+          v-if="fileToShow"
+          @deleteFile="deleteFileShowed"
+          :name="fileData.name"
+          :isVisualizingPost="false"
+        ></FileType>
 
         <div v-if="post.url">
           <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
@@ -213,10 +218,10 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         });
         const createdPost = await post(this.post);
         this.$emit("passPostToCreatePost", createdPost);
-        this.success("", this.$i18n.t("Onboarding.CreatePost.successfullCreation").toString(), 2000);
+        this.success("", this.$i18n.t("CreatePost.successfullCreation").toString(), 2000);
         this.close();
       } catch (error) {
-        this.error("Error", this.$i18n.t("Onboarding.Notifications.errorCreation").toString());
+        this.error("Error", this.$i18n.t("CreatePost.errorCreation").toString());
         console.log(error);
       }
     },

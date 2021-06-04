@@ -203,7 +203,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
-          const regex = new RegExp(`@${mention.canonicalName}`, "g");
+          const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName}</router-link>`

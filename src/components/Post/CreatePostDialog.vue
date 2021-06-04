@@ -95,6 +95,7 @@ import LinkModal from "@/components/Post/LinkModal.vue";
 import LinkPreview from "@/components/Post/LinkPreview.vue";
 import { VueConstructor } from "vue/types/umd";
 import commonMethodsMixin, { CommonMethodsMixin } from "@/mixins/commonMethods";
+import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import { i18n } from "@/main";
 
 type PrivacyOption = {
@@ -102,14 +103,14 @@ type PrivacyOption = {
   public: boolean;
 };
 
-export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
+export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMixin>).extend({
   name: "CreatePostDialog",
 
   components: { FileType, Mentions, LinkModal, LinkPreview },
 
   props: { value: Boolean },
 
-  mixins: [commonMethodsMixin],
+  mixins: [commonMethodsMixin, notificationsMixin],
 
   data: () => ({
     imageData: null as File | null,
@@ -210,9 +211,12 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin>).extend({
         this.post.mentionCanonicalNames = this.post.mentionCanonicalNames.filter((name) => {
           return this.post.message.includes(name);
         });
-        await post(this.post);
+        const createdPost = await post(this.post);
+        this.$emit("passPostToCreatePost", createdPost);
+        this.success("", this.$i18n.t("Onboarding.CreatePost.successfullCreation").toString(), 2000);
         this.close();
       } catch (error) {
+        this.error("Error", this.$i18n.t("Onboarding.Notifications.errorCreation").toString());
         console.log(error);
       }
     },

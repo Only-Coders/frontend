@@ -62,12 +62,16 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { VueConstructor } from "vue/types/umd";
 import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
 import { getUserByCanonicalName } from "@/services/user";
+import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 
-export default Vue.extend({
-  name: "FeedProfilePreview",
+export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
+  name: "Profile",
+
+  mixins: [medalsMixin],
 
   data: () => ({
     userData: {} as Profile,
@@ -77,14 +81,6 @@ export default Vue.extend({
   methods: {
     async getUserProfile() {
       this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
-    },
-
-    calculateMedals(approves: number): Medals {
-      const bronce = approves % 100;
-      approves = (approves - bronce) / 100;
-      const silver = approves % 100;
-      const gold = (approves - silver) / 100;
-      return { gold, silver, bronce };
     }
   },
 

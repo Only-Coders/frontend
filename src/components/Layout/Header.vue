@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-app-bar app color="navbar" dark>
-      <v-row align="center" justify="space-between">
-        <v-col cols="4 hidden-sm-and-down">
+      <v-row align="center" justify="space-between" no-gutters>
+        <v-col cols="4" md="4" class="hidden-sm-and-down">
           <router-link to="/">
             <v-img
               alt="OnlyCoders logo"
-              class="shrink ml-16"
+              class="shrink ml-md-0 ml-lg-16"
               contain
               src="@/assets/images/only-coders-logo-side-text.png"
               transition="scale-transition"
@@ -14,26 +14,32 @@
             />
           </router-link>
         </v-col>
-        <v-col cols="10" md="8" lg="4">
+        <v-col cols="10" md="4" lg="5">
           <v-text-field
-            style="width: 400px"
+            hide-details
             v-model="searchParameters"
             label=""
             prepend-inner-icon="mdi-magnify"
             background-color="searchInput"
             rounded
-            height="50"
-            class="mt-sm-6 mt-11 mx-auto"
+            height="35"
+            class="mx-auto"
             placeholder="Search"
           ></v-text-field>
         </v-col>
-        <v-col cols="2" class="d-flex justify-end pa-0">
+        <v-col
+          cols="2"
+          md="3"
+          lg="2"
+          class="d-flex pa-0"
+          :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
+        >
           <div class="icon-container hidden-sm-and-down">
             <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
           <v-btn text rounded plain
-            ><v-icon :size="$vuetify.breakpoint.xs ? '33' : '24'" color="navbar_icon" class="mt-6 mr-4 mt-sm-0 mr-sm-0"
+            ><v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon"
               >mdi-message-text</v-icon
             ></v-btn
           >
@@ -42,7 +48,7 @@
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
         </v-col>
-        <v-col cols="2" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
+        <v-col cols="2" md="1" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
           <div class="hidden-sm-and-down">
             <transition name="scale-transition" mode="out-in" appear>
               <v-menu transition="slide-y-transition" nudge-bottom="45px" bottom avatar>
@@ -52,7 +58,12 @@
                       <template v-slot:activator="{ on }">
                         <v-btn large depressed class="header__avatar pa-0" v-on="on">
                           <v-avatar size="50">
-                            <v-img alt="user avatar" :src="userData.imageURI" />
+                            <v-img
+                              alt="user avatar"
+                              :src="
+                                userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                              "
+                            />
                           </v-avatar>
                           <v-icon class="ma-0" color="#f9f9f9">mdi-chevron-down</v-icon>
                         </v-btn>
@@ -61,24 +72,32 @@
                     </v-tooltip>
                   </span>
                 </template>
-                <v-card width="240px">
+                <v-card width="280px">
                   <v-list rounded>
                     <v-list-item two-line class="px-0 pl-2">
                       <v-list-item-content class="justify-center">
                         <v-row align="center">
                           <v-col cols="3">
                             <v-avatar size="60">
-                              <v-img alt="user avatar" :src="userData.imageURI" />
+                              <v-img
+                                alt="user avatar"
+                                :src="
+                                  userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                                "
+                              />
                             </v-avatar>
                           </v-col>
-                          <v-col>
+                          <v-col class="pa-0 pl-2">
                             <v-list-item-title class="pl-4">
-                              <span class="d-inline-block text-truncate font-weight-medium"
-                                >{{ userData.firstName }} {{ userData.lastName }}</span
-                              >
-                              <h4 class="font-weight-light">
-                                {{ userData.currentPosition ? userData.currentPosition.position : "asdasd" }}
+                              <h3 class="d-inline-block text-truncate font-weight-medium">
+                                {{ userData.fullName ? userData.fullName : "" }}
+                              </h3>
+                              <h4 class="font-weight-light text-truncate text--secondary">
+                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
                               </h4>
+                              <h5 class="font-weight-light text-truncate text--secondary">
+                                {{ userCurrentPosition.position ? userCurrentPosition.company : "" }}
+                              </h5>
                             </v-list-item-title>
                           </v-col>
                         </v-row>
@@ -155,8 +174,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Profile } from "@/models/profile";
-import { getUserByCanonicalName } from "@/services/user";
+import { UserData } from "@/store/modules/user";
 
 export default Vue.extend({
   name: "Header",
@@ -164,18 +182,25 @@ export default Vue.extend({
   props: {},
 
   data: () => ({
-    userData: {} as Profile,
+    userData: {} as UserData,
+    userCurrentPosition: { company: "", position: "" },
     searchParameters: ""
   }),
 
   methods: {
-    async getUserProfile() {
-      this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
+    getUserProfileFromToken() {
+      this.userData = this.$store.state.userModule.user;
+      if (this.userData.currentPosition) {
+        this.userCurrentPosition = {
+          company: this.userData.currentPosition.split(" - ")[0],
+          position: this.userData.currentPosition.split(" - ")[1]
+        };
+      }
     }
   },
 
-  async created() {
-    await this.getUserProfile();
+  created() {
+    this.getUserProfileFromToken();
   }
 });
 </script>

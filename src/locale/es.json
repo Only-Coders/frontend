@@ -118,7 +118,7 @@
     "report": "Reportar",
     "comments": "Comentarios",
     "savedFavorite": "Guardado como favorito !",
-    "errorFavorite": "Opps... Hubo un error inesperado, por favor intentalo nuevamente"
+    "unsavedFavorite": "Borrado como favorito "
   },
   "CreatePost": {
     "PrivacyPost": {

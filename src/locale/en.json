@@ -118,7 +118,7 @@
     "report": "Report",
     "comments": "Comments",
     "savedFavorite": "Successfully saved as favorite !",
-    "errorFavorite": "Oops... There was an unexpected error"
+    "unsavedFavorite": "Successfully deleted from favorites"
   },
   "CreatePost": {
     "PrivacyPost": {

@@ -199,11 +199,11 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             } else {
               switch (user.roles) {
                 case Role.USER:
-                  this.success("", `Welcome back ${user.canonicalName}`, 2000);
+                  this.success("", `Welcome back ${user.fullName}`, 2000);
                   this.$router.push("/"); //push to feed
                   break;
                 case Role.ADMIN:
-                  this.success("", `Welcome back ${user.canonicalName}`, 2000);
+                  this.success("", `Welcome back ${user.fullName}`, 2000);
                   this.$router.push("/about"); //push to backoffice view
                   break;
                 default:

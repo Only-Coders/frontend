@@ -45,24 +45,24 @@
                 </template>
 
                 <v-list>
-                  <v-list-item>
-                    <v-list-item-title
-                      ><v-btn depressed class="pa-0" @click="savePostAsFavorite">
-                        <v-icon class="pr-2" color="#5E5E5E">{{
-                          isPostFavorite ? "mdi-bookmark-plus" : "mdi-bookmark-plus-outline"
-                        }}</v-icon>
-                        <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
-                          {{ isPostFavorite ? $i18n.t("Feed.unsave") : $i18n.t("Feed.save") }}
-                        </h3>
-                      </v-btn>
+                  <v-list-item @click="savePostAsFavorite">
+                    <v-list-item-icon class="mr-2">
+                      <v-icon class="pr-2" color="#5E5E5E">
+                        {{ isPostFavorite ? "mdi-bookmark-plus" : "mdi-bookmark-plus-outline" }}
+                      </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
+                        {{ isPostFavorite ? $i18n.t("Feed.unsave") : $i18n.t("Feed.save") }}
+                      </h3>
                     </v-list-item-title>
                   </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title
-                      ><v-btn depressed class="pa-0">
-                        <v-icon class="pr-2" color="#5E5E5E">mdi-alert-octagon</v-icon>
-                        <h3 class="my-auto text-capitalize" style="color: #5e5e5e">{{ $i18n.t("Feed.report") }}</h3>
-                      </v-btn>
+                  <v-list-item @click.prevent>
+                    <v-list-item-icon class="mr-2">
+                      <v-icon class="pr-2" color="#5E5E5E"> mdi-alert-octagon </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">{{ $i18n.t("Feed.report") }}</h3>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -184,11 +184,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       if (this.isPostFavorite) {
         await deletePostFromFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
-        this.success("", this.$i18n.t("Onboarding.Feed.savedFavorite").toString(), 2000);
+        this.success("", this.$i18n.t("Feed.unsavedFavorite").toString());
       } else {
         await postSavePostAsFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
-        this.error("Error", this.$i18n.t("Onboarding.Feed.errorFavorite").toString());
+        this.success("", this.$i18n.t("Feed.savedFavorite").toString(), 2000);
       }
     },
     formatTagsAndMentions() {

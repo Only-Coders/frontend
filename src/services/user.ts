@@ -22,7 +22,7 @@ export async function deletePostFromFavorite(postId: string): Promise<void> {
   await axios.delete(`/api/users/favorite-posts/${postId}`);
 }
 
-export async function getUserFavoritePosts(): Promise<Pagination<GetPost>> {
-  const response = await axios.get(`/api/users/favorite-posts`);
+export async function getFavoritePosts(page: number, size: number): Promise<Pagination<GetPost>> {
+  const response = await axios.get(`/api/users/favorite-posts`, { params: { page, size } });
   return response.data;
 }

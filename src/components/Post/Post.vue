@@ -92,13 +92,20 @@
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'IMAGE'">
-        <v-col class="pt-2 pb-6 px-10">
-          <v-img alt="post-image" :src="post.url" />
+        <v-col class="pt-2 pb-6 px-10 d-flex justify-center">
+          <v-img alt="post-image" max-width="30vw" max-height="60vh" :src="post.url" />
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'LINK'">
         <v-col class="pt-2 pb-6 px-10">
           <LinkPreview :url="post.url"></LinkPreview>
+        </v-col>
+      </v-row>
+      <v-row v-if="post.type === 'FILE'">
+        <v-col class="pt-2 pb-6 px-10">
+          <a :href="post.url" download>
+            <FileType :isVisualizingPost="true" :name="fileName"></FileType>
+          </a>
         </v-col>
       </v-row>
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
@@ -140,6 +147,7 @@ import { Medals } from "@/models/medals";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 import { formatDistance } from "date-fns";
 import LinkPreview from "@/components/Post/LinkPreview.vue";
+import FileType from "@/components/Post/FileType.vue";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
@@ -147,11 +155,11 @@ import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer },
+  components: { LinkPreview, CodePostVisualizer, FileType },
 
   mixins: [medalsMixin, notificationsMixin],
 
-  props: { post: Object as PropType<GetPost> },
+  props: { post: Object as PropType<GetPost>, isInFavoritesTab: Boolean },
 
   data: () => ({
     createDialog: false,
@@ -159,7 +167,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     formattedPostDate: "",
     postIsCode: false,
     isPostFavorite: false,
-    template: ""
+    template: "",
+    fileName: ""
   }),
 
   computed: {
@@ -185,6 +194,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
         await deletePostFromFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
         this.success("", this.$i18n.t("Feed.unsavedFavorite").toString());
+        if (this.isInFavoritesTab) {
+          this.$emit("passDeletedPostAsFavorite", this.post.id);
+        }
       } else {
         await postSavePostAsFavorite(this.post.id);
         this.isPostFavorite = !this.isPostFavorite;
@@ -210,6 +222,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           );
         });
       }
+    },
+    getFileName() {
+      this.fileName = decodeURIComponent(
+        this.post.url.match(/files%2F(?<fileName>\S+)\?alt=/)?.groups?.fileName ?? "File"
+      );
     }
   },
 
@@ -220,6 +237,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
     this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
     this.isPostFavorite = this.post.isFavorite;
+    if (this.post.type === "FILE") {
+      this.getFileName();
+    }
   }
 });
 </script>

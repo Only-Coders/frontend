@@ -8,7 +8,7 @@
       </v-col>
 
       <v-col cols="10 offset-1" md="5">
-        <PostContainer :posts="posts"></PostContainer>
+        <PostContainer :posts="posts" :showCreateProfile="true"></PostContainer>
       </v-col>
     </v-row>
     <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>

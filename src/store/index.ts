@@ -2,12 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 import UserModule from "@/store/modules/user";
+import UserPaginationModule from "@/store/modules/userPagination";
 
 Vue.use(Vuex);
 
 type State = {
   userModule?: UserModule;
   lang: string;
+  userPaginationModule?: UserPaginationModule;
 };
 
 const persist = new VuexPersist({
@@ -26,7 +28,8 @@ export default new Vuex.Store<State>({
   mutations: {},
   actions: {},
   modules: {
-    userModule: UserModule
+    userModule: UserModule,
+    userPaginationModule: UserPaginationModule
   },
   plugins: [persist.plugin]
 });

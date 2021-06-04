@@ -2,7 +2,7 @@
   <div>
     <v-row class="mt-14" no-gutters>
       <v-col cols="2 offset-1" sm="3" lg="2" class="hidden-sm-and-down">
-        <Profile></Profile>
+        <FeedProfilePreview></FeedProfilePreview>
 
         <Suggestions class="mt-16"></Suggestions>
       </v-col>
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Profile from "@/components/Feed/Profile.vue";
+import FeedProfilePreview from "@/components/Feed/FeedProfilePreview.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
 import InfiniteLoading from "vue-infinite-loading";
@@ -27,7 +27,7 @@ import { GetPost } from "@/models/post";
 export default Vue.extend({
   name: "Feed",
 
-  components: { Profile, Suggestions, PostContainer, InfiniteLoading },
+  components: { FeedProfilePreview, Suggestions, PostContainer, InfiniteLoading },
 
   data: () => ({
     posts: [] as GetPost[],

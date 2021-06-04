@@ -54,7 +54,9 @@
       </v-col>
     </v-row>
 
-    <v-btn text color="secondary" block class="text-caption">{{ $i18n.t("Feed.viewProfile") }} </v-btn>
+    <v-btn text color="secondary" block class="text-caption" @click="$router.push('profile/' + userData.canonicalName)"
+      >{{ $i18n.t("Feed.viewProfile") }}
+    </v-btn>
   </v-card>
 </template>
 
@@ -63,7 +65,7 @@ import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
-import { get } from "@/services/user";
+import { getUserByCanonicalName } from "@/services/user";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
@@ -78,7 +80,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
   methods: {
     async getUserProfile() {
-      this.userData = await get(this.$store.state.userModule.user.canonicalName);
+      this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
     }
   },
 

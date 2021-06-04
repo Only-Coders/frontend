@@ -58,7 +58,12 @@
                       <template v-slot:activator="{ on }">
                         <v-btn large depressed class="header__avatar pa-0" v-on="on">
                           <v-avatar size="50">
-                            <v-img alt="user avatar" :src="userData.imageURI" />
+                            <v-img
+                              alt="user avatar"
+                              :src="
+                                userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                              "
+                            />
                           </v-avatar>
                           <v-icon class="ma-0" color="#f9f9f9">mdi-chevron-down</v-icon>
                         </v-btn>
@@ -101,7 +106,10 @@
                     <v-divider></v-divider>
                     <v-list-item class="ma-0 mt-4">
                       <v-list-item-content class="justify-center py-0">
-                        <router-link to="/profile" class="list-item__router-link">
+                        <router-link
+                          :to="{ name: 'ProfileChild', params: { user: userData.canonicalName } }"
+                          class="list-item__router-link"
+                        >
                           <v-row align="center" class="mb-0">
                             <v-col cols="2">
                               <v-list-item-icon class="ma-0">
@@ -182,7 +190,7 @@ export default Vue.extend({
   methods: {
     getUserProfileFromToken() {
       this.userData = this.$store.state.userModule.user;
-      if (this.userData.currentPosition !== "" && typeof this.userData.currentPosition !== undefined) {
+      if (this.userData.currentPosition) {
         this.userCurrentPosition = {
           company: this.userData.currentPosition.split(" - ")[0],
           position: this.userData.currentPosition.split(" - ")[1]

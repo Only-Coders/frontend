@@ -16,4 +16,8 @@ export type Profile = {
   contactQty: number;
   postQty: number;
   currentPosition: CurrentPosition;
+  connected: boolean;
+  following: boolean;
+  pendingRequest: boolean;
+  requestHasBeenSent: boolean;
 };

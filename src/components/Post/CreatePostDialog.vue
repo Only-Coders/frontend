@@ -96,6 +96,7 @@ import LinkPreview from "@/components/Post/LinkPreview.vue";
 import { VueConstructor } from "vue/types/umd";
 import commonMethodsMixin, { CommonMethodsMixin } from "@/mixins/commonMethods";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
+import { i18n } from "@/main";
 
 type PrivacyOption = {
   text: string;
@@ -117,7 +118,10 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     fileData: null as File | null,
     fileToShow: "",
     enabledButtons: true,
-    privacyOptions: [] as PrivacyOption[],
+    privacyOptions: [
+      { text: i18n.t("CreatePost.PrivacyPost.public").toString(), public: true },
+      { text: i18n.t("CreatePost.PrivacyPost.private").toString(), public: false }
+    ] as PrivacyOption[],
     codeExample: "```javascript\n//Put your code here...\n```",
     showLinkDialog: false,
     post: {
@@ -238,10 +242,9 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
   },
 
   created() {
-    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.public").toString(), public: true });
-    this.privacyOptions.push({ text: this.$i18n.t("CreatePost.PrivacyPost.private").toString(), public: false });
-
-    this.post.isPublic = this.$store.state.userModule.user.defaultPrivacy;
+    this.post.isPublic = this.$store.state.userModule.user.defaultPrivacy
+      ? this.$store.state.userModule.user.defaultPrivacy
+      : true;
   }
 });
 </script>

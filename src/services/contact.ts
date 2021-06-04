@@ -1,10 +1,30 @@
 import axios from "@/plugins/axios";
-import { Contact } from "@/models/contact";
+import { ContactRequest } from "@/models/contactRequest";
+import { Pagination } from "@/models/Pagination/pagination";
+import { User } from "@/models/user";
 
-export async function post_contact_request(contact: Contact): Promise<void> {
+export async function postContactRequest(contact: ContactRequest): Promise<void> {
   await axios.post(`/api/users/contact-request`, contact);
 }
 
-export async function delete_contact_request(canonicalName: string): Promise<void> {
+export async function deleteContactRequest(canonicalName: string): Promise<void> {
   await axios.delete(`/api/users/contact-request/${canonicalName}`);
+}
+
+export async function getContacts(
+  page: number,
+  size: number,
+  orderBy: string,
+  partialName?: string,
+  countryName?: string,
+  skillName?: string
+): Promise<Pagination<User>> {
+  const response = await axios.get(`/api/users/contacts`, {
+    params: { page, size, orderBy, partialName, countryName, skillName }
+  });
+  return response.data;
+}
+
+export async function deleteContact(canonicalName: string): Promise<void> {
+  await axios.delete(`/api/users/contacts/${canonicalName}`);
 }

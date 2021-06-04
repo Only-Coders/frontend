@@ -82,6 +82,7 @@ export default Vue.extend({
   methods: {
     addExperience() {
       if (this.search) {
+        //TODO: REvisar que no se agreguen repetidos
         const skill = this.skills.find((skill) => skill.canonicalName === this.search.toLowerCase());
 
         if (!skill) {

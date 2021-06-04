@@ -71,6 +71,9 @@ instance.interceptors.request.use((request) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       setHeaders(token);
+      request.headers.Authorization = "Bearer " + token;
+      request.headers["Accept-Language"] = store.state.lang;
+      //TODO: revisar codigo lenguaje/idioma
     }
   }
   return request;

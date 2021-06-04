@@ -7,7 +7,7 @@
             <v-img
               alt="user"
               :src="
-                $store.state.userModule.user.imageURI
+                $store.state.userModule.user && $store.state.userModule.user.imageURI
                   ? $store.state.userModule.user.imageURI
                   : require('@/assets/images/default-avatar.png')
               "

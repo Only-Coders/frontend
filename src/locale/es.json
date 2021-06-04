@@ -150,5 +150,15 @@
     "createPostBtn": "Crear",
     "successfullCreation": "Tu post se ha creado con exito !",
     "errorCreation": "Opps... Hubo un error inesperado, por favor intentalo nuevamente"
+  },
+  "ViewProfile": {
+    "contactRequests": "Solicitudes de contactos",
+    "Posts": "Publicaciones",
+    "MyNetwork": "Mi Red",
+    "Favorites": "Favoritos",
+    "Data": "Datos",
+    "Tags": "Temas",
+    "contacts": "Contactos",
+    "followings": "Seguidos"
   }
 }

@@ -125,41 +125,23 @@
                         </router-link>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item>
-                      <v-list-item-content class="justify-center py-0">
-                        <router-link to="/settings" class="list-item__router-link">
-                          <v-row align="center" class="mb-0">
-                            <v-col cols="2">
-                              <v-list-item-icon class="ma-0">
-                                <v-icon>mdi-cog</v-icon>
-                              </v-list-item-icon>
-                            </v-col>
-                            <v-col class="py-0 asdas">
-                              <v-list-item-content>
-                                <v-list-item-title>Settings</v-list-item-title>
-                              </v-list-item-content>
-                            </v-col>
-                          </v-row>
-                        </router-link>
-                      </v-list-item-content>
+
+                    <v-list-item @click.prevent>
+                      <v-list-item-icon class="mr-2">
+                        <v-list-item-icon class="ma-0">
+                          <v-icon>mdi-cog</v-icon>
+                        </v-list-item-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="ml-3"> Setting </v-list-item-title>
                     </v-list-item>
-                    <v-list-item>
-                      <v-list-item-content class="justify-center py-0">
-                        <router-link to="/settings" class="list-item__router-link">
-                          <v-row align="center" class="mb-0">
-                            <v-col cols="2">
-                              <v-list-item-icon class="ma-0">
-                                <v-icon>mdi-logout-variant</v-icon>
-                              </v-list-item-icon>
-                            </v-col>
-                            <v-col class="py-0 asdas">
-                              <v-list-item-content>
-                                <v-list-item-title>Logout</v-list-item-title>
-                              </v-list-item-content>
-                            </v-col>
-                          </v-row>
-                        </router-link>
-                      </v-list-item-content>
+
+                    <v-list-item @click="logout">
+                      <v-list-item-icon class="mr-2">
+                        <v-list-item-icon class="ma-0">
+                          <v-icon>mdi-logout-variant</v-icon>
+                        </v-list-item-icon>
+                      </v-list-item-icon>
+                      <v-list-item-title class="ml-3"> Logout </v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -196,6 +178,10 @@ export default Vue.extend({
           position: this.userData.currentPosition.split(" - ")[1]
         };
       }
+    },
+
+    logout() {
+      this.$store.dispatch("logout");
     }
   },
 

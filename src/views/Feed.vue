@@ -31,13 +31,14 @@ export default Vue.extend({
 
   data: () => ({
     posts: [] as GetPost[],
-    currentPage: 1,
+    currentPage: 0,
     enableInfiniteScroll: false
   }),
 
   methods: {
     async fetchPosts() {
       const result = await getPost(this.currentPage, 5);
+      this.currentPage++;
       this.posts = result.content;
       if (result.totalElements !== 0) {
         this.enableInfiniteScroll = true;

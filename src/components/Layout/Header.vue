@@ -67,26 +67,31 @@
                     </v-tooltip>
                   </span>
                 </template>
-                <v-card width="250px">
+                <v-card width="280px">
                   <v-list rounded>
                     <v-list-item two-line class="px-0 pl-2">
                       <v-list-item-content class="justify-center">
                         <v-row align="center">
                           <v-col cols="3">
                             <v-avatar size="60">
-                              <v-img alt="user avatar" :src="userData.imageURI" />
+                              <v-img
+                                alt="user avatar"
+                                :src="
+                                  userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                                "
+                              />
                             </v-avatar>
                           </v-col>
                           <v-col class="pa-0 pl-2">
                             <v-list-item-title class="pl-4">
                               <h3 class="d-inline-block text-truncate font-weight-medium">
-                                {{ userData.fullName }}
+                                {{ userData.fullName ? userData.fullName : "" }}
                               </h3>
                               <h4 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.company }}
+                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
                               </h4>
                               <h5 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.position }}
+                                {{ userCurrentPosition.position ? userCurrentPosition.company : "" }}
                               </h5>
                             </v-list-item-title>
                           </v-col>

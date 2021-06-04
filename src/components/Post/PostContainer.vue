@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CreatePost @passPostToPostContainer="addPostToFeed" />
+    <CreatePost v-if="showCreateProfile" @passPostToPostContainer="addPostToFeed" />
 
     <div v-for="post in posts" :key="post.id" class="my-16">
       <Post :post="post" />
@@ -22,7 +22,7 @@ export default Vue.extend({
     Post
   },
 
-  props: { posts: Array as PropType<GetPost[]> },
+  props: { posts: Array as PropType<GetPost[]>, showCreateProfile: Boolean },
 
   methods: {
     addPostToFeed(post: GetPost) {

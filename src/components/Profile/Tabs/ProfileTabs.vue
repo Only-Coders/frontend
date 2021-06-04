@@ -23,6 +23,7 @@
           class="mt-7"
           @decrementContact="$emit('decrementContact')"
           :isSelfProfile="isSelfProfile"
+          :showCreateProfile="item.name !== 'favorites'"
         >
         </component>
       </v-tab-item>

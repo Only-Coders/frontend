@@ -34,6 +34,7 @@ function requestNewToken(): void {
       subscribers = [];
     })
     .catch(() => {
+      window.localStorage.clear();
       Router.push("/login");
     });
 }

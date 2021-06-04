@@ -150,5 +150,15 @@
     "createPostBtn": "Create",
     "successfullCreation": "Your post has been successfully created !",
     "errorCreation": "Opps... There was an unexpected error, please try again"
+  },
+  "ViewProfile": {
+    "contactRequests": "Contact requests",
+    "Posts": "Posts",
+    "MyNetwork": "My Network",
+    "Favorites": "Favorites",
+    "Data": "Data",
+    "Tags": "Tags",
+    "contacts": "Contacts",
+    "followings": "Followings"
   }
 }

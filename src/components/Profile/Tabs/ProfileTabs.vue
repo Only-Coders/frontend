@@ -24,8 +24,12 @@
           @decrementContact="$emit('decrementContact')"
           :isSelfProfile="isSelfProfile"
           :showCreateProfile="item.name !== 'favorites'"
+          :posts="posts"
+          :userInfo="userData"
+          :isLoguedUserProfile="isSelfProfile"
         >
         </component>
+        <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -39,6 +43,11 @@ import TagsTab from "@/components/Profile/Tabs/TagsTab.vue";
 import FavoritesTab from "@/components/Profile/Tabs/FavoritesTab.vue";
 import DataTab from "@/components/Profile/Tabs/DataTab.vue";
 import { i18n } from "@/main";
+import { GetPost } from "@/models/post";
+import { getUserPost } from "@/services/post";
+import InfiniteLoading from "vue-infinite-loading";
+import { Profile } from "@/models/profile";
+import { getUserByCanonicalName } from "@/services/user";
 
 type TabsTitles = {
   name?: string;
@@ -57,13 +66,19 @@ export default Vue.extend({
     MyNetworkTab,
     TagsTab,
     FavoritesTab,
-    DataTab
+    DataTab,
+    InfiniteLoading
   },
 
   data: () => ({
+    userData: {} as Profile,
+    posts: [] as GetPost[],
+    currentPage: 0,
+    enableInfiniteScroll: false,
     tab: null,
     items: [
       {
+        name: "posts",
         tab: i18n.t("ViewProfile.Posts").toString(),
         content: PostContainer,
         icon: "mdi-code-tags"
@@ -103,6 +118,35 @@ export default Vue.extend({
         return this.items;
       }
     }
+  },
+
+  methods: {
+    async fetchPosts() {
+      const result = await getUserPost(this.userData.canonicalName, this.currentPage, 5);
+      this.currentPage++;
+      this.posts = result.content;
+      if (result.totalElements !== 0) {
+        this.enableInfiniteScroll = true;
+      }
+    },
+
+    async loadMore($state: { loaded: () => void; complete: () => void }) {
+      setTimeout(async () => {
+        const result = await getUserPost(this.userData.canonicalName, this.currentPage, 5);
+        if (result.content.length) {
+          this.currentPage += 1;
+          this.posts = this.posts.concat(result.content);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      }, 1250);
+    }
+  },
+
+  async created() {
+    this.userData = await getUserByCanonicalName(this.$route.params.user);
+    await this.fetchPosts();
   }
 });
 </script>

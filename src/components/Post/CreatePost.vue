@@ -7,8 +7,12 @@
             <v-img
               alt="user"
               :src="
-                $store.state.userModule.user && $store.state.userModule.user.imageURI
-                  ? $store.state.userModule.user.imageURI
+                isSelfProfile
+                  ? $store.state.userModule.user && $store.state.userModule.user.imageURI
+                    ? $store.state.userModule.user.imageURI
+                    : require('@/assets/images/default-avatar.png')
+                  : userData && userData.imageURI
+                  ? userData.imageURI
                   : require('@/assets/images/default-avatar.png')
               "
             />
@@ -35,15 +39,21 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import CreatePostDialog from "./CreatePostDialog.vue";
 import { GetPost } from "@/models/post";
+import { Profile } from "@/models/profile";
 
 export default Vue.extend({
   name: "CreatePost",
 
   components: {
     CreatePostDialog
+  },
+
+  props: {
+    userData: Object as PropType<Profile>,
+    isSelfProfile: Boolean
   },
 
   data: () => ({

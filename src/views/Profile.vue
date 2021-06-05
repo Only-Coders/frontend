@@ -10,7 +10,12 @@
       ></ReceivedContactRequests>
     </v-col>
     <v-col cols="12" md="7">
-      <ProfileTabs class="mx-7" :isSelfProfile="isSelfProfile" @decrementContact="decrementContacts"></ProfileTabs>
+      <ProfileTabs
+        class="mx-7"
+        :isSelfProfile="isSelfProfile"
+        @decrementContact="decrementContacts"
+        :userCanonicalName="userData"
+      ></ProfileTabs>
     </v-col>
   </v-row>
 </template>

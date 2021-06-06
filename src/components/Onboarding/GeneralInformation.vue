@@ -189,7 +189,7 @@ export default Vue.extend({
       birthDate: "",
       description: "",
       gitProfile: {
-        platform: "",
+        platform: "GITHUB",
         userName: ""
       },
       firstName: "",
@@ -238,29 +238,32 @@ export default Vue.extend({
     },
 
     async handleRegisterUser() {
-      if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
-        if (this.profileImageToShow !== "") {
-          await this.onUpload();
-        }
-        this.user.imageURI = this.profileImageURL;
-        this.user.birthDate = new Date(this.user.birthDate).toISOString();
-        const ocToken = await register(this.user);
-        setHeaders(ocToken.token);
-        const user: UserData = jwtDecode(ocToken.token);
-        this.$store.commit("userModule/SET_USER", user);
+      if (this.profileImageToShow !== "") {
+        await this.onUpload();
       }
+      this.user.imageURI = this.profileImageURL;
+      if (this.user.birthDate) this.user.birthDate = new Date(this.user.birthDate).toISOString();
+      if (!this.user.gitProfile?.userName) delete this.user.gitProfile;
+      const ocToken = await register(this.user);
+      setHeaders(ocToken.token);
+      const user: UserData = jwtDecode(ocToken.token);
+      this.$store.commit("userModule/SET_USER", user);
     }
   },
 
   watch: {
     async stepAction() {
-      this.$emit("showButtonLoader");
-      try {
-        await this.handleRegisterUser();
-        this.$emit("moveNextStep");
-        this.$destroy();
-      } catch (error) {
-        this.$router.push("/login");
+      if ((this.$refs["register-user"] as HTMLFormElement).validate()) {
+        this.$emit("showButtonLoader");
+        try {
+          await this.handleRegisterUser();
+          this.$emit("moveNextStep");
+          this.$emit("showButtonLoader");
+          this.$destroy();
+        } catch (error) {
+          this.$router.push("/login");
+          this.$emit("showButtonLoader");
+        }
       }
     }
   },

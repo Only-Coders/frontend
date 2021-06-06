@@ -26,6 +26,7 @@
                 v-bind="{ ...inputProps }"
                 :label="$i18n.t('Onboarding.WorkExperience.organizationLabel')"
                 :rules="[rules.required]"
+                cache-items
               ></v-combobox>
             </v-col>
             <v-col cols="12" md="6">
@@ -134,12 +135,12 @@ export default Vue.extend({
     emitUpdateExperience() {
       if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
         const organization: WorkExperience = {
-          name: this.organizations.length !== 0 ? this.search : this.organizations[0].name,
+          name: this.organizations.length === 0 ? this.search : this.organizations[0].name,
           position: this.experience.position,
           since: this.experience.since,
           until: this.experience.until
         };
-        if (this.organizations.length === 0) organization.id = this.organizations[0].id;
+        if (this.organizations.length !== 0) organization.id = this.organizations[0].id;
 
         this.$emit("updateExperienceData", organization);
 

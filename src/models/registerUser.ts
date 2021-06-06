@@ -1,8 +1,8 @@
 export type RegisterUser = {
   birthDate: string;
   description: string;
-  gitProfile: {
-    platform: "";
+  gitProfile?: {
+    platform: string;
     userName: string;
   };
   firstName: string;

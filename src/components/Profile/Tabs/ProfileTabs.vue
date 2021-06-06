@@ -33,7 +33,11 @@
           :isLoguedUserProfile="isSelfProfile"
         >
         </component>
-        <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
+        <infinite-loading
+          v-if="enableInfiniteScroll && item.name === 'posts'"
+          spinner="spiral"
+          @infinite="loadMore"
+        ></infinite-loading>
       </v-tab-item>
     </v-tabs-items>
   </v-card>

@@ -79,7 +79,7 @@ export default Vue.extend({
 
   methods: {
     showActionLoader() {
-      this.isLoading = true;
+      this.isLoading = !this.isLoading;
     },
     noticeChild() {
       this.childStepAction = !this.childStepAction;
@@ -88,7 +88,6 @@ export default Vue.extend({
       if (this.carouselIndex < this.steps.length - 1) {
         this.carouselIndex++;
       }
-      this.isLoading = false;
     },
     finishOnboarding() {
       this.$router.push("/");

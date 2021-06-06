@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row align="center" justify="center" no-gutters class="mb-15">
+    <v-row align="center" justify="center" no-gutters class="mb-10">
       <v-col cols="8">
         <v-form>
           <v-combobox
@@ -86,7 +86,7 @@ export default Vue.extend({
     },
 
     async getTags(page: number) {
-      this.tagsPagination = await getTagsOfUser(this.$route.params.user, page, 1, this.search);
+      this.tagsPagination = await getTagsOfUser(this.$route.params.user, page, 5, this.search);
       this.currentPage = this.tagsPagination.currentPage + 1;
     },
 

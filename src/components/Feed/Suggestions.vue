@@ -30,7 +30,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Contact from "@/components/Feed/Contact.vue";
-import { get } from "@/services/suggestedContact";
+import { getSuggestedContacts } from "@/services/suggestedContact";
 import { User } from "@/models/user";
 
 export default Vue.extend({
@@ -44,7 +44,7 @@ export default Vue.extend({
 
   methods: {
     async getSuggestedContacts() {
-      this.suggestedContacts = await get(10);
+      this.suggestedContacts = await getSuggestedContacts(10);
     },
     removeSuggestedContact(index: number) {
       this.suggestedContacts.splice(index, 1);

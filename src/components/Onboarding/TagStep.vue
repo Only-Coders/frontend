@@ -19,7 +19,12 @@
         v-for="(tag, index) in tags.slice(0, 4)"
         :key="tag.canonicalName"
       >
-        <TagComponent v-bind="{ ...tag }" @remove="removeTag(index)"></TagComponent>
+        <TagComponent
+          v-bind="{ ...tag }"
+          :isFollowed="false"
+          :isSelfProfile="true"
+          @remove="removeTag(index)"
+        ></TagComponent>
       </v-col>
     </transition-group>
     <v-row v-if="tags.length == 0" class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>

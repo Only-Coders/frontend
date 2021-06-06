@@ -45,7 +45,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Contact from "@/components/Contact.vue";
-import { get } from "@/services/suggestedContact";
+import { getSuggestedContacts } from "@/services/suggestedContact";
 import { User } from "@/models/user";
 import NoData from "@/components/NoData.vue";
 
@@ -65,7 +65,7 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await get(10);
+    const result = await getSuggestedContacts(10);
     this.suggestedContacts = result;
   }
 });

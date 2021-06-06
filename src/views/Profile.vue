@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters class="mt-6">
     <v-col cols="12" md="6 offset-1" lg="3 offset-1" class="px-10">
-      <ProfilePreview :userData="userData" :isSelfProfile="isSelfProfile"></ProfilePreview>
+      <ProfilePreview :userData="userData" :isSelfProfile="isSelfProfile" :loading="loading"></ProfilePreview>
       <ReceivedContactRequests
         class="mt-8"
         @hideContactsRequests="showContactsRequests = false"
@@ -15,6 +15,7 @@
         :isSelfProfile="isSelfProfile"
         @decrementContact="decrementContacts"
         :userCanonicalName="userData"
+        :loading="loading"
       ></ProfileTabs>
     </v-col>
   </v-row>
@@ -36,7 +37,8 @@ export default Vue.extend({
   data: () => ({
     userData: {} as Profile,
     showContactsRequests: true,
-    isSelfProfile: false
+    isSelfProfile: false,
+    loading: true
   }),
 
   methods: {
@@ -51,6 +53,7 @@ export default Vue.extend({
   async created() {
     this.isSelfProfile = this.$route.params.user == this.$store.state.userModule.user.canonicalName;
     this.userData = await getUserByCanonicalName(this.$route.params.user);
+    this.loading = false;
   }
 });
 </script>

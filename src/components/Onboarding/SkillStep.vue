@@ -11,7 +11,7 @@
           <v-form>
             <v-row>
               <v-col cols="11">
-                <v-autocomplete
+                <v-combobox
                   :loading="isLoading"
                   :search-input.sync="search"
                   :items="skills"
@@ -23,7 +23,10 @@
                   solo
                   background-color="grey_input"
                   @keydown.enter.prevent="addExperience"
-                ></v-autocomplete>
+                  @focus="doSearch"
+                  append-icon=""
+                  clearable
+                ></v-combobox>
               </v-col>
               <v-col cols="1">
                 <v-btn fab color="primary" @click.prevent="addExperience">
@@ -63,7 +66,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { get, post } from "@/services/skill";
+import { getSkill, postSkill } from "@/services/skill";
 import { Skill } from "@/models/skills";
 
 export default Vue.extend({
@@ -82,13 +85,14 @@ export default Vue.extend({
   methods: {
     addExperience() {
       if (this.search) {
-        //TODO: REvisar que no se agreguen repetidos
         const skill = this.skills.find((skill) => skill.canonicalName === this.search.toLowerCase());
 
         if (!skill) {
           this.selectedSkills.push({ name: this.search });
         } else {
-          this.selectedSkills.push(skill);
+          if (!this.selectedSkills.find((skill) => skill.canonicalName === this.search.toLowerCase())) {
+            this.selectedSkills.push(skill);
+          }
         }
 
         this.search = "";
@@ -98,12 +102,18 @@ export default Vue.extend({
 
     deleteSkill(index: number) {
       this.selectedSkills.splice(index, 1);
+    },
+
+    async doSearch() {
+      if (this.search == null) {
+        this.skills = (await getSkill("")).content;
+      }
     }
   },
 
   watch: {
     search() {
-      if (this.search) {
+      if (this.search != null) {
         this.isLoading = true;
         if (this.timer != 0) {
           clearTimeout(this.timer);
@@ -111,11 +121,9 @@ export default Vue.extend({
 
         this.timer = setTimeout(async () => {
           try {
-            if (this.search) {
-              const result = await get(this.search);
+            const result = await getSkill(this.search);
 
-              this.skills = result.content;
-            }
+            this.skills = result.content;
           } catch (error) {
             clearTimeout(this.timer);
           } finally {
@@ -128,7 +136,7 @@ export default Vue.extend({
       this.$emit("showButtonLoader");
       await Promise.all(
         this.selectedSkills.map((skill) => {
-          return post(skill);
+          return postSkill(skill);
         })
       );
       this.$emit("moveNextStep");

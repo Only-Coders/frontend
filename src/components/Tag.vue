@@ -16,7 +16,7 @@
             v-if="isFollowed && isSelfProfile"
             >{{ $i18n.t("unfollow") }}</v-btn
           >
-          <v-btn block color="primary" small @click="followTag" outlined v-if="!isFollowed && isSelfProfile">{{
+          <v-btn block color="primary" small @click="followTag" outlined v-if="!isFollowed">{{
             $i18n.t("Onboarding.Tag.follow")
           }}</v-btn>
         </v-col>

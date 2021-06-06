@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-card class="card_profile" v-if="userDataComputed">
+    <v-sheet v-if="loading" color="grey lighten-4" class="pa-3">
+      <v-skeleton-loader
+        type="list-item-avatar, divider, list-item-three-line, card-heading, image, actions"
+      ></v-skeleton-loader>
+    </v-sheet>
+
+    <v-card class="card_profile" v-if="userDataComputed && !loading">
       <div class="d-flex justify-center mt-9">
         <v-avatar size="160">
           <v-img
@@ -153,7 +159,7 @@
       v-bind="{ ...userDataComputed }"
       v-if="createDialog"
       v-model="createDialog"
-      @confirmContactDeletion="deleteContact"
+      @deleteFromNetwork="deleteContact"
     ></DeleteContactDialog>
   </div>
 </template>
@@ -169,7 +175,7 @@ import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 export default Vue.extend({
   name: "ProfilePreview",
 
-  props: { userData: Object as PropType<Profile>, isSelfProfile: Boolean },
+  props: { userData: Object as PropType<Profile>, isSelfProfile: Boolean, loading: Boolean },
 
   components: { DeleteContactDialog },
 

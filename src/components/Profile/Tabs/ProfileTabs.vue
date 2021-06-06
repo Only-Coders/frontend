@@ -1,5 +1,9 @@
 <template>
-  <v-card>
+  <v-sheet v-if="loading" color="grey lighten-4" class="pa-3">
+    <v-skeleton-loader type="list-item-three-line, card-heading, image"></v-skeleton-loader>
+  </v-sheet>
+
+  <v-card v-else>
     <v-tabs
       v-model="tab"
       background-color="transparent"
@@ -59,7 +63,7 @@ type TabsTitles = {
 export default Vue.extend({
   name: "ProfileTabs",
 
-  props: { isSelfProfile: Boolean },
+  props: { isSelfProfile: Boolean, loading: Boolean },
 
   components: {
     PostContainer,
@@ -99,14 +103,6 @@ export default Vue.extend({
       { tab: i18n.t("ViewProfile.Tags").toString(), content: TagsTab, icon: "mdi-pound" }
     ] as TabsTitles[]
   }),
-
-  /* created() {
-    if (!this.isSelfProfile) {
-      this.items = this.items.filter((item) => {
-        return item.name !== "network" && item.name !== "favorites";
-      });
-    }
-  }, */
 
   computed: {
     filteredTabs(): TabsTitles[] {

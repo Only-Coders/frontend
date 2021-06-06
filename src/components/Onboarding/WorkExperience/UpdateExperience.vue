@@ -26,7 +26,7 @@
                 v-bind="{ ...inputProps }"
                 :label="$i18n.t('Onboarding.WorkExperience.organizationLabel')"
                 :rules="[rules.required]"
-                cache-items
+                @focus="doSearch"
               ></v-combobox>
             </v-col>
             <v-col cols="12" md="6">
@@ -149,6 +149,11 @@ export default Vue.extend({
     },
     close() {
       this.$emit("input");
+    },
+    async doSearch() {
+      if (this.search == null) {
+        this.organizations = (await getOrganizations("")).content;
+      }
     }
   },
 

@@ -8,7 +8,12 @@
       </v-col>
 
       <v-col cols="10 offset-1" md="5">
-        <PostContainer :posts="posts" :showCreateProfile="true" :isLoguedUserProfile="true"></PostContainer>
+        <PostContainer
+          :posts="posts"
+          :showCreateProfile="true"
+          :isLoguedUserProfile="true"
+          @deletePost="deleteUserPost"
+        ></PostContainer>
       </v-col>
     </v-row>
     <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
@@ -56,6 +61,13 @@ export default Vue.extend({
           $state.complete();
         }
       }, 1250);
+    },
+
+    deleteUserPost(postId: string) {
+      const postIndex = this.posts.findIndex((post) => post.id == postId);
+      if (postIndex >= 0) {
+        this.posts.splice(postIndex, 1);
+      }
     }
   },
 

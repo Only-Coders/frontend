@@ -8,7 +8,12 @@
     />
 
     <div v-for="post in posts" :key="post.id" class="my-16">
-      <Post :post="post" @passDeletedPostAsFavorite="passDeletedPostAsFavorite" :isInFavoritesTab="isInFavoritesTab" />
+      <Post
+        :post="post"
+        @passDeletedPostAsFavorite="passDeletedPostAsFavorite"
+        :isInFavoritesTab="isInFavoritesTab"
+        @deletePost="deletePost"
+      />
     </div>
   </div>
 </template>
@@ -42,6 +47,9 @@ export default Vue.extend({
     },
     passDeletedPostAsFavorite(postId: string) {
       this.$emit("passDeletedPost", postId);
+    },
+    deletePost(postId: string) {
+      this.$emit("deletePost", postId);
     }
   }
 });

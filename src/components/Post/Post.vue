@@ -57,6 +57,16 @@
                       </h3>
                     </v-list-item-title>
                   </v-list-item>
+                  <v-list-item v-if="isMyOwnPost" @click="toggleDeletePostDialog">
+                    <v-list-item-icon class="mr-2">
+                      <v-icon class="pr-2" color="#5E5E5E"> mdi-delete </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
+                        {{ $i18n.t("Feed.deletePost") }}
+                      </h3>
+                    </v-list-item-title>
+                  </v-list-item>
                   <v-list-item @click.prevent>
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-alert-octagon </v-icon>
@@ -136,6 +146,12 @@
         </v-col>
       </v-row>
     </v-card>
+    <DeletePostDialog
+      v-model="showDeletePostDialog"
+      :value="showDeletePostDialog"
+      @deletePost="toggleDeletePostDialog"
+      :postId="this.post.id"
+    ></DeletePostDialog>
   </div>
 </template>
 
@@ -151,11 +167,12 @@ import FileType from "@/components/Post/FileType.vue";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
+import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer, FileType },
+  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog },
 
   mixins: [medalsMixin, notificationsMixin],
 
@@ -168,7 +185,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     postIsCode: false,
     isPostFavorite: false,
     template: "",
-    fileName: ""
+    fileName: "",
+    isMyOwnPost: false,
+    showDeletePostDialog: false
   }),
 
   computed: {
@@ -180,6 +199,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
 
   methods: {
+    async toggleDeletePostDialog(postId: string) {
+      this.showDeletePostDialog = true;
+      this.$emit("deletePost", postId);
+    },
     formatPostDate() {
       this.formattedPostDate = formatDistance(new Date(this.post.createdAt), new Date(), {
         addSuffix: true
@@ -209,7 +232,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName}</router-link>`
+            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName} </router-link>`
           );
         });
       }
@@ -218,7 +241,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName}</router-link>`
+            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName} </router-link>`
           );
         });
       }
@@ -235,6 +258,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     this.formatPostDate();
     this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
+    this.isMyOwnPost = this.post.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
     this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
     this.isPostFavorite = this.post.isFavorite;
     if (this.post.type === "FILE") {

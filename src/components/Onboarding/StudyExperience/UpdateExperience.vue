@@ -134,12 +134,12 @@ export default Vue.extend({
     emitUpdateExperience() {
       if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
         const institution: StudyExperience = {
-          name: this.institutions.length !== 0 ? this.search : this.institutions[0].name,
+          name: this.institutions.length === 0 ? this.search : this.institutions[0].name,
           degree: this.experience.degree,
           since: this.experience.since,
           until: this.experience.until
         };
-        if (this.institutions.length === 0) institution.id = this.institutions[0].id;
+        if (this.institutions.length !== 0) institution.id = this.institutions[0].id;
         this.$emit("updateExperienceData", institution);
 
         this.close();

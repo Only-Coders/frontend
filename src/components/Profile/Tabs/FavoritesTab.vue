@@ -7,6 +7,7 @@
           :showCreateProfile="showCreateProfile"
           :isInFavoritesTab="true"
           @passDeletedPost="deleteFavoritePost"
+          @deletePost="deleteUserPost"
         ></PostContainer>
       </v-col>
     </v-row>
@@ -57,6 +58,13 @@ export default Vue.extend({
       }, 1250);
     },
     deleteFavoritePost(postId: string) {
+      const postIndex = this.posts.findIndex((post) => post.id == postId);
+      if (postIndex >= 0) {
+        this.posts.splice(postIndex, 1);
+      }
+    },
+
+    deleteUserPost(postId: string) {
       const postIndex = this.posts.findIndex((post) => post.id == postId);
       if (postIndex >= 0) {
         this.posts.splice(postIndex, 1);

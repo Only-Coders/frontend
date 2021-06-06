@@ -17,3 +17,7 @@ export async function getUserPost(canonicalName: string, page: number, size: num
   const response = await axios.get(`/api/posts/user/${canonicalName}`, { params: { page, size } });
   return response.data;
 }
+
+export async function deletePost(postId: string): Promise<void> {
+  await axios.delete(`/api/posts/${postId}`);
+}

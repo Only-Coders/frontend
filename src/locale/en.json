@@ -134,11 +134,14 @@
     "seeMore": "see more",
     "onPlace": "at",
     "save": "Save",
-    "unsave": "Delete",
+    "unsave": "Unsave",
     "report": "Report",
     "comments": "Comments",
     "savedFavorite": "Successfully saved as favorite !",
-    "unsavedFavorite": "Successfully deleted from favorites"
+    "unsavedFavorite": "Successfully deleted from favorites",
+    "deletePost": "Delete",
+    "deletePostConfirmation": "Are you sure you want to delete this post? Thi will be a permanent action",
+    "deleteButtonLabel": "Delete"
   },
   "CreatePost": {
     "PrivacyPost": {

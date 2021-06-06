@@ -138,7 +138,10 @@
     "report": "Reportar",
     "comments": "Comentarios",
     "savedFavorite": "Guardado como favorito !",
-    "unsavedFavorite": "Borrado como favorito "
+    "unsavedFavorite": "Borrado como favorito ",
+    "deletePost": "Eliminar",
+    "deletePostConfirmation": "Estas seguro de que quieres eliminar este post? Esta accion sera permanente",
+    "deleteButtonLabel": "Eliminar"
   },
   "CreatePost": {
     "PrivacyPost": {

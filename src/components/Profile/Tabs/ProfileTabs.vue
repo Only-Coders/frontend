@@ -31,6 +31,7 @@
           :posts="posts"
           :userInfo="userData"
           :isLoguedUserProfile="isSelfProfile"
+          @deletePost="deleteUserPost"
         >
         </component>
         <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
@@ -137,6 +138,13 @@ export default Vue.extend({
           $state.complete();
         }
       }, 1250);
+    },
+
+    deleteUserPost(postId: string) {
+      const postIndex = this.posts.findIndex((post) => post.id == postId);
+      if (postIndex >= 0) {
+        this.posts.splice(postIndex, 1);
+      }
     }
   },
 

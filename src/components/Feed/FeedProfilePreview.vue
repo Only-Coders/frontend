@@ -17,6 +17,11 @@
     <h4 class="center subtitle-1 text--secondary text-center">
       {{ userData.currentPosition ? userData.currentPosition.position : "" }}
     </h4>
+    <h3 class="center subtitle-1 text--secondary text-center">
+      {{
+        userData.currentPosition && userData.currentPosition.workplace ? userData.currentPosition.workplace.name : ""
+      }}
+    </h3>
 
     <v-row justify="center" class="mt-5" no-gutters>
       <v-col class="d-flex justify-center">

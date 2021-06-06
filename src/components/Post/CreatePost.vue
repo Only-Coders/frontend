@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-row class="px-7 py-3" align="center" no-gutters>
+      <v-row class="px-4 px-md-7 py-3" align="center" no-gutters>
         <v-col cols="2">
           <v-avatar size="60">
             <v-img
@@ -18,7 +18,7 @@
             />
           </v-avatar>
         </v-col>
-        <v-col cols="10" class="pr-4">
+        <v-col cols="10" class="px-2 px-md-0 pr-4">
           <v-text-field
             class="create_post_input"
             :placeholder="$i18n.t('CreatePost.createPost')"

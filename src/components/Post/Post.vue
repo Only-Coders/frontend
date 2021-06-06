@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-card>
-      <v-row class="px-7 py-3" align="start" no-gutters>
+    <v-card :flat="$vuetify.breakpoint.mdAndUp ? false : true">
+      <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
         <v-col cols="1" md="2" lg="1" class="pt-4">
-          <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '45'">
+          <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '55'">
             <v-img
               alt="user"
               class="font-weight-ligth pr-2 pb-0 user_name"
@@ -22,21 +22,33 @@
                 >
               </v-col>
               <v-col cols="auto" class="d-flex justify-start pa-0 pt-4">
-                <div class="pl-2">
-                  <v-img alt="gold-medal" width="20" src="@/assets/images/gold-medal.png" />
+                <div class="pl-0 pl-md-2 my-auto">
+                  <v-img
+                    alt="gold-medal"
+                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    src="@/assets/images/gold-medal.png"
+                  />
                 </div>
 
-                <span class="font-weight-light pr-3 pl-1 text-caption">{{ medals.gold }}</span>
+                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ 99 }}</span>
 
-                <div>
-                  <v-img alt="silver-medal" width="20" src="@/assets/images/silver-medal.png" />
+                <div class="my-auto">
+                  <v-img
+                    alt="silver-medal"
+                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    src="@/assets/images/silver-medal.png"
+                  />
                 </div>
-                <span class="font-weight-light pr-3 pl-1 text-caption">{{ medals.silver }}</span>
+                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ 99 }}</span>
 
-                <div>
-                  <v-img alt="bronce-medal" width="20" src="@/assets/images/bronce-medal.png" />
+                <div class="my-auto">
+                  <v-img
+                    alt="bronce-medal"
+                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    src="@/assets/images/bronce-medal.png"
+                  />
                 </div>
-                <span class="font-weight-light pl-1 text-caption">{{ medals.bronce }}</span>
+                <span class="font-weight-light pl-1 text-caption">{{ 99 }}</span>
               </v-col>
             </div>
             <v-col cols="auto">
@@ -105,8 +117,8 @@
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'IMAGE'">
-        <v-col class="pt-0 pb-6 px-10 d-flex justify-center">
-          <v-img alt="post-image" max-width="30vw" max-height="60vh" :src="post.url" />
+        <v-col class="pt-2 pb-6 px-10 d-flex justify-center">
+          <v-img alt="post-image" :max-width="$vuetify.breakpoint.mdAndUp ? '30vw' : '95vw'" :src="post.url" />
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'LINK'">

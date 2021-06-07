@@ -6,12 +6,18 @@
           <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '45'">
             <v-img
               alt="user"
+              class="font-weight-ligth pr-2 pb-0 user_name"
+              @click="$router.push(`profile/${post.publisher.canonicalName}`)"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
             />
           </v-avatar>
         </v-col>
         <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
-          <v-row class="align-center justify-space-between" no-gutters>
+          <v-row
+            class="align-center justify-space-between user_name"
+            no-gutters
+            @click="$router.push(`profile/${post.publisher.canonicalName}`)"
+          >
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
                 <v-card-title class="font-weight-ligth pr-2 pb-0"
@@ -315,4 +321,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.user_name {
+  cursor: pointer;
+}
+</style>

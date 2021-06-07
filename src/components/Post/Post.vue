@@ -229,7 +229,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     formatTagsAndMentions() {
       if (this.post.tags.length !== 0) {
         this.post.tags.forEach((tag) => {
-          const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
+          const regex = new RegExp(`#${tag.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName} </router-link>`
@@ -238,7 +238,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
-          const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
+          const regex = new RegExp(`@${mention.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName} </router-link>`
@@ -250,11 +250,17 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.fileName = decodeURIComponent(
         this.post.url.match(/files%2F(?<fileName>\S+)\?alt=/)?.groups?.fileName ?? "File"
       );
+    },
+    formatNewLine() {
+      this.post.message = this.post.message.replaceAll("\n", "<br/>");
     }
   },
 
   created() {
     this.checkIfPostIsCode();
+    if (!this.postIsCode) {
+      this.formatNewLine();
+    }
     this.formatPostDate();
     this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;

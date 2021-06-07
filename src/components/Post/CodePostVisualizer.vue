@@ -26,11 +26,16 @@ export default Vue.extend({
 
   methods: {
     generatePTag(string: string) {
-      string.split("\n").forEach((text) => {
-        const tag = document.createElement("p");
-        tag.textContent = text;
-        (this.$refs.container as HTMLDivElement).appendChild(tag);
+      const tag = document.createElement("p");
+      string.split("\n").forEach((text, index, total) => {
+        if (text) {
+          tag.append(text);
+          if (total[index + 1]) {
+            tag.appendChild(document.createElement("br"));
+          }
+        }
       });
+      (this.$refs.container as HTMLDivElement).appendChild(tag);
     },
 
     generateCodeTag(code: string, language: string) {

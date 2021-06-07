@@ -93,10 +93,10 @@
                                 {{ userData.fullName ? userData.fullName : "" }}
                               </h3>
                               <h4 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
+                                {{ userCurrentPosition.position ? userCurrentPosition.position : "" }}
                               </h4>
                               <h5 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.position ? userCurrentPosition.company : "" }}
+                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
                               </h5>
                             </v-list-item-title>
                           </v-col>
@@ -174,8 +174,8 @@ export default Vue.extend({
       this.userData = this.$store.state.userModule.user;
       if (this.userData.currentPosition) {
         this.userCurrentPosition = {
-          company: this.userData.currentPosition.split(" - ")[0],
-          position: this.userData.currentPosition.split(" - ")[1]
+          position: this.userData.currentPosition.split(" - ")[0],
+          company: this.userData.currentPosition.split(" - ")[1]
         };
       }
     },

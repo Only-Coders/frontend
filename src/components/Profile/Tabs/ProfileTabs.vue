@@ -27,7 +27,7 @@
           class="mt-7"
           @decrementContact="$emit('decrementContact')"
           :isSelfProfile="isSelfProfile"
-          :showCreateProfile="item.name !== 'favorites'"
+          :showCreateProfile="item.name !== 'favorites' && isSelfProfile"
           :posts="posts"
           :userInfo="userData"
           :isLoguedUserProfile="isSelfProfile"

@@ -7,6 +7,8 @@
             <v-img
               alt="user"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
+              @click="$router.push('profile/' + post.publisher.canonicalName)"
+              style="cursor: pointer"
             />
           </v-avatar>
         </v-col>
@@ -14,7 +16,10 @@
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title class="font-weight-ligth pr-2 pb-0"
+                <v-card-title
+                  class="font-weight-ligth pr-2 pb-0"
+                  style="cursor: pointer"
+                  @click="$router.push('profile/' + post.publisher.canonicalName)"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
@@ -232,7 +237,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName} </router-link>`
+            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important;color: #2780c4!important;">#${tag.displayName} </router-link>`
           );
         });
       }
@@ -241,7 +246,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName} </router-link>`
+            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important; color: #2780c4!important;">@${mention.firstName} ${mention.lastName} </router-link>`
           );
         });
       }

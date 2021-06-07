@@ -270,7 +270,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     async reactToPost(reaction: ReactionType | null) {
       if (reaction === this.myReaction) {
         if (reaction === ReactionType.APPROVE) {
-          this.rejectedAmount--;
+          this.approvedAmount--;
         } else {
           this.rejectedAmount--;
         }

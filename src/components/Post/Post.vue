@@ -13,14 +13,12 @@
           </v-avatar>
         </v-col>
         <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
-          <v-row
-            class="align-center justify-space-between user_name"
-            no-gutters
-            @click="$router.push(`profile/${post.publisher.canonicalName}`)"
-          >
+          <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title class="font-weight-ligth pr-2 pb-0"
+                <v-card-title
+                  class="font-weight-ligth pr-2 pb-0 user_name"
+                  @click="$router.push(`profile/${post.publisher.canonicalName}`)"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>

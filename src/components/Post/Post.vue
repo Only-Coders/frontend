@@ -250,11 +250,17 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.fileName = decodeURIComponent(
         this.post.url.match(/files%2F(?<fileName>\S+)\?alt=/)?.groups?.fileName ?? "File"
       );
+    },
+    formatNewLine() {
+      this.post.message = this.post.message.replaceAll("\n", "<br/>");
     }
   },
 
   created() {
     this.checkIfPostIsCode();
+    if (!this.postIsCode) {
+      this.formatNewLine();
+    }
     this.formatPostDate();
     this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;

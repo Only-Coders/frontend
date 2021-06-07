@@ -2,6 +2,7 @@ import axios from "@/plugins/axios";
 import { Post } from "@/models/post";
 import { Pagination } from "@/models/Pagination/pagination";
 import { GetPost } from "@/models/post";
+import { ReactionType } from "@/models/Enums/reaction";
 
 export async function post(post: Post): Promise<GetPost> {
   const response = await axios.post(`/api/posts`, post);
@@ -20,4 +21,8 @@ export async function getUserPost(canonicalName: string, page: number, size: num
 
 export async function deletePost(postId: string): Promise<void> {
   await axios.delete(`/api/posts/${postId}`);
+}
+
+export async function addPostReaction(postId: string, reaction: ReactionType | null): Promise<void> {
+  await axios.post(`/api/posts/${postId}/reactions`, { reactionType: reaction });
 }

@@ -1,4 +1,4 @@
-export type PostReaction = {
-  APPROVE: "APPROVE";
-  REJECT: "REJECT";
-};
+export enum ReactionType {
+  APPROVE = "APPROVE",
+  REJECT = "REJECT"
+}

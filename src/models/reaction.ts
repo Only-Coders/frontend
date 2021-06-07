@@ -1,6 +1,6 @@
-import { PostReaction } from "@/models/Enums/reaction";
+import { ReactionType } from "@/models/Enums/reaction";
 
 export type Reaction = {
-  reaction: PostReaction;
+  reaction: ReactionType;
   quantity: number;
 };

@@ -130,6 +130,7 @@ export default Vue.extend({
           return postOrganization(experience);
         })
       );
+      this.$emit("showButtonLoader");
       this.$emit("moveNextStep");
       this.$destroy();
     }

@@ -121,7 +121,7 @@
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
         <div class="d-flex align-center">
           <v-col cols="auto" class="pa-0">
-            <v-btn @click="reactToPost('APPROVE')" depressed rounded outlined color="#E0E0E0">
+            <v-btn :loading="isLoading" @click="reactToPost('APPROVE')" depressed rounded outlined color="#E0E0E0">
               <v-img alt="approve" width="25" src="@/assets/images/chevron-up.png" />
               <p class="my-auto" style="color: #00cdae">
                 {{ approvedAmount }}
@@ -129,7 +129,7 @@
             </v-btn>
           </v-col>
           <v-col cols="auto" class="pa-0">
-            <v-btn @click="reactToPost('REJECT')" rounded outlined color="#E0E0E0">
+            <v-btn :loading="isLoading" @click="reactToPost('REJECT')" depressed rounded outlined color="#E0E0E0">
               <v-img alt="reject" width="25" src="@/assets/images/chevron-down.png" />
               <p class="my-auto" style="color: #ff0f0f">
                 {{ rejectedAmount }}
@@ -192,7 +192,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     showDeletePostDialog: false,
     myReaction: null as ReactionType | null,
     rejectedAmount: 0,
-    approvedAmount: 0
+    approvedAmount: 0,
+    isLoading: false
   }),
 
   computed: {
@@ -268,6 +269,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.myReaction = this.post.myReaction;
     },
     async reactToPost(reaction: ReactionType | null) {
+      this.isLoading = true;
       if (reaction === this.myReaction) {
         if (reaction === ReactionType.APPROVE) {
           this.approvedAmount--;
@@ -290,6 +292,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       this.myReaction = reaction;
       await addPostReaction(this.post.id, reaction);
+      this.isLoading = false;
     }
   },
 

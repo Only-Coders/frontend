@@ -14,17 +14,27 @@
           />
         </v-col>
         <v-col cols="10" md="4" lg="5">
-          <v-text-field
-            hide-details
-            v-model="searchParameters"
-            label=""
-            prepend-inner-icon="mdi-magnify"
-            background-color="searchInput"
-            rounded
-            height="35"
-            class="mx-auto"
-            placeholder="Search"
-          ></v-text-field>
+          <transition name="scale-transition" mode="out-in" appear>
+            <v-menu bottom close-on-click>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  hide-details
+                  v-model="searchParameters"
+                  label=""
+                  prepend-inner-icon="mdi-magnify"
+                  background-color="searchInput"
+                  rounded
+                  height="35"
+                  class="mx-auto"
+                  placeholder="Search"
+                  @focus="showSearchComponent = true"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <Search></Search>
+            </v-menu>
+          </transition>
         </v-col>
         <v-col
           cols="2"
@@ -159,9 +169,12 @@
 import Vue from "vue";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
+import Search from "@/components/Feed/Search.vue";
 
 export default Vue.extend({
   name: "Header",
+
+  components: { Search },
 
   props: {},
 
@@ -169,7 +182,8 @@ export default Vue.extend({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
     searchParameters: "",
-    messages: 0
+    messages: 0,
+    showSearchComponent: false
   }),
 
   methods: {

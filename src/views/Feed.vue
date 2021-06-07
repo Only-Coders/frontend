@@ -15,7 +15,7 @@
         ></PostContainer>
       </v-col>
       <v-col cols="3" class="hidden-sm-and-down pl-16 pr-8">
-        <Suggestions></Suggestions>
+        <Suggestions style="position: fixed"></Suggestions>
       </v-col>
     </v-row>
     <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>

@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
+import { VOverlay } from "vuetify/lib";
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, { components: { VOverlay } });
 
 export default new Vuetify({
   theme: {

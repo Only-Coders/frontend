@@ -10,7 +10,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <Mentions :post="post" @addLink="showLinkPreview"></Mentions>
+        <Mentions :post="post" @addLink="showLinkPreview" @addPicture="addPicture"></Mentions>
 
         <div v-if="imageToShow">
           <v-btn class="mr-2 mt-1" fab small absolute color="secondary" @click="deleteImage">
@@ -229,6 +229,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       this.post.message = this.post.message + "\n" + this.codeExample;
     },
     showLinkPreview(url: string, evt: ClipboardEvent) {
+      this.deleteImagePreview();
       if (!this.post.url && this.validURL(url)) {
         this.post.url = url;
         this.post.type = PostType.LINK;
@@ -236,8 +237,22 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         evt.preventDefault();
       }
     },
+    addPicture(image: File) {
+      this.deleteLinkPreview();
+      this.post.type = PostType.IMAGE;
+      this.imageData = image as File;
+      this.imageToShow = URL.createObjectURL(image);
+      this.enabledButtons = false;
+    },
     deleteLinkPreview() {
       this.post.url = "";
+      this.post.type = PostType.TEXT;
+      this.enabledButtons = true;
+    },
+    deleteImagePreview() {
+      this.post.url = "";
+      this.imageData = null;
+      this.imageToShow = "";
       this.post.type = PostType.TEXT;
       this.enabledButtons = true;
     },

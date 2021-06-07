@@ -237,7 +237,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important;color: #2780c4!important;">#${tag.displayName} </router-link>`
+            `<router-link to="/tag/${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
           );
         });
       }
@@ -246,7 +246,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important; color: #2780c4!important;">@${mention.firstName} ${mention.lastName} </router-link>`
+            `<router-link to="/profile/${mention.canonicalName}" class="post__mention-tag">@${mention.firstName} ${mention.lastName} </router-link>`
           );
         });
       }
@@ -273,4 +273,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 });
 </script>
 
-<style scoped></style>
+<style>
+.post__mention-tag {
+  text-decoration: none !important;
+  color: #2780c4 !important;
+}
+</style>

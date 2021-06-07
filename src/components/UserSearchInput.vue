@@ -14,12 +14,11 @@
             background-color="grey_input"
             flat
             height="48"
-            @click:clear="searchUsersWithFilters()"
             @keydown.enter.prevent="searchUsersWithFilters()"
           ></v-text-field>
         </v-form>
 
-        <div class="mt-4">
+        <div class="mt-4" v-if="country || skill">
           <v-chip
             class="mr-2 primary--text"
             v-model="country"
@@ -97,7 +96,7 @@ type OrderBy = {
   text: string;
 };
 
-type Callback =
+type SearchUserFunction =
   | null
   | ((
       page: number,
@@ -117,7 +116,8 @@ export default Vue.extend({
     searchPersonalContacts: Boolean,
     searchPersonalFollows: Boolean,
     doReloadPage: Boolean,
-    searchFunction: Function as PropType<Callback>
+    searchFunction: Function as PropType<SearchUserFunction>,
+    cleanSearchInputs: Boolean
   },
 
   data: () => ({
@@ -176,9 +176,20 @@ export default Vue.extend({
       get(): string {
         return this.$store.state.userPaginationModule.search;
       },
-      set(value: string) {
+      async set(value: string) {
         this.$store.commit("userPaginationModule/SET_SEARCH_TEXT", value);
+        if (!value) {
+          await this.searchUsersWithFilters();
+        }
       }
+    }
+  },
+
+  watch: {
+    cleanSearchInputs() {
+      this.country = "";
+      this.skill = "";
+      this.orderBySelected = UsersOptionsOrderBy.FULLNAME;
     }
   }
 });

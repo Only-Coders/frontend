@@ -22,14 +22,14 @@
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
                   background-color="grey_input"
-                  @keydown.enter.prevent="addExperience"
+                  @keydown.enter.prevent="addSkill"
                   @focus="doSearch"
                   append-icon=""
                   clearable
                 ></v-combobox>
               </v-col>
               <v-col cols="1">
-                <v-btn fab color="primary" @click.prevent="addExperience">
+                <v-btn fab color="primary" @click.prevent="addSkill">
                   <v-icon> mdi-plus </v-icon>
                 </v-btn>
               </v-col>
@@ -83,7 +83,7 @@ export default Vue.extend({
   }),
 
   methods: {
-    addExperience() {
+    addSkill() {
       if (this.search) {
         const skill = this.skills.find((skill) => skill.canonicalName === this.search.toLowerCase());
 
@@ -139,6 +139,7 @@ export default Vue.extend({
           return postSkill(skill);
         })
       );
+      this.$emit("showButtonLoader");
       this.$emit("moveNextStep");
       this.$destroy();
     }

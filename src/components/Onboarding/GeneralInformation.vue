@@ -257,12 +257,11 @@ export default Vue.extend({
         this.$emit("showButtonLoader");
         try {
           await this.handleRegisterUser();
-          this.$emit("moveNextStep");
           this.$emit("showButtonLoader");
+          this.$emit("moveNextStep");
           this.$destroy();
         } catch (error) {
           this.$router.push("/login");
-          this.$emit("showButtonLoader");
         }
       }
     }

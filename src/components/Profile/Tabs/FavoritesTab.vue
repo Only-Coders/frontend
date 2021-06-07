@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col cols="10 offset-1">
+      <v-col cols="10 offset-1" v-if="posts.length > 0">
         <PostContainer
           :posts="posts"
           :showCreateProfile="showCreateProfile"
@@ -10,8 +10,16 @@
           @deletePost="deleteUserPost"
         ></PostContainer>
       </v-col>
+
+      <v-col v-else>
+        <NoData class="mb-10"></NoData>
+      </v-col>
     </v-row>
-    <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
+    <infinite-loading
+      v-if="enableInfiniteScroll && posts.length > 0"
+      spinner="spiral"
+      @infinite="loadMore"
+    ></infinite-loading>
   </div>
 </template>
 
@@ -21,11 +29,12 @@ import PostContainer from "@/components/Post/PostContainer.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import { getFavoritePosts } from "@/services/user";
 import { GetPost } from "@/models/post";
+import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "FavoritesTab",
 
-  components: { PostContainer, InfiniteLoading },
+  components: { PostContainer, InfiniteLoading, NoData },
 
   props: { showCreateProfile: Boolean },
 

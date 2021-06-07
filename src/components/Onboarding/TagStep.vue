@@ -68,7 +68,6 @@ export default Vue.extend({
 
   watch: {
     async stepAction() {
-      this.$emit("showButtonLoader");
       this.$emit("moveNextStep");
       this.$destroy();
     }

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <UserSearchInput :searchFunction="searchFunction" :usersPerPage="usersPerPage"></UserSearchInput>
+    <UserSearchInput
+      :searchFunction="searchFunction"
+      :usersPerPage="usersPerPage"
+      :cleanSearchInputs="cleanSearch"
+    ></UserSearchInput>
     <v-tabs v-model="tab" background-color="transparent" color="primary" centered class="mt-13">
       <v-tabs-slider></v-tabs-slider>
 
@@ -35,6 +39,7 @@ import ContactsTab from "@/components/Profile/Tabs/NetworkTabs/ContactsTab.vue";
 import FollowsTab from "@/components/Profile/Tabs/NetworkTabs/FollowsTabs.vue";
 import { Pagination } from "@/models/Pagination/pagination";
 import { User } from "@/models/user";
+import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 
 type TabsTitles = {
   name?: string;
@@ -43,7 +48,7 @@ type TabsTitles = {
   icon: string;
 };
 
-type Callback = null | (() => Promise<Pagination<User>>);
+type SearchUserFunction = null | (() => Promise<Pagination<User>>);
 
 export default Vue.extend({
   name: "MyNetworkTab",
@@ -66,17 +71,28 @@ export default Vue.extend({
         icon: "mdi-account-arrow-right"
       }
     ] as TabsTitles[],
-    searchFunction: null as Callback,
+    searchFunction: null as SearchUserFunction,
     usersPerPage: 0,
-    paginationUser: {} as Pagination<User>
+    paginationUser: {} as Pagination<User>,
+    cleanSearch: false
   }),
 
   methods: {
-    doDefineFunction(searchFunction: Callback) {
+    doDefineFunction(searchFunction: SearchUserFunction) {
       this.searchFunction = searchFunction;
     },
     setSearchResult(result: Pagination<User>) {
       this.paginationUser = result;
+    }
+  },
+
+  watch: {
+    tab() {
+      this.$store.commit("userPaginationModule/SET_ORDER_BY", UsersOptionsOrderBy.FULLNAME);
+      this.$store.commit("userPaginationModule/SET_SEARCH_TEXT", "");
+      this.$store.commit("userPaginationModule/SET_COUNTRY", "");
+      this.$store.commit("userPaginationModule/SET_SKILL", "");
+      this.cleanSearch = !this.cleanSearch;
     }
   }
 });

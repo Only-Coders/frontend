@@ -7,7 +7,7 @@
             <v-img
               alt="user"
               class="font-weight-ligth pr-2 pb-0 user_name"
-              @click="$router.push(`profile/${post.publisher.canonicalName}`)"
+              @click="redirectToProfile"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
               style="cursor: pointer"
             />
@@ -17,9 +17,7 @@
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title
-                  class="font-weight-ligth pr-2 pb-0 user_name"
-                  @click="$router.push(`profile/${post.publisher.canonicalName}`)"
+                <v-card-title class="font-weight-ligth pr-2 pb-0 user_name" @click="redirectToProfile"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
@@ -298,6 +296,18 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.myReaction = reaction;
       await addPostReaction(this.post.id, reaction);
       this.isLoading = false;
+    },
+    redirectToProfile() {
+      const redirectTo = `/profile/${this.post.publisher.canonicalName}`;
+      if (this.$router.currentRoute.path === redirectTo) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        this.$router.push(redirectTo);
+      }
     }
   },
 

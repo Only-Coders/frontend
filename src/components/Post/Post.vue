@@ -9,6 +9,7 @@
               class="font-weight-ligth pr-2 pb-0 user_name"
               @click="$router.push(`profile/${post.publisher.canonicalName}`)"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
+              style="cursor: pointer"
             />
           </v-avatar>
         </v-col>
@@ -242,7 +243,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`#${tag.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/tag/${tag.canonicalName}" style="text-decoration: none!important">#${tag.displayName} </router-link>`
+            `<router-link to="/tag/${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
           );
         });
       }
@@ -251,7 +252,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
           const regex = new RegExp(`@${mention.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/profile/${mention.canonicalName}" style="text-decoration: none!important">@${mention.firstName} ${mention.lastName} </router-link>`
+            `<router-link to="/profile/${mention.canonicalName}" class="post__mention-tag">@${mention.firstName} ${mention.lastName} </router-link>`
           );
         });
       }
@@ -319,7 +320,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 });
 </script>
 
-<style scoped>
+<style>
+.post__mention-tag {
+  text-decoration: none !important;
+  color: #2780c4 !important;
+}
 .user_name {
   cursor: pointer;
 }

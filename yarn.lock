@@ -10302,10 +10302,9 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-mention@^1.0.0:
+vue-mention@Only-Coders/vue-mention-roba3:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vue-mention/-/vue-mention-1.0.0.tgz#81f83305e2eaaa43eb613da50da2a0d4b817cd9e"
-  integrity sha512-hL+BG1A6DRySyqS1kHTZEOwPoDtfl8iOssBBCIYUGv6cbiYgFbhHEEpsYgZhdZhl58qhJ+3WAJjtGMpqBGli0Q==
+  resolved "https://codeload.github.com/Only-Coders/vue-mention-roba3/tar.gz/d8cb55d5102ffc41c135c705f7946f375622c4f8"
   dependencies:
     textarea-caret "^3.1.0"
 

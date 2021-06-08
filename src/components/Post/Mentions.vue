@@ -38,7 +38,7 @@
       <template #item-@="{ item }">
         <div class="issue">
           <v-row align="center" justify="center">
-            <v-col cols="4">
+            <v-col cols="2" class="d-flex justify-center">
               <v-avatar size="30">
                 <v-img
                   alt="user"
@@ -46,8 +46,8 @@
                 />
               </v-avatar>
             </v-col>
-
-            <v-col cols="6" class="user-name">
+            <v-spacer />
+            <v-col cols="9" class="user-name ml-10">
               <p class="dim">
                 {{ item.label }}
               </p>
@@ -97,7 +97,7 @@ export default Vue.extend({
       this.loading = true;
       if (this.selectedKey == "@") {
         this.items = (await getUser(searchText, 0, 5)).content.map((user) => {
-          return { value: user.canonicalName, label: user.firstName, imageURI: user.imageURI };
+          return { value: user.canonicalName, label: user.fullName, imageURI: user.imageURI };
         });
       } else {
         this.items = (await getTag(searchText, 5)).content.map((tag) => {
@@ -137,6 +137,7 @@ export default Vue.extend({
 .user-name {
   display: flex !important;
   align-items: center !important;
+  flex-direction: row !important;
 }
 
 .issue {
@@ -145,7 +146,7 @@ export default Vue.extend({
 }
 
 .mention-selected .issue {
-  background: var(--v-secondary-base);
+  background: #bebebe70;
   color: white !important;
   font-family: sans-serif !important;
   border-radius: 2px;
@@ -167,5 +168,6 @@ export default Vue.extend({
   z-index: 99999 !important;
   border-radius: 4px !important;
   display: visible !important;
+  width: fit-content !important;
 }
 </style>

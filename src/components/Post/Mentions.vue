@@ -107,8 +107,10 @@ export default Vue.extend({
       this.loading = false;
     },
     addMention(item: Item, key: string) {
-      key == "#" ? this.tags.push(item) : this.users.push(item);
-      key == "#" ? this.post.tagNames.push(item.value) : this.post.mentionCanonicalNames.push(item.value);
+      if (key == "@") {
+        this.users.push(item);
+        this.post.mentionCanonicalNames.push(item.value);
+      }
     },
     async atOpen(key: string) {
       this.selectedKey = key;

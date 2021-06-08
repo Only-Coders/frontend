@@ -203,6 +203,9 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     async createPost() {
       try {
         this.isLoading = true;
+
+        this.extractTags();
+
         if (this.post.type == PostType.IMAGE) {
           await this.onUploadImage();
         } else if (this.post.type == PostType.FILE) {
@@ -225,6 +228,19 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       } finally {
         this.isLoading = false;
       }
+    },
+    extractTags() {
+      const regex = /(?<!\S)#(?<hash>\w+)(\s|$)/gm;
+      const tagsSet = new Set<string>();
+      let match = regex.exec(this.post.message);
+      do {
+        const tag = match?.groups?.hash;
+        if (tag) tagsSet.add(tag);
+        match = regex.exec(this.post.message);
+      } while (match);
+      const tags = [...tagsSet];
+
+      this.post.tagNames.push(...tags);
     },
     insertCodeExample() {
       this.post.message = this.post.message + "\n" + this.codeExample;

@@ -13,7 +13,7 @@
         <Mentions :post="post" @addLink="showLinkPreview" @addPicture="addPicture"></Mentions>
 
         <div v-if="imageToShow">
-          <v-btn class="mr-2 mt-1" fab small absolute color="secondary" @click="deleteImage">
+          <v-btn class="mr-2 mt-1" fab small absolute color="secondary" @click="deleteImagePreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
           <v-img v-if="imageToShow" :src="imageToShow" />
@@ -75,6 +75,7 @@
 
         <v-spacer></v-spacer>
         <v-btn
+          :loading="isLoading"
           color="primary"
           depressed
           class="mr-3"
@@ -90,6 +91,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { PostType } from "@/models/Enums/postType";
+import { uuid } from "@/plugins/uuid";
 import { post } from "@/services/post";
 import { Post } from "@/models/post";
 import Compressor from "compressorjs";
@@ -129,6 +131,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     ] as PrivacyOption[],
     codeExample: "```javascript\n//Put your code here...\n```",
     showLinkDialog: false,
+    isLoading: false,
     post: {
       message: "",
       type: PostType.TEXT,
@@ -173,7 +176,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         new Compressor(imageData, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage.ref(`images/${result.name}`).put(result);
+            const fileName = uuid();
+            const snapshot = await storage.ref(`images/${fileName}`).put(result);
             const imageUrl = await snapshot.ref.getDownloadURL();
             resolve(imageUrl);
           },
@@ -190,12 +194,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         this.post.url = await response.ref.getDownloadURL();
       }
     },
-    deleteImage() {
-      this.enabledButtons = true;
-      this.imageToShow = "";
-      this.imageData = null;
-      this.post.type = PostType.TEXT;
-    },
     deleteFileShowed() {
       this.enabledButtons = true;
       this.fileToShow = "";
@@ -204,6 +202,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     },
     async createPost() {
       try {
+        this.isLoading = true;
         if (this.post.type == PostType.IMAGE) {
           await this.onUploadImage();
         } else if (this.post.type == PostType.FILE) {
@@ -223,6 +222,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       } catch (error) {
         this.error("Error", this.$i18n.t("CreatePost.errorCreation").toString());
         console.log(error);
+      } finally {
+        this.isLoading = false;
       }
     },
     insertCodeExample() {

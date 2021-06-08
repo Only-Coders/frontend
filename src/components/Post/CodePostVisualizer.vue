@@ -25,19 +25,28 @@ export default Vue.extend({
   }),
 
   methods: {
-    routerLinkToHref(text: string) {
-      text.split("</router-link>").forEach((potentialLink) => {
-        const regex = /<router-link.*to="(?<to>.*)".*style="(?<style>.*)".*>(?<text>.*)/gm;
-        let matches = regex.exec(potentialLink);
-        if (matches) {
-          const htmlAnchor = document.createElement("a");
-          htmlAnchor.append(matches?.groups?.text ?? "Whops!");
-          htmlAnchor.setAttribute("href", matches?.groups?.to ?? "/404");
-          htmlAnchor.setAttribute("style", matches?.groups?.style ?? "");
-          (this.$refs.container as HTMLDivElement).appendChild(htmlAnchor);
-        } else {
-          (this.$refs.container as HTMLDivElement).append(potentialLink);
-        }
+    routerLinkToHref(htmlText: string) {
+      htmlText.split("</router-link>").forEach((potentialLink) => {
+        const regex = /(?<attribute>\w+?)="(?<value>.*?)"|>(?<text>.*$)/gm;
+        const htmlAnchor = document.createElement("a");
+        const matches = potentialLink.matchAll(regex);
+        Array.from(matches).forEach((match) => {
+          const attribute = match?.groups?.attribute ?? "";
+          const value = match?.groups?.value ?? "";
+          const text = match?.groups?.text ?? "";
+
+          if (attribute) {
+            if (attribute === "to") {
+              htmlAnchor.setAttribute("href", value);
+            } else {
+              htmlAnchor.setAttribute(attribute, value);
+            }
+          }
+          if (text) {
+            htmlAnchor.append(text);
+          }
+        });
+        (this.$refs.container as HTMLDivElement).appendChild(htmlAnchor);
       });
     },
     generatePTag(string: string) {

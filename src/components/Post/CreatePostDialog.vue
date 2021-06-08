@@ -12,11 +12,11 @@
       <v-card-text>
         <Mentions :post="post" @addLink="showLinkPreview" @addPicture="addPicture"></Mentions>
 
-        <div v-if="imageToShow">
-          <v-btn class="mr-2 mt-1" fab small absolute color="secondary" @click="deleteImagePreview">
+        <div v-if="imageToShow" class="d-flex justify-center">
+          <v-btn class="mr-2 mt-1 remove_img_btn" fab small absolute color="secondary" @click="deleteImagePreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
-          <v-img v-if="imageToShow" :src="imageToShow" />
+          <v-img :max-width="$vuetify.breakpoint.mdAndUp ? '30vw' : '95vw'" v-if="imageToShow" :src="imageToShow" />
         </div>
 
         <FileType
@@ -290,5 +290,9 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
 .privacy_combo {
   border-radius: 50px !important;
   max-width: 240px;
+}
+
+.remove_img_btn {
+  right: 112px;
 }
 </style>

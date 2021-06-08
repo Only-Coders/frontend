@@ -46,6 +46,7 @@
                 :tags="recommendedTags"
                 :areTagsLoading="tagsLoading"
                 :areUsersLoading="usersLoading"
+                :filters="searchParameters"
               ></Search>
             </v-menu>
           </transition>

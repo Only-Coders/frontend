@@ -40,7 +40,9 @@
     </v-row>
     <v-row class="d-flex flex-row-reverse" no-gutters>
       <v-col cols="auto">
-        <v-btn text class="pr-0"> <p class="font-weight-bold text--secondary text-capitalize">Ver todos</p></v-btn>
+        <v-btn text class="pr-0" @click="redirectToSearchPage">
+          <p class="font-weight-bold text--secondary text-capitalize">Ver todos</p></v-btn
+        >
       </v-col>
     </v-row>
     <v-divider class="search__divider"></v-divider>
@@ -73,8 +75,6 @@ import { User } from "@/models/user";
 import { Tag } from "@/models/tag";
 import Contact from "@/components/Feed/SearchContact.vue";
 
-//TODO: importar componente, renderizando con v-for del filtered users en un v-list.
-
 export default Vue.extend({
   name: "Search",
 
@@ -84,7 +84,14 @@ export default Vue.extend({
     filteredUsers: Array as PropType<User[]>,
     tags: Array as PropType<Tag[]>,
     areTagsLoading: Boolean,
-    areUsersLoading: Boolean
+    areUsersLoading: Boolean,
+    filters: String
+  },
+
+  methods: {
+    redirectToSearchPage() {
+      this.$router.replace({ path: "/search/results/all/", query: { keywords: `${this.filters}` } });
+    }
   }
 });
 </script>

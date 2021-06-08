@@ -15,7 +15,7 @@
         </v-col>
         <v-col cols="10" md="4" lg="5">
           <transition name="scale-transition" mode="out-in" appear>
-            <v-menu bottom close-on-click>
+            <v-menu :close-on-content-click="false" close-on-click bottom nudge-bottom="45px">
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   hide-details
@@ -27,12 +27,17 @@
                   height="35"
                   class="mx-auto"
                   placeholder="Search"
-                  @focus="showSearchComponent = true"
+                  @focus="getRecommendedTags"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
               </template>
-              <Search></Search>
+              <Search
+                :filteredUsers="filteredUsers"
+                :tags="recommendedTags"
+                :areTagsLoading="tagsLoading"
+                :areUsersLoading="usersLoading"
+              ></Search>
             </v-menu>
           </transition>
         </v-col>
@@ -170,20 +175,27 @@ import Vue from "vue";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
 import Search from "@/components/Feed/Search.vue";
+import { getUser } from "@/services/user";
+import { getTags } from "@/services/suggested-tags";
+import { User } from "@/models/user";
+import { Tag } from "@/models/tag";
 
 export default Vue.extend({
   name: "Header",
 
   components: { Search },
 
-  props: {},
-
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
     searchParameters: "",
     messages: 0,
-    showSearchComponent: false
+    showSearchComponent: false,
+    filteredUsers: [] as User[],
+    recommendedTags: [] as Tag[],
+    usersLoading: false,
+    tagsLoading: false,
+    timer: 0
   }),
 
   methods: {
@@ -195,6 +207,17 @@ export default Vue.extend({
           company: this.userData.currentPosition.split(" - ")[1]
         };
       }
+    },
+
+    async searchUsers() {
+      const result = await getUser({ partialName: this.searchParameters, size: 5 });
+      this.filteredUsers = result.content;
+    },
+
+    async getRecommendedTags() {
+      this.tagsLoading = true;
+      this.recommendedTags = await getTags(3);
+      this.tagsLoading = false;
     },
 
     async logout() {
@@ -245,6 +268,28 @@ export default Vue.extend({
     }
   },
 
+  watch: {
+    searchParameters() {
+      if (this.searchParameters) {
+        this.usersLoading = true;
+        if (this.timer != 0) {
+          clearTimeout(this.timer);
+        }
+
+        this.timer = setTimeout(async () => {
+          try {
+            const result = await getUser({ partialName: this.searchParameters, size: 5 });
+            this.filteredUsers = result.content;
+          } catch (error) {
+            clearTimeout(this.timer);
+          } finally {
+            this.usersLoading = false;
+          }
+        }, 200);
+      }
+    }
+  },
+
   created() {
     this.listenToUnreadMessages();
     this.getUserProfileFromToken();
@@ -288,5 +333,11 @@ export default Vue.extend({
 }
 .feed_link {
   cursor: pointer;
+}
+</style>
+<style>
+.v-menu__content {
+  overflow: hidden !important;
+  border-radius: 15px !important;
 }
 </style>

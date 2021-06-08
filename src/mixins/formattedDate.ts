@@ -7,6 +7,14 @@ export const dateMixin = {
       } else {
         return "";
       }
+    },
+    formatDateMMYY(date: string): string {
+      if (date) {
+        const splitedDate = date.split("-");
+        return `${splitedDate[1]}/${splitedDate[0]}`;
+      } else {
+        return "";
+      }
     }
   }
 };

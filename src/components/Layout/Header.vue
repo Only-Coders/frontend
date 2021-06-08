@@ -3,16 +3,15 @@
     <v-app-bar app color="navbar" dark>
       <v-row align="center" justify="space-between" no-gutters>
         <v-col cols="4" md="4" class="hidden-sm-and-down">
-          <router-link to="/">
-            <v-img
-              alt="OnlyCoders logo"
-              class="shrink ml-md-0 ml-lg-16"
-              contain
-              src="@/assets/images/only-coders-logo-side-text.png"
-              transition="scale-transition"
-              width="140"
-            />
-          </router-link>
+          <v-img
+            alt="OnlyCoders logo"
+            class="shrink ml-md-0 ml-lg-16 feed_link"
+            contain
+            src="@/assets/images/only-coders-logo-side-text.png"
+            transition="scale-transition"
+            width="140"
+            @click="redirectToFeed"
+          />
         </v-col>
         <v-col cols="10" md="4" lg="5">
           <v-text-field
@@ -184,6 +183,18 @@ export default Vue.extend({
 
     async logout() {
       await this.$store.dispatch("logout");
+    },
+
+    redirectToFeed() {
+      if (this.$router.currentRoute.path === "/") {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        this.$router.push("/");
+      }
     }
   },
 
@@ -226,5 +237,8 @@ export default Vue.extend({
   width: 30px;
   height: 2px;
   background: white;
+}
+.feed_link {
+  cursor: pointer;
 }
 </style>

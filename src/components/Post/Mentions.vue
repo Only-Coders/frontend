@@ -42,8 +42,10 @@
               <v-avatar size="30">
                 <v-img
                   alt="user"
+                  :lazy-src="require('@/assets/images/default-avatar.png')"
                   :src="item.imageURI ? item.imageURI : require('@/assets/images/default-avatar.png')"
-                />
+                >
+                </v-img>
               </v-avatar>
             </v-col>
             <v-spacer />

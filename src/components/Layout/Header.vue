@@ -192,6 +192,7 @@ export default Vue.extend({
           left: 0,
           behavior: "smooth"
         });
+        this.$store.commit("shouldRefreshFeed", true);
       } else {
         this.$router.push("/");
       }

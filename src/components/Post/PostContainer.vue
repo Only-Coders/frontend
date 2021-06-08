@@ -7,7 +7,10 @@
       :userData="userInfo"
     />
 
-    <div v-for="post in posts" :key="post.id" class="my-16">
+    <v-col cols="12" align="center" v-if="posts.length == 0">
+      <v-progress-circular align="center" indeterminate color="primary" class="my-12"></v-progress-circular>
+    </v-col>
+    <div v-else v-for="post in posts" :key="post.id" class="my-16">
       <Post
         :post="post"
         @passDeletedPostAsFavorite="passDeletedPostAsFavorite"

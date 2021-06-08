@@ -73,6 +73,25 @@ export default Vue.extend({
 
   async created() {
     await this.fetchPosts();
+  },
+
+  computed: {
+    search: {
+      get(): boolean {
+        return this.$store.state.shouldRefreshFeed;
+      }
+    }
+  },
+  watch: {
+    async search(newValue: boolean) {
+      if (newValue) {
+        this.posts = [];
+        this.currentPage = 0;
+        this.enableInfiniteScroll = false;
+        await this.fetchPosts();
+      }
+      this.$store.commit("shouldRefreshFeed", false);
+    }
   }
 });
 </script>

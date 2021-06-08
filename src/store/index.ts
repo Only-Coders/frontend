@@ -11,6 +11,7 @@ Vue.use(Vuex);
 type State = {
   userModule?: UserModule;
   lang: string;
+  shouldRefreshFeed: boolean;
   userPaginationModule?: UserPaginationModule;
 };
 
@@ -25,9 +26,14 @@ const persist = new VuexPersist({
 
 export default new Vuex.Store<State>({
   state: {
-    lang: "en"
+    lang: "en",
+    shouldRefreshFeed: false
   },
-  mutations: {},
+  mutations: {
+    shouldRefreshFeed(state, newValue) {
+      state.shouldRefreshFeed = newValue;
+    }
+  },
   actions: {
     logout: async (context) => {
       context.commit("userModule/CLEAR_USER");

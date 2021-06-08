@@ -13,9 +13,17 @@
             @click="redirectToFeed"
           />
         </v-col>
+        <v-overlay :value="showOverlay" opacity="0.60"></v-overlay>
         <v-col cols="10" md="4" lg="5">
           <transition name="scale-transition" mode="out-in" appear>
-            <v-menu :close-on-content-click="false" close-on-click bottom nudge-bottom="45px">
+            <v-menu
+              :close-on-content-click="false"
+              close-on-click
+              bottom
+              nudge-bottom="45px"
+              attach=".v-overlay"
+              v-model="showOverlay"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   hide-details
@@ -30,6 +38,7 @@
                   @focus="getRecommendedTags"
                   v-bind="attrs"
                   v-on="on"
+                  @click="showOverlay = !showOverlay"
                 ></v-text-field>
               </template>
               <Search
@@ -195,7 +204,8 @@ export default Vue.extend({
     recommendedTags: [] as Tag[],
     usersLoading: false,
     tagsLoading: false,
-    timer: 0
+    timer: 0,
+    showOverlay: false
   }),
 
   methods: {
@@ -296,6 +306,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style>
+.v-overlay {
+  height: 100vh;
+}
+</style>
 
 <style lang="scss" scoped>
 .header__avatar {

@@ -25,12 +25,34 @@ export default Vue.extend({
   }),
 
   methods: {
-    generatePTag(string: string) {
-      string.split("\n").forEach((text) => {
-        const tag = document.createElement("p");
-        tag.textContent = text;
-        (this.$refs.container as HTMLDivElement).appendChild(tag);
+    routerLinkToHref(text: string) {
+      text.split("</router-link>").forEach((potentialLink) => {
+        const regex = /<router-link.*to="(?<to>.*)".*style="(?<style>.*)".*>(?<text>.*)/gm;
+        let matches = regex.exec(potentialLink);
+        if (matches) {
+          const htmlAnchor = document.createElement("a");
+          htmlAnchor.append(matches?.groups?.text ?? "Whops!");
+          htmlAnchor.setAttribute("href", matches?.groups?.to ?? "/404");
+          htmlAnchor.setAttribute("style", matches?.groups?.style ?? "");
+          (this.$refs.container as HTMLDivElement).appendChild(htmlAnchor);
+        } else {
+          (this.$refs.container as HTMLDivElement).append(potentialLink);
+        }
       });
+    },
+    generatePTag(string: string) {
+      const tag = document.createElement("p");
+      string.split("\n").forEach((text, index, total) => {
+        if (text.includes("router-link")) {
+          this.routerLinkToHref(text);
+        } else if (text) {
+          tag.append(text);
+          if (total[index + 1]) {
+            tag.appendChild(document.createElement("br"));
+          }
+        }
+      });
+      (this.$refs.container as HTMLDivElement).appendChild(tag);
     },
 
     generateCodeTag(code: string, language: string) {

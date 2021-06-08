@@ -6,6 +6,8 @@
           <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '45'">
             <v-img
               alt="user"
+              class="font-weight-ligth pr-2 pb-0 user_name"
+              @click="$router.push(`profile/${post.publisher.canonicalName}`)"
               :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
               @click="$router.push('profile/' + post.publisher.canonicalName)"
               style="cursor: pointer"
@@ -17,9 +19,8 @@
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
                 <v-card-title
-                  class="font-weight-ligth pr-2 pb-0"
-                  style="cursor: pointer"
-                  @click="$router.push('profile/' + post.publisher.canonicalName)"
+                  class="font-weight-ligth pr-2 pb-0 user_name"
+                  @click="$router.push(`profile/${post.publisher.canonicalName}`)"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
@@ -126,18 +127,18 @@
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
         <div class="d-flex align-center">
           <v-col cols="auto" class="pa-0">
-            <v-btn depressed rounded outlined color="#E0E0E0">
+            <v-btn :loading="isLoading" @click="reactToPost('APPROVE')" depressed rounded outlined color="#E0E0E0">
               <v-img alt="approve" width="25" src="@/assets/images/chevron-up.png" />
               <p class="my-auto" style="color: #00cdae">
-                {{ post.reactions ? post.reactions[0].quantity : 0 }}
+                {{ approvedAmount }}
               </p>
             </v-btn>
           </v-col>
           <v-col cols="auto" class="pa-0">
-            <v-btn depressed rounded outlined color="#E0E0E0">
+            <v-btn :loading="isLoading" @click="reactToPost('REJECT')" depressed rounded outlined color="#E0E0E0">
               <v-img alt="reject" width="25" src="@/assets/images/chevron-down.png" />
               <p class="my-auto" style="color: #ff0f0f">
-                {{ post.reactions ? post.reactions[1].quantity : 0 }}
+                {{ rejectedAmount }}
               </p>
             </v-btn>
           </v-col>
@@ -171,8 +172,10 @@ import LinkPreview from "@/components/Post/LinkPreview.vue";
 import FileType from "@/components/Post/FileType.vue";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
+import { addPostReaction } from "@/services/post";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
+import { ReactionType } from "@/models/Enums/reaction";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
@@ -192,7 +195,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     template: "",
     fileName: "",
     isMyOwnPost: false,
-    showDeletePostDialog: false
+    showDeletePostDialog: false,
+    myReaction: null as ReactionType | null,
+    rejectedAmount: 0,
+    approvedAmount: 0,
+    isLoading: false
   }),
 
   computed: {
@@ -204,7 +211,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
 
   methods: {
-    async toggleDeletePostDialog(postId: string) {
+    toggleDeletePostDialog(postId: string) {
       this.showDeletePostDialog = true;
       this.$emit("deletePost", postId);
     },
@@ -234,7 +241,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     formatTagsAndMentions() {
       if (this.post.tags.length !== 0) {
         this.post.tags.forEach((tag) => {
-          const regex = new RegExp(`(?<!\\S)#${tag.canonicalName}(\\s|$)`, "g");
+          const regex = new RegExp(`#${tag.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/tag/${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
@@ -243,7 +250,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
-          const regex = new RegExp(`((?<!\\S)(?<mention>@\\w+-\\w{5})(\\s|$))`, "g");
+          const regex = new RegExp(`@${mention.canonicalName}`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/profile/${mention.canonicalName}" class="post__mention-tag">@${mention.firstName} ${mention.lastName} </router-link>`
@@ -255,11 +262,52 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.fileName = decodeURIComponent(
         this.post.url.match(/files%2F(?<fileName>\S+)\?alt=/)?.groups?.fileName ?? "File"
       );
+    },
+    formatNewLine() {
+      this.post.message = this.post.message.replaceAll("\n", "<br/>");
+    },
+    parseReactions() {
+      this.approvedAmount =
+        this.post.reactions.find((reaction) => reaction.reaction === ReactionType.APPROVE)?.quantity ?? 0;
+
+      this.rejectedAmount =
+        this.post.reactions.find((reaction) => reaction.reaction === ReactionType.REJECT)?.quantity ?? 0;
+      this.myReaction = this.post.myReaction;
+    },
+    async reactToPost(reaction: ReactionType | null) {
+      this.isLoading = true;
+      if (reaction === this.myReaction) {
+        if (reaction === ReactionType.APPROVE) {
+          this.approvedAmount--;
+        } else {
+          this.rejectedAmount--;
+        }
+        reaction = null;
+      } else {
+        if (reaction === ReactionType.APPROVE) {
+          this.approvedAmount++;
+          if (this.myReaction) {
+            this.rejectedAmount--;
+          }
+        } else {
+          this.rejectedAmount++;
+          if (this.myReaction) {
+            this.approvedAmount--;
+          }
+        }
+      }
+      this.myReaction = reaction;
+      await addPostReaction(this.post.id, reaction);
+      this.isLoading = false;
     }
   },
 
   created() {
+    this.parseReactions();
     this.checkIfPostIsCode();
+    if (!this.postIsCode) {
+      this.formatNewLine();
+    }
     this.formatPostDate();
     this.formatTagsAndMentions();
     this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
@@ -277,5 +325,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 .post__mention-tag {
   text-decoration: none !important;
   color: #2780c4 !important;
+}
+.user_name {
+  cursor: pointer;
 }
 </style>

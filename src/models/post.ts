@@ -2,6 +2,7 @@ import { PostType } from "@/models/Enums/postType";
 import { CurrentPosition } from "@/models/currentPosition";
 import { GetPostTag } from "@/models/tag";
 import { Reaction } from "@/models/reaction";
+import { ReactionType } from "./Enums/reaction";
 
 export type Post = {
   message: string;
@@ -31,7 +32,7 @@ export type GetPost = {
   tags: GetPostTag[];
   reactions: Reaction[];
   commentQuantity: number;
-  myReaction: Reaction;
+  myReaction: ReactionType;
   createdAt: string;
   isFavorite: boolean;
   id: string;

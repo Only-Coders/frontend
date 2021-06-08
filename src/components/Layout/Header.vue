@@ -96,7 +96,9 @@
                                 {{ userCurrentPosition.position ? userCurrentPosition.position : "" }}
                               </h4>
                               <h5 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.company ? userCurrentPosition.company : "" }}
+                                {{
+                                  `${$i18n.t("at")} ${userCurrentPosition.company ? userCurrentPosition.company : ""}`
+                                }}
                               </h5>
                             </v-list-item-title>
                           </v-col>

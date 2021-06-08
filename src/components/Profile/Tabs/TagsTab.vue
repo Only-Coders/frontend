@@ -40,7 +40,12 @@
         ></TagComponent>
       </v-col>
     </v-row>
-    <v-row v-if="tagsPagination.content.length == 0" class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
+    <v-row
+      v-if="tagsPagination.content && tagsPagination.content.length == 0"
+      class="pb-md-8 pb-lg-12 pb-8"
+      justify="center"
+      no-gutters
+    >
       <v-col>
         <no-data></no-data>
       </v-col>
@@ -48,7 +53,7 @@
 
     <v-pagination
       class="my-10"
-      v-if="tagsPagination && tagsPagination.content.length != 0"
+      v-if="tagsPagination.content && tagsPagination.content.length != 0"
       v-model="currentPage"
       :length="tagsPagination.totalPages"
       :total-visible="7"

@@ -116,7 +116,17 @@ export default Vue.extend({
     },
     onPaste(evt: ClipboardEvent) {
       if (evt.clipboardData) {
-        this.$emit("addLink", evt.clipboardData.getData("text"), evt);
+        const items = evt.clipboardData.items;
+        let contentIsImage = false;
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf("image") == -1) continue; //skipif not imge
+          const blob = items[i].getAsFile();
+          contentIsImage = true;
+          this.$emit("addPicture", blob);
+        }
+        if (!contentIsImage) {
+          this.$emit("addLink", evt.clipboardData.getData("text"), evt);
+        }
       }
     }
   }

@@ -147,7 +147,7 @@
             class="mx-4"
             small
             depressed
-            @click="sendContactRequest"
+            @click="acceptContact"
           >
             {{ $i18n.t("accept") }}
           </v-btn>
@@ -169,8 +169,10 @@ import Vue, { PropType } from "vue";
 import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
 import { postContactRequest, deleteContactRequest, deleteContact } from "@/services/contact";
+import { postContactRequestResponse } from "@/services/receivedContactRequests";
 import { postFollow, deleteFollow } from "@/services/follow";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
+import { ContactRequestResponse } from "@/models/contactRequestResponse";
 
 export default Vue.extend({
   name: "ProfilePreview",
@@ -223,6 +225,14 @@ export default Vue.extend({
       await deleteContact(this.userData.canonicalName);
       this.userDataComputed.connected = false;
       this.userData.contactQty--;
+    },
+    async acceptContact() {
+      await postContactRequestResponse({
+        requesterCanonicalName: this.userData.canonicalName,
+        acceptContact: true
+      } as ContactRequestResponse);
+      this.userDataComputed.connected = true;
+      this.userData.contactQty++;
     }
   },
 

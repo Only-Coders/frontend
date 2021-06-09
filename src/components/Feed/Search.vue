@@ -40,8 +40,8 @@
     </v-row>
     <v-row class="d-flex flex-row-reverse" no-gutters>
       <v-col cols="auto">
-        <v-btn text class="pr-0" @click="redirectToSearchPage">
-          <p class="font-weight-bold text--secondary text-capitalize">Ver todos</p></v-btn
+        <router-link replace exact :to="{ name: 'search-users', query: { keywords: `${this.filters}` } }">
+          <p class="font-weight-bold text--secondary text-capitalize">Ver todos</p></router-link
         >
       </v-col>
     </v-row>
@@ -89,9 +89,9 @@ export default Vue.extend({
   },
 
   methods: {
-    redirectToSearchPage() {
-      this.$router.replace({ path: "/search/results/all/", query: { keywords: `${this.filters}` } });
-    }
+    // redirectToSearchPage() {
+    //   this.$router.push({ path: "/search/results/all/", query: { keywords: `${this.filters}` } });
+    // }
   }
 });
 </script>

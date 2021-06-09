@@ -185,9 +185,9 @@ import Vue from "vue";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
 import Search from "@/components/Feed/Search.vue";
-import { getUser } from "@/services/user";
 import { getTags } from "@/services/suggested-tags";
 import { User } from "@/models/user";
+import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
 
 export default Vue.extend({
@@ -218,11 +218,6 @@ export default Vue.extend({
           company: this.userData.currentPosition.split(" - ")[1]
         };
       }
-    },
-
-    async searchUsers() {
-      const result = await getUser({ partialName: this.searchParameters, size: 5 });
-      this.filteredUsers = result.content;
     },
 
     async getRecommendedTags() {

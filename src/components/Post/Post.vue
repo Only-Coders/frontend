@@ -30,7 +30,7 @@
                   />
                 </div>
 
-                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ 99 }}</span>
+                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ medals.gold }}</span>
 
                 <div class="my-auto">
                   <v-img
@@ -39,7 +39,7 @@
                     src="@/assets/images/silver-medal.png"
                   />
                 </div>
-                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ 99 }}</span>
+                <span class="font-weight-light pr-1 pr-md-3 pl-1 text-caption">{{ medals.silver }}</span>
 
                 <div class="my-auto">
                   <v-img
@@ -48,7 +48,7 @@
                     src="@/assets/images/bronce-medal.png"
                   />
                 </div>
-                <span class="font-weight-light pl-1 text-caption">{{ 99 }}</span>
+                <span class="font-weight-light pl-1 text-caption">{{ medals.bronce }}</span>
               </v-col>
             </div>
             <v-col cols="auto">

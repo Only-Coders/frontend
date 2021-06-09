@@ -9,6 +9,7 @@
 
       <v-col cols="10 offset-1" md="5">
         <PostContainer
+          :fetching="fetching"
           :posts="posts"
           :showCreateProfile="true"
           :isLoguedUserProfile="true"
@@ -37,17 +38,20 @@ export default Vue.extend({
   data: () => ({
     posts: [] as GetPost[],
     currentPage: 0,
-    enableInfiniteScroll: false
+    enableInfiniteScroll: false,
+    fetching: true
   }),
 
   methods: {
     async fetchPosts() {
+      this.fetching = true;
       const result = await getPost(this.currentPage, 5);
       this.currentPage++;
       this.posts = result.content;
       if (result.totalElements !== 0) {
         this.enableInfiniteScroll = true;
       }
+      this.fetching = false;
     },
 
     async loadMore($state: { loaded: () => void; complete: () => void }) {

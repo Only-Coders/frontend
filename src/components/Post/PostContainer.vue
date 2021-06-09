@@ -7,7 +7,7 @@
       :userData="userInfo"
     />
 
-    <v-col cols="12" align="center" v-if="posts.length == 0">
+    <v-col cols="12" align="center" v-if="fetching">
       <v-progress-circular align="center" indeterminate color="primary" class="my-12"></v-progress-circular>
     </v-col>
     <div v-else v-for="post in posts" :key="post.id" class="my-16">
@@ -41,7 +41,8 @@ export default Vue.extend({
     showCreateProfile: Boolean,
     isInFavoritesTab: Boolean,
     isLoguedUserProfile: Boolean,
-    userInfo: Object as PropType<Profile>
+    userInfo: Object as PropType<Profile>,
+    fetching: Boolean
   },
 
   methods: {

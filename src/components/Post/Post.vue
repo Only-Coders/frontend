@@ -100,22 +100,22 @@
         </v-col>
       </v-row>
       <v-row v-else>
-        <v-col class="pt-2 pb-0 px-10">
+        <v-col class="pt-0 pb-0 px-10">
           <CodePostVisualizer :code="post.message"></CodePostVisualizer>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'IMAGE'">
-        <v-col class="pt-2 pb-6 px-10 d-flex justify-center">
+        <v-col class="pt-0 pb-6 px-10 d-flex justify-center">
           <v-img alt="post-image" max-width="30vw" max-height="60vh" :src="post.url" />
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'LINK'">
-        <v-col class="pt-2 pb-6 px-10">
+        <v-col class="pt-0 pb-6 px-10">
           <LinkPreview :url="post.url"></LinkPreview>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'FILE'">
-        <v-col class="pt-2 pb-6 px-10">
+        <v-col class="pt-0 pb-6 px-10">
           <a :href="post.url" download>
             <FileType :isVisualizingPost="true" :name="fileName"></FileType>
           </a>

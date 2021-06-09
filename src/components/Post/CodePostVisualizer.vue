@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto pb-5" flat>
+  <v-card class="mx-auto" flat>
     <v-card-text>
       <div ref="container"></div>
     </v-card-text>

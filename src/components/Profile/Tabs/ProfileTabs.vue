@@ -28,6 +28,7 @@
           @decrementContact="$emit('decrementContact')"
           :isSelfProfile="isSelfProfile"
           :showCreateProfile="item.name !== 'favorites' && isSelfProfile"
+          :fetching="fetching"
           :posts="posts"
           :userInfo="userData"
           :isLoguedUserProfile="isSelfProfile"
@@ -85,6 +86,7 @@ export default Vue.extend({
     currentPage: 0,
     enableInfiniteScroll: false,
     tab: null,
+    fetching: true,
     items: [
       {
         name: "posts",
@@ -123,12 +125,14 @@ export default Vue.extend({
 
   methods: {
     async fetchPosts() {
+      this.fetching = true;
       const result = await getUserPost(this.userData.canonicalName, this.currentPage, 5);
       this.currentPage++;
       this.posts = result.content;
       if (result.totalElements !== 0) {
         this.enableInfiniteScroll = true;
       }
+      this.fetching = false;
     },
 
     async loadMore($state: { loaded: () => void; complete: () => void }) {

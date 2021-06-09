@@ -37,7 +37,7 @@
             <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
-          <v-btn text rounded plain
+          <v-btn text rounded plain link to="Chat"
             ><v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon"
               >mdi-message-text</v-icon
             ></v-btn

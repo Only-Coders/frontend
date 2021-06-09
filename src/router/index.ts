@@ -52,6 +52,15 @@ const routes: Array<RouteConfig> = [
     ]
   },
   {
+    path: "/chat",
+    name: "Chat",
+    component: () => import(/* webpackChunkName: "chat" */ "../views/Chat.vue"),
+    meta: {
+      layout: "HeaderLayout",
+      requiresAuth: true
+    }
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

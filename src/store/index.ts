@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 import UserModule from "@/store/modules/user";
 import UserPaginationModule from "@/store/modules/userPagination";
+import ChatModule from "@/store/modules/chat";
 import { logout } from "@/services/auth";
 import router from "@/router";
 
@@ -12,6 +13,7 @@ type State = {
   userModule?: UserModule;
   lang: string;
   userPaginationModule?: UserPaginationModule;
+  chatModule?: ChatModule;
 };
 
 const persist = new VuexPersist({
@@ -38,7 +40,8 @@ export default new Vuex.Store<State>({
   },
   modules: {
     userModule: UserModule,
-    userPaginationModule: UserPaginationModule
+    userPaginationModule: UserPaginationModule,
+    chatModule: ChatModule
   },
   plugins: [persist.plugin]
 });

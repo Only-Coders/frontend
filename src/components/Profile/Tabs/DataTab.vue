@@ -1,11 +1,33 @@
 <template>
-  <div>DATAAAAA</div>
+  <div>
+    <DataProfile :userInfo="userInfo" :isLoguedUserProfile="isLoguedUserProfile"></DataProfile>
+
+    <WorkExperienceProfile :isLoguedUserProfile="isLoguedUserProfile"></WorkExperienceProfile>
+
+    <StudyExperienceProfile :isLoguedUserProfile="isLoguedUserProfile"></StudyExperienceProfile>
+
+    <SkillProfile :isLoguedUserProfile="isLoguedUserProfile"></SkillProfile>
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
+import { Profile } from "@/models/profile";
+import { dateMixin } from "@/mixins/formattedDate";
+import WorkExperienceProfile from "@/components/Profile/Tabs/DataTab/WorkExperienceProfile.vue";
+import DataProfile from "@/components/Profile/Tabs/DataTab/DataProfile.vue";
+import StudyExperienceProfile from "@/components/Profile/Tabs/DataTab/StudyExperienceProfile.vue";
+import SkillProfile from "@/components/Profile/Tabs/DataTab/SkillProfile.vue";
 
-export default Vue.extend({});
+export default Vue.extend({
+  name: "DataTab",
+
+  mixins: [dateMixin],
+
+  components: { DataProfile, WorkExperienceProfile, StudyExperienceProfile, SkillProfile },
+
+  props: { userInfo: Object as PropType<Profile>, isLoguedUserProfile: Boolean }
+});
 </script>
 
 <style scoped></style>

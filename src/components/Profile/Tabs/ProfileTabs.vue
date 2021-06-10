@@ -3,7 +3,7 @@
     <v-skeleton-loader type="list-item-three-line, card-heading, image"></v-skeleton-loader>
   </v-sheet>
 
-  <v-card v-else>
+  <v-card v-else class="mb-10">
     <v-tabs
       v-model="tab"
       background-color="transparent"

@@ -165,6 +165,10 @@
     "Data": "Data",
     "Tags": "Tags",
     "contacts": "Contacts",
-    "followings": "Followings"
+    "followings": "Followings",
+    "personalData": "PERSONAL DATA",
+    "workExperience": " WORK EXPERIENCE",
+    "academicExperience": "ACADEMIC EXPERIENCE",
+    "skills": "SKILLS"
   }
 }

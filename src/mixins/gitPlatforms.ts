@@ -1,5 +1,7 @@
 import Vue from "vue";
 
+export type GitPlatformsMixin = InstanceType<typeof Mixin>;
+
 const Mixin = Vue.extend({
   data() {
     return {

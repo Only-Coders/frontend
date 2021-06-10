@@ -189,6 +189,8 @@ import { getTags } from "@/services/suggested-tags";
 import { User } from "@/models/user";
 import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
+import { Pagination } from "@/models/Pagination/pagination";
+import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 
 export default Vue.extend({
   name: "Header",
@@ -201,7 +203,7 @@ export default Vue.extend({
     searchParameters: "",
     messages: 0,
     showSearchComponent: false,
-    filteredUsers: [] as User[],
+    filteredUsers: {} as Pagination<User>,
     recommendedTags: [] as Tag[],
     usersLoading: false,
     tagsLoading: false,
@@ -284,8 +286,12 @@ export default Vue.extend({
 
         this.timer = setTimeout(async () => {
           try {
-            const result = await getUser({ partialName: this.searchParameters, size: 5 });
-            this.filteredUsers = result.content;
+            const result = await getUser({
+              partialName: this.searchParameters,
+              size: 5,
+              orderBy: UsersOptionsOrderBy.FIRSTNAME
+            });
+            this.filteredUsers = result;
           } catch (error) {
             clearTimeout(this.timer);
           } finally {

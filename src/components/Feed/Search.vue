@@ -24,7 +24,7 @@
         <div v-if="!areUsersLoading">
           <v-list>
             <v-list-item
-              v-for="contact in filteredUsers"
+              v-for="contact in filteredUsers.content"
               :key="contact.canonicalName"
               :to="`profile/${contact.canonicalName}`"
               link
@@ -40,8 +40,8 @@
     </v-row>
     <v-row class="d-flex flex-row-reverse" no-gutters>
       <v-col cols="auto">
-        <router-link replace exact :to="{ name: 'search-users', query: { keywords: `${this.filters}` } }">
-          <p class="font-weight-bold text--secondary text-capitalize">Ver todos</p></router-link
+        <v-btn @click="redirectSearchUsers" text>
+          <p class="font-weight-bold text--secondary text-capitalize mb-0">Ver todos</p></v-btn
         >
       </v-col>
     </v-row>
@@ -74,6 +74,7 @@ import Vue, { PropType } from "vue";
 import { User } from "@/models/user";
 import { Tag } from "@/models/tag";
 import Contact from "@/components/Feed/SearchContact.vue";
+import { Pagination } from "@/models/Pagination/pagination";
 
 export default Vue.extend({
   name: "Search",
@@ -81,7 +82,7 @@ export default Vue.extend({
   components: { Contact },
 
   props: {
-    filteredUsers: Array as PropType<User[]>,
+    filteredUsers: {} as PropType<Pagination<User>>,
     tags: Array as PropType<Tag[]>,
     areTagsLoading: Boolean,
     areUsersLoading: Boolean,
@@ -89,9 +90,16 @@ export default Vue.extend({
   },
 
   methods: {
-    // redirectToSearchPage() {
-    //   this.$router.push({ path: "/search/results/all/", query: { keywords: `${this.filters}` } });
-    // }
+    redirectSearchUsers() {
+      this.$store.commit("userPaginationModule/SET_USER_PAGINATION", this.filteredUsers);
+      this.$store.commit("userPaginationModule/SET_SEARCH_TEXT", this.filters);
+      this.$store.commit("userPaginationModule/SET_USER_PER_PAGE", 5);
+      this.$router.push({ path: "/search/results/all/", query: { keywords: this.filters } });
+    }
+  },
+
+  created() {
+    console.log(this.filteredUsers.content);
   }
 });
 </script>

@@ -8,7 +8,7 @@
         />
       </v-avatar>
 
-      <v-col class="align-start mr-10 pl-4" cols="9" sm="5">
+      <v-col class="align-start mr-8 pl-4" cols="9" sm="5">
         <v-row class="align-center justify-space-between" no-gutters>
           <div class="d-flex align-start">
             <v-col cols="auto" class="pa-0">
@@ -58,7 +58,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="3" sm="4" class="mt-sm-0 mt-4 d-flex justify-end">
+      <v-col cols="3" sm="4" class="mt-sm-0 mt-4 ml-8 d-flex justify-end">
         <v-btn v-if="!followed" color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
           {{ $i18n.t("Onboarding.SuggestedContacts.follow") }}
         </v-btn>
@@ -133,6 +133,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   },
 
   created() {
+    console.log("===>", this.contactData);
     this.medals = this.calculateMedals(this.contactData.amountOfMedals);
   }
 });

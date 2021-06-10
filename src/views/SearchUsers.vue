@@ -2,15 +2,24 @@
   <v-row no-gutters class="d-flex justify-center">
     <v-col cols="6">
       <v-card class="mt-12">
-        <UserSearchInput></UserSearchInput>
-
+        <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
         <v-divider class="mb-16 mx-4 mx-md-8"></v-divider>
 
-        <div class="mx-4 px-16 pb-16">
-          <div v-for="user in filteredUsers" :key="user.canonicalName" class="my-8">
-            <Contact :contactData="user"></Contact>
-          </div>
-        </div>
+        <v-row no-gutters class="d-flex justify-center">
+          <v-col cols="9">
+            <div v-for="user in userPagination.content" :key="user.canonicalName" class="my-8">
+              <Contact :contactData="user"></Contact>
+            </div>
+            <v-pagination
+              class="my-10"
+              v-if="userPagination && userPagination.totalPages > 1"
+              v-model="currentPage"
+              :length="userPagination.totalPages"
+              :total-visible="7"
+              @input="nextPage"
+            ></v-pagination>
+          </v-col>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>
@@ -22,49 +31,50 @@ import UserSearchInput from "@/components/UserSearchInput.vue";
 import Contact from "@/components/Search/Contact.vue";
 import { User } from "@/models/user";
 import { getUser } from "@/services/user";
-import { getFollows } from "@/services/follow";
-import { getContacts } from "@/services/contact";
+import { Pagination } from "@/models/Pagination/pagination";
+import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
+// import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "SearchUsersView",
 
   components: { UserSearchInput, Contact },
 
-  props: {},
-
   data: () => ({
-    searchParameters: "",
-    isLoading: false,
-    filteredUsers: [] as User[]
+    usersPerPage: 5,
+    currentPage: 1
   }),
 
   methods: {
-    async searchUsers() {
-      const result = await getUser({ partialName: this.searchParameters, size: 20 });
-      this.filteredUsers = result.content;
+    searchUsers(
+      page: number,
+      size: number,
+      orderBy: UsersOptionsOrderBy,
+      partialName: string,
+      countryName: string,
+      skillName: string
+    ) {
+      return getUser({ partialName, orderBy, page, size, countryName, skillName });
     },
 
-    async filterFollowedUsers() {
-      const result = await getFollows(0, 20, "", this.searchParameters);
-      console.log("followed: ", result);
-    },
-
-    async filterContacts() {
-      const result = await getContacts(0, 20, "", this.searchParameters);
-      console.log("contacts: ", result);
+    async nextPage() {
+      const result = await getUser({
+        partialName: this.$store.state.userPaginationModule.userPagiantion.search,
+        orderBy: this.$store.state.userPaginationModule.userPagination.orderBySelected,
+        page: this.currentPage - 1,
+        size: 5
+      });
+      this.currentPage = result.currentPage + 1;
+      this.$store.commit("userPaginationModule/SET_USER_PAGINATION", result);
     }
   },
 
-  async created() {
-    this.searchParameters = this.$route.query.keywords as string;
-    if (this.searchParameters !== "") {
-      this.isLoading = true;
-      await this.searchUsers();
-      await this.filterFollowedUsers();
-      await this.filterContacts();
-      this.isLoading = false;
+  computed: {
+    userPagination: {
+      get(): Pagination<User> {
+        return this.$store.state.userPaginationModule.userPagination;
+      }
     }
-    console.log(this.searchParameters, this.filteredUsers);
   }
 });
 </script>

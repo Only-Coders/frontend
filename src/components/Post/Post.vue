@@ -123,22 +123,39 @@
       </v-row>
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
         <div class="d-flex align-center">
-          <v-col cols="auto" class="pa-0">
-            <v-btn :loading="isLoading" @click="reactToPost('APPROVE')" depressed rounded outlined color="#E0E0E0">
-              <v-img alt="approve" width="25" src="@/assets/images/chevron-up.png" />
-              <p class="my-auto" style="color: #00cdae">
+          <v-btn-toggle rounded v-model="toggleApprove" color="primary">
+            <v-btn
+              :loading="isLoadingApprove"
+              :disabled="disabledApprove"
+              @click="reactToPost('APPROVE')"
+              depressed
+              rounded
+              color="#E0E0E0"
+              class="ml-2 mr-1 reaction-btn"
+            >
+              <v-img alt="approve" width="20" src="@/assets/images/chevron-up.png" />
+              <p class="my-auto pl-2 pr-1" style="color: #00cdae">
                 {{ approvedAmount }}
               </p>
             </v-btn>
-          </v-col>
-          <v-col cols="auto" class="pa-0">
-            <v-btn :loading="isLoading" @click="reactToPost('REJECT')" depressed rounded outlined color="#E0E0E0">
-              <v-img alt="reject" width="25" src="@/assets/images/chevron-down.png" />
-              <p class="my-auto" style="color: #ff0f0f">
+          </v-btn-toggle>
+
+          <v-btn-toggle rounded v-model="toggleReject" color="error">
+            <v-btn
+              :loading="isLoadingReject"
+              :disabled="disabledReject"
+              @click="reactToPost('REJECT')"
+              depressed
+              rounded
+              color="#E0E0E0"
+              class="ml-1 reaction-btn"
+            >
+              <v-img alt="reject" width="20" src="@/assets/images/chevron-down.png" />
+              <p class="my-auto pl-2" style="color: #ff0f0f">
                 {{ rejectedAmount }}
               </p>
             </v-btn>
-          </v-col>
+          </v-btn-toggle>
         </div>
         <v-col cols="auto">
           <v-btn depressed rounded outlined color="#E0E0E0"
@@ -196,7 +213,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     myReaction: null as ReactionType | null,
     rejectedAmount: 0,
     approvedAmount: 0,
-    isLoading: false
+    isLoadingApprove: false,
+    isLoadingReject: false,
+    disabledApprove: false,
+    disabledReject: false,
+    toggleReject: null as number | null,
+    toggleApprove: null as number | null
   }),
 
   computed: {
@@ -270,9 +292,17 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.rejectedAmount =
         this.post.reactions.find((reaction) => reaction.reaction === ReactionType.REJECT)?.quantity ?? 0;
       this.myReaction = this.post.myReaction;
+      console.log("Approve: " + this.myReaction);
+      this.toggleReject = this.myReaction === ReactionType.REJECT ? 0 : null;
+      this.toggleApprove = this.myReaction === ReactionType.APPROVE ? 0 : null;
     },
     async reactToPost(reaction: ReactionType | null) {
-      this.isLoading = true;
+      this.isLoadingApprove = reaction === ReactionType.APPROVE;
+      this.isLoadingReject = !this.isLoadingApprove;
+
+      this.disabledApprove = this.isLoadingReject;
+      this.disabledReject = this.isLoadingApprove;
+
       if (reaction === this.myReaction) {
         if (reaction === ReactionType.APPROVE) {
           this.approvedAmount--;
@@ -294,8 +324,13 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
         }
       }
       this.myReaction = reaction;
+      this.toggleReject = this.myReaction === ReactionType.REJECT ? 0 : null;
+      this.toggleApprove = this.myReaction === ReactionType.APPROVE ? 0 : null;
       await addPostReaction(this.post.id, reaction);
-      this.isLoading = false;
+      this.isLoadingApprove = false;
+      this.isLoadingReject = false;
+      this.disabledApprove = false;
+      this.disabledReject = false;
     },
     redirectToProfile() {
       const redirectTo = `/profile/${this.post.publisher.canonicalName}`;
@@ -337,5 +372,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .user_name {
   cursor: pointer;
+}
+.reaction-btn {
+  height: 36px !important;
+  background: transparent !important;
+}
+.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
+  background: transparent !important;
 }
 </style>

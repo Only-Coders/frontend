@@ -3,9 +3,9 @@
     <v-col cols="6">
       <v-card class="mt-12">
         <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
-        <v-divider class="mb-16 mx-4 mx-md-8"></v-divider>
+        <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
-        <v-row no-gutters class="d-flex justify-center">
+        <v-row no-gutters class="d-flex justify-center" v-if="userPagination.content.length !== 0">
           <v-col cols="9">
             <div v-for="user in userPagination.content" :key="user.canonicalName" class="my-8">
               <Contact :contactData="user"></Contact>
@@ -20,6 +20,9 @@
             ></v-pagination>
           </v-col>
         </v-row>
+        <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
+          <v-col cols="9"> <NoData></NoData> </v-col>
+        </v-row>
       </v-card>
     </v-col>
   </v-row>
@@ -29,16 +32,16 @@
 import Vue from "vue";
 import UserSearchInput from "@/components/UserSearchInput.vue";
 import Contact from "@/components/Search/Contact.vue";
-import { User } from "@/models/user";
+import { Profile } from "@/models/profile";
 import { getUser } from "@/services/user";
 import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
-// import NoData from "@/components/NoData.vue";
+import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "SearchUsersView",
 
-  components: { UserSearchInput, Contact },
+  components: { UserSearchInput, Contact, NoData },
 
   data: () => ({
     usersPerPage: 5,
@@ -59,7 +62,7 @@ export default Vue.extend({
 
     async nextPage() {
       const result = await getUser({
-        partialName: this.$store.state.userPaginationModule.userPagiantion.search,
+        partialName: this.$store.state.userPaginationModule.userPagination.search,
         orderBy: this.$store.state.userPaginationModule.userPagination.orderBySelected,
         page: this.currentPage - 1,
         size: 5
@@ -71,7 +74,7 @@ export default Vue.extend({
 
   computed: {
     userPagination: {
-      get(): Pagination<User> {
+      get(): Pagination<Profile> {
         return this.$store.state.userPaginationModule.userPagination;
       }
     }

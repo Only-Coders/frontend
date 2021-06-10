@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card :flat="isFlat">
       <v-row class="px-4 px-md-7 py-3" align="center" no-gutters>
         <v-col cols="2">
           <v-avatar size="60">
@@ -53,7 +53,8 @@ export default Vue.extend({
 
   props: {
     userData: Object as PropType<Profile>,
-    isSelfProfile: Boolean
+    isSelfProfile: Boolean,
+    isFlat: Boolean
   },
 
   data: () => ({

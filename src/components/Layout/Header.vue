@@ -203,7 +203,7 @@ export default Vue.extend({
     searchParameters: "",
     messages: 0,
     showSearchComponent: false,
-    filteredUsers: {} as Pagination<User>,
+    filteredUsers: { currentPage: 0, totalElements: 0, totalPages: 0, content: [] } as Pagination<User>,
     recommendedTags: [] as Tag[],
     usersLoading: false,
     tagsLoading: false,

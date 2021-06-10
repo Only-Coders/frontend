@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card :flat="$vuetify.breakpoint.mdAndUp ? false : true">
+    <v-card :flat="!$vuetify.breakpoint.mdAndUp || isFlat">
       <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
         <v-col cols="1" md="2" lg="1" class="pt-4">
           <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '55'">
@@ -210,7 +210,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 
   mixins: [medalsMixin, notificationsMixin],
 
-  props: { post: Object as PropType<GetPost>, isInFavoritesTab: Boolean },
+  props: { post: Object as PropType<GetPost>, isInFavoritesTab: Boolean, isFlat: Boolean },
 
   data: () => ({
     createDialog: false,

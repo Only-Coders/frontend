@@ -32,23 +32,17 @@
             <v-img alt="gold-medal" width="20" src="@/assets/images/gold-medal.png" />
           </div>
 
-          <span class="font-weight-light pr-5 pl-1 text-caption">{{
-            calculateMedals(userDataComputed.medalQty).gold
-          }}</span>
+          <span class="font-weight-light pr-5 pl-1 text-caption">{{ calculateMedals(userData.medalQty).gold }}</span>
 
           <div>
             <v-img alt="silver-medal" width="20" src="@/assets/images/silver-medal.png" />
           </div>
-          <span class="font-weight-light pr-5 pl-1 text-caption">{{
-            calculateMedals(userDataComputed.medalQty).silver
-          }}</span>
+          <span class="font-weight-light pr-5 pl-1 text-caption">{{ calculateMedals(userData.medalQty).silver }}</span>
 
           <div>
             <v-img alt="bronce-medal" width="20" src="@/assets/images/bronce-medal.png" />
           </div>
-          <span class="font-weight-light pl-1 text-caption">{{
-            calculateMedals(userDataComputed.medalQty).bronce
-          }}</span>
+          <span class="font-weight-light pl-1 text-caption">{{ calculateMedals(userData.medalQty).bronce }}</span>
         </v-col>
       </v-row>
 
@@ -166,16 +160,20 @@
 
 <script lang="ts">
 import Vue, { PropType } from "vue";
+import { VueConstructor } from "vue/types/umd";
 import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
 import { postContactRequest, deleteContactRequest, deleteContact } from "@/services/contact";
 import { postContactRequestResponse } from "@/services/receivedContactRequests";
 import { postFollow, deleteFollow } from "@/services/follow";
-import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
+import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
+import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "ProfilePreview",
+
+  mixins: [medalsMixin],
 
   props: { userData: Object as PropType<Profile>, isSelfProfile: Boolean, loading: Boolean },
 
@@ -191,18 +189,6 @@ export default Vue.extend({
   }),
 
   methods: {
-    calculateMedals(approves: number): Medals {
-      if (approves) {
-        const bronce = approves % 100;
-        approves = (approves - bronce) / 100;
-        const silver = approves % 100;
-        const gold = (approves - silver) / 100;
-        return { gold, silver, bronce };
-      } else {
-        return { gold: 0, silver: 0, bronce: 0 };
-      }
-    },
-
     async followUser() {
       if (this.userDataComputed.following) {
         await deleteFollow(this.userData.canonicalName);
@@ -237,7 +223,7 @@ export default Vue.extend({
   },
 
   computed: {
-    userDataComputed() {
+    userDataComputed(): Profile {
       return this.userData;
     }
   },

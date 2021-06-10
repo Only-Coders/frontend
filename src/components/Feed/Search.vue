@@ -1,13 +1,13 @@
 <template>
-  <v-card class="px-4" rounded>
-    <div v-if="filteredUsers.length === 0">
+  <v-card class="px-4 pt-1" rounded>
+    <div v-if="shouldRenderRecents">
       <v-row class="d-flex justify-space-between align-center mt-4" no-gutters>
         <v-col>
           <v-card-title class="font-weight-light pt-0"><h3 class="font-weight-light">Recent</h3></v-card-title>
         </v-col>
         <v-col class="d-flex flex-row-reverse">
-          <v-btn text class="pr-0">
-            <p class="font-weight-bold text--secondary text-capitalize">Borrar</p>
+          <v-btn text>
+            <p class="font-weight-bold text--secondary text-capitalize pb-0 my-auto">Borrar</p>
           </v-btn>
         </v-col>
       </v-row>
@@ -97,9 +97,10 @@ export default Vue.extend({
       this.$router.push({ path: "/search/results/all/", query: { keywords: this.filters } });
     }
   },
-
-  created() {
-    console.log(this.filteredUsers.content);
+  computed: {
+    shouldRenderRecents(): boolean {
+      return this.filteredUsers && this.filteredUsers.content && this.filteredUsers.content.length === 0;
+    }
   }
 });
 </script>

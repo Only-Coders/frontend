@@ -11,6 +11,7 @@ export type Post = {
   url: string;
   mentionCanonicalNames: string[];
   tagNames: string[];
+  mentionsDictionary: Record<string, string>;
 };
 
 type Publisher = {

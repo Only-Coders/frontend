@@ -138,7 +138,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       isPublic: true,
       url: "",
       mentionCanonicalNames: [],
-      tagNames: []
+      tagNames: [],
+      mentionsDictionary: {}
     } as Post
   }),
 
@@ -211,14 +212,21 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         } else if (this.post.type == PostType.FILE) {
           await this.onUploadFile();
         }
-        this.post.tagNames = this.post.tagNames.filter((tagName) => {
-          return this.post.message.includes(tagName);
+        const newPost = { ...this.post };
+
+        newPost.tagNames = newPost.tagNames.filter((tagName) => {
+          return newPost.message.includes(tagName);
         });
 
-        this.post.mentionCanonicalNames = this.post.mentionCanonicalNames.filter((name) => {
-          return this.post.message.includes(name);
+        newPost.mentionCanonicalNames = newPost.mentionCanonicalNames.filter((name) => {
+          if (newPost.message.includes("@" + newPost.mentionsDictionary[name])) {
+            newPost.message = newPost.message.replaceAll("@" + newPost.mentionsDictionary[name], "@" + name);
+            return true;
+          }
         });
-        const createdPost = await post(this.post);
+        console.log(newPost, "<<");
+
+        const createdPost = await post(newPost);
         this.$emit("passPostToCreatePost", createdPost);
         this.success("", this.$i18n.t("CreatePost.successfullCreation").toString(), 2000);
         this.close();
@@ -230,7 +238,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       }
     },
     extractTags() {
-      const regex = /(?<!\S)#(?<hash>\w+)(\s|$)/gm;
+      const regex = /(?<!\S)#(?<hash>\S+)(\s|$)/gm;
       const tagsSet = new Set<string>();
       let match = regex.exec(this.post.message);
       do {

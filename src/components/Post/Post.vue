@@ -257,10 +257,13 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
         this.success("", this.$i18n.t("Feed.savedFavorite").toString(), 2000);
       }
     },
+    escapeRegex(string: string) {
+      return string.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
+    },
     formatTagsAndMentions() {
       if (this.post.tags.length !== 0) {
         this.post.tags.forEach((tag) => {
-          const regex = new RegExp(`#${tag.canonicalName}`, "g");
+          const regex = new RegExp(`#${this.escapeRegex(tag.displayName)}`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/tag/${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
@@ -292,7 +295,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.rejectedAmount =
         this.post.reactions.find((reaction) => reaction.reaction === ReactionType.REJECT)?.quantity ?? 0;
       this.myReaction = this.post.myReaction;
-      console.log("Approve: " + this.myReaction);
       this.toggleReject = this.myReaction === ReactionType.REJECT ? 0 : null;
       this.toggleApprove = this.myReaction === ReactionType.APPROVE ? 0 : null;
     },

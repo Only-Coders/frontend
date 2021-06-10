@@ -103,7 +103,11 @@ export default Vue.extend({
         });
       } else {
         this.items = (await getTag(searchText, 5)).content.map((tag) => {
-          return { value: tag.canonicalName, label: tag.canonicalName, imageURI: "" };
+          return {
+            value: tag.name ? tag.name : tag.canonicalName,
+            label: tag.name ? tag.name : tag.canonicalName,
+            imageURI: ""
+          };
         });
       }
       this.loading = false;
@@ -112,6 +116,8 @@ export default Vue.extend({
       if (key == "@") {
         this.users.push(item);
         this.post.mentionCanonicalNames.push(item.value);
+        this.post.mentionsDictionary[item.value] = item.label;
+        this.post.message = this.post.message.replace("@" + item.value, "@" + item.label);
       }
     },
     async atOpen(key: string) {

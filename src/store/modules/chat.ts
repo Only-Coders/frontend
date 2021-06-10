@@ -21,19 +21,25 @@ export type ChatType = {
 export default class Chat extends VuexModule {
   selectedChat: ChatType | null = null;
   chats: ChatType[] = [];
+  chatIds: Record<string, string> = {};
 
   @Mutation
-  SET_SELECTED_CHAT(value: ChatType) {
+  SET_SELECTED_CHAT(value: ChatType): void {
     this.selectedChat = value;
   }
 
   @Mutation
-  SET_CHATS(value: ChatType[]) {
+  SET_CHATS(value: ChatType[]): void {
     this.chats = value;
   }
 
   @Mutation
-  REMOVE_CHATS() {
+  ADD_CHAT_ID(value: string): void {
+    this.chatIds[value] = value;
+  }
+
+  @Mutation
+  REMOVE_CHATS(): void {
     this.chats = [];
   }
 }

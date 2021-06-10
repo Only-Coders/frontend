@@ -60,20 +60,24 @@ export default Vue.extend({
       this.showEmojis = !this.showEmojis;
     },
 
-    createChat() {
+    async createChat() {
       if (this.selectedChat) {
         const newChat = { ...this.selectedChat };
         const newMessage = {
           text: this.message,
           time: getServerDate(),
-          from: this.canonicalName
+          from: this.canonicalName,
+          read: false
         };
         newChat.lastMessage = newMessage;
         const chatRef = database.ref("chats").push(newChat);
+        newChat.key = chatRef.key ?? "";
+        this.chats[0].key = newChat.key;
+        this.$store.commit("chatModule/ADD_CHAT_ID", newChat.key);
+        await database.ref("chats/" + chatRef.key).update(newChat);
         database.ref(`chats/${chatRef.key}/messages`).push(newMessage);
         database.ref(`users/${this.selectedChat.toCanonicalName}/chats`).push({ key: chatRef.key });
         database.ref(`users/${this.canonicalName}/chats`).push({ key: chatRef.key });
-        newChat.key = chatRef.key ?? "";
         this.$store.commit("chatModule/SET_SELECTED_CHAT", newChat);
         this.message = "";
       }
@@ -85,7 +89,8 @@ export default Vue.extend({
           const newMessage = {
             text: this.message,
             time: getServerDate(),
-            from: this.canonicalName
+            from: this.canonicalName,
+            read: false
           };
           if (this.selectedChat) {
             const newChat = { ...this.selectedChat };
@@ -119,6 +124,12 @@ export default Vue.extend({
     },
     canonicalName(): string {
       return this.$store.state.userModule.user.canonicalName;
+    },
+    chats(): ChatType[] {
+      return this.$store.state.chatModule.chats;
+    },
+    chatIds(): Set<string> {
+      return this.$store.state.chatModule.chatIds;
     }
   }
 });

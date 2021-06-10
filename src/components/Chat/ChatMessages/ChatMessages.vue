@@ -72,6 +72,10 @@ export default Vue.extend({
           });
           this.enableInfiniteLoading = true;
         });
+        Vue.nextTick(() => {
+          let container = this.$el.querySelector(".chat-messages__content");
+          if (container) container.scrollTop = container.scrollHeight;
+        });
       }
     },
 

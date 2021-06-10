@@ -111,20 +111,12 @@ export default Vue.extend({
     listenToChats() {
       this.isLoading = true;
       let usersRef = database.ref(`users/${this.user.canonicalName}/chats`);
-      let chatsRef = database.ref("chats");
-      let chatsId: string[] = [];
-      usersRef.on("value", (snapshot) => {
-        snapshot.forEach((data) => {
-          chatsId.push(data.val().key);
-        });
-      });
-      chatsRef.on("value", (snapshot) => {
-        snapshot.forEach((data) => {
-          const chat = data.val();
-          if (chatsId.find((key) => key == data.key) && !this.chats.find((c) => c.key == data.key)) {
-            const duplicateIndex = this.chats.findIndex((c) => c.toCanonicalName == chat.toCanonicalName);
-            if (duplicateIndex >= 0) {
-              this.chats.splice(duplicateIndex, 1);
+      usersRef.on("value", (userSnapshot) => {
+        userSnapshot.forEach((userData) => {
+          database.ref("chats/" + userData.val().key).on("value", (chatSnapshot) => {
+            const chat = chatSnapshot.val();
+            if (chat.key && !this.chatIds[chat.key]) {
+              this.$store.commit("chatModule/ADD_CHAT_ID", chat.key);
               this.chats.unshift({
                 toImageURI: chat.toImageURI,
                 fromImageURI: chat.fromImageURI,
@@ -132,20 +124,12 @@ export default Vue.extend({
                 to: chat.to,
                 from: chat.from,
                 toCanonicalName: chat.toCanonicalName,
-                key: data.key ?? ""
-              });
-            } else {
-              this.chats.unshift({
-                toImageURI: chat.toImageURI,
-                fromImageURI: chat.fromImageURI,
-                lastMessage: chat.lastMessage,
-                to: chat.to,
-                from: chat.from,
-                toCanonicalName: chat.toCanonicalName,
-                key: data.key ?? ""
+                key: chat.key
               });
             }
-          }
+            const x = this.chats.find((c) => c.key == chat.key);
+            if (x) x.lastMessage = chat.lastMessage;
+          });
         });
         this.isLoading = false;
       });
@@ -153,6 +137,21 @@ export default Vue.extend({
 
     selectChat(index: number) {
       this.$store.commit("chatModule/SET_SELECTED_CHAT", this.chats[index]);
+      database
+        .ref(`chats/${this.chats[index].key}/messages`)
+        .orderByChild("read")
+        .equalTo(false)
+        .get()
+        .then((chatSnapshot) => {
+          if (chatSnapshot.val()) {
+            const promises = Object.keys(chatSnapshot.val()).map((currentValue) => {
+              if (chatSnapshot.val()[currentValue]["from"] != this.user.canonicalName) {
+                return database.ref(`chats/${this.chats[index].key}/messages/${currentValue}`).update({ read: true });
+              }
+            });
+            Promise.all(promises).catch();
+          }
+        });
     },
 
     getFormatedDate(unixDate: number) {
@@ -177,6 +176,9 @@ export default Vue.extend({
       return (this.$store.state.chatModule.chats as ChatType[]).sort((a, b) => {
         return new Date(b.lastMessage.time as number).getTime() - new Date(a.lastMessage.time as number).getTime();
       });
+    },
+    chatIds(): Record<string, string> {
+      return this.$store.state.chatModule.chatIds;
     }
   },
 

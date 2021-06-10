@@ -37,11 +37,11 @@
             <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
-          <v-btn text rounded plain link to="Chat"
-            ><v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon"
-              >mdi-message-text</v-icon
-            ></v-btn
-          >
+          <v-btn text rounded plain link to="/chat">
+            <v-badge :content="messages" :value="messages" color="primary" overlap>
+              <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
+            </v-badge>
+          </v-btn>
           <v-btn text rounded plain class="hidden-sm-and-down"><v-icon color="navbar_icon">mdi-bell</v-icon></v-btn>
           <v-btn text rounded plain class="hidden-sm-and-down"
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
@@ -158,6 +158,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { UserData } from "@/store/modules/user";
+import { database } from "@/plugins/firebaseInit";
 
 export default Vue.extend({
   name: "Header",
@@ -167,7 +168,8 @@ export default Vue.extend({
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
-    searchParameters: ""
+    searchParameters: "",
+    messages: 0
   }),
 
   methods: {
@@ -185,6 +187,30 @@ export default Vue.extend({
       await this.$store.dispatch("logout");
     },
 
+    listenToUnreadMessages() {
+      let usersRef = database.ref(`users/${this.user.canonicalName}/chats`);
+      usersRef.on("value", (userSnapshot) => {
+        userSnapshot.forEach((userData) => {
+          database
+            .ref(`chats/${userData.val().key}/messages`)
+            .orderByChild("read")
+            .equalTo(false)
+            .on("value", (chatSnapshot) => {
+              if (chatSnapshot.val()) {
+                this.messages = Object.keys(chatSnapshot.val()).reduce((prevValue, currentValue) => {
+                  if (chatSnapshot.val()[currentValue]["from"] != this.user.canonicalName) {
+                    return ++prevValue;
+                  }
+                  return prevValue;
+                }, 0);
+              } else {
+                this.messages = 0;
+              }
+            });
+        });
+      });
+    },
+
     redirectToFeed() {
       if (this.$router.currentRoute.path === "/") {
         window.scroll({
@@ -199,7 +225,14 @@ export default Vue.extend({
     }
   },
 
+  computed: {
+    user(): UserData {
+      return this.$store.state.userModule.user;
+    }
+  },
+
   created() {
+    this.listenToUnreadMessages();
     this.getUserProfileFromToken();
   }
 });

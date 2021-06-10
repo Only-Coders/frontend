@@ -10,3 +10,8 @@ export async function getSkill(skillName: string): Promise<Pagination<Skill>> {
 export async function postSkill(skill: Skill): Promise<void> {
   await axios.post(`/api/users/skills`, skill);
 }
+
+export async function getSkillsOfUser(canonicalName: string, page: number, size?: number): Promise<Pagination<Skill>> {
+  const response = await axios.get(`/api/users/${canonicalName}/skills`, { params: { page, size } });
+  return response.data;
+}

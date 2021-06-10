@@ -165,6 +165,10 @@
     "Data": "Datos",
     "Tags": "Temas",
     "contacts": "Contactos",
-    "followings": "Seguidos"
+    "followings": "Seguidos",
+    "personalData": "DATOS PERSONALES",
+    "workExperience": "EXPERIENCIA LABORAL",
+    "academicExperience": "FORMACIÓN ACADÉMICA",
+    "skills": "HABILIDADES"
   }
 }

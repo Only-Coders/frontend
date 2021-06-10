@@ -4,30 +4,38 @@
       <span class="pl-10 pr-6">
         <v-icon size="30"> mdi-briefcase </v-icon>
       </span>
-      <h3>FORMACIÓN ACADÉMICA</h3>
+      <h3>{{ $i18n.t("ViewProfile.academicExperience") }}</h3>
+      <v-spacer></v-spacer>
+      <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
+        <v-icon size="28" color="grey darken-1"> mdi-plus </v-icon>
+      </v-btn>
       <div class="divider-container mt-8">
         <v-divider></v-divider>
       </div>
     </v-row>
 
-    <v-row no-gutters class="px-16 ml-10 mb-6" v-for="(study, index) in studies" :key="index">
-      <v-col cols="1" class="px-12 pt-0 mt-0 d-flex justify-center"
-        ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
-      >
-      <v-col cols="1" class="pr-0 pa-0 mr-6">
-        <p class="text-caption ma-0">
-          {{ formatDateMMYY(study.since) }}
-        </p>
-        <p class="text-caption">
-          {{ study.until ? formatDateMMYY(study.until) : "Actualidad" }}
-        </p>
-      </v-col>
+    <div v-if="studies.length > 0">
+      <v-row no-gutters class="px-16 ml-10 mb-6" v-for="(study, index) in studies" :key="index">
+        <v-col cols="1" class="px-12 pt-0 mt-0 d-flex justify-center"
+          ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
+        >
+        <v-col cols="1" class="pr-0 pa-0 mr-6">
+          <p class="text-caption ma-0">
+            {{ formatDateMMYY(study.since) }}
+          </p>
+          <p class="text-caption">
+            {{ study.until ? formatDateMMYY(study.until) : "Actualidad" }}
+          </p>
+        </v-col>
 
-      <v-col cols="7" class="pl-1">
-        <h5>{{ study.institute.name }}</h5>
-        <p class="text-caption">{{ study.degree }}</p>
-      </v-col>
-    </v-row>
+        <v-col cols="7" class="pl-1">
+          <h5>{{ study.institute.name }}</h5>
+          <p class="text-caption">{{ study.degree }}</p>
+        </v-col>
+      </v-row>
+    </div>
+
+    <no-data v-else></no-data>
   </div>
 </template>
 
@@ -36,11 +44,16 @@ import Vue from "vue";
 import { getStudiesOfUser } from "@/services/studyExperience";
 import { UserStudyExperience } from "@/models/experience";
 import { dateMixin } from "@/mixins/formattedDate";
+import NoData from "@/components/NoData.vue";
 
 export default Vue.extend({
   name: "StudyExperienceProfile",
 
   mixins: [dateMixin],
+
+  components: { NoData },
+
+  props: { isLoguedUserProfile: Boolean },
 
   data: () => ({
     studies: [] as UserStudyExperience[]
@@ -49,9 +62,6 @@ export default Vue.extend({
   async created() {
     const result = await getStudiesOfUser(this.$route.params.user, 0);
     this.studies = result.content;
-    this.studies.push(result.content[0]);
-    this.studies.push(result.content[0]);
-    this.studies.push(result.content[0]);
   }
 });
 </script>
@@ -62,9 +72,6 @@ export default Vue.extend({
 }
 .divider-container {
   width: 100%;
-}
-.timeline-container {
-  min-width: 300px;
 }
 .school-icon {
   align-self: baseline;

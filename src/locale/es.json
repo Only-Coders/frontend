@@ -8,6 +8,9 @@
   "filters": "Filtros +",
   "orderBy": "Ordenar por",
   "delete": "Borrar",
+  "email": "Correo electronico",
+  "name": "Nombre",
+  "lastName": "Apellido",
   "deleteContact": "Eliminar contacto",
   "areYouSureDeleteContact": "Está seguro de que desea eliminar a ",
   "fromYourContacts": "de sus contactos?",
@@ -28,6 +31,10 @@
     "loginButton": "Ingresar",
     "signInButton": "Registrarme",
     "passwordReset": "¿Olvidaste tu contraseña?"
+  },
+  "Admin": {
+    "addAdmin": "AGREGAR ADMINISTRADOR",
+    "addAdminMessage": "Se creo el administrador correctamente"
   },
   "ForgotPassword": {
     "forgotTitle": "Olvidaste tu contraseña ?",

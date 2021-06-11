@@ -13,18 +13,43 @@
             @click="redirectToFeed"
           />
         </v-col>
+        <v-overlay :value="showOverlay" opacity="0.60"></v-overlay>
         <v-col cols="10" md="4" lg="5">
-          <v-text-field
-            hide-details
-            v-model="searchParameters"
-            label=""
-            prepend-inner-icon="mdi-magnify"
-            background-color="searchInput"
-            rounded
-            height="35"
-            class="mx-auto"
-            placeholder="Search"
-          ></v-text-field>
+          <transition name="scale-transition" mode="out-in" appear>
+            <v-menu
+              :close-on-content-click="false"
+              close-on-click
+              bottom
+              nudge-bottom="45px"
+              attach=".v-overlay"
+              v-model="showOverlay"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  hide-details
+                  v-model="searchParameters"
+                  label=""
+                  prepend-inner-icon="mdi-magnify"
+                  background-color="searchInput"
+                  rounded
+                  height="35"
+                  class="mx-auto"
+                  placeholder="Search"
+                  @focus="getRecommendedTags"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="showOverlay = !showOverlay"
+                ></v-text-field>
+              </template>
+              <Search
+                :filteredUsers="filteredUsers"
+                :tags="recommendedTags"
+                :areTagsLoading="tagsLoading"
+                :areUsersLoading="usersLoading"
+                :filters="searchParameters"
+              ></Search>
+            </v-menu>
+          </transition>
         </v-col>
         <v-col
           cols="2"
@@ -159,17 +184,31 @@
 import Vue from "vue";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
+import Search from "@/components/Feed/Search.vue";
+import { getTags } from "@/services/suggested-tags";
+import { User } from "@/models/user";
+import { getUser } from "@/services/user";
+import { Tag } from "@/models/tag";
+import { Pagination } from "@/models/Pagination/pagination";
+import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 
 export default Vue.extend({
   name: "Header",
 
-  props: {},
+  components: { Search },
 
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
     searchParameters: "",
-    messages: 0
+    messages: 0,
+    showSearchComponent: false,
+    filteredUsers: { currentPage: 0, totalElements: 0, totalPages: 0, content: [] } as Pagination<User>,
+    recommendedTags: [] as Tag[],
+    usersLoading: false,
+    tagsLoading: false,
+    timer: 0,
+    showOverlay: false
   }),
 
   methods: {
@@ -181,6 +220,12 @@ export default Vue.extend({
           company: this.userData.currentPosition.split(" - ")[1]
         };
       }
+    },
+
+    async getRecommendedTags() {
+      this.tagsLoading = true;
+      this.recommendedTags = await getTags(3);
+      this.tagsLoading = false;
     },
 
     async logout() {
@@ -231,12 +276,44 @@ export default Vue.extend({
     }
   },
 
+  watch: {
+    searchParameters() {
+      if (this.searchParameters) {
+        this.usersLoading = true;
+        if (this.timer != 0) {
+          clearTimeout(this.timer);
+        }
+
+        this.timer = setTimeout(async () => {
+          try {
+            const result = await getUser({
+              partialName: this.searchParameters,
+              size: 5,
+              orderBy: UsersOptionsOrderBy.FIRSTNAME
+            });
+            this.filteredUsers = result;
+          } catch (error) {
+            clearTimeout(this.timer);
+          } finally {
+            this.usersLoading = false;
+          }
+        }, 200);
+      }
+    }
+  },
+
   created() {
     this.listenToUnreadMessages();
     this.getUserProfileFromToken();
   }
 });
 </script>
+
+<style>
+.v-overlay {
+  height: 100vh;
+}
+</style>
 
 <style lang="scss" scoped>
 .header__avatar {
@@ -274,5 +351,11 @@ export default Vue.extend({
 }
 .feed_link {
   cursor: pointer;
+}
+</style>
+<style>
+.v-menu__content {
+  overflow: hidden !important;
+  border-radius: 15px !important;
 }
 </style>

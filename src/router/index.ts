@@ -70,6 +70,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       requiresAdmin: true
     }
+  },
+  {
+    path: "/search/results/all/:keywords",
+    name: "search-users",
+    component: () => import(/* webpackChunkName: "profile" */ "../views/SearchUsers.vue"),
+    meta: {
+      layout: "HeaderLayout",
+      requiresAuth: true
+    }
   }
 ];
 

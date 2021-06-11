@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     proxy: {
       "^/api": {
-        target: `http://main:9000` /* `http://mzunino.com.uy:9000` */
+        target: `https://api.onlycoders.tech/` /* `http://mzunino.com.uy:9000` */
       }
     }
   },

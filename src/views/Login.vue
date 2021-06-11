@@ -204,7 +204,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
                   break;
                 case Role.ADMIN:
                   this.success("", `Welcome back ${user.fullName}`, 2000);
-                  this.$router.push("/about"); //push to backoffice view
+                  this.$router.push("/admin"); //push to backoffice view
                   break;
                 default:
                   this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -9,8 +10,8 @@ const routes: Array<RouteConfig> = [
     name: "Feed",
     component: () => import(/* webpackChunkName: "feed" */ "../views/Feed.vue"),
     meta: {
-      layout: "HeaderLayout"
-      //requiresAuth: true
+      layout: "HeaderLayout",
+      requiresAuth: true
     }
   },
   {
@@ -28,7 +29,7 @@ const routes: Array<RouteConfig> = [
     name: "Onboarding",
     component: () => import(/* webpackChunkName: "onboarding" */ "../views/Onboarding.vue"),
     meta: {
-      //requiresAuth: true
+      requiresAuth: true
     }
   },
   {
@@ -36,17 +37,17 @@ const routes: Array<RouteConfig> = [
     name: "Profile",
     component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
     meta: {
-      layout: "HeaderLayout"
-      //requiresAuth: true
+      layout: "HeaderLayout",
+      requiresAuth: true
     },
     children: [
       {
         name: "ProfileChild",
         path: ":user",
-        component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
+        component: () => import(/* webpackChunkName: "profileChild" */ "../views/Profile.vue"),
         meta: {
-          layout: "HeaderLayout"
-          //requiresAuth: true
+          layout: "HeaderLayout",
+          requiresAuth: true
         }
       }
     ]
@@ -76,6 +77,25 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+router.beforeEach((to, _from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.state.userModule?.user) {
+      if (to.matched.some((record) => record.meta.requiresAdmin)) {
+        store.state.userModule.user.roles == "ADMIN" ? next() : next("/");
+      } else {
+        store.state.userModule.user.roles == "ADMIN" ? next("/admin") : next();
+      }
+    } else {
+      next("/login");
+    }
+  } else {
+    if (store.state.userModule?.user) {
+      store.state.userModule.user.roles == "ADMIN" ? next("/admin") : next("/");
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;

@@ -6,9 +6,12 @@ import vuetify from "./plugins/vuetify";
 import VueI18n from "vue-i18n";
 import Locale from "@/locale/index";
 import Notifications from "vue-notification";
+import VueApexCharts from "vue-apexcharts";
 
+Vue.use(VueApexCharts);
 Vue.use(VueI18n);
 Vue.use(Notifications);
+Vue.component("apexchart", VueApexCharts);
 
 Vue.config.productionTip = false;
 

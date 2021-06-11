@@ -22,6 +22,9 @@ const persist = new VuexPersist({
   reducer: (state: State) => ({
     userModule: {
       user: state.userModule?.user
+    },
+    userPaginationModule: {
+      userPagination: state.userPaginationModule?.userPagination
     }
   })
 });

@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters class="d-flex justify-center">
     <v-col cols="6">
-      <v-card class="mt-12">
+      <v-card class="mt-12" min-height="85vh">
         <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
         <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
@@ -62,10 +62,12 @@ export default Vue.extend({
 
     async nextPage() {
       const result = await getUser({
-        partialName: this.$store.state.userPaginationModule.userPagination.search,
-        orderBy: this.$store.state.userPaginationModule.userPagination.orderBySelected,
+        partialName: this.$store.state.userPaginationModule.search,
+        orderBy: this.$store.state.userPaginationModule.orderBySelected,
         page: this.currentPage - 1,
-        size: 5
+        size: 5,
+        countryName: this.$store.state.userPaginationModule.country,
+        skillName: this.$store.state.userPaginationModule.skill
       });
       this.currentPage = result.currentPage + 1;
       this.$store.commit("userPaginationModule/SET_USER_PAGINATION", result);

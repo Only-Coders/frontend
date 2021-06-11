@@ -14,9 +14,13 @@
         <v-row class="align-center justify-space-between" no-gutters>
           <div class="d-flex align-start">
             <v-col cols="auto" class="pa-0">
-              <v-card-title class="font-weight-regular pl-0 pr-2 py-0 user__name" @click="redirectToProfile"
-                >{{ contactData.firstName }} {{ contactData.lastName }}</v-card-title
-              >
+              <div style="user__name">
+                <v-card-title
+                  class="font-weight-regular pl-0 pr-2 py-0 user__name d-block text-truncate"
+                  @click="redirectToProfile"
+                  >{{ contactData.firstName }} {{ contactData.lastName }}</v-card-title
+                >
+              </div>
             </v-col>
             <v-col cols="auto" class="d-flex justify-start pa-0 pt-2">
               <div class="pl-0 pl-md-2">
@@ -77,11 +81,11 @@
           width="65%"
           color="#ee5e5e"
           class="mx-auto"
-          v-if="contactData.connected"
+          v-if="isContactConnected"
           depressed
           dark
           small
-          @click.stop="createDialog = true"
+          @click.stop="showDeleteDialog = true"
         >
           {{ $i18n.t("delete") }}
         </v-btn>
@@ -153,10 +157,10 @@
       </v-col>
     </v-row>
     <DeleteContactDialog
-      :firstName="firstName"
-      :lastName="lastName"
-      v-if="createDialog"
-      v-model="createDialog"
+      :firstName="contactData.firstName"
+      :lastName="contactData.lastName"
+      v-if="showDeleteDialog"
+      v-model="showDeleteDialog"
       @deleteFromNetwork="deleteFromNetwork"
       :isFollow="false"
     ></DeleteContactDialog>
@@ -189,7 +193,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
   data: () => ({
     contactRequestSended: false,
-    followed: false
+    followed: false,
+    showDeleteDialog: false,
+    wasContactDeleted: false,
+    isContactConnected: false
   }),
 
   methods: {
@@ -235,6 +242,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       } as ContactRequestResponse);
       this.contactDataComputed.connected = true;
       this.contactData.contactQty++;
+    },
+
+    async deleteFromNetwork() {
+      await deleteContact(this.contactData.canonicalName);
+      this.isContactConnected = false;
     }
   },
 
@@ -242,6 +254,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     contactDataComputed(): Profile {
       return this.contactData;
     }
+  },
+
+  created() {
+    this.isContactConnected = this.contactDataComputed.connected;
   }
 });
 </script>
@@ -263,5 +279,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
 .user__profile-image {
   cursor: pointer;
+}
+
+.user__name {
+  max-width: 180px;
 }
 </style>

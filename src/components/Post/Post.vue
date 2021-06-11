@@ -145,7 +145,7 @@
               color="#E0E0E0"
               class="ml-2 mr-1 reaction-btn"
             >
-              <v-img alt="approve" width="20" src="@/assets/images/chevron-up.png" />
+              <v-img alt="approve" width="17" src="@/assets/images/chevron-up.png" />
               <p class="my-auto pl-2 pr-1" style="color: #00cdae">
                 {{ approvedAmount }}
               </p>
@@ -162,7 +162,7 @@
               color="#E0E0E0"
               class="ml-1 reaction-btn"
             >
-              <v-img alt="reject" width="20" src="@/assets/images/chevron-down.png" />
+              <v-img alt="reject" width="17" src="@/assets/images/chevron-down.png" />
               <p class="my-auto pl-2" style="color: #ff0f0f">
                 {{ rejectedAmount }}
               </p>

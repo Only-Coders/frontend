@@ -4,6 +4,7 @@ import { Pagination } from "@/models/Pagination/pagination";
 import { User } from "@/models/user";
 import { GetPost } from "@/models/post";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
+import { EditProfile } from "@/models/profile";
 
 export async function getUserByCanonicalName(canonicalName: string): Promise<Profile> {
   const response = await axios.get(`/api/users/${canonicalName}`);
@@ -42,4 +43,8 @@ export async function deletePostFromFavorite(postId: string): Promise<void> {
 export async function getFavoritePosts(page: number, size: number): Promise<Pagination<GetPost>> {
   const response = await axios.get(`/api/users/favorite-posts`, { params: { page, size } });
   return response.data;
+}
+
+export async function editProfile(editProfile: EditProfile): Promise<void> {
+  await axios.put(`/api/users`, editProfile);
 }

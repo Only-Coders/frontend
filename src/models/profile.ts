@@ -25,3 +25,16 @@ export type Profile = {
   following: boolean;
   connected: boolean;
 };
+
+export type EditProfile = {
+  firstName: string;
+  lastName: string;
+  description: string;
+  imageURI: string;
+  birthDate: string;
+  gitProfile: {
+    platform: "";
+    userName: string;
+  };
+  country: string;
+};

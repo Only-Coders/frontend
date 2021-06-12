@@ -72,6 +72,16 @@
                       </h3>
                     </v-list-item-title>
                   </v-list-item>
+                  <v-list-item v-if="isMyOwnPost" @click="showEditDialog = true">
+                    <v-list-item-icon class="mr-2">
+                      <v-icon class="pr-2" color="#5E5E5E"> mdi-pencil </v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
+                        {{ $i18n.t("edit") }}
+                      </h3>
+                    </v-list-item-title>
+                  </v-list-item>
                   <v-list-item v-if="isMyOwnPost" @click="toggleDeletePostDialog">
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-delete </v-icon>
@@ -178,6 +188,13 @@
         </v-col>
       </v-row>
     </v-card>
+    <EditPostDialog
+      v-if="showEditDialog"
+      v-model="showEditDialog"
+      :post="post"
+      :postMessageToEdit="postMessageToEdit"
+      @passPostToParent="getPostFromEdit"
+    ></EditPostDialog>
     <DeletePostDialog
       v-model="showDeletePostDialog"
       :value="showDeletePostDialog"
@@ -202,11 +219,12 @@ import { addPostReaction } from "@/services/post";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
+import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog },
+  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog },
 
   mixins: [medalsMixin, notificationsMixin],
 
@@ -234,7 +252,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     disabledApprove: false,
     disabledReject: false,
     toggleReject: null as number | null,
-    toggleApprove: null as number | null
+    toggleApprove: null as number | null,
+    showEditDialog: false,
+    postMessageToEdit: ""
   }),
 
   computed: {
@@ -370,10 +390,14 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       } else {
         this.$router.push(redirectTo);
       }
+    },
+    getPostFromEdit(post: GetPost) {
+      this.$emit("passPostToCollection", post);
     }
   },
 
   created() {
+    this.postMessageToEdit = this.post.message;
     this.parseReactions();
     this.checkIfPostIsCode();
     if (!this.postIsCode) {

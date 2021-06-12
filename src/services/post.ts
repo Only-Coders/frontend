@@ -26,3 +26,8 @@ export async function deletePost(postId: string): Promise<void> {
 export async function addPostReaction(postId: string, reaction: ReactionType | null): Promise<void> {
   await axios.post(`/api/posts/${postId}/reactions`, { reactionType: reaction });
 }
+
+export async function editPost(postId: string, post: Post): Promise<GetPost> {
+  const response = await axios.put(`/api/posts/${postId}`, post);
+  return response.data;
+}

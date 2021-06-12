@@ -80,7 +80,7 @@
           depressed
           class="mr-3"
           :disabled="enabledButtons && changedPost.message == ''"
-          @click="createPost"
+          @click="editPost"
           >{{ $i18n.t("EditPost.editPostBtn") }}</v-btn
         >
       </v-card-actions>
@@ -202,7 +202,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       this.fileData = null;
       this.changedPost.type = PostType.TEXT;
     },
-    async createPost() {
+    async editPost() {
       try {
         this.isLoading = true;
 
@@ -215,17 +215,22 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         }
         const editedPost = { ...this.changedPost };
 
+        console.log("el clonado: ", JSON.stringify(editedPost.mentionCanonicalNames, null, 2));
+
         editedPost.tagNames = editedPost.tagNames.filter((tagName) => {
           return editedPost.message.includes(tagName);
         });
 
-        editedPost.mentionCanonicalNames = editedPost.mentionCanonicalNames.filter((name) => {
-          if (editedPost.message.includes("@" + editedPost.mentionsDictionary[name])) {
-            editedPost.message = editedPost.message.replaceAll("@" + editedPost.mentionsDictionary[name], "@" + name);
+        editedPost.mentionCanonicalNames = editedPost.mentionCanonicalNames.filter((canonicalName) => {
+          if (editedPost.message.includes("@" + editedPost.mentionsDictionary[canonicalName])) {
+            editedPost.message = editedPost.message.replaceAll(
+              "@" + editedPost.mentionsDictionary[canonicalName],
+              "@" + canonicalName
+            );
             return true;
           }
         });
-        console.log(editedPost, "<<");
+        console.log("el editado: ", JSON.stringify(editedPost, null, 2));
 
         const changedPost = await editPost(this.post.id, editedPost);
         this.$emit("passPostToParent", changedPost);
@@ -284,6 +289,23 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     },
     close() {
       this.$emit("input");
+    },
+    escapeRegex(string: string) {
+      return string.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
+    },
+    formatMentionsTagsFromMessage() {
+      if (this.post.tags.length !== 0) {
+        this.post.tags.forEach((tag) => {
+          const regex = new RegExp(`#${this.escapeRegex(tag.displayName)}`, "g");
+          this.changedPost.message = this.changedPost.message.replace(regex, `#${tag.displayName}`);
+        });
+      }
+      if (this.post.mentions.length !== 0) {
+        this.post.mentions.forEach((mention) => {
+          const regex = new RegExp(`@${mention.canonicalName}`, "g");
+          this.changedPost.message = this.changedPost.message.replace(regex, `@${mention.fullName}`);
+        });
+      }
     }
   },
 
@@ -293,12 +315,17 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       ? this.$store.state.userModule.user.defaultPrivacy
       : true;
     this.changedPost.message = this.postMessageToEdit;
+    this.formatMentionsTagsFromMessage();
     this.changedPost.type = this.post.type as PostType;
     this.changedPost.isPublic = this.post.isPublic;
     this.changedPost.url = this.post.url;
     this.changedPost.mentionCanonicalNames = this.post.mentions.map((mention) => mention.canonicalName);
     this.changedPost.tagNames = this.post.tags.map((tag) => tag.displayName);
-    console.log(this.changedPost);
+    this.changedPost.mentionsDictionary = {};
+    this.post.mentions.forEach((mention) => {
+      this.changedPost.mentionsDictionary[mention.canonicalName] = mention.fullName;
+    });
+    console.log("creted: ", JSON.stringify(this.changedPost, null, 2));
   }
 });
 </script>

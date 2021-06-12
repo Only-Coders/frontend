@@ -99,7 +99,7 @@ export default Vue.extend({
       this.loading = true;
       if (this.selectedKey == "@") {
         this.items = (await getUser({ partialName: searchText, page: 0, size: 5 })).content.map((user) => {
-          return { value: user.canonicalName, label: user.firstName, imageURI: user.imageURI };
+          return { value: user.canonicalName, label: user.fullName, imageURI: user.imageURI };
         });
       } else {
         this.items = (await getTag(searchText, 5)).content.map((tag) => {

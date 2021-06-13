@@ -59,15 +59,18 @@
           :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
         >
           <div class="icon-container hidden-sm-and-down">
-            <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
+            <v-btn text rounded plain link to="/"><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
 
-          <v-btn text rounded plain link to="/chat">
-            <v-badge :content="messages" :value="messages" color="primary" overlap>
-              <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
-            </v-badge>
-          </v-btn>
+          <div class="icon-container">
+            <v-btn text rounded plain link to="/chat">
+              <v-badge :content="messages" :value="messages" color="primary" overlap>
+                <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
+              </v-badge>
+              <div v-if="this.$route.name === 'Chat'" class="indicator"></div>
+            </v-btn>
+          </div>
 
           <v-btn text rounded plain class="hidden-sm-and-down">
             <v-badge :content="notifications" :value="notifications" color="primary" overlap>

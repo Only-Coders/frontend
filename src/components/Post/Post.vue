@@ -221,6 +221,8 @@ import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 
+type PostKey = keyof GetPost;
+
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
@@ -392,26 +394,36 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
     },
     getPostFromEdit(post: GetPost) {
-      this.$emit("passPostToCollection", post);
+      this.postMessageToEdit = post.message;
+      this.post.message = post.message;
+      this.post.url = post.url;
+      this.post.type = post.type;
+      this.post.mentions = post.mentions;
+      this.post.tags = post.tags;
+      this.post.isPublic = post.isPublic;
+      this.formatPost(this.post);
+    },
+    formatPost(post: GetPost) {
+      this.parseReactions();
+      this.checkIfPostIsCode();
+      if (!this.postIsCode) {
+        this.formatNewLine();
+      }
+      this.formatPostDate();
+      this.formatTagsAndMentions();
+      this.template = `<div><p class="font-weight-regular text--secondary">${post.message}</p></div>`;
+      this.isMyOwnPost = post.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
+      this.medals = this.calculateMedals(post.publisher.amountOfMedals);
+      this.isPostFavorite = post.isFavorite;
+      if (post.type === "FILE") {
+        this.getFileName();
+      }
     }
   },
 
   created() {
     this.postMessageToEdit = this.post.message;
-    this.parseReactions();
-    this.checkIfPostIsCode();
-    if (!this.postIsCode) {
-      this.formatNewLine();
-    }
-    this.formatPostDate();
-    this.formatTagsAndMentions();
-    this.template = `<div><p class="font-weight-regular text--secondary">${this.post.message}</p></div>`;
-    this.isMyOwnPost = this.post.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
-    this.medals = this.calculateMedals(this.post.publisher.amountOfMedals);
-    this.isPostFavorite = this.post.isFavorite;
-    if (this.post.type === "FILE") {
-      this.getFileName();
-    }
+    this.formatPost(this.post);
   }
 });
 </script>

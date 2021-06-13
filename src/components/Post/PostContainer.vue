@@ -20,7 +20,6 @@
         @passDeletedPostAsFavorite="passDeletedPostAsFavorite"
         :isInFavoritesTab="isInFavoritesTab"
         @deletePost="deletePost"
-        @passPostToCollection="getEditedPostFromChild"
         :isFlat="$route.name === 'ProfileChild'"
       />
     </div>

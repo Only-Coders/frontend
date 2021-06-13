@@ -230,8 +230,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         });
 
         const changedPost = await editPost(this.post.id, editedPost);
-        this.$emit("passPostToParent", changedPost);
         this.success("", this.$i18n.t("EditPost.successfullEdition").toString(), 2000);
+        this.$emit("passPostToParent", changedPost);
         this.close();
       } catch (error) {
         this.error("Error", this.$i18n.t("EditPost.errorEdition").toString());
@@ -290,13 +290,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     escapeRegex(string: string) {
       return string.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
     },
-    formatMentionsTagsFromMessage() {
-      if (this.post.tags.length !== 0) {
-        this.post.tags.forEach((tag) => {
-          const regex = new RegExp(`#${this.escapeRegex(tag.displayName)}`, "g");
-          this.changedPost.message = this.changedPost.message.replace(regex, `#${tag.displayName}`);
-        });
-      }
+    formatMentionsFromMessage() {
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
           const regex = new RegExp(`@${mention.canonicalName}`, "g");
@@ -312,7 +306,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     this.changedPost.isPublic = this.$store.state.userModule.user.defaultPrivacy
       ? this.$store.state.userModule.user.defaultPrivacy
       : true;
-    this.formatMentionsTagsFromMessage();
+    this.formatMentionsFromMessage();
     this.changedPost.type = this.post.type as PostType;
     this.changedPost.isPublic = this.post.isPublic;
     this.changedPost.url = this.post.url;

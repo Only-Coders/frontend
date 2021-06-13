@@ -12,7 +12,6 @@
           :showCreateProfile="true"
           :isLoguedUserProfile="true"
           @deletePost="deleteUserPost"
-          @passEditedPostToCollection="getEditedPostFromChild"
         ></PostContainer>
       </v-col>
       <v-col cols="3" class="hidden-sm-and-down pl-16 pr-8">
@@ -74,14 +73,6 @@ export default Vue.extend({
       if (postIndex >= 0) {
         this.posts.splice(postIndex, 1);
       }
-    },
-    getEditedPostFromChild(post: GetPost) {
-      const postIndex = this.posts.findIndex((editedPost) => editedPost.id == post.id);
-      if (postIndex >= 0) {
-        this.posts[postIndex] = post;
-        console.log("==>", postIndex);
-      }
-      console.log("en feed: ", this.posts);
     }
   },
 

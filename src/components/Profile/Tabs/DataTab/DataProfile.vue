@@ -6,7 +6,15 @@
       </span>
       <h3>{{ $i18n.t("ViewProfile.personalData") }}</h3>
       <v-spacer></v-spacer>
-      <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
+      <v-btn
+        class="mr-6"
+        fab
+        small
+        depressed
+        color="transparent"
+        v-if="isLoguedUserProfile"
+        @click.stop="createDialog = true"
+      >
         <v-icon size="22" color="grey darken-1"> mdi-pencil </v-icon>
       </v-btn>
       <div class="divider-container mt-8">
@@ -55,6 +63,13 @@
       </div>
       <p class="ma-0">{{ userInfo.gitProfile.userName }}</p>
     </v-row>
+
+    <EditDataDialog
+      :userData="userInfo"
+      v-if="createDialog"
+      v-model="createDialog"
+      @unfollowTag="$emit('unfollowTag')"
+    ></EditDataDialog>
   </div>
 </template>
 
@@ -65,6 +80,7 @@ import { dateMixin } from "@/mixins/formattedDate";
 import { format } from "date-fns";
 import gitPlatform, { GitPlatformsMixin } from "@/mixins/gitPlatforms";
 import { VueConstructor } from "vue/types/umd";
+import EditDataDialog from "@/components/Profile/Tabs/DataTab/EditDataDialog.vue";
 
 export default (Vue as VueConstructor<Vue & GitPlatformsMixin>).extend({
   name: "DataProfile",
@@ -73,9 +89,12 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin>).extend({
 
   props: { userInfo: Object as PropType<Profile>, isLoguedUserProfile: Boolean },
 
+  components: { EditDataDialog },
+
   data: () => ({
     birthDate: "",
-    srcImageGit: ""
+    srcImageGit: "",
+    createDialog: false
   }),
 
   created() {

@@ -12,8 +12,8 @@
           >{{ firstName }} {{ lastName }}
         </v-card-title>
         <v-card-text class="text-start pa-0 pr-2">
-          {{ currentPosition != null ? currentPosition.workplace.name + " | " : "" }}
-          {{ currentPosition != null ? currentPosition.position : "" }}
+          {{ currentPosition ? currentPosition.position + $i18n.t("at") : "" }}
+          {{ currentPosition ? currentPosition.workplace.name : "" }}
         </v-card-text>
       </v-col>
     </v-row>

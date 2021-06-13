@@ -2,9 +2,15 @@
   <v-card>
     <div class="profile__banner">
       <v-avatar size="90" class="profile__banner__avatar">
+        <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
         <v-img
           alt="user"
-          :src="userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')"
+          class="profile_image"
+          :src="
+            $store.state.userModule.user.imageURI
+              ? $store.state.userModule.user.imageURI
+              : require('@/assets/images/default-avatar.png')
+          "
         />
       </v-avatar>
     </div>
@@ -117,8 +123,20 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   font-weight: bold !important;
   font-size: 16px !important;
 }
-
 .user_name {
   cursor: pointer;
+.skeleton {
+  position: absolute;
+}
+</style>
+
+<style>
+.skeleton .v-skeleton-loader__avatar {
+  width: 90px !important;
+  height: 90px !important;
+  background: rgb(223, 223, 223) !important;
+}
+.profile_image {
+  z-index: 2 !important;
 }
 </style>

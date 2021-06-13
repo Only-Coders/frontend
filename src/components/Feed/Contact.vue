@@ -1,7 +1,12 @@
 <template>
   <v-list-item class="pr-0">
     <v-list-item-avatar size="55">
-      <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
+      <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
+      <v-img
+        alt="user"
+        class="profile_image"
+        :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')"
+      />
     </v-list-item-avatar>
 
     <v-list-item-content>

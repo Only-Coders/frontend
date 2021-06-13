@@ -22,7 +22,7 @@
         </transition>
 
         <v-img
-          style="z-index: 9"
+          class="profile_image"
           alt="user"
           :src="imageURL ? imageURL : require('@/assets/images/default-avatar.png')"
         />
@@ -109,7 +109,9 @@ export default Vue.extend({
     async confirmPhotoChange() {
       if (this.temporalImageUploaded) {
         await this.onUpload();
-        await storage.refFromURL(this.originalImage).delete();
+        if (this.originalImage) {
+          await storage.refFromURL(this.originalImage).delete();
+        }
         this.$emit("uploadImage", this.imageURL);
       }
       this.temporalImageUploaded = false;
@@ -171,5 +173,8 @@ export default Vue.extend({
 .skeleton .v-skeleton-loader__avatar {
   width: 480px !important;
   height: 480px !important;
+}
+.profile_image {
+  z-index: 9;
 }
 </style>

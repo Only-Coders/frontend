@@ -4,9 +4,10 @@
       <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
         <v-col cols="1" md="2" lg="1" class="pt-4">
           <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '55'">
+            <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
             <v-img
               alt="user"
-              class="font-weight-ligth pr-2 pb-0 user_name"
+              class="font-weight-ligth pr-2 pb-0 user_name profile_image"
               @click="redirectToProfile"
               :src="imageURI"
               style="cursor: pointer"
@@ -426,7 +427,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 });
 </script>
 
-<style>
+<style scoped>
 .post__mention-tag {
   text-decoration: none !important;
   color: #2780c4 !important;
@@ -440,5 +441,23 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
+}
+.skeleton {
+  position: absolute;
+  z-index: 1;
+}
+.profile__banner__avatar {
+  z-index: 2 !important;
+}
+</style>
+
+<style>
+.skeleton .v-skeleton-loader__avatar {
+  width: 60px !important;
+  height: 60px !important;
+  background: rgb(223, 223, 223) !important;
+}
+.profile_image {
+  z-index: 2 !important;
 }
 </style>

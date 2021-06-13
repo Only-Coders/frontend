@@ -4,8 +4,10 @@
       <v-row class="px-4 px-md-7 py-3" align="center" no-gutters>
         <v-col cols="2">
           <v-avatar size="60">
+            <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
             <v-img
               alt="user"
+              class="profile_image"
               :src="
                 isSelfProfile
                   ? $store.state.userModule.user && $store.state.userModule.user.imageURI
@@ -79,5 +81,19 @@ export default Vue.extend({
 }
 .create_post_input {
   font-size: 1.3em;
+}
+.skeleton {
+  position: absolute;
+}
+</style>
+
+<style>
+.skeleton .v-skeleton-loader__avatar {
+  width: 60px !important;
+  height: 60px !important;
+  background: rgb(223, 223, 223) !important;
+}
+.profile_image {
+  z-index: 9999 !important;
 }
 </style>

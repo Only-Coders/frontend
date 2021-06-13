@@ -91,8 +91,10 @@
                       <template v-slot:activator="{ on }">
                         <v-btn large depressed class="header__avatar pa-0" v-on="on">
                           <v-avatar size="50">
+                            <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
                             <v-img
                               alt="user avatar"
+                              class="profile_image"
                               :src="
                                 userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
                               "
@@ -387,6 +389,20 @@ export default Vue.extend({
   border-radius: 15px !important;
 }
 .app_bar {
-  z-index: 9999 !important;
+  z-index: 9998 !important;
+}
+.skeleton {
+  position: absolute;
+}
+</style>
+
+<style>
+.skeleton .v-skeleton-loader__avatar {
+  width: 150px !important;
+  height: 150px !important;
+  background: rgb(223, 223, 223) !important;
+}
+.profile_image {
+  z-index: 9997 !important;
 }
 </style>

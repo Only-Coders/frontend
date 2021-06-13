@@ -72,11 +72,39 @@
             </v-btn>
           </div>
 
-          <v-btn text rounded plain class="hidden-sm-and-down">
-            <v-badge :content="notifications" :value="notifications" color="primary" overlap>
-              <v-icon color="navbar_icon">mdi-bell</v-icon>
-            </v-badge>
-          </v-btn>
+          <v-menu
+            :close-on-content-click="false"
+            close-on-click
+            bottom
+            nudge-bottom="45px"
+            attach=".v-overlay"
+            v-model="showNotifications"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                rounded
+                plain
+                class="hidden-sm-and-down"
+                @click="showNotifications = !showNotifications"
+                v-bind="attrs"
+              >
+                <v-badge :content="notificationsCount" :value="notificationsCount" color="primary" overlap>
+                  <v-icon color="navbar_icon">mdi-bell</v-icon>
+                </v-badge>
+              </v-btn>
+            </template>
+            <v-card width="280px" height="200px" style="overflow-y: auto">
+              <v-list-item two-line v-for="notification in notifications" :key="notification.id">
+                <v-list-item-content>
+                  <v-list-item-title>{{ $i18n.t("NotificationType." + notification.eventType) }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ notification.message }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+            </v-card>
+          </v-menu>
+
           <v-btn text rounded plain class="hidden-sm-and-down"
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
@@ -201,6 +229,7 @@ import { getTags } from "@/services/suggested-tags";
 import { User } from "@/models/user";
 import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
+import { NotificationType } from "@/models/Enums/notificationType";
 import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
@@ -213,16 +242,18 @@ export default Vue.extend({
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
+    notifications: [] as { eventType: string; message: string; read: boolean; to: string; id: string }[],
     searchParameters: "",
     messages: 0,
-    notifications: 0,
+    notificationsCount: 0,
     showSearchComponent: false,
     filteredUsers: { currentPage: 0, totalElements: 0, totalPages: 0, content: [] } as Pagination<User>,
     recommendedTags: [] as Tag[],
     usersLoading: false,
     tagsLoading: false,
     timer: 0,
-    showOverlay: false
+    showOverlay: false,
+    showNotifications: false
   }),
 
   methods: {
@@ -276,9 +307,13 @@ export default Vue.extend({
         .equalTo(false)
         .on("value", (notificationSnapshot) => {
           if (notificationSnapshot.val()) {
-            this.notifications = Object.keys(notificationSnapshot.val()).length;
+            this.notificationsCount = Object.keys(notificationSnapshot.val()).length;
+            this.notifications = Object.keys(notificationSnapshot.val()).map((key) => {
+              var notification = notificationSnapshot.val()[key];
+              return { ...notification, id: key };
+            });
           } else {
-            this.notifications = 0;
+            this.notificationsCount = 0;
           }
         });
     },

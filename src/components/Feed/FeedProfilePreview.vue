@@ -9,7 +9,7 @@
       </v-avatar>
     </div>
 
-    <h2 class="pt-15 font-weight-regular text-center">
+    <h2 class="pt-15 font-weight-regular text-center user_name" @click="redirectToProfile">
       {{ userData.firstName }}
       {{ userData.lastName }}
     </h2>
@@ -86,6 +86,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   methods: {
     async getUserProfile() {
       this.userData = await getUserByCanonicalName(this.$store.state.userModule.user.canonicalName);
+    },
+    redirectToProfile() {
+      const redirectTo = `/profile/${this.userData.canonicalName}`;
+      this.$router.push(redirectTo);
     }
   },
 
@@ -112,5 +116,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   text-transform: lowercase !important;
   font-weight: bold !important;
   font-size: 16px !important;
+}
+
+.user_name {
+  cursor: pointer;
 }
 </style>

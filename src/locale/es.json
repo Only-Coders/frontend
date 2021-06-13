@@ -35,7 +35,10 @@
   },
   "Admin": {
     "addAdmin": "AGREGAR ADMINISTRADOR",
-    "addAdminMessage": "Se creo el administrador correctamente"
+    "addAdminMessage": "Se creo el administrador correctamente",
+    "totalActiveUsers": "Total usuarios activos",
+    "totalBlockedUsers": "Total usuarios bloqueados",
+    "totalBannedUsers": "Total usuarios penalizados"
   },
   "ForgotPassword": {
     "forgotTitle": "Olvidaste tu contraseña ?",

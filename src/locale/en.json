@@ -35,7 +35,10 @@
   },
   "Admin": {
     "addAdmin": "ADD ADMIN",
-    "addAdminMessage": "Admin created successfully"
+    "addAdminMessage": "Admin created successfully",
+    "totalActiveUsers": "Total active users",
+    "totalBlockedUsers": "Total blocked users",
+    "totalBannedUsers": "Total banned users"
   },
   "ForgotPassword": {
     "forgotTitle": "Forgot password ?",

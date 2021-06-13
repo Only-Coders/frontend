@@ -8,7 +8,7 @@
               alt="user"
               class="font-weight-ligth pr-2 pb-0 user_name"
               @click="redirectToProfile"
-              :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
+              :src="imageURI"
               style="cursor: pointer"
             />
           </v-avatar>
@@ -210,7 +210,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 
   mixins: [medalsMixin, notificationsMixin],
 
-  props: { post: Object as PropType<GetPost>, isInFavoritesTab: Boolean, isFlat: Boolean },
+  props: {
+    post: Object as PropType<GetPost>,
+    isInFavoritesTab: Boolean,
+    isFlat: Boolean
+  },
 
   data: () => ({
     createDialog: false,
@@ -237,6 +241,15 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     message: {
       get(): { template: string } {
         return { template: this.template };
+      }
+    },
+    imageURI: {
+      get(): string {
+        if (this.$store.state.userModule.user.canonicalName == this.post.publisher.canonicalName) {
+          return this.$store.state.userModule.user.imageURI ?? require("@/assets/images/default-avatar.png");
+        } else {
+          return this.post.publisher.imageURI ?? require("@/assets/images/default-avatar.png");
+        }
       }
     }
   },

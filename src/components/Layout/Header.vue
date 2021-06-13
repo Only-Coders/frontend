@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="navbar" dark>
+    <v-app-bar app color="navbar" dark class="app_bar">
       <v-row align="center" justify="space-between" no-gutters>
         <v-col cols="4" md="4" class="hidden-sm-and-down">
           <v-img
@@ -106,7 +106,9 @@
                               <v-img
                                 alt="user avatar"
                                 :src="
-                                  userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
+                                  $store.state.userModule.user.imageURI
+                                    ? $store.state.userModule.user.imageURI
+                                    : require('@/assets/images/default-avatar.png')
                                 "
                               />
                             </v-avatar>
@@ -116,14 +118,16 @@
                               <h3 class="d-inline-block text-truncate font-weight-medium">
                                 {{ userData.fullName ? userData.fullName : "" }}
                               </h3>
-                              <h4 class="font-weight-light text-truncate text--secondary">
-                                {{ userCurrentPosition.position ? userCurrentPosition.position : "" }}
-                              </h4>
-                              <h5 class="font-weight-light text-truncate text--secondary">
-                                {{
-                                  `${$i18n.t("at")} ${userCurrentPosition.company ? userCurrentPosition.company : ""}`
-                                }}
-                              </h5>
+                              <div v-if="userCurrentPosition.company">
+                                <h4 class="font-weight-light text-truncate text--secondary">
+                                  {{ userCurrentPosition.position ? userCurrentPosition.position : "" }}
+                                </h4>
+                                <h5 class="font-weight-light text-truncate text--secondary">
+                                  {{
+                                    `${$i18n.t("at")} ${userCurrentPosition.company ? userCurrentPosition.company : ""}`
+                                  }}
+                                </h5>
+                              </div>
                             </v-list-item-title>
                           </v-col>
                         </v-row>
@@ -357,5 +361,8 @@ export default Vue.extend({
 .v-menu__content {
   overflow: hidden !important;
   border-radius: 15px !important;
+}
+.app_bar {
+  z-index: 9999 !important;
 }
 </style>

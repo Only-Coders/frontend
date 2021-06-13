@@ -36,5 +36,5 @@ export type EditProfile = {
     platform: "";
     userName: string;
   };
-  country: string;
+  countryCode: string;
 };

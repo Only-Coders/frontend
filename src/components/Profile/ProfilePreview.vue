@@ -7,61 +7,22 @@
     </v-sheet>
 
     <v-card class="card_profile" v-if="userDataComputed && !loading">
-      <div class="d-flex justify-center mt-9">
-        <v-avatar size="160">
-          <v-img
-            alt="user"
-            :src="userDataComputed.imageURI ? userDataComputed.imageURI : require('@/assets/images/default-avatar.png')"
-          />
-        </v-avatar>
-        <v-btn
-          v-if="isSelfProfile && !temporalImageUploaded"
-          absolute
-          fab
-          small
-          depressed
-          class="edit_photo_btn"
-          color="primary"
-          @click="handleShowFileSelector"
-        >
-          <v-icon size="22"> mdi-pencil </v-icon>
-          <input type="file" ref="input1" style="display: none" @change="previewImage" accept="image/*" lazy-src />
-        </v-btn>
-        <v-btn
-          v-if="isSelfProfile && temporalImageUploaded"
-          absolute
-          fab
-          small
-          depressed
-          class="edit_photo_btn"
-          color="primary"
-          @click="confirmPhotoChange"
-        >
-          <v-icon size="22"> mdi-check-bold </v-icon>
-        </v-btn>
-
-        <v-btn
-          v-if="isSelfProfile && temporalImageUploaded"
-          absolute
-          fab
-          small
-          depressed
-          class="cancel_edit_photo_btn"
-          @click="cancelPhotoChange"
-          color="error"
-        >
-          <v-icon size="22"> mdi-close </v-icon>
-        </v-btn>
-      </div>
+      <v-row justify="center" class="mt-9" no-gutters>
+        <ProfilePhoto
+          :isSelfProfile="isSelfProfile"
+          :profileImageURLProp="isSelfProfile ? $store.state.userModule.user.imageURI : userDataComputed.imageURI"
+          @uploadImage="confirmPhotoChange"
+        ></ProfilePhoto>
+      </v-row>
 
       <h2 class="mt-5 text-center font-weight-medium">
         {{ userDataComputed.firstName }}
         {{ userDataComputed.lastName }}
       </h2>
 
-      <h4 class="center subtitle-1 text--secondary text-center">
-        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.position + " " + $i18n.t("at") : "" }}
-        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.workplace.name : "" }}
+      <h4 class="center subtitle-1 text--secondary text-center" v-if="userDataComputed.currentPosition">
+        {{ userDataComputed.currentPosition.position + " " + $i18n.t("at") }}
+        {{ userDataComputed.currentPosition.workplace.name }}
       </h4>
 
       <v-row justify="center" class="mt-5" no-gutters>
@@ -207,10 +168,9 @@ import { postFollow, deleteFollow } from "@/services/follow";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
-import { storage } from "@/plugins/firebaseInit";
-import Compressor from "compressorjs";
 import { editProfile } from "@/services/user";
 import { EditProfile } from "@/models/profile";
+import ProfilePhoto from "@/components/Profile/ProfilePhoto.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "ProfilePreview",
@@ -219,7 +179,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
   props: { userData: Object as PropType<Profile>, isSelfProfile: Boolean, loading: Boolean },
 
-  components: { DeleteContactDialog },
+  components: { DeleteContactDialog, ProfilePhoto },
 
   data: () => ({
     medals: {} as Medals,
@@ -227,12 +187,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     contactRequestReceived: false,
     followed: false,
     isContact: false,
-    createDialog: false,
-    temporalImageUploaded: false,
-    profileImageData: null as File | null,
-    profileImageToShow: "",
-    profileImageURL: "",
-    originalImageProfile: ""
+    createDialog: false
   }),
 
   methods: {
@@ -267,64 +222,23 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.userDataComputed.connected = true;
       this.userData.contactQty++;
     },
-    handleShowFileSelector() {
-      (this.$refs.input1 as HTMLButtonElement).click();
-    },
 
-    previewImage(event: Event) {
-      const target = event.target as HTMLInputElement;
-      if (target.files) {
-        this.temporalImageUploaded = true;
-        this.profileImageData = target.files[0];
-        this.originalImageProfile = this.userDataComputed.imageURI;
-        this.userDataComputed.imageURI = URL.createObjectURL(target.files[0]);
-        /* this.profileImageToShow = URL.createObjectURL(target.files[0]); */
-      }
-    },
+    async confirmPhotoChange(imageURI: string) {
+      await editProfile({
+        firstName: this.userData.firstName,
+        lastName: this.userData.lastName,
+        description: this.userData.description,
+        imageURI: imageURI,
+        birthDate: this.userData.birthDate,
+        gitProfile: {
+          platform: this.userData.gitProfile.platform,
+          userName: this.userData.gitProfile.userName
+        },
+        countryCode: this.userData.country.code
+      } as EditProfile);
 
-    async onUpload() {
-      const profileImageData = this.profileImageData as File;
-      const imageCompresor = new Promise<string>((resolve, reject) => {
-        new Compressor(profileImageData, {
-          quality: 0.2,
-          async success(result: File) {
-            const snapshot = await storage.ref(`images/${result.name}`).put(result);
-            const profileImageUrl = await snapshot.ref.getDownloadURL();
-            resolve(profileImageUrl);
-          },
-          error(err) {
-            reject(err);
-          }
-        });
-      });
-
-      this.profileImageURL = await imageCompresor;
-    },
-
-    async confirmPhotoChange() {
-      if (this.profileImageToShow !== "") {
-        await this.onUpload();
-        await editProfile({
-          firstName: this.userData.firstName,
-          lastName: this.userData.lastName,
-          description: this.userData.description,
-          imageURI: this.userDataComputed.imageURI,
-          birthDate: this.userData.birthDate,
-          gitProfile: {
-            platform: this.userData.gitProfile.platform,
-            userName: this.userData.gitProfile.userName
-          },
-          country: this.userData.country.code
-        } as EditProfile);
-        this.temporalImageUploaded = false;
-      }
-      //this.user.imageURI = this.profileImageURL;
-      //TODO borrar de firebase la foto anterior
-    },
-
-    cancelPhotoChange() {
-      this.userDataComputed.imageURI = this.originalImageProfile;
-      this.temporalImageUploaded = false;
+      this.userDataComputed.imageURI = imageURI;
+      this.$store.commit("userModule/SET_USER_IMAGE", imageURI);
     }
   },
 
@@ -355,16 +269,5 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 }
 .card_profile {
   border-top: 3px solid var(--v-primary-base) !important;
-}
-.edit_photo_btn {
-  top: 25px;
-  right: 90px;
-  transition: opacity 0.5s ease-in-out;
-}
-.cancel_edit_photo_btn {
-  top: 70px;
-  right: 75px;
-  width: 30px;
-  height: 30px;
 }
 </style>

@@ -24,6 +24,7 @@
   "filterTags": "Filter tags...",
   "areYouSureUnfollowTag": "Are you sure you want to unfollow ",
   "unfollowUser": "Unfollow user",
+  "present": "Present",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -172,7 +173,7 @@
     "Data": "Data",
     "Tags": "Tags",
     "contacts": "Contacts",
-    "followings": "Followings",
+    "followings": "Following",
     "personalData": "PERSONAL DATA",
     "workExperience": " WORK EXPERIENCE",
     "academicExperience": "ACADEMIC EXPERIENCE",

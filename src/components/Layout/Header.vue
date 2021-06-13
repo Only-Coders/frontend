@@ -62,12 +62,18 @@
             <v-btn text rounded plain><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
+
           <v-btn text rounded plain link to="/chat">
             <v-badge :content="messages" :value="messages" color="primary" overlap>
               <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
             </v-badge>
           </v-btn>
-          <v-btn text rounded plain class="hidden-sm-and-down"><v-icon color="navbar_icon">mdi-bell</v-icon></v-btn>
+
+          <v-btn text rounded plain class="hidden-sm-and-down">
+            <v-badge :content="notifications" :value="notifications" color="primary" overlap>
+              <v-icon color="navbar_icon">mdi-bell</v-icon>
+            </v-badge>
+          </v-btn>
           <v-btn text rounded plain class="hidden-sm-and-down"
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
@@ -206,6 +212,7 @@ export default Vue.extend({
     userCurrentPosition: { company: "", position: "" },
     searchParameters: "",
     messages: 0,
+    notifications: 0,
     showSearchComponent: false,
     filteredUsers: { currentPage: 0, totalElements: 0, totalPages: 0, content: [] } as Pagination<User>,
     recommendedTags: [] as Tag[],
@@ -237,8 +244,7 @@ export default Vue.extend({
     },
 
     listenToUnreadMessages() {
-      let usersRef = database.ref(`users/${this.user.canonicalName}/chats`);
-      usersRef.on("value", (userSnapshot) => {
+      database.ref(`users/${this.user.canonicalName}/chats`).on("value", (userSnapshot) => {
         userSnapshot.forEach((userData) => {
           database
             .ref(`chats/${userData.val().key}/messages`)
@@ -258,6 +264,20 @@ export default Vue.extend({
             });
         });
       });
+    },
+
+    listenToUnreadNotifications() {
+      database
+        .ref(`notifications/${this.user.canonicalName}`)
+        .orderByChild("read")
+        .equalTo(false)
+        .on("value", (notificationSnapshot) => {
+          if (notificationSnapshot.val()) {
+            this.notifications = Object.keys(notificationSnapshot.val()).length;
+          } else {
+            this.notifications = 0;
+          }
+        });
     },
 
     redirectToFeed() {
@@ -308,6 +328,7 @@ export default Vue.extend({
 
   created() {
     this.listenToUnreadMessages();
+    this.listenToUnreadNotifications();
     this.getUserProfileFromToken();
   }
 });

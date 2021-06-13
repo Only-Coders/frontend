@@ -1,7 +1,12 @@
 <template>
-  <v-row no-gutters class="mt-6">
-    <v-col cols="12" md="6 offset-1" lg="3 offset-1" class="px-10">
-      <ProfilePreview :userData="userData" :isSelfProfile="isSelfProfile" :loading="loading"></ProfilePreview>
+  <v-row no-gutters class="mt-6" justify-sm="center" justify-lg="start">
+    <v-col cols="12" lg="4" class="px-7 px-md-16 px-lg-0 mb-10 mb-lg-0">
+      <ProfilePreview
+        :userData="userData"
+        :isSelfProfile="isSelfProfile"
+        :loading="loading"
+        :class="{ profile_preview_col: $vuetify.breakpoint.lgAndUp }"
+      ></ProfilePreview>
       <ReceivedContactRequests
         class="mt-8"
         @hideContactsRequests="showContactsRequests = false"
@@ -9,7 +14,7 @@
         @incrementContacts="incrementContacts"
       ></ReceivedContactRequests>
     </v-col>
-    <v-col cols="12" md="7">
+    <v-col cols="12" lg="7">
       <ProfileTabs
         class="mx-7"
         :isSelfProfile="isSelfProfile"
@@ -58,4 +63,9 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile_preview_col {
+  padding-left: 160px !important;
+  padding-right: 40px !important;
+}
+</style>

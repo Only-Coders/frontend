@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="py-10 px-16 mt-9" align="center" no-gutters>
+    <v-row class="py-10 px-sm-16 px-5 mt-9" align="center" no-gutters>
       <span class="pl-10 pr-6">
         <v-icon size="30"> mdi-briefcase </v-icon>
       </span>
@@ -14,25 +14,26 @@
       </div>
     </v-row>
 
-    <v-row no-gutters class="px-16 ml-10" v-if="works.length > 0">
+    <v-row no-gutters class="px-sm-16 ml-sm-10" v-if="works.length > 0">
       <v-timeline align-top dense>
         <v-timeline-item
           v-for="(work, index) in works"
           :key="index"
           :color="index % 2 == 0 ? 'primary' : 'secondary'"
           small
+          class="mx-0 px-0"
         >
           <v-row no-gutters class="timeline-container">
-            <v-col cols="3" class="pr-0">
+            <v-col cols="auto" class="mr-9 ma-0 pa-0 date_container">
               <p class="text-caption ma-0">
                 {{ formatDateMMYY(work.since) }}
               </p>
               <p class="text-caption">
-                {{ work.until ? formatDateMMYY(work.until) : "Actualidad" }}
+                {{ work.until ? formatDateMMYY(work.until) : $i18n.t("present") }}
               </p>
             </v-col>
 
-            <v-col cols="9" class="pl-4">
+            <v-col cols="auto">
               <h5>{{ work.workplace.name }}</h5>
               <p class="text-caption">{{ work.position }}</p>
             </v-col>
@@ -80,6 +81,9 @@ export default Vue.extend({
   width: 100%;
 }
 .timeline-container {
-  min-width: 300px;
+  min-width: 400px;
+}
+.date_container {
+  min-width: 62px;
 }
 </style>

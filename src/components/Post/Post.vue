@@ -8,7 +8,7 @@
               alt="user"
               class="font-weight-ligth pr-2 pb-0 user_name"
               @click="redirectToProfile"
-              :src="post.publisher.imageURI ? post.publisher.imageURI : require('@/assets/images/default-avatar.png')"
+              :src="imageURI"
               style="cursor: pointer"
             />
           </v-avatar>
@@ -145,7 +145,7 @@
               color="#E0E0E0"
               class="ml-2 mr-1 reaction-btn"
             >
-              <v-img alt="approve" width="20" src="@/assets/images/chevron-up.png" />
+              <v-img alt="approve" width="17" src="@/assets/images/chevron-up.png" />
               <p class="my-auto pl-2 pr-1" style="color: #00cdae">
                 {{ approvedAmount }}
               </p>
@@ -162,7 +162,7 @@
               color="#E0E0E0"
               class="ml-1 reaction-btn"
             >
-              <v-img alt="reject" width="20" src="@/assets/images/chevron-down.png" />
+              <v-img alt="reject" width="17" src="@/assets/images/chevron-down.png" />
               <p class="my-auto pl-2" style="color: #ff0f0f">
                 {{ rejectedAmount }}
               </p>
@@ -210,7 +210,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 
   mixins: [medalsMixin, notificationsMixin],
 
-  props: { post: Object as PropType<GetPost>, isInFavoritesTab: Boolean, isFlat: Boolean },
+  props: {
+    post: Object as PropType<GetPost>,
+    isInFavoritesTab: Boolean,
+    isFlat: Boolean
+  },
 
   data: () => ({
     createDialog: false,
@@ -237,6 +241,15 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     message: {
       get(): { template: string } {
         return { template: this.template };
+      }
+    },
+    imageURI: {
+      get(): string {
+        if (this.$store.state.userModule.user.canonicalName == this.post.publisher.canonicalName) {
+          return this.$store.state.userModule.user.imageURI ?? require("@/assets/images/default-avatar.png");
+        } else {
+          return this.post.publisher.imageURI ?? require("@/assets/images/default-avatar.png");
+        }
       }
     }
   },

@@ -17,12 +17,19 @@ export default class User extends VuexModule {
   user: UserData | null = null;
 
   @Mutation
-  SET_USER(value: UserData) {
+  SET_USER(value: UserData): void {
     this.user = value;
   }
 
   @Mutation
-  CLEAR_USER() {
+  CLEAR_USER(): void {
     this.user = null;
+  }
+
+  @Mutation
+  SET_USER_IMAGE(imageURI: string): void {
+    if (this.user) {
+      this.user.imageURI = imageURI;
+    }
   }
 }

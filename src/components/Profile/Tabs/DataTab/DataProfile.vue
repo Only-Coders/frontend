@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="pb-3 px-16" align="center" no-gutters>
+    <v-row class="pb-3 px-sm-16 px-5" align="center" no-gutters>
       <span class="pl-10 pr-6">
         <v-icon size="30"> mdi-card-account-details </v-icon>
       </span>
@@ -15,42 +15,42 @@
     </v-row>
 
     <v-row v-if="userInfo.description" no-gutters class="mt-5">
-      <span class="pl-16 pr-7 ml-16">
+      <span class="pl-sm-16 pr-7 ml-16">
         <v-icon size="28"> mdi-text-box </v-icon>
       </span>
       <p>{{ userInfo.description }}</p>
     </v-row>
 
     <v-row no-gutters class="mt-5">
-      <span class="pl-16 pr-7 ml-16">
+      <span class="pl-sm-16 pr-7 ml-16">
         <v-icon size="28"> mdi-account-circle </v-icon>
       </span>
       <p>{{ userInfo.firstName + " " + userInfo.lastName }}</p>
     </v-row>
 
     <v-row no-gutters class="mt-5">
-      <span class="pl-16 pr-7 ml-16">
+      <span class="pl-sm-16 pr-7 ml-16">
         <v-icon size="28"> mdi-email </v-icon>
       </span>
       <p>{{ userInfo.email }}</p>
     </v-row>
 
     <v-row no-gutters class="mt-5" v-if="userInfo.birthDate">
-      <span class="pl-16 pr-7 ml-16">
+      <span class="pl-sm-16 pr-7 ml-16">
         <v-icon size="28"> mdi-calendar-month </v-icon>
       </span>
       <p>{{ birthDate }}</p>
     </v-row>
 
     <v-row no-gutters class="mt-5">
-      <span class="pl-16 pr-7 ml-16">
+      <span class="pl-sm-16 pr-7 ml-16">
         <v-icon size="26"> mdi-map-marker-radius </v-icon>
       </span>
       <p>{{ userInfo.country.name }}</p>
     </v-row>
 
     <v-row no-gutters class="mt-5" align="center" v-if="userInfo.gitProfile">
-      <div class="pl-16 pr-7 ml-16">
+      <div class="pl-sm-16 pr-7 ml-16">
         <v-img width="30" :src="srcImageGit"> </v-img>
       </div>
       <p class="ma-0">{{ userInfo.gitProfile.userName }}</p>

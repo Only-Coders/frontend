@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-row class="py-10 px-16 mt-9" align="center" no-gutters>
-      <span class="pl-10 pr-6">
+    <v-row class="py-10 px-sm-16 px-5 mt-9" align="center" no-gutters>
+      <span class="pl-4 pl-sm-10 pr-6">
         <v-icon size="30"> mdi-briefcase </v-icon>
       </span>
       <h3>{{ $i18n.t("ViewProfile.academicExperience") }}</h3>
@@ -15,20 +15,20 @@
     </v-row>
 
     <div v-if="studies.length > 0">
-      <v-row no-gutters class="px-16 ml-10 mb-6" v-for="(study, index) in studies" :key="index">
+      <v-row no-gutters class="px-sm-16 ml-sm-10 mb-6" v-for="(study, index) in studies" :key="index">
         <v-col cols="1" class="px-12 pt-0 mt-0 d-flex justify-center"
           ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
         >
-        <v-col cols="1" class="pr-0 pa-0 mr-6">
+        <v-col cols="auto" class="mr-9 ma-0 pa-0 date_container">
           <p class="text-caption ma-0">
             {{ formatDateMMYY(study.since) }}
           </p>
           <p class="text-caption">
-            {{ study.until ? formatDateMMYY(study.until) : "Actualidad" }}
+            {{ study.until ? formatDateMMYY(study.until) : $i18n.t("present") }}
           </p>
         </v-col>
 
-        <v-col cols="7" class="pl-1">
+        <v-col cols="auto">
           <h5>{{ study.institute.name }}</h5>
           <p class="text-caption">{{ study.degree }}</p>
         </v-col>
@@ -75,5 +75,8 @@ export default Vue.extend({
 }
 .school-icon {
   align-self: baseline;
+}
+.date_container {
+  min-width: 62px;
 }
 </style>

@@ -7,23 +7,22 @@
     </v-sheet>
 
     <v-card class="card_profile" v-if="userDataComputed && !loading">
-      <div class="d-flex justify-center mt-9">
-        <v-avatar size="160">
-          <v-img
-            alt="user"
-            :src="userDataComputed.imageURI ? userDataComputed.imageURI : require('@/assets/images/default-avatar.png')"
-          />
-        </v-avatar>
-      </div>
+      <v-row justify="center" class="mt-9" no-gutters>
+        <ProfilePhoto
+          :isSelfProfile="isSelfProfile"
+          :profileImageURLProp="isSelfProfile ? $store.state.userModule.user.imageURI : userDataComputed.imageURI"
+          @uploadImage="confirmPhotoChange"
+        ></ProfilePhoto>
+      </v-row>
 
       <h2 class="mt-5 text-center font-weight-medium">
         {{ userDataComputed.firstName }}
         {{ userDataComputed.lastName }}
       </h2>
 
-      <h4 class="center subtitle-1 text--secondary text-center">
-        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.position + " " + $i18n.t("at") : "" }}
-        {{ userDataComputed.currentPosition ? userDataComputed.currentPosition.workplace.name : "" }}
+      <h4 class="center subtitle-1 text--secondary text-center" v-if="userDataComputed.currentPosition">
+        {{ userDataComputed.currentPosition.position + " " + $i18n.t("at") }}
+        {{ userDataComputed.currentPosition.workplace.name }}
       </h4>
 
       <v-row justify="center" class="mt-5" no-gutters>
@@ -169,6 +168,9 @@ import { postFollow, deleteFollow } from "@/services/follow";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
+import { editProfile } from "@/services/user";
+import { EditProfile } from "@/models/profile";
+import ProfilePhoto from "@/components/Profile/ProfilePhoto.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "ProfilePreview",
@@ -177,7 +179,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
   props: { userData: Object as PropType<Profile>, isSelfProfile: Boolean, loading: Boolean },
 
-  components: { DeleteContactDialog },
+  components: { DeleteContactDialog, ProfilePhoto },
 
   data: () => ({
     medals: {} as Medals,
@@ -219,6 +221,24 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       } as ContactRequestResponse);
       this.userDataComputed.connected = true;
       this.userData.contactQty++;
+    },
+
+    async confirmPhotoChange(imageURI: string) {
+      await editProfile({
+        firstName: this.userData.firstName,
+        lastName: this.userData.lastName,
+        description: this.userData.description,
+        imageURI: imageURI,
+        birthDate: this.userData.birthDate,
+        gitProfile: {
+          platform: this.userData.gitProfile.platform,
+          userName: this.userData.gitProfile.userName
+        },
+        countryCode: this.userData.country.code
+      } as EditProfile);
+
+      this.userDataComputed.imageURI = imageURI;
+      this.$store.commit("userModule/SET_USER_IMAGE", imageURI);
     }
   },
 

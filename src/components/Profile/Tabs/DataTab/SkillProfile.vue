@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="py-10 px-16" align="center" no-gutters>
+    <v-row class="py-10 px-sm-16 px-5" align="center" no-gutters>
       <span class="pl-10 pr-6">
         <v-icon size="30"> mdi-card-account-details </v-icon>
       </span>

@@ -8,7 +8,9 @@
       v-model="tab"
       background-color="transparent"
       color="secondary"
-      fixed-tabs
+      centered
+      grow
+      show-arrows
       icons-and-text
       class="tab-container"
     >

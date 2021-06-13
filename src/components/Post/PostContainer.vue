@@ -20,7 +20,7 @@
         @passDeletedPostAsFavorite="passDeletedPostAsFavorite"
         :isInFavoritesTab="isInFavoritesTab"
         @deletePost="deletePost"
-        @passPostToCollection="getPostFromChild"
+        @passPostToCollection="getEditedPostFromChild"
         :isFlat="$route.name === 'ProfileChild'"
       />
     </div>
@@ -61,8 +61,8 @@ export default Vue.extend({
     deletePost(postId: string) {
       this.$emit("deletePost", postId);
     },
-    getPostFromChild(post: GetPost) {
-      this.$emit("passPostToCollection", post);
+    getEditedPostFromChild(post: GetPost) {
+      this.$emit("passEditedPostToCollection", post);
     }
   }
 });

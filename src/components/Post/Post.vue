@@ -303,7 +303,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
     },
     escapeRegex(string: string) {
-      return string.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
+      return string?.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
     },
     formatTagsAndMentions() {
       if (this.post.tags.length !== 0) {

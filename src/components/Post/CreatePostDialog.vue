@@ -30,7 +30,7 @@
           <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
-          <LinkPreview v-if="post.url" :url="post.url" @click="handleClick"></LinkPreview>
+          <LinkPreview v-if="post.url" :url="post.url"></LinkPreview>
         </div>
       </v-card-text>
 
@@ -224,7 +224,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
             return true;
           }
         });
-        console.log(newPost, "<<");
 
         const createdPost = await post(newPost);
         this.$emit("passPostToCreatePost", createdPost);
@@ -259,7 +258,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         this.post.url = url;
         this.post.type = PostType.LINK;
         this.enabledButtons = false;
-        evt.preventDefault();
+        evt?.preventDefault();
       }
     },
     addPicture(image: File) {

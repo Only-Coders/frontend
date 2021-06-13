@@ -26,11 +26,11 @@
           :isVisualizingPost="false"
         ></FileType>
 
-        <div v-if="changedPost.url">
+        <div v-if="changedPost.url && changedPost.type === 'LINK'">
           <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
-          <LinkPreview v-if="changedPost.url" :url="changedPost.url" @click="handleClick"></LinkPreview>
+          <LinkPreview v-if="changedPost.url" :url="changedPost.url"></LinkPreview>
         </div>
       </v-card-text>
 
@@ -215,8 +215,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         }
         const editedPost = { ...this.changedPost };
 
-        console.log("el clonado: ", JSON.stringify(editedPost.mentionCanonicalNames, null, 2));
-
         editedPost.tagNames = editedPost.tagNames.filter((tagName) => {
           return editedPost.message.includes(tagName);
         });
@@ -230,7 +228,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
             return true;
           }
         });
-        console.log("el editado: ", JSON.stringify(editedPost, null, 2));
 
         const changedPost = await editPost(this.post.id, editedPost);
         this.$emit("passPostToParent", changedPost);
@@ -265,7 +262,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         this.changedPost.url = url;
         this.changedPost.type = PostType.LINK;
         this.enabledButtons = false;
-        evt.preventDefault();
+        evt?.preventDefault();
       }
     },
     addPicture(image: File) {
@@ -310,11 +307,11 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
   },
 
   created() {
+    this.changedPost.message = this.postMessageToEdit;
     this.imageToShow = this.post.type === "IMAGE" ? this.post.url : "";
     this.changedPost.isPublic = this.$store.state.userModule.user.defaultPrivacy
       ? this.$store.state.userModule.user.defaultPrivacy
       : true;
-    this.changedPost.message = this.postMessageToEdit;
     this.formatMentionsTagsFromMessage();
     this.changedPost.type = this.post.type as PostType;
     this.changedPost.isPublic = this.post.isPublic;
@@ -325,7 +322,6 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     this.post.mentions.forEach((mention) => {
       this.changedPost.mentionsDictionary[mention.canonicalName] = mention.fullName;
     });
-    console.log("creted: ", JSON.stringify(this.changedPost, null, 2));
   }
 });
 </script>

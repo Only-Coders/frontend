@@ -112,14 +112,14 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formatDate(user.birthDate)"
+                    :value="formatDate(birthDate)"
                     :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="(attrs, { ...inputProps })"
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="user.birthDate" @input="showDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="birthDate" @input="showDatePicker = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col class="pt-0" cols="12" lg="6">
@@ -185,6 +185,7 @@ export default Vue.extend({
     profileImageData: null as File | null,
     profileImageToShow: "",
     profileImageURL: "",
+    birthDate: "",
     user: {
       birthDate: "",
       description: "",
@@ -242,7 +243,7 @@ export default Vue.extend({
         await this.onUpload();
       }
       this.user.imageURI = this.profileImageURL;
-      if (this.user.birthDate) this.user.birthDate = new Date(this.user.birthDate).toISOString();
+      if (this.birthDate) this.user.birthDate = new Date(this.birthDate).toISOString();
       if (!this.user.gitProfile?.userName) delete this.user.gitProfile;
       const ocToken = await register(this.user);
       setHeaders(ocToken.token);

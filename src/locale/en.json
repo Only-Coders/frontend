@@ -9,6 +9,7 @@
   "orderBy": "Order by",
   "delete": "Delete",
   "email": "Email",
+  "edit": "Edit",
   "name": "Name",
   "lastName": "Lastname",
   "deleteContact": "Delete contact",
@@ -167,6 +168,20 @@
     "createPostBtn": "Create",
     "successfullCreation": "Your post has been successfully created !",
     "errorCreation": "Opps... There was an unexpected error, please try again"
+  },
+  "EditPost": {
+    "PrivacyPost": {
+      "public": "To anyone",
+      "private": "To my contacts"
+    },
+    "InsertLink": "Insert link",
+    "typeMessage": "Type a message...",
+    "loading": "loading...",
+    "noResults": "no result",
+    "editPost": "Edit post",
+    "editPostBtn": "Confirm",
+    "successfullEdition": "Your post has been successfully edited !",
+    "errorEdition": "Opps... There was an unexpected error, please try again"
   },
   "ViewProfile": {
     "contactRequests": "Contact requests",

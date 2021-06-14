@@ -2,7 +2,7 @@
   <v-dialog :value="value" @input="close" transition="dialog-top-transition" max-width="800" height="90vh">
     <v-card class="d-flex flex-column">
       <v-toolbar color="primary" dark>
-        <h2 class="ml-4">{{ $i18n.t("CreatePost.createPost") }}</h2>
+        <h2 class="ml-4">{{ $i18n.t("EditPost.editPost") }}</h2>
         <v-spacer></v-spacer>
         <v-btn class="mr-2 mt-1" icon @click="close">
           <v-icon size="27"> mdi-close </v-icon>
@@ -10,7 +10,7 @@
       </v-toolbar>
 
       <v-card-text>
-        <Mentions :post="post" @addLink="showLinkPreview" @addPicture="addPicture"></Mentions>
+        <Mentions :post="changedPost" @addLink="showLinkPreview" @addPicture="addPicture"></Mentions>
 
         <div v-if="imageToShow" class="d-flex justify-center">
           <v-btn class="mr-2 mt-1 remove_img_btn" fab small absolute color="secondary" @click="deleteImagePreview">
@@ -26,11 +26,11 @@
           :isVisualizingPost="false"
         ></FileType>
 
-        <div v-if="post.url">
+        <div v-if="changedPost.url && changedPost.type === 'LINK'">
           <v-btn class="mr-12 mt-n3" style="" fab small absolute color="secondary" @click="deleteLinkPreview">
             <v-icon size="16" color="white"> mdi-close </v-icon>
           </v-btn>
-          <LinkPreview v-if="post.url" :url="post.url"></LinkPreview>
+          <LinkPreview v-if="changedPost.url" :url="changedPost.url"></LinkPreview>
         </div>
       </v-card-text>
 
@@ -57,7 +57,7 @@
         <v-divider vertical class="ml-2"></v-divider>
 
         <v-select
-          v-model="post.isPublic"
+          v-model="changedPost.isPublic"
           :items="privacyOptions"
           item-text="text"
           item-value="public"
@@ -69,7 +69,7 @@
           hide-details
         >
           <v-icon size="20" class="pt-1" slot="prepend-inner">
-            {{ post.isPublic ? "mdi-earth" : "mdi-account" }}
+            {{ changedPost.isPublic ? "mdi-earth" : "mdi-account" }}
           </v-icon>
         </v-select>
 
@@ -79,9 +79,9 @@
           color="primary"
           depressed
           class="mr-3"
-          :disabled="enabledButtons && post.message == ''"
-          @click="createPost"
-          >{{ $i18n.t("CreatePost.createPostBtn") }}</v-btn
+          :disabled="enabledButtons && changedPost.message == ''"
+          @click="editPost"
+          >{{ $i18n.t("EditPost.editPostBtn") }}</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -89,10 +89,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { PostType } from "@/models/Enums/postType";
 import { uuid } from "@/plugins/uuid";
-import { post } from "@/services/post";
+import { editPost, getPost } from "@/services/post";
 import { Post } from "@/models/post";
 import Compressor from "compressorjs";
 import { storage } from "@/plugins/firebaseInit";
@@ -104,6 +104,7 @@ import { VueConstructor } from "vue/types/umd";
 import commonMethodsMixin, { CommonMethodsMixin } from "@/mixins/commonMethods";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import { i18n } from "@/main";
+import { GetPost } from "@/models/post";
 
 type PrivacyOption = {
   text: string;
@@ -111,11 +112,11 @@ type PrivacyOption = {
 };
 
 export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMixin>).extend({
-  name: "CreatePostDialog",
+  name: "EditPostDialog",
 
   components: { FileType, Mentions, LinkModal, LinkPreview },
 
-  props: { value: Boolean },
+  props: { value: Boolean, post: Object as PropType<GetPost>, postMessageToEdit: String },
 
   mixins: [commonMethodsMixin, notificationsMixin],
 
@@ -126,13 +127,13 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     fileToShow: "",
     enabledButtons: true,
     privacyOptions: [
-      { text: i18n.t("CreatePost.PrivacyPost.public").toString(), public: true },
-      { text: i18n.t("CreatePost.PrivacyPost.private").toString(), public: false }
+      { text: i18n.t("EditPost.PrivacyPost.public").toString(), public: true },
+      { text: i18n.t("EditPost.PrivacyPost.private").toString(), public: false }
     ] as PrivacyOption[],
     codeExample: "```javascript\n//Put your code here...\n```",
     showLinkDialog: false,
     isLoading: false,
-    post: {
+    changedPost: {
       message: "",
       type: PostType.TEXT,
       isPublic: true,
@@ -156,7 +157,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         this.imageData = target.files[0];
         this.imageToShow = URL.createObjectURL(target.files[0]);
         this.enabledButtons = false;
-        this.post.type = PostType.IMAGE;
+        this.changedPost.type = PostType.IMAGE;
       }
       target.value = "";
     },
@@ -166,7 +167,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
         this.fileData = target.files[0];
         this.fileToShow = URL.createObjectURL(target.files[0]);
         this.enabledButtons = false;
-        this.post.type = PostType.FILE;
+        this.changedPost.type = PostType.FILE;
       }
       target.value = "";
     },
@@ -187,50 +188,53 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
           }
         });
       });
-      this.post.url = await imageCompresor;
+      this.changedPost.url = await imageCompresor;
     },
     async onUploadFile() {
       if (this.fileData) {
         const response = await storage.ref(`files/${this.fileData.name}`).put(this.fileData);
-        this.post.url = await response.ref.getDownloadURL();
+        this.changedPost.url = await response.ref.getDownloadURL();
       }
     },
     deleteFileShowed() {
       this.enabledButtons = true;
       this.fileToShow = "";
       this.fileData = null;
-      this.post.type = PostType.TEXT;
+      this.changedPost.type = PostType.TEXT;
     },
-    async createPost() {
+    async editPost() {
       try {
         this.isLoading = true;
 
         this.extractTags();
 
-        if (this.post.type == PostType.IMAGE) {
+        if (this.changedPost.type == PostType.IMAGE) {
           await this.onUploadImage();
-        } else if (this.post.type == PostType.FILE) {
+        } else if (this.changedPost.type == PostType.FILE) {
           await this.onUploadFile();
         }
-        const newPost = { ...this.post };
+        const editedPost = { ...this.changedPost };
 
-        newPost.tagNames = newPost.tagNames.filter((tagName) => {
-          return newPost.message.includes(tagName);
+        editedPost.tagNames = editedPost.tagNames.filter((tagName) => {
+          return editedPost.message.includes(tagName);
         });
 
-        newPost.mentionCanonicalNames = newPost.mentionCanonicalNames.filter((name) => {
-          if (newPost.message.includes("@" + newPost.mentionsDictionary[name])) {
-            newPost.message = newPost.message.replaceAll("@" + newPost.mentionsDictionary[name], "@" + name);
+        editedPost.mentionCanonicalNames = editedPost.mentionCanonicalNames.filter((canonicalName) => {
+          if (editedPost.message.includes("@" + editedPost.mentionsDictionary[canonicalName])) {
+            editedPost.message = editedPost.message.replaceAll(
+              "@" + editedPost.mentionsDictionary[canonicalName],
+              "@" + canonicalName
+            );
             return true;
           }
         });
 
-        const createdPost = await post(newPost);
-        this.$emit("passPostToCreatePost", createdPost);
-        this.success("", this.$i18n.t("CreatePost.successfullCreation").toString(), 2000);
+        const changedPost = await editPost(this.post.id, editedPost);
+        this.success("", this.$i18n.t("EditPost.successfullEdition").toString(), 2000);
+        this.$emit("passPostToParent", changedPost);
         this.close();
       } catch (error) {
-        this.error("Error", this.$i18n.t("CreatePost.errorCreation").toString());
+        this.error("Error", this.$i18n.t("EditPost.errorEdition").toString());
         console.log(error);
       } finally {
         this.isLoading = false;
@@ -239,56 +243,79 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     extractTags() {
       const regex = /(?<!\S)#(?<hash>\S+)(\s|$)/gm;
       const tagsSet = new Set<string>();
-      let match = regex.exec(this.post.message);
+      let match = regex.exec(this.changedPost.message);
       do {
         const tag = match?.groups?.hash;
         if (tag) tagsSet.add(tag);
-        match = regex.exec(this.post.message);
+        match = regex.exec(this.changedPost.message);
       } while (match);
       const tags = [...tagsSet];
 
-      this.post.tagNames.push(...tags);
+      this.changedPost.tagNames.push(...tags);
     },
     insertCodeExample() {
-      this.post.message = this.post.message + "\n" + this.codeExample;
+      this.changedPost.message = this.changedPost.message + "\n" + this.codeExample;
     },
     showLinkPreview(url: string, evt: ClipboardEvent) {
       this.deleteImagePreview();
-      if (!this.post.url && this.validURL(url)) {
-        this.post.url = url;
-        this.post.type = PostType.LINK;
+      if (!this.changedPost.url && this.validURL(url)) {
+        this.changedPost.url = url;
+        this.changedPost.type = PostType.LINK;
         this.enabledButtons = false;
         evt?.preventDefault();
       }
     },
     addPicture(image: File) {
       this.deleteLinkPreview();
-      this.post.type = PostType.IMAGE;
+      this.changedPost.type = PostType.IMAGE;
       this.imageData = image as File;
       this.imageToShow = URL.createObjectURL(image);
       this.enabledButtons = false;
     },
     deleteLinkPreview() {
-      this.post.url = "";
-      this.post.type = PostType.TEXT;
+      this.changedPost.url = "";
+      this.changedPost.type = PostType.TEXT;
       this.enabledButtons = true;
     },
     deleteImagePreview() {
-      this.post.url = "";
+      this.changedPost.url = "";
       this.imageData = null;
       this.imageToShow = "";
-      this.post.type = PostType.TEXT;
+      this.changedPost.type = PostType.TEXT;
       this.enabledButtons = true;
     },
     close() {
       this.$emit("input");
+    },
+    escapeRegex(string: string) {
+      return string.replace(/[+-/\\^$*+?.()|[\]{}]/g, "\\$&");
+    },
+    formatMentionsFromMessage() {
+      if (this.post.mentions.length !== 0) {
+        this.post.mentions.forEach((mention) => {
+          const regex = new RegExp(`@${mention.canonicalName}`, "g");
+          this.changedPost.message = this.changedPost.message.replace(regex, `@${mention.fullName}`);
+        });
+      }
     }
   },
 
   created() {
-    this.post.isPublic = this.$store.state.userModule.user.defaultPrivacy
+    this.changedPost.message = this.postMessageToEdit;
+    this.imageToShow = this.post.type === "IMAGE" ? this.post.url : "";
+    this.changedPost.isPublic = this.$store.state.userModule.user.defaultPrivacy
       ? this.$store.state.userModule.user.defaultPrivacy
       : true;
+    this.formatMentionsFromMessage();
+    this.changedPost.type = this.post.type as PostType;
+    this.changedPost.isPublic = this.post.isPublic;
+    this.changedPost.url = this.post.url;
+    this.changedPost.mentionCanonicalNames = this.post.mentions.map((mention) => mention.canonicalName);
+    this.changedPost.tagNames = this.post.tags.map((tag) => tag.displayName);
+    this.changedPost.mentionsDictionary = {};
+    this.post.mentions.forEach((mention) => {
+      this.changedPost.mentionsDictionary[mention.canonicalName] = mention.fullName;
+    });
   }
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mt-4 mt-md-14" no-gutters>
-      <v-col cols="3 offset-1" sm="3" lg="3" class="hidden-sm-and-down ml-16 px-16">
+      <v-col cols="3" sm="3" lg="3" class="hidden-sm-and-down ml-16 px-16">
         <FeedProfilePreview></FeedProfilePreview>
       </v-col>
 

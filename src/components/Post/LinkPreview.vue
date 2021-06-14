@@ -134,7 +134,6 @@ export default {
         const { url } = this;
         window.open(url, "_blank");
       }
-      this.$emit("click", this.preview);
     }
   }
 };

@@ -27,12 +27,13 @@ export default Vue.extend({
   methods: {
     routerLinkToHref(htmlText: string) {
       htmlText.split("</router-link>").forEach((potentialLink) => {
-        const regex = /(?<attribute>\w+?)="(?<value>.*?)"|>(?<text>.*$)/gm;
+        const regex = /(?<frontText>.*?)(<router-link )?(?<attribute>\w+?)="(?<value>.*?)"|>(?<text>.*$)/gm;
         const htmlAnchor = document.createElement("a");
         const matches = potentialLink.matchAll(regex);
         Array.from(matches).forEach((match) => {
           const attribute = match?.groups?.attribute ?? "";
           const value = match?.groups?.value ?? "";
+          const frontText = match?.groups?.frontText ?? "";
           const text = match?.groups?.text ?? "";
 
           if (attribute) {
@@ -44,6 +45,9 @@ export default Vue.extend({
           }
           if (text) {
             htmlAnchor.append(text);
+          }
+          if (frontText) {
+            (this.$refs.container as HTMLDivElement).append(frontText);
           }
         });
         (this.$refs.container as HTMLDivElement).appendChild(htmlAnchor);

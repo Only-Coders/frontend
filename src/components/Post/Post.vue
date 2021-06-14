@@ -221,8 +221,6 @@ import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 
-type PostKey = keyof GetPost;
-
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 

@@ -59,9 +59,6 @@ export default Vue.extend({
     },
     deletePost(postId: string) {
       this.$emit("deletePost", postId);
-    },
-    getEditedPostFromChild(post: GetPost) {
-      this.$emit("passEditedPostToCollection", post);
     }
   }
 });

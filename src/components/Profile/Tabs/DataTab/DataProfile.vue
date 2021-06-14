@@ -69,6 +69,7 @@
       v-if="createDialog"
       v-model="createDialog"
       @unfollowTag="$emit('unfollowTag')"
+      @updateData="updateUserData"
     ></EditDataDialog>
   </div>
 </template>
@@ -96,6 +97,12 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin>).extend({
     srcImageGit: "",
     createDialog: false
   }),
+
+  methods: {
+    updateUserData(userProfile: Profile) {
+      console.log(userProfile);
+    }
+  },
 
   created() {
     this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");

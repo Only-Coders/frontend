@@ -3,16 +3,13 @@
     <v-card :flat="!$vuetify.breakpoint.mdAndUp || isFlat">
       <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
         <v-col cols="1" md="2" lg="1" class="pt-4">
-          <v-avatar :size="$vuetify.breakpoint.mdAndUp ? '60' : '55'">
-            <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
-            <v-img
-              alt="user"
-              class="font-weight-ligth pr-2 pb-0 user_name profile_image"
-              @click="redirectToProfile"
-              :src="imageURI"
-              style="cursor: pointer"
-            />
-          </v-avatar>
+          <AvatarImagePreview
+            class="font-weight-ligth pr-2 pb-0 user_name"
+            @click="redirectToProfile"
+            :src="imageURI"
+            style="cursor: pointer"
+            :imageSize="$vuetify.breakpoint.mdAndUp ? 60 : 55"
+          ></AvatarImagePreview>
         </v-col>
         <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
           <v-row class="align-center justify-space-between" no-gutters>
@@ -221,11 +218,12 @@ import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog },
+  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog, AvatarImagePreview },
 
   mixins: [medalsMixin, notificationsMixin],
 
@@ -441,23 +439,5 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
-}
-.skeleton {
-  position: absolute;
-  z-index: 1;
-}
-.profile__banner__avatar {
-  z-index: 2 !important;
-}
-</style>
-
-<style>
-.skeleton .v-skeleton-loader__avatar {
-  width: 60px !important;
-  height: 60px !important;
-  background: rgb(223, 223, 223) !important;
-}
-.profile_image {
-  z-index: 2 !important;
 }
 </style>

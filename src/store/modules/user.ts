@@ -32,4 +32,11 @@ export default class User extends VuexModule {
       this.user.imageURI = imageURI;
     }
   }
+
+  @Mutation
+  SET_USER_FULLNAME(fullName: string): void {
+    if (this.user) {
+      this.user.fullName = fullName;
+    }
+  }
 }

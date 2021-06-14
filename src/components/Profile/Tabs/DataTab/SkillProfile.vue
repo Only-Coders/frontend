@@ -27,7 +27,7 @@
         color="error"
         outlined
         v-if="isLoguedUserProfile && editMode"
-        @click="editMode = true"
+        @click="editMode = false"
       >
         <v-icon dark size="22" color="error"> mdi-close </v-icon>
       </v-btn>
@@ -40,7 +40,7 @@
         color="primary"
         outlined
         v-if="isLoguedUserProfile && editMode"
-        @click="editMode = true"
+        @click="confirmChanges"
       >
         <v-icon size="22" color="primary"> mdi-check-bold </v-icon>
       </v-btn>
@@ -81,7 +81,15 @@
 
     <v-row align="center" justify="center" class="mb-10 mt-0 pt-0" v-if="selfSkills.length > 0" no-gutters>
       <v-col cols="9">
-        <v-chip v-for="(skill, index) in selfSkills" :key="index" class="ma-2" :close="editMode" color="green" outlined>
+        <v-chip
+          v-for="(skill, index) in selfSkills"
+          :key="index"
+          class="ma-2"
+          :close="editMode"
+          @click:close="deleteSkill(index)"
+          color="green"
+          outlined
+        >
           {{ skill.name }}</v-chip
         >
       </v-col>
@@ -96,7 +104,7 @@ import Vue from "vue";
 import { getSkillsOfUser } from "@/services/skill";
 import NoData from "@/components/NoData.vue";
 import { Skill } from "@/models/skills";
-import { getSkill, postSkill } from "@/services/skill";
+import { getSkill, postSkill, deleteSkill } from "@/services/skill";
 
 export default Vue.extend({
   name: "SkillProfile",
@@ -112,7 +120,8 @@ export default Vue.extend({
     isLoading: false,
     selfSkills: [] as Skill[],
     timer: 0,
-    loadingPostSkills: false
+    loadingPostSkills: false,
+    skillsIndexesToDelete: [] as number[]
   }),
 
   methods: {
@@ -134,7 +143,11 @@ export default Vue.extend({
     },
 
     deleteSkill(index: number) {
+      if (this.selfSkills[index].canonicalName) {
+        deleteSkill(this.selfSkills[index].canonicalName);
+      }
       this.selfSkills.splice(index, 1);
+      this.skillsIndexesToDelete.push(index);
     },
 
     async doSearch() {
@@ -143,12 +156,13 @@ export default Vue.extend({
       }
     },
 
-    async confirmAddSkills() {
+    async confirmChanges() {
       await Promise.all(
         this.selfSkills.map((skill) => {
           return postSkill(skill);
         })
       );
+      this.editMode = false;
     }
   },
 

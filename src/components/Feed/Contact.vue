@@ -1,12 +1,10 @@
 <template>
   <v-list-item class="pr-0">
     <v-list-item-avatar size="55">
-      <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
-      <v-img
-        alt="user"
-        class="profile_image"
+      <AvatarImagePreview
         :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')"
-      />
+        :imageSize="55"
+      ></AvatarImagePreview>
     </v-list-item-avatar>
 
     <v-list-item-content>
@@ -34,9 +32,13 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { CurrentPosition } from "@/models/currentPosition";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "Contact",
+
+  components: { AvatarImagePreview },
+
   props: {
     firstName: String,
     lastName: String,

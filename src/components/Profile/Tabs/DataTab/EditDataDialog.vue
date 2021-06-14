@@ -68,7 +68,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                        :value="formatDate(user.birthDate)"
+                        :value="formattedDate"
                         :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                         append-icon="mdi-calendar-month-outline"
                         v-bind="(attrs, { ...inputProps })"
@@ -129,7 +129,6 @@ import GitPlatform from "@/mixins/gitPlatforms";
 import RuleMixin from "@/mixins/rules";
 import { inputMixin } from "@/mixins/inputProps";
 import { dateMixin } from "@/mixins/formattedDate";
-import { format } from "date-fns";
 import { editProfile } from "@/services/user";
 import { EditProfile } from "@/models/profile";
 
@@ -166,8 +165,13 @@ export default Vue.extend({
     },
     async confirmEdition() {
       this.loading = true;
-      await editProfile(this.user);
+      this.user.birthDate = new Date(this.user.birthDate).toISOString();
+      const result = await editProfile(this.user);
       this.loading = false;
+      if (result) {
+        this.$emit("updateData", result);
+        this.$store.commit("userModule/SET_USER_FULLNAME", result.fullName);
+      }
       //editar datos del store
       this.close();
     }
@@ -175,7 +179,6 @@ export default Vue.extend({
 
   async created() {
     this.countries = await getCountries();
-    //const date = format(new Date(this.userData.birthDate), "dd/MM/yyyy");
     this.user = {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
@@ -188,6 +191,18 @@ export default Vue.extend({
       },
       countryCode: this.userData.country.code
     };
+  },
+
+  computed: {
+    formattedDate: {
+      get(): string {
+        if (this.user.birthDate) {
+          return this.formatDate(new Date(this.user.birthDate).toISOString().substring(0, 10));
+        } else {
+          return "";
+        }
+      }
+    }
   }
 });
 </script>

@@ -45,6 +45,7 @@ export async function getFavoritePosts(page: number, size: number): Promise<Pagi
   return response.data;
 }
 
-export async function editProfile(editProfile: EditProfile): Promise<void> {
-  await axios.put(`/api/users`, editProfile);
+export async function editProfile(editProfile: EditProfile): Promise<Profile> {
+  const response = await axios.put(`/api/users`, editProfile);
+  return response.data;
 }

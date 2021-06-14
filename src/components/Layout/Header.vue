@@ -90,16 +90,13 @@
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
                         <v-btn large depressed class="header__avatar pa-0" v-on="on">
-                          <v-avatar size="50">
-                            <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
-                            <v-img
-                              alt="user avatar"
-                              class="profile_image"
-                              :src="
-                                userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')
-                              "
-                            />
-                          </v-avatar>
+                          <AvatarImagePreview
+                            :src="userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')"
+                            :imageSize="50"
+                            class="profile__banner__avatar"
+                            alt="user_avatar"
+                          ></AvatarImagePreview>
+
                           <v-icon class="ma-0" color="#f9f9f9">mdi-chevron-down</v-icon>
                         </v-btn>
                       </template>
@@ -127,7 +124,7 @@
                           <v-col class="pa-0 pl-2">
                             <v-list-item-title class="pl-4">
                               <h3 class="d-inline-block text-truncate font-weight-medium">
-                                {{ userData.fullName ? userData.fullName : "" }}
+                                {{ $store.state.userModule.user.fullName ? $store.state.userModule.user.fullName : "" }}
                               </h3>
                               <div v-if="userCurrentPosition.company">
                                 <h4 class="font-weight-light text-truncate text--secondary">
@@ -206,11 +203,12 @@ import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
 import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "Header",
 
-  components: { Search },
+  components: { Search, AvatarImagePreview },
 
   data: () => ({
     userData: {} as UserData,
@@ -389,20 +387,6 @@ export default Vue.extend({
   border-radius: 15px !important;
 }
 .app_bar {
-  z-index: 9998 !important;
-}
-.skeleton {
-  position: absolute;
-}
-</style>
-
-<style>
-.skeleton .v-skeleton-loader__avatar {
-  width: 150px !important;
-  height: 150px !important;
-  background: rgb(223, 223, 223) !important;
-}
-.profile_image {
-  z-index: 9997 !important;
+  z-index: 9999 !important;
 }
 </style>

@@ -1,18 +1,15 @@
 <template>
   <v-card>
     <div class="profile__banner">
-      <v-avatar size="90" class="profile__banner__avatar">
-        <v-skeleton-loader :loading="true" type="avatar" class="skeleton"> </v-skeleton-loader>
-        <v-img
-          alt="user"
-          class="profile_image"
-          :src="
-            $store.state.userModule.user.imageURI
-              ? $store.state.userModule.user.imageURI
-              : require('@/assets/images/default-avatar.png')
-          "
-        />
-      </v-avatar>
+      <AvatarImagePreview
+        :src="
+          $store.state.userModule.user.imageURI
+            ? $store.state.userModule.user.imageURI
+            : require('@/assets/images/default-avatar.png')
+        "
+        :imageSize="90"
+        class="profile__banner__avatar"
+      ></AvatarImagePreview>
     </div>
 
     <h2 class="pt-15 font-weight-regular text-center user_name" @click="redirectToProfile">
@@ -78,11 +75,14 @@ import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
 import { getUserByCanonicalName } from "@/services/user";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Profile",
 
   mixins: [medalsMixin],
+
+  components: { AvatarImagePreview },
 
   data: () => ({
     userData: {} as Profile,
@@ -125,6 +125,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 }
 .user_name {
   cursor: pointer;
+}
 .skeleton {
   position: absolute;
 }

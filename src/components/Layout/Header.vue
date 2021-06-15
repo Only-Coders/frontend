@@ -76,8 +76,8 @@
             :close-on-content-click="false"
             close-on-click
             bottom
+            left
             nudge-bottom="45px"
-            attach=".v-overlay"
             v-model="showNotifications"
           >
             <template v-slot:activator="{ on, attrs }">
@@ -88,20 +88,62 @@
                 class="hidden-sm-and-down"
                 @click="showNotifications = !showNotifications"
                 v-bind="attrs"
+                v-on="on"
               >
                 <v-badge :content="notificationsCount" :value="notificationsCount" color="primary" overlap>
                   <v-icon color="navbar_icon">mdi-bell</v-icon>
                 </v-badge>
               </v-btn>
             </template>
-            <v-card width="280px" height="200px" style="overflow-y: auto">
-              <v-list-item two-line v-for="notification in notifications" :key="notification.id">
-                <v-list-item-content>
-                  <v-list-item-title>{{ $i18n.t("NotificationType." + notification.eventType) }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ notification.message }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
+            <v-card max-width="550px" min-width="150px" min-height="100px" class="header__notification__card">
+              <div v-if="notifications.length > 0">
+                <v-list-item two-line v-for="notification in notifications" :key="notification.id">
+                  <v-avatar size="40">
+                    <v-img
+                      alt="user"
+                      class="font-weight-ligth pr-2 pb-0 user_name"
+                      :src="
+                        notification.imageURI ? notification.imageURI : require('@/assets/images/default-avatar.png')
+                      "
+                      style="cursor: pointer"
+                      @click="redirectToProfile(notification.canonicalName)"
+                    />
+                  </v-avatar>
+                  <v-list-item-content class="pl-3">
+                    <v-list-item-title>
+                      <span
+                        class="font-weight-bold header__notification__fromName"
+                        @click="redirectToProfile(notification.canonicalName)"
+                        >{{ notification.from }}</span
+                      >
+                      {{ notification.message }}
+                      <span class="text--secondary text-body-2">{{ notification.formattedDate }}</span>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action v-if="notification.eventType === 'NEW_FOLLOWER'">
+                    <v-btn v-if="notification.sourceIsFollower" color="primary" class="px-1" small outlined depressed>
+                      {{ $i18n.t("Notifications.follow") }}
+                    </v-btn>
+
+                    <v-btn
+                      v-if="!notification.sourceIsFollower"
+                      color="primary"
+                      class="px-1 header__notification__follow-button"
+                      small
+                      depressed
+                    >
+                      {{ $i18n.t("Notifications.following") }}
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </div>
+              <div v-else class="d-flex justify-center align-center">
+                <h1>no results :(</h1>
+              </div>
               <v-divider></v-divider>
+              <div class="d-flex justify-center">
+                <v-btn text rounded plain @click="markAllNotificationAsRead">CLEAR ALL</v-btn>
+              </div>
             </v-card>
           </v-menu>
 
@@ -229,10 +271,10 @@ import { getTags } from "@/services/suggested-tags";
 import { User } from "@/models/user";
 import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
-import { NotificationType } from "@/models/Enums/notificationType";
 import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
+import { formatDistanceStrict } from "date-fns";
 
 export default Vue.extend({
   name: "Header",
@@ -242,7 +284,20 @@ export default Vue.extend({
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
-    notifications: [] as { eventType: string; message: string; read: boolean; to: string; id: string }[],
+    notifications: [] as {
+      eventType: string;
+      message: string;
+      read: boolean;
+      to: string;
+      id: string;
+      from: string;
+      createdAt: string;
+      imageURI: string;
+      formattedDate: string;
+      canonicalName: string;
+      sourceIsFollower: boolean;
+      sourceIsContact: boolean;
+    }[],
     searchParameters: "",
     messages: 0,
     notificationsCount: 0,
@@ -309,13 +364,31 @@ export default Vue.extend({
           if (notificationSnapshot.val()) {
             this.notificationsCount = Object.keys(notificationSnapshot.val()).length;
             this.notifications = Object.keys(notificationSnapshot.val()).map((key) => {
-              var notification = notificationSnapshot.val()[key];
-              return { ...notification, id: key };
+              const notification = notificationSnapshot.val()[key];
+              const messageWithoutFrom = notification.message.replace(notification.from, "");
+              const notificationDate = formatDistanceStrict(new Date(notification.createdAt), new Date());
+              const formattedDate = notificationDate.split(" ")[0] + notificationDate.split(" ")[1][0];
+              return {
+                ...notification,
+                id: key,
+                message: messageWithoutFrom,
+                formattedDate
+              };
             });
+            this.notifications = this.notifications.reverse();
+            console.log(this.notifications);
           } else {
             this.notificationsCount = 0;
           }
         });
+    },
+
+    async markAllNotificationAsRead() {
+      const promises = this.notifications.map((notification) =>
+        database.ref(`notifications/${this.user.canonicalName}/${notification.id}`).update({ read: true })
+      );
+      await Promise.all(promises);
+      this.notifications = [];
     },
 
     redirectToFeed() {
@@ -328,6 +401,19 @@ export default Vue.extend({
         this.$store.commit("shouldRefreshFeed", true);
       } else {
         this.$router.push("/");
+      }
+    },
+
+    redirectToProfile(canonicalName: string) {
+      const redirectTo = `/profile/${canonicalName}`;
+      if (this.$router.currentRoute.path === redirectTo) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        this.$router.push(redirectTo);
       }
     }
   },
@@ -412,8 +498,21 @@ export default Vue.extend({
   height: 2px;
   background: white;
 }
+
 .feed_link {
   cursor: pointer;
+}
+
+.header__notification__fromName {
+  cursor: pointer;
+}
+
+.header__notification__card {
+  overflow-y: auto;
+}
+
+.header__notification__follow-button {
+  opacity: 0.6;
 }
 </style>
 <style>

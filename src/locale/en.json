@@ -205,5 +205,11 @@
     "CONTACT_REQUEST": "New contact request",
     "CONTACT_ACCEPTED": "New contact",
     "NEW_FOLLOWER": "New follower"
+  },
+  "Notifications": {
+    "follow": "Follow",
+    "following": "Following",
+    "accept": "Accept",
+    "accepted": "Accepted"
   }
 }

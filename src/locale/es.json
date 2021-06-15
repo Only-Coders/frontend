@@ -205,5 +205,11 @@
     "CONTACT_REQUEST": "Solicitud de contacto",
     "CONTACT_ACCEPTED": "Nuevo contacto",
     "NEW_FOLLOWER": "Nuevo Seguidor"
+  },
+  "Notifications": {
+    "follow": "Seguir",
+    "following": "Siguiendo",
+    "accept": "Aceptar",
+    "accepted": "Aceptado"
   }
 }

@@ -22,51 +22,64 @@
       </div>
     </v-row>
 
-    <v-row v-if="userInfo.description" no-gutters class="mt-5">
-      <span class="pl-sm-16 pr-7 ml-16">
+    <v-row v-if="userInfo.description" align="baseline" no-gutters class="px-sm-16 ml-sm-10 mb-6 mt-9">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6">
         <v-icon size="28"> mdi-text-box </v-icon>
-      </span>
-      <p>{{ userInfo.description }}</p>
+      </v-col>
+      <v-col cols="8" sm="9">
+        <span>{{ userInfo.description }}</span>
+      </v-col>
     </v-row>
 
-    <v-row no-gutters class="mt-5">
-      <span class="pl-sm-16 pr-7 ml-16">
+    <v-row no-gutters align="center" class="px-sm-16 ml-sm-10 mb-6 mt-9">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6">
         <v-icon size="28"> mdi-account-circle </v-icon>
-      </span>
-      <p>{{ userInfo.firstName + " " + userInfo.lastName }}</p>
+      </v-col>
+      <v-col cols="8" sm="9">
+        <span>{{ userInfo.firstName + " " + userInfo.lastName }}</span>
+      </v-col>
     </v-row>
 
-    <v-row no-gutters class="mt-5">
-      <span class="pl-sm-16 pr-7 ml-16">
+    <v-row no-gutters align="center" class="px-sm-16 ml-sm-10 mb-6 mt-9">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6">
         <v-icon size="28"> mdi-email </v-icon>
-      </span>
-      <p>{{ userInfo.email }}</p>
+      </v-col>
+      <v-col cols="8" sm="9">
+        <span>{{ userInfo.email }}</span>
+      </v-col>
     </v-row>
 
-    <v-row no-gutters class="mt-5" v-if="userInfo.birthDate">
-      <span class="pl-sm-16 pr-7 ml-16">
+    <v-row no-gutters class="px-sm-16 ml-sm-10 mb-6 mt-10" v-if="birthDate">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6">
         <v-icon size="28"> mdi-calendar-month </v-icon>
-      </span>
-      <p>{{ birthDate }}</p>
+      </v-col>
+      <v-col cols="8" sm="9">
+        <span>{{ birthDate }}</span>
+      </v-col>
     </v-row>
 
-    <v-row no-gutters class="mt-5">
-      <span class="pl-sm-16 pr-7 ml-16">
+    <v-row no-gutters align="center" class="px-sm-16 ml-sm-10 mb-6 mt-9" v-if="userInfo.country">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6">
         <v-icon size="26"> mdi-map-marker-radius </v-icon>
-      </span>
-      <p>{{ userInfo.country.name }}</p>
+      </v-col>
+      <v-col cols="8" sm="9">
+        <span>{{ userInfo.country.name }}</span>
+      </v-col>
     </v-row>
 
-    <v-row no-gutters class="mt-5" align="center" v-if="userInfo.gitProfile">
-      <div class="pl-sm-16 pr-7 ml-16">
-        <v-img width="30" :src="srcImageGit"> </v-img>
-      </div>
-      <a
-        :href="'https://www.' + userInfo.gitProfile.platform + '.com/' + userInfo.gitProfile.userName"
-        target="_blank"
-        class="ma-0"
-        >{{ userInfo.gitProfile.userName }}</a
-      >
+    <v-row no-gutters class="px-sm-16 ml-sm-10 mb-6 mt-10" align="center" v-if="userInfo.gitProfile">
+      <v-col cols="1" class="pl-12 pr-8 px-sm-9 mr-2 mr-sm-6 d-flex align-center">
+        <img width="25" height="25" alt="git platform" :src="srcImageGit" />
+      </v-col>
+
+      <v-col cols="8" sm="9">
+        <a
+          :href="'https://www.' + userInfo.gitProfile.platform + '.com/' + userInfo.gitProfile.userName"
+          target="_blank"
+          class="ma-0"
+          >{{ userInfo.gitProfile.userName }}</a
+        >
+      </v-col>
     </v-row>
 
     <EditDataDialog
@@ -88,6 +101,11 @@ import gitPlatform, { GitPlatformsMixin } from "@/mixins/gitPlatforms";
 import { VueConstructor } from "vue/types/umd";
 import EditDataDialog from "@/components/Profile/Tabs/DataTab/EditDataDialog.vue";
 
+type GitProfile = {
+  platform: "";
+  userName: string;
+};
+
 export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).extend({
   name: "DataProfile",
 
@@ -100,18 +118,22 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
   data: () => ({
     birthDate: "",
     srcImageGit: "",
-    createDialog: false
+    createDialog: false,
+    gitProfile: {} as GitProfile
   }),
 
   methods: {
-    updateUserData(userProfile: Profile) {
-      this.userInfo.description = userProfile.description;
-      this.birthDate = format(new Date(userProfile.birthDate), "dd/MM/yyyy");
-      this.userInfo.firstName = userProfile.firstName;
-      this.userInfo.lastName = userProfile.lastName;
-      this.userInfo.country.name = userProfile.country.name;
-      this.setGitPlatformImg(userProfile.gitProfile.platform);
-      this.userInfo.gitProfile.userName = userProfile.gitProfile.userName;
+    updateUserData(userProfileUpdated: Profile) {
+      this.userInfo.description = userProfileUpdated.description;
+      this.birthDate = format(new Date(userProfileUpdated.birthDate), "dd/MM/yyyy");
+      this.userInfo.birthDate = userProfileUpdated.birthDate;
+      this.userInfo.firstName = userProfileUpdated.firstName;
+      this.userInfo.lastName = userProfileUpdated.lastName;
+      this.userInfo.country.name = userProfileUpdated.country.name;
+      this.userInfo.country.code = userProfileUpdated.country.code;
+      this.setGitPlatformImg(userProfileUpdated.gitProfile.platform);
+      this.userInfo.gitProfile.platform = userProfileUpdated.gitProfile.platform;
+      this.userInfo.gitProfile.userName = userProfileUpdated.gitProfile.userName;
     },
 
     setGitPlatformImg(gitPlatform: string) {
@@ -134,10 +156,20 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
     }
   },
 
-  created() {
-    this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");
-
-    this.setGitPlatformImg(this.userInfo.gitProfile.platform);
+  watch: {
+    userInfo: {
+      handler() {
+        if (this.userInfo.birthDate) {
+          console.log("En watch");
+          this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");
+        }
+        if (this.userInfo.gitProfile) {
+          this.setGitPlatformImg(this.userInfo.gitProfile.platform);
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   }
 });
 </script>

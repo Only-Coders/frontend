@@ -35,7 +35,7 @@
       fab
       small
       depressed
-      class="edit_photo_btn"
+      class="edit_photo_btn ml-n5"
       color="primary"
       @click="confirmPhotoChange"
     >
@@ -154,14 +154,12 @@ export default Vue.extend({
   z-index: 10;
 }
 .edit_photo_btn {
-  top: 25px;
-  right: 90px;
+  top: 6%;
   transition: opacity 0.5s ease-in-out;
   z-index: 10;
 }
 .cancel_edit_photo_btn {
-  top: 70px;
-  right: 75px;
+  top: 16%;
   width: 30px;
   height: 30px;
   z-index: 10;

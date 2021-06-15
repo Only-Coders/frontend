@@ -1,12 +1,15 @@
 <template>
   <v-card>
     <div class="profile__banner">
-      <v-avatar size="90" class="profile__banner__avatar">
-        <v-img
-          alt="user"
-          :src="userData.imageURI ? userData.imageURI : require('@/assets/images/default-avatar.png')"
-        />
-      </v-avatar>
+      <AvatarImagePreview
+        :src="
+          $store.state.userModule.user.imageURI
+            ? $store.state.userModule.user.imageURI
+            : require('@/assets/images/default-avatar.png')
+        "
+        :imageSize="90"
+        class="profile__banner__avatar"
+      ></AvatarImagePreview>
     </div>
 
     <h2 class="pt-15 font-weight-regular text-center user_name" @click="redirectToProfile">
@@ -72,11 +75,14 @@ import { Profile } from "@/models/profile";
 import { Medals } from "@/models/medals";
 import { getUserByCanonicalName } from "@/services/user";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Profile",
 
   mixins: [medalsMixin],
+
+  components: { AvatarImagePreview },
 
   data: () => ({
     userData: {} as Profile,
@@ -117,7 +123,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   font-weight: bold !important;
   font-size: 16px !important;
 }
-
 .user_name {
   cursor: pointer;
 }

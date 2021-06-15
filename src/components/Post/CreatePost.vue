@@ -3,20 +3,18 @@
     <v-card :flat="isFlat">
       <v-row class="px-4 px-md-7 py-3" align="center" no-gutters>
         <v-col cols="2">
-          <v-avatar size="60">
-            <v-img
-              alt="user"
-              :src="
-                isSelfProfile
-                  ? $store.state.userModule.user && $store.state.userModule.user.imageURI
-                    ? $store.state.userModule.user.imageURI
-                    : require('@/assets/images/default-avatar.png')
-                  : userData && userData.imageURI
-                  ? userData.imageURI
+          <AvatarImagePreview
+            :src="
+              isSelfProfile
+                ? $store.state.userModule.user && $store.state.userModule.user.imageURI
+                  ? $store.state.userModule.user.imageURI
                   : require('@/assets/images/default-avatar.png')
-              "
-            />
-          </v-avatar>
+                : userData && userData.imageURI
+                ? userData.imageURI
+                : require('@/assets/images/default-avatar.png')
+            "
+            :imageSize="60"
+          ></AvatarImagePreview>
         </v-col>
         <v-col cols="10" class="px-2 px-md-0 pr-4">
           <v-text-field
@@ -43,12 +41,14 @@ import Vue, { PropType } from "vue";
 import CreatePostDialog from "./CreatePostDialog.vue";
 import { GetPost } from "@/models/post";
 import { Profile } from "@/models/profile";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "CreatePost",
 
   components: {
-    CreatePostDialog
+    CreatePostDialog,
+    AvatarImagePreview
   },
 
   props: {

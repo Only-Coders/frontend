@@ -106,7 +106,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
-import { inputMixin } from "@/mixins/inputProps";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import { auth, google } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
@@ -114,7 +114,7 @@ import { setHeaders } from "@/plugins/axios";
 import { Role } from "@/models/Enums/role";
 import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
-import RuleMixin from "@/mixins/rules";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
 
 type User = {
   imageURI: string;
@@ -124,10 +124,10 @@ type User = {
   complete: string;
 };
 
-export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
+export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin & RuleMixin>).extend({
   name: "Home",
 
-  mixins: [RuleMixin, inputMixin, notificationsMixin],
+  mixins: [ruleMixin, inputPropsMixin, notificationsMixin],
 
   components: {},
 

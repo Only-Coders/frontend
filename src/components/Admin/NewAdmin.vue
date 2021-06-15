@@ -46,16 +46,16 @@
 import Vue, { VueConstructor } from "vue";
 import { addAdmin } from "@/services/admin";
 import { Admin } from "@/models/admin";
-import { inputMixin } from "@/mixins/inputProps";
-import rulesMixin from "@/mixins/rules";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import Compressor from "compressorjs";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import { storage } from "@/plugins/firebaseInit";
 
-export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
+export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & InputPropsMixin>).extend({
   name: "NewAdmin",
 
-  mixins: [inputMixin, rulesMixin, notificationsMixin],
+  mixins: [inputPropsMixin, ruleMixin, notificationsMixin],
 
   props: {
     value: Boolean

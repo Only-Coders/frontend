@@ -64,15 +64,15 @@
 <script lang="ts">
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
-import RuleMixin from "@/mixins/rules";
-import { inputMixin } from "@/mixins/inputProps";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import { auth } from "@/plugins/firebaseInit";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 
-export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
+export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & InputPropsMixin>).extend({
   name: "ForgotPassword",
 
-  mixins: [RuleMixin, inputMixin, notificationsMixin],
+  mixins: [ruleMixin, inputPropsMixin, notificationsMixin],
 
   components: {},
 
@@ -88,7 +88,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
             url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
             handleCodeInApp: true
           };
-          const result = await auth.sendPasswordResetEmail(this.email, actionCodeSettings);
+          await auth.sendPasswordResetEmail(this.email, actionCodeSettings);
           this.success(
             this.$i18n.t("ForgotPassword.successNotificationTitle").toString(),
             this.$i18n.t("ForgotPassword.successNotificationMessage").toString(),

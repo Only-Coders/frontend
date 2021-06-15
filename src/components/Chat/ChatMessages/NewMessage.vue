@@ -26,16 +26,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { inputMixin } from "@/mixins/inputProps";
+import Vue, { VueConstructor } from "vue";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import { ChatType } from "@/store/modules/chat";
 import { database, getServerDate } from "@/plugins/firebaseInit";
 import { VEmojiPicker } from "v-emoji-picker";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin>).extend({
   name: "NewMessage",
 
-  mixins: [inputMixin],
+  mixins: [inputPropsMixin],
 
   components: {
     VEmojiPicker

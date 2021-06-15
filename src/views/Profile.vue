@@ -9,6 +9,7 @@
       ></ProfilePreview>
       <ReceivedContactRequests
         class="mt-8"
+        :class="{ suggestions: $vuetify.breakpoint.lgAndUp }"
         @hideContactsRequests="showContactsRequests = false"
         v-if="isSelfProfile && showContactsRequests"
         @incrementContacts="incrementContacts"
@@ -67,5 +68,9 @@ export default Vue.extend({
 .profile_preview_col {
   padding-left: 160px !important;
   padding-right: 40px !important;
+}
+.suggestions {
+  margin-left: 160px !important;
+  margin-right: 40px !important;
 }
 </style>

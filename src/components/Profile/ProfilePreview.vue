@@ -16,8 +16,7 @@
       </v-row>
 
       <h2 class="mt-5 text-center font-weight-medium">
-        {{ userDataComputed.firstName }}
-        {{ userDataComputed.lastName }}
+        {{ userFullName }}
       </h2>
 
       <h4 class="center subtitle-1 text--secondary text-center" v-if="userDataComputed.currentPosition">
@@ -171,6 +170,7 @@ import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 import { editProfile } from "@/services/user";
 import { EditProfile } from "@/models/profile";
 import ProfilePhoto from "@/components/Profile/ProfilePhoto.vue";
+import { storage } from "@/plugins/firebaseInit";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "ProfilePreview",
@@ -223,8 +223,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.userData.contactQty++;
     },
 
-    async confirmPhotoChange(imageURI: string) {
-      await editProfile({
+    async confirmPhotoChange(imageURI: string, originalImage: string) {
+      const result = await editProfile({
         firstName: this.userData.firstName,
         lastName: this.userData.lastName,
         description: this.userData.description,
@@ -237,14 +237,24 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
         countryCode: this.userData.country.code
       } as EditProfile);
 
-      this.userDataComputed.imageURI = imageURI;
-      this.$store.commit("userModule/SET_USER_IMAGE", imageURI);
+      if (result) {
+        this.userDataComputed.imageURI = imageURI;
+        this.$store.commit("userModule/SET_USER_IMAGE", imageURI);
+        if (originalImage) {
+          await storage.refFromURL(originalImage).delete();
+        }
+      }
     }
   },
 
   computed: {
     userDataComputed(): Profile {
       return this.userData;
+    },
+    userFullName: {
+      get(): string {
+        return this.isSelfProfile ? this.$store.state.userModule.user.fullName : this.userData.fullName;
+      }
     }
   },
 

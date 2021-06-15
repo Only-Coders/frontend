@@ -15,3 +15,7 @@ export async function getSkillsOfUser(canonicalName: string, page: number, size?
   const response = await axios.get(`/api/users/${canonicalName}/skills`, { params: { page, size } });
   return response.data;
 }
+
+export async function deleteSkill(skillCanonicalName: string): Promise<void> {
+  axios.delete(`/api/users/skills/${skillCanonicalName}`);
+}

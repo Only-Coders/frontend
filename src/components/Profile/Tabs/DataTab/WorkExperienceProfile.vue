@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { VueConstructor } from "vue";
 import { getWorksOfUser } from "@/services/workExperience";
 import { UserWorkExperience } from "@/models/experience";
-import { dateMixin } from "@/mixins/formattedDate";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import NoData from "@/components/NoData.vue";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & DateMixin>).extend({
   name: "WorkExperienceProfile",
 
   mixins: [dateMixin],

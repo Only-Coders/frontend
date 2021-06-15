@@ -22,7 +22,7 @@
         </transition>
 
         <v-img
-          style="z-index: 9"
+          class="profile_image"
           alt="user"
           :src="imageURL ? imageURL : require('@/assets/images/default-avatar.png')"
         />
@@ -48,6 +48,7 @@
       fab
       small
       depressed
+      outlined
       class="cancel_edit_photo_btn"
       @click="cancelPhotoChange"
       color="error"
@@ -61,6 +62,7 @@
 import Vue from "vue";
 import { storage } from "@/plugins/firebaseInit";
 import Compressor from "compressorjs";
+import { uuid } from "@/plugins/uuid";
 
 export default Vue.extend({
   name: "ProfilePhoto",
@@ -94,7 +96,8 @@ export default Vue.extend({
         new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage.ref(`images/${result.name}`).put(result);
+            const fileName = uuid();
+            const snapshot = await storage.ref(`images/${fileName}`).put(result);
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
           },
@@ -109,8 +112,7 @@ export default Vue.extend({
     async confirmPhotoChange() {
       if (this.temporalImageUploaded) {
         await this.onUpload();
-        await storage.refFromURL(this.originalImage).delete();
-        this.$emit("uploadImage", this.imageURL);
+        this.$emit("uploadImage", this.imageURL, this.originalImage);
       }
       this.temporalImageUploaded = false;
     },
@@ -155,12 +157,14 @@ export default Vue.extend({
   top: 25px;
   right: 90px;
   transition: opacity 0.5s ease-in-out;
+  z-index: 10;
 }
 .cancel_edit_photo_btn {
   top: 70px;
   right: 75px;
   width: 30px;
   height: 30px;
+  z-index: 10;
 }
 .skeleton {
   position: absolute;
@@ -168,8 +172,7 @@ export default Vue.extend({
 </style>
 
 <style>
-.skeleton .v-skeleton-loader__avatar {
-  width: 480px !important;
-  height: 480px !important;
+.profile_image {
+  z-index: 9;
 }
 </style>

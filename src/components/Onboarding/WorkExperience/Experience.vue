@@ -29,11 +29,11 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import Vue, { PropType, VueConstructor } from "vue";
 import { WorkExperience } from "@/models/experience";
-import { dateMixin } from "@/mixins/formattedDate";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & DateMixin>).extend({
   name: "WorkExperienceItem",
 
   mixins: [dateMixin],

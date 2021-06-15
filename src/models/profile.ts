@@ -4,6 +4,7 @@ import { Country } from "./country";
 export type Profile = {
   firstName: string;
   lastName: string;
+  fullName: string;
   description: string;
   email: string;
   imageURI: string;

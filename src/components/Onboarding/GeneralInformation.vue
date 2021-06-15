@@ -78,6 +78,7 @@
             <v-col class="pt-0" cols="12" lg="6">
               <v-select
                 v-model="user.gitProfile.platform"
+                v-if="user.gitProfile"
                 :items="gitPlatforms"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitPlatformLabel')"
                 v-bind="{ ...inputProps }"
@@ -94,6 +95,7 @@
             <v-col class="pt-0" cols="12" lg="6">
               <v-text-field
                 v-model="user.gitProfile.userName"
+                v-if="user.gitProfile"
                 :label="$i18n.t('Onboarding.GeneralInformation.gitProfile')"
                 v-bind="{ ...inputProps }"
               ></v-text-field>
@@ -115,7 +117,7 @@
                     :value="formatDate(birthDate)"
                     :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="(attrs, { ...inputProps })"
+                    v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -157,12 +159,12 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import RuleMixin from "@/mixins/rules";
-import { inputMixin } from "@/mixins/inputProps";
-import { dateMixin } from "@/mixins/formattedDate";
+import Vue, { VueConstructor } from "vue";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import { storage } from "@/plugins/firebaseInit";
-import GitPlatform from "@/mixins/gitPlatforms";
+import gitPlatforms, { GitPlatformsMixin } from "@/mixins/gitPlatforms";
 import { Country } from "@/models/country";
 import { RegisterUser } from "@/models/registerUser";
 import { getCountries } from "@/services/countries";
@@ -172,12 +174,12 @@ import { setHeaders } from "@/plugins/axios";
 import jwtDecode from "jwt-decode";
 import { UserData } from "@/store/modules/user";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMixin & GitPlatformsMixin>).extend({
   name: "GeneralInformation",
 
   props: { stepAction: Boolean },
 
-  mixins: [RuleMixin, inputMixin, dateMixin, GitPlatform],
+  mixins: [ruleMixin, inputPropsMixin, dateMixin, gitPlatforms],
 
   data: () => ({
     selectedGitPlatform: {},

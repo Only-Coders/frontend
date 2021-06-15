@@ -111,6 +111,7 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
       this.userInfo.lastName = userProfile.lastName;
       this.userInfo.country.name = userProfile.country.name;
       this.setGitPlatformImg(userProfile.gitProfile.platform);
+      this.userInfo.gitProfile.platform = userProfile.gitProfile.platform;
       this.userInfo.gitProfile.userName = userProfile.gitProfile.userName;
     },
 

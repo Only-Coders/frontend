@@ -173,6 +173,7 @@ import Compressor from "compressorjs";
 import { setHeaders } from "@/plugins/axios";
 import jwtDecode from "jwt-decode";
 import { UserData } from "@/store/modules/user";
+import { uuid } from "@/plugins/uuid";
 
 export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMixin & GitPlatformsMixin>).extend({
   name: "GeneralInformation",
@@ -228,7 +229,8 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
         new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage.ref(`images/${result.name}`).put(result);
+            const fileName = uuid();
+            const snapshot = await storage.ref(`images/${fileName}`).put(result);
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
           },

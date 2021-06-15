@@ -51,6 +51,7 @@ import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import Compressor from "compressorjs";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import { storage } from "@/plugins/firebaseInit";
+import { uuid } from "@/plugins/uuid";
 
 export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & InputPropsMixin>).extend({
   name: "NewAdmin",
@@ -100,7 +101,8 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
         new Compressor(this.imageFile as File, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage.ref(`images/${result.name}`).put(result);
+            const fileName = uuid();
+            const snapshot = await storage.ref(`images/${fileName}`).put(result);
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
           },

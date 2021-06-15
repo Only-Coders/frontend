@@ -30,13 +30,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { inputMixin } from "@/mixins/inputProps";
+import Vue, { VueConstructor } from "vue";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin>).extend({
   name: "UserSearchFiltersDialog",
 
-  mixins: [inputMixin],
+  mixins: [inputPropsMixin],
 
   props: { value: Boolean },
 

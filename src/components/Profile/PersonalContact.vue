@@ -3,9 +3,11 @@
     <v-card max-width="250" class="mx-auto">
       <v-row align="center" no-gutters class="mb-3 mt-2 pt-3">
         <v-col cols="12" class="text-center mt-2">
-          <v-avatar size="100" class="user_name contact_avatar" @click="$router.push(canonicalName)">
-            <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
-          </v-avatar>
+          <AvatarImagePreview
+            :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')"
+            :imageSize="100"
+            :canonicalName="canonicalName"
+          ></AvatarImagePreview>
         </v-col>
 
         <v-col cols="12" class="mt-3 px-3 photo-name-position">
@@ -78,11 +80,12 @@ import Vue, { PropType } from "vue";
 import { CurrentPosition } from "@/models/currentPosition";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import { Medals } from "@/models/medals";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "PersonalContact",
 
-  components: { DeleteContactDialog },
+  components: { DeleteContactDialog, AvatarImagePreview },
 
   props: {
     firstName: String,
@@ -139,9 +142,6 @@ export default Vue.extend({
 }
 .user_name:hover {
   text-decoration: underline;
-}
-.contact_avatar:hover {
-  transform: scale(1.1);
 }
 .photo-name-position {
   height: 100px;

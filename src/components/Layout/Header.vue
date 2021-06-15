@@ -383,7 +383,6 @@ export default Vue.extend({
 </style>
 <style>
 .v-menu__content {
-  overflow: hidden !important;
   border-radius: 15px !important;
 }
 .app_bar {

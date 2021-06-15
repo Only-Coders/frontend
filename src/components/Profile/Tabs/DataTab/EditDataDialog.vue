@@ -71,7 +71,7 @@
                         :value="formattedDate"
                         :label="$i18n.t('Onboarding.GeneralInformation.birthDate')"
                         append-icon="mdi-calendar-month-outline"
-                        v-bind="(attrs, { ...inputProps })"
+                        v-bind="{ attrs, ...inputProps }"
                         v-on="on"
                       ></v-text-field>
                     </template>
@@ -122,22 +122,22 @@
 
 <script lang="ts">
 import { Profile } from "@/models/profile";
-import Vue, { PropType } from "vue";
+import Vue, { PropType, VueConstructor } from "vue";
 import { Country } from "@/models/country";
 import { getCountries } from "@/services/countries";
-import GitPlatform from "@/mixins/gitPlatforms";
-import RuleMixin from "@/mixins/rules";
-import { inputMixin } from "@/mixins/inputProps";
-import { dateMixin } from "@/mixins/formattedDate";
 import { editProfile } from "@/services/user";
 import { EditProfile } from "@/models/profile";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
+import gitPlatform, { GitPlatformsMixin } from "@/mixins/gitPlatforms";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & GitPlatformsMixin & RuleMixin>).extend({
   name: "EditDataDialog",
 
   props: { userData: Object as PropType<Profile> },
 
-  mixins: [RuleMixin, inputMixin, dateMixin, GitPlatform],
+  mixins: [ruleMixin, dateMixin, gitPlatform, inputPropsMixin],
 
   data: () => ({
     value: Boolean,
@@ -172,7 +172,6 @@ export default Vue.extend({
         this.$emit("updateData", result);
         this.$store.commit("userModule/SET_USER_FULLNAME", result.fullName);
       }
-      //editar datos del store
       this.close();
     }
   },

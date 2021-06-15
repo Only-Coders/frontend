@@ -172,10 +172,6 @@ export default Vue.extend({
 </style>
 
 <style>
-.skeleton .v-skeleton-loader__avatar {
-  width: 480px !important;
-  height: 480px !important;
-}
 .profile_image {
   z-index: 9;
 }

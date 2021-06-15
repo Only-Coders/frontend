@@ -1,4 +1,8 @@
-export const dateMixin = {
+import Vue from "vue";
+
+export type DateMixin = InstanceType<typeof dateMixin>;
+
+const dateMixin = Vue.extend({
   methods: {
     formatDate(date: string): string {
       if (date) {
@@ -17,4 +21,6 @@ export const dateMixin = {
       }
     }
   }
-};
+});
+
+export default dateMixin;

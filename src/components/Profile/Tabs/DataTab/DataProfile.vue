@@ -61,7 +61,12 @@
       <div class="pl-sm-16 pr-7 ml-16">
         <v-img width="30" :src="srcImageGit"> </v-img>
       </div>
-      <p class="ma-0">{{ userInfo.gitProfile.userName }}</p>
+      <a
+        :href="'https://www.' + userInfo.gitProfile.platform + '.com/' + userInfo.gitProfile.userName"
+        target="_blank"
+        class="ma-0"
+        >{{ userInfo.gitProfile.userName }}</a
+      >
     </v-row>
 
     <EditDataDialog
@@ -77,13 +82,13 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { Profile } from "@/models/profile";
-import { dateMixin } from "@/mixins/formattedDate";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import { format } from "date-fns";
 import gitPlatform, { GitPlatformsMixin } from "@/mixins/gitPlatforms";
 import { VueConstructor } from "vue/types/umd";
 import EditDataDialog from "@/components/Profile/Tabs/DataTab/EditDataDialog.vue";
 
-export default (Vue as VueConstructor<Vue & GitPlatformsMixin>).extend({
+export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).extend({
   name: "DataProfile",
 
   mixins: [dateMixin, gitPlatform],
@@ -100,29 +105,39 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin>).extend({
 
   methods: {
     updateUserData(userProfile: Profile) {
-      console.log(userProfile);
+      this.userInfo.description = userProfile.description;
+      this.birthDate = format(new Date(userProfile.birthDate), "dd/MM/yyyy");
+      this.userInfo.firstName = userProfile.firstName;
+      this.userInfo.lastName = userProfile.lastName;
+      this.userInfo.country.name = userProfile.country.name;
+      this.setGitPlatformImg(userProfile.gitProfile.platform);
+      this.userInfo.gitProfile.userName = userProfile.gitProfile.userName;
+    },
+
+    setGitPlatformImg(gitPlatform: string) {
+      switch (gitPlatform) {
+        case this.gitPlatforms[0].platformName:
+          this.srcImageGit = this.gitPlatforms[0].platformImage;
+          break;
+
+        case this.gitPlatforms[1].platformName:
+          this.srcImageGit = this.gitPlatforms[1].platformImage;
+          break;
+
+        case this.gitPlatforms[2].platformName:
+          this.srcImageGit = this.gitPlatforms[2].platformImage;
+          break;
+
+        default:
+          break;
+      }
     }
   },
 
   created() {
     this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");
 
-    switch (this.userInfo.gitProfile.platform) {
-      case this.gitPlatforms[0].platformName:
-        this.srcImageGit = this.gitPlatforms[0].platformImage;
-        break;
-
-      case this.gitPlatforms[1].platformName:
-        this.srcImageGit = this.gitPlatforms[1].platformImage;
-        break;
-
-      case this.gitPlatforms[2].platformName:
-        this.srcImageGit = this.gitPlatforms[2].platformImage;
-        break;
-
-      default:
-        break;
-    }
+    this.setGitPlatformImg(this.userInfo.gitProfile.platform);
   }
 });
 </script>

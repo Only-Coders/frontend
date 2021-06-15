@@ -144,7 +144,7 @@ export default Vue.extend({
 
     deleteSkill(index: number) {
       if (this.selfSkills[index].canonicalName) {
-        deleteSkill(this.selfSkills[index].canonicalName);
+        deleteSkill(this.selfSkills[index].canonicalName as string);
       }
       this.selfSkills.splice(index, 1);
       this.skillsIndexesToDelete.push(index);

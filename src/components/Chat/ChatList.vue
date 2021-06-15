@@ -50,10 +50,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { VueConstructor } from "vue";
 import ContactList from "@/components/Chat/ContactList.vue";
 import NoChats from "@/components/Chat/NoChats.vue";
-import { inputMixin } from "@/mixins/inputProps";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import { getContacts } from "@/services/contact";
 import { User } from "@/models/user";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
@@ -61,10 +61,10 @@ import { ChatType } from "@/store/modules/chat";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin>).extend({
   name: "ChatList",
 
-  mixins: [inputMixin],
+  mixins: [inputPropsMixin],
 
   components: {
     ContactList,

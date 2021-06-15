@@ -20,7 +20,7 @@
         </div>
 
         <FileType
-          v-if="fileToShow"
+          v-if="fileData && fileToShow"
           @deleteFile="deleteFileShowed"
           :name="fileData.name"
           :isVisualizingPost="false"
@@ -92,7 +92,7 @@
 import Vue, { PropType } from "vue";
 import { PostType } from "@/models/Enums/postType";
 import { uuid } from "@/plugins/uuid";
-import { editPost, getPost } from "@/services/post";
+import { editPost } from "@/services/post";
 import { Post } from "@/models/post";
 import Compressor from "compressorjs";
 import { storage } from "@/plugins/firebaseInit";

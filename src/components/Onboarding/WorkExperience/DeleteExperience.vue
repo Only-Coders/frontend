@@ -32,9 +32,8 @@
   </v-dialog>
 </template>
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import Vue from "vue";
 import RuleMixin from "@/mixins/rules";
-import { WorkExperience } from "@/models/experience";
 
 export default Vue.extend({
   name: "DeleteWorkExperience",

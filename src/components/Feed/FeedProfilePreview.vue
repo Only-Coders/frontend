@@ -126,18 +126,4 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 .user_name {
   cursor: pointer;
 }
-.skeleton {
-  position: absolute;
-}
-</style>
-
-<style>
-.skeleton .v-skeleton-loader__avatar {
-  width: 90px !important;
-  height: 90px !important;
-  background: rgb(223, 223, 223) !important;
-}
-.profile_image {
-  z-index: 2 !important;
-}
 </style>

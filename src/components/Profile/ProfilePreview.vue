@@ -16,8 +16,7 @@
       </v-row>
 
       <h2 class="mt-5 text-center font-weight-medium">
-        {{ userDataComputed.firstName }}
-        {{ userDataComputed.lastName }}
+        {{ userFullName }}
       </h2>
 
       <h4 class="center subtitle-1 text--secondary text-center" v-if="userDataComputed.currentPosition">
@@ -251,6 +250,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   computed: {
     userDataComputed(): Profile {
       return this.userData;
+    },
+    userFullName: {
+      get(): string {
+        return this.isSelfProfile ? this.$store.state.userModule.user.fullName : this.userData.fullName;
+      }
     }
   },
 

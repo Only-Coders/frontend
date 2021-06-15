@@ -55,7 +55,7 @@
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="(attrs, { ...inputProps })"
+                    v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -77,7 +77,7 @@
                     :value="formatDate(experience.until)"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    v-bind="(attrs, { ...inputProps })"
+                    v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -100,18 +100,18 @@
   </v-dialog>
 </template>
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import RuleMixin from "@/mixins/rules";
+import Vue, { PropType, VueConstructor } from "vue";
+import ruleMixin, { RuleMixin } from "@/mixins/rules";
 import { WorkExperience } from "@/models/experience";
-import { dateMixin } from "@/mixins/formattedDate";
-import { inputMixin } from "@/mixins/inputProps";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
+import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
 import { Organization } from "@/models/organization";
 import { getOrganizations } from "@/services/workExperience";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMixin>).extend({
   name: "UpdateWorkExperience",
 
-  mixins: [RuleMixin, inputMixin, dateMixin],
+  mixins: [ruleMixin, inputPropsMixin, dateMixin],
 
   components: {},
 

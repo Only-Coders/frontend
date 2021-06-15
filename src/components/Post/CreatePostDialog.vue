@@ -20,7 +20,7 @@
         </div>
 
         <FileType
-          v-if="fileToShow"
+          v-if="fileData && deleteFileShowedfileToShow"
           @deleteFile="deleteFileShowed"
           :name="fileData.name"
           :isVisualizingPost="false"

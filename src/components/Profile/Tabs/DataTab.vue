@@ -11,15 +11,15 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import Vue, { PropType, VueConstructor } from "vue";
 import { Profile } from "@/models/profile";
-import { dateMixin } from "@/mixins/formattedDate";
+import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import WorkExperienceProfile from "@/components/Profile/Tabs/DataTab/WorkExperienceProfile.vue";
 import DataProfile from "@/components/Profile/Tabs/DataTab/DataProfile.vue";
 import StudyExperienceProfile from "@/components/Profile/Tabs/DataTab/StudyExperienceProfile.vue";
 import SkillProfile from "@/components/Profile/Tabs/DataTab/SkillProfile.vue";
 
-export default Vue.extend({
+export default (Vue as VueConstructor<Vue & DateMixin>).extend({
   name: "DataTab",
 
   mixins: [dateMixin],

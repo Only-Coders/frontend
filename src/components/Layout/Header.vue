@@ -95,10 +95,16 @@
                 </v-badge>
               </v-btn>
             </template>
-            <v-card max-width="550px" min-width="150px" min-height="100px" class="header__notification__card">
-              <div v-if="notifications.length > 0">
-                <v-list-item two-line v-for="notification in notifications" :key="notification.id">
-                  <v-avatar size="40">
+            <div v-if="notifications.length > 0">
+              <v-card
+                max-width="550px"
+                min-width="200px"
+                min-height="100px"
+                max-height="350px"
+                class="header__notification__card"
+              >
+                <v-list-item v-for="notification in notifications" :key="notification.id" class="pr-0">
+                  <v-avatar size="45">
                     <v-img
                       alt="user"
                       class="font-weight-ligth pr-2 pb-0 user_name"
@@ -116,34 +122,72 @@
                         @click="redirectToProfile(notification.canonicalName)"
                         >{{ notification.from }}</span
                       >
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="pr-6">
                       {{ notification.message }}
                       <span class="text--secondary text-body-2">{{ notification.formattedDate }}</span>
-                    </v-list-item-title>
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action v-if="notification.eventType === 'NEW_FOLLOWER'">
-                    <v-btn v-if="notification.sourceIsFollower" color="primary" class="px-1" small outlined depressed>
+                    <v-btn
+                      v-if="!notification.sourceIsFollower"
+                      color="primary"
+                      class="px-2"
+                      small
+                      outlined
+                      depressed
+                      @click="followUser(notification)"
+                    >
                       {{ $i18n.t("Notifications.follow") }}
                     </v-btn>
 
                     <v-btn
-                      v-if="!notification.sourceIsFollower"
+                      v-if="notification.sourceIsFollower"
                       color="primary"
-                      class="px-1 header__notification__follow-button"
+                      class="px-2 header__notification__follow-button"
                       small
                       depressed
                     >
                       {{ $i18n.t("Notifications.following") }}
                     </v-btn>
                   </v-list-item-action>
+                  <v-list-item-action v-if="notification.eventType === 'CONTACT_REQUEST'">
+                    <v-btn
+                      v-if="!notification.sourceIsContact"
+                      color="primary"
+                      class="px-2"
+                      small
+                      depressed
+                      @click="acceptContactRequest(notification)"
+                    >
+                      {{ $i18n.t("Notifications.accept") }}
+                    </v-btn>
+
+                    <v-btn
+                      v-if="notification.sourceIsContact"
+                      color="primary"
+                      class="px-2 header__notification__follow-button"
+                      small
+                      depressed
+                    >
+                      {{ $i18n.t("Notifications.accepted") }}
+                    </v-btn>
+                  </v-list-item-action>
+
+                  <v-list-item-action class="ml-2">
+                    <v-icon size="15" @click="markNotificationAsRead(notification)"> mdi-window-close </v-icon>
+                  </v-list-item-action>
                 </v-list-item>
-              </div>
-              <div v-else class="d-flex justify-center align-center">
-                <h1>no results :(</h1>
-              </div>
-              <v-divider></v-divider>
-              <div class="d-flex justify-center">
-                <v-btn text rounded plain @click="markAllNotificationAsRead">CLEAR ALL</v-btn>
-              </div>
+                <div v-if="notifications.length > 0">
+                  <v-divider></v-divider>
+                  <div class="d-flex justify-center">
+                    <v-btn text rounded plain @click="markAllNotificationAsRead">CLEAR ALL</v-btn>
+                  </div>
+                </div>
+              </v-card>
+            </div>
+            <v-card v-else class="d-flex justify-center align-center" width="350px" height="150px">
+              <v-card-title class="font-weight-light subtitle-1">You have no notifications yet :(</v-card-title>
             </v-card>
           </v-menu>
 
@@ -275,6 +319,23 @@ import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import { formatDistanceStrict } from "date-fns";
+import { postFollow } from "@/services/follow";
+import { postContactRequest } from "@/services/contact";
+
+type Notification = {
+  eventType: string;
+  message: string;
+  read: boolean;
+  to: string;
+  id: string;
+  from: string;
+  createdAt: string;
+  imageURI: string;
+  formattedDate: string;
+  canonicalName: string;
+  sourceIsFollower: boolean;
+  sourceIsContact: boolean;
+};
 
 export default Vue.extend({
   name: "Header",
@@ -284,20 +345,7 @@ export default Vue.extend({
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
-    notifications: [] as {
-      eventType: string;
-      message: string;
-      read: boolean;
-      to: string;
-      id: string;
-      from: string;
-      createdAt: string;
-      imageURI: string;
-      formattedDate: string;
-      canonicalName: string;
-      sourceIsFollower: boolean;
-      sourceIsContact: boolean;
-    }[],
+    notifications: [] as Notification[],
     searchParameters: "",
     messages: 0,
     notificationsCount: 0,
@@ -365,20 +413,18 @@ export default Vue.extend({
             this.notificationsCount = Object.keys(notificationSnapshot.val()).length;
             this.notifications = Object.keys(notificationSnapshot.val()).map((key) => {
               const notification = notificationSnapshot.val()[key];
-              const messageWithoutFrom = notification.message.replace(notification.from, "");
               const notificationDate = formatDistanceStrict(new Date(notification.createdAt), new Date());
               const formattedDate = notificationDate.split(" ")[0] + notificationDate.split(" ")[1][0];
               return {
                 ...notification,
                 id: key,
-                message: messageWithoutFrom,
                 formattedDate
               };
             });
             this.notifications = this.notifications.reverse();
-            console.log(this.notifications);
           } else {
             this.notificationsCount = 0;
+            this.notifications = [];
           }
         });
     },
@@ -389,6 +435,30 @@ export default Vue.extend({
       );
       await Promise.all(promises);
       this.notifications = [];
+    },
+
+    async markNotificationAsRead(notification: Notification) {
+      await database.ref(`notifications/${this.user.canonicalName}/${notification.id}`).update({ read: true });
+    },
+
+    async followUser(notification: Notification) {
+      if (!notification.sourceIsFollower) {
+        await postFollow(notification.canonicalName);
+        notification.sourceIsFollower = true;
+        await database
+          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+          .update({ sourceIsFollower: true });
+      }
+    },
+
+    async acceptContactRequest(notification: Notification) {
+      if (!notification.sourceIsFollower) {
+        await postContactRequest({ canonicalName: notification.canonicalName });
+        notification.sourceIsContact = true;
+        await database
+          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+          .update({ sourceIsContact: true });
+      }
     },
 
     redirectToFeed() {

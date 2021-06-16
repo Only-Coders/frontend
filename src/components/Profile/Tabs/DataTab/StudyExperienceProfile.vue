@@ -16,10 +16,10 @@
 
     <div v-if="studies.length > 0">
       <v-row no-gutters class="px-sm-16 ml-sm-10 mb-6" v-for="(study, index) in studies" :key="index">
-        <v-col cols="1" class="px-12 pt-0 mt-0 d-flex justify-center"
+        <v-col cols="1" class="pl-12 pr-8 px-sm-12 pt-0 mt-0 d-flex justify-center"
           ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
         >
-        <v-col cols="auto" class="mr-9 ma-0 pa-0 date_container">
+        <v-col cols="auto" class="ma-0 pa-0 date_container">
           <p class="text-caption ma-0">
             {{ formatDateMMYY(study.since) }}
           </p>
@@ -28,9 +28,9 @@
           </p>
         </v-col>
 
-        <v-col cols="auto">
+        <v-col cols="7" sm="auto" class="pl-2 pl-sm-9">
           <h5>{{ study.institute.name }}</h5>
-          <p class="text-caption">{{ study.degree }}</p>
+          <span class="text-caption">{{ study.degree }}</span>
         </v-col>
       </v-row>
     </div>

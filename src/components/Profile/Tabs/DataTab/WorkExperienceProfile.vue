@@ -24,7 +24,7 @@
           class="mx-0 px-0"
         >
           <v-row no-gutters class="timeline-container">
-            <v-col cols="auto" class="mr-9 ma-0 pa-0 date_container">
+            <v-col cols="auto" class="ma-0 pa-0 date_container">
               <p class="text-caption ma-0">
                 {{ formatDateMMYY(work.since) }}
               </p>
@@ -33,7 +33,7 @@
               </p>
             </v-col>
 
-            <v-col cols="auto">
+            <v-col cols="7" sm="auto" class="pl-2 pl-sm-9">
               <h5>{{ work.workplace.name }}</h5>
               <p class="text-caption">{{ work.position }}</p>
             </v-col>

@@ -8,8 +8,7 @@
       v-model="tab"
       background-color="transparent"
       color="secondary"
-      centered
-      grow
+      fixed-tabs
       show-arrows
       icons-and-text
       class="tab-container"
@@ -74,11 +73,11 @@ export default Vue.extend({
   props: { isSelfProfile: Boolean, loading: Boolean },
 
   components: {
+    DataTab,
     PostContainer,
     MyNetworkTab,
     TagsTab,
     FavoritesTab,
-    DataTab,
     InfiniteLoading
   },
 
@@ -90,6 +89,7 @@ export default Vue.extend({
     tab: null,
     fetching: true,
     items: [
+      { tab: i18n.t("ViewProfile.Data").toString(), content: DataTab, icon: "mdi-account-box" },
       {
         name: "posts",
         tab: i18n.t("ViewProfile.Posts").toString(),
@@ -108,7 +108,6 @@ export default Vue.extend({
         content: FavoritesTab,
         icon: "mdi-bookmark"
       },
-      { tab: i18n.t("ViewProfile.Data").toString(), content: DataTab, icon: "mdi-account-box" },
       { tab: i18n.t("ViewProfile.Tags").toString(), content: TagsTab, icon: "mdi-pound" }
     ] as TabsTitles[]
   }),

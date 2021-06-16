@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-row class="mt-4 mt-md-14" no-gutters>
-      <v-col cols="3" sm="3" lg="3" class="hidden-sm-and-down ml-16 px-16">
+    <v-row class="mt-10 mt-md-14 justify-sm-center justify-md-start" no-gutters>
+      <v-col cols="3" class="hidden-sm-and-down ml-6 pr-10 ml-lg-16 pr-lg-14">
         <FeedProfilePreview></FeedProfilePreview>
       </v-col>
 
-      <v-col cols="12" md="5">
+      <v-col cols="12" sm="10" md="5" lg="5">
         <PostContainer
           :fetching="fetching"
           :posts="posts"
@@ -14,7 +14,7 @@
           @deletePost="deleteUserPost"
         ></PostContainer>
       </v-col>
-      <v-col cols="3" class="hidden-sm-and-down pl-16 pr-8">
+      <v-col cols="3" class="hidden-sm-and-down pl-14 pr-8">
         <Suggestions style="position: fixed"></Suggestions>
       </v-col>
     </v-row>

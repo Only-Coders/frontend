@@ -1,29 +1,29 @@
 <template>
   <div>
     <v-card :flat="!$vuetify.breakpoint.mdAndUp || isFlat">
-      <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
-        <v-col cols="1" md="2" lg="1" class="pt-4">
+      <v-row class="px-3 px-md-7 py-3" align="start" justify-sm="center" no-gutters>
+        <v-col cols="2" md="2" lg="2" class="pt-4">
           <AvatarImagePreview
-            class="font-weight-ligth pr-2 pb-0 user_name"
+            class="pr-2 pb-0 user_name"
             @click="redirectToProfile"
             :src="imageURI"
             style="cursor: pointer"
             :imageSize="$vuetify.breakpoint.mdAndUp ? 60 : 55"
           ></AvatarImagePreview>
         </v-col>
-        <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
+        <v-col cols="10" md="10" lg="10" class="ma-0 pl-md-0">
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title class="font-weight-ligth pr-2 pb-0 user_name" @click="redirectToProfile"
+                <v-card-title class="pr-2 pb-0 pl-0 user_name" @click="redirectToProfile"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
-              <v-col cols="auto" class="d-flex justify-start pa-0 pt-4">
+              <v-col cols="auto" md="12" lg="12" class="d-flex justify-start pa-0 pt-4">
                 <div class="pl-0 pl-md-2 my-auto">
                   <v-img
                     alt="gold-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/gold-medal.png"
                   />
                 </div>
@@ -33,7 +33,7 @@
                 <div class="my-auto">
                   <v-img
                     alt="silver-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/silver-medal.png"
                   />
                 </div>
@@ -42,7 +42,7 @@
                 <div class="my-auto">
                   <v-img
                     alt="bronce-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/bronce-medal.png"
                   />
                 </div>
@@ -102,7 +102,7 @@
               </v-menu>
             </v-col>
           </v-row>
-          <v-card-subtitle class="py-0"
+          <v-card-subtitle class="py-0 pl-0"
             >{{ post.publisher.currentPosition ? post.publisher.currentPosition.position : "" }}
             {{ post.publisher.currentPosition ? $i18n.t("Feed.onPlace") : "" }}
             {{
@@ -111,7 +111,7 @@
                 : ""
             }}
           </v-card-subtitle>
-          <v-card-subtitle class="py-0">{{ formattedPostDate }}</v-card-subtitle>
+          <v-card-subtitle class="py-0 pl-0">{{ formattedPostDate }}</v-card-subtitle>
         </v-col>
       </v-row>
       <v-row v-if="!postIsCode">
@@ -185,6 +185,19 @@
           >
         </v-col>
       </v-row>
+
+      <v-row no-gutters justify="center">
+        <v-col cols="11" class="comment_divider">
+          <v-divider class="mb-10"></v-divider>
+        </v-col>
+        <v-col cols="11" class="d-flex justify-end">
+          <v-btn depressed rounded outlined color="#E0E0E0" class="mb-5" @click.stop="createPostDialog = true"
+            ><p class="font-weight-regular text--secondary text-capitalize my-auto">
+              {{ $i18n.t("comment") }}
+            </p></v-btn
+          >
+        </v-col>
+      </v-row>
     </v-card>
     <EditPostDialog
       v-if="showEditDialog"
@@ -199,6 +212,8 @@
       @deletePost="toggleDeletePostDialog"
       :postId="this.post.id"
     ></DeletePostDialog>
+
+    <CreatePostDialog v-if="createPostDialog" v-model="createPostDialog" :showPrivacyOptions="false"></CreatePostDialog>
   </div>
 </template>
 
@@ -220,6 +235,7 @@ import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import Prism from "prismjs";
+import CreatePostDialog from "./CreatePostDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -227,7 +243,15 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog, AvatarImagePreview },
+  components: {
+    LinkPreview,
+    CodePostVisualizer,
+    FileType,
+    DeletePostDialog,
+    EditPostDialog,
+    AvatarImagePreview,
+    CreatePostDialog
+  },
 
   mixins: [medalsMixin, notificationsMixin],
 
@@ -238,7 +262,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
 
   data: () => ({
-    createDialog: false,
+    createPostDialog: false,
     medals: {} as Medals,
     formattedPostDate: "",
     postIsCode: false,
@@ -436,6 +460,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 <style scoped>
 .user_name {
   cursor: pointer;
+  font-size: 1.02rem;
 }
 .reaction-btn {
   height: 36px !important;
@@ -443,6 +468,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
+}
+.comment_divider {
+  height: 12px;
 }
 </style>
 

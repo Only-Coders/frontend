@@ -58,6 +58,7 @@
 
         <v-select
           v-model="post.isPublic"
+          v-if="showPrivacyOptions"
           :items="privacyOptions"
           item-text="text"
           item-value="public"
@@ -115,7 +116,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
 
   components: { FileType, Mentions, LinkModal, LinkPreview },
 
-  props: { value: Boolean },
+  props: { value: Boolean, showPrivacyOptions: Boolean },
 
   mixins: [commonMethodsMixin, notificationsMixin],
 

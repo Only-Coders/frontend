@@ -32,6 +32,7 @@
       v-if="createDialog"
       v-model="createDialog"
       @passPostToCreatePost="passPostToPostContainer"
+      :showPrivacyOptions="true"
     ></CreatePostDialog>
   </div>
 </template>

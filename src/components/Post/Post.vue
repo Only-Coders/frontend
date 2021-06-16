@@ -430,10 +430,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 </script>
 
 <style scoped>
-.post__mention-tag {
-  text-decoration: none !important;
-  color: #2780c4 !important;
-}
 .user_name {
   cursor: pointer;
 }
@@ -445,6 +441,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   background: transparent !important;
 }
 </style>
+
 <style>
 .post__mention-tag {
   text-decoration: none !important;

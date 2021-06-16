@@ -197,5 +197,19 @@
     "workExperience": " WORK EXPERIENCE",
     "academicExperience": "ACADEMIC EXPERIENCE",
     "skills": "SKILLS"
+  },
+  "NotificationType": {
+    "NEW_POST": "New Post",
+    "NEW_COMMENT": "New comment",
+    "NEW_MENTION": "New mention",
+    "CONTACT_REQUEST": "New contact request",
+    "CONTACT_ACCEPTED": "New contact",
+    "NEW_FOLLOWER": "New follower"
+  },
+  "Notifications": {
+    "follow": "Follow",
+    "following": "Following",
+    "accept": "Accept",
+    "accepted": "Accepted"
   }
 }

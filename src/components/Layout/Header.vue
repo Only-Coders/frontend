@@ -72,11 +72,125 @@
             </v-btn>
           </div>
 
-          <v-btn text rounded plain class="hidden-sm-and-down">
-            <v-badge :content="notifications" :value="notifications" color="primary" overlap>
-              <v-icon color="navbar_icon">mdi-bell</v-icon>
-            </v-badge>
-          </v-btn>
+          <v-menu
+            :close-on-content-click="false"
+            close-on-click
+            bottom
+            left
+            nudge-bottom="45px"
+            v-model="showNotifications"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                rounded
+                plain
+                class="hidden-sm-and-down"
+                @click="showNotifications = !showNotifications"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-badge :content="notificationsCount" :value="notificationsCount" color="primary" overlap>
+                  <v-icon color="navbar_icon">mdi-bell</v-icon>
+                </v-badge>
+              </v-btn>
+            </template>
+            <div v-if="notifications.length > 0">
+              <v-card
+                max-width="550px"
+                min-width="200px"
+                min-height="100px"
+                max-height="350px"
+                class="header__notification__card"
+              >
+                <v-list-item v-for="notification in notifications" :key="notification.id" class="pr-0">
+                  <v-avatar size="45">
+                    <v-img
+                      alt="user"
+                      class="font-weight-ligth pr-2 pb-0 user_name"
+                      :src="
+                        notification.imageURI ? notification.imageURI : require('@/assets/images/default-avatar.png')
+                      "
+                      style="cursor: pointer"
+                      @click="redirectToProfile(notification.canonicalName)"
+                    />
+                  </v-avatar>
+                  <v-list-item-content class="pl-3">
+                    <v-list-item-title>
+                      <span
+                        class="font-weight-bold header__notification__fromName"
+                        @click="redirectToProfile(notification.canonicalName)"
+                        >{{ notification.from }}</span
+                      >
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="pr-6">
+                      {{ notification.message }}
+                      <span class="text--secondary text-body-2">{{ notification.formattedDate }}</span>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action v-if="notification.eventType === 'NEW_FOLLOWER'">
+                    <v-btn
+                      v-if="!notification.sourceIsFollower"
+                      color="primary"
+                      class="px-2"
+                      small
+                      outlined
+                      depressed
+                      @click="followUser(notification)"
+                    >
+                      {{ $i18n.t("Notifications.follow") }}
+                    </v-btn>
+
+                    <v-btn
+                      v-if="notification.sourceIsFollower"
+                      color="primary"
+                      class="px-2 header__notification__follow-button"
+                      small
+                      depressed
+                    >
+                      {{ $i18n.t("Notifications.following") }}
+                    </v-btn>
+                  </v-list-item-action>
+                  <v-list-item-action v-if="notification.eventType === 'CONTACT_REQUEST'">
+                    <v-btn
+                      v-if="!notification.sourceIsContact"
+                      color="primary"
+                      class="px-2"
+                      small
+                      depressed
+                      @click="acceptContactRequest(notification)"
+                    >
+                      {{ $i18n.t("Notifications.accept") }}
+                    </v-btn>
+
+                    <v-btn
+                      v-if="notification.sourceIsContact"
+                      color="primary"
+                      class="px-2 header__notification__follow-button"
+                      small
+                      depressed
+                    >
+                      {{ $i18n.t("Notifications.accepted") }}
+                    </v-btn>
+                  </v-list-item-action>
+
+                  <v-list-item-action class="ml-2">
+                    <v-icon size="15" @click="markNotificationAsRead(notification)"> mdi-window-close </v-icon>
+                  </v-list-item-action>
+                </v-list-item>
+                <div v-if="notifications.length > 0">
+                  <v-divider></v-divider>
+                  <div class="d-flex justify-center">
+                    <v-btn text rounded plain @click="markAllNotificationAsRead">CLEAR ALL</v-btn>
+                  </div>
+                </div>
+              </v-card>
+            </div>
+            <v-card v-else class="d-flex justify-center align-center" width="350px" height="150px">
+              <v-card-title class="font-weight-light subtitle-1">You have no notifications yet :(</v-card-title>
+            </v-card>
+          </v-menu>
+
           <v-btn text rounded plain class="hidden-sm-and-down"
             ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
           >
@@ -204,6 +318,24 @@ import { Tag } from "@/models/tag";
 import { Pagination } from "@/models/Pagination/pagination";
 import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
+import { formatDistanceStrict } from "date-fns";
+import { postFollow } from "@/services/follow";
+import { postContactRequest } from "@/services/contact";
+
+type Notification = {
+  eventType: string;
+  message: string;
+  read: boolean;
+  to: string;
+  id: string;
+  from: string;
+  createdAt: string;
+  imageURI: string;
+  formattedDate: string;
+  canonicalName: string;
+  sourceIsFollower: boolean;
+  sourceIsContact: boolean;
+};
 
 export default Vue.extend({
   name: "Header",
@@ -213,16 +345,18 @@ export default Vue.extend({
   data: () => ({
     userData: {} as UserData,
     userCurrentPosition: { company: "", position: "" },
+    notifications: [] as Notification[],
     searchParameters: "",
     messages: 0,
-    notifications: 0,
+    notificationsCount: 0,
     showSearchComponent: false,
     filteredUsers: { currentPage: 0, totalElements: 0, totalPages: 0, content: [] } as Pagination<User>,
     recommendedTags: [] as Tag[],
     usersLoading: false,
     tagsLoading: false,
     timer: 0,
-    showOverlay: false
+    showOverlay: false,
+    showNotifications: false
   }),
 
   methods: {
@@ -276,11 +410,55 @@ export default Vue.extend({
         .equalTo(false)
         .on("value", (notificationSnapshot) => {
           if (notificationSnapshot.val()) {
-            this.notifications = Object.keys(notificationSnapshot.val()).length;
+            this.notificationsCount = Object.keys(notificationSnapshot.val()).length;
+            this.notifications = Object.keys(notificationSnapshot.val()).map((key) => {
+              const notification = notificationSnapshot.val()[key];
+              const notificationDate = formatDistanceStrict(new Date(notification.createdAt), new Date());
+              const formattedDate = notificationDate.split(" ")[0] + notificationDate.split(" ")[1][0];
+              return {
+                ...notification,
+                id: key,
+                formattedDate
+              };
+            });
+            this.notifications = this.notifications.reverse();
           } else {
-            this.notifications = 0;
+            this.notificationsCount = 0;
+            this.notifications = [];
           }
         });
+    },
+
+    async markAllNotificationAsRead() {
+      const promises = this.notifications.map((notification) =>
+        database.ref(`notifications/${this.user.canonicalName}/${notification.id}`).update({ read: true })
+      );
+      await Promise.all(promises);
+      this.notifications = [];
+    },
+
+    async markNotificationAsRead(notification: Notification) {
+      await database.ref(`notifications/${this.user.canonicalName}/${notification.id}`).update({ read: true });
+    },
+
+    async followUser(notification: Notification) {
+      if (!notification.sourceIsFollower) {
+        await postFollow(notification.canonicalName);
+        notification.sourceIsFollower = true;
+        await database
+          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+          .update({ sourceIsFollower: true });
+      }
+    },
+
+    async acceptContactRequest(notification: Notification) {
+      if (!notification.sourceIsFollower) {
+        await postContactRequest({ canonicalName: notification.canonicalName });
+        notification.sourceIsContact = true;
+        await database
+          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+          .update({ sourceIsContact: true });
+      }
     },
 
     redirectToFeed() {
@@ -293,6 +471,19 @@ export default Vue.extend({
         this.$store.commit("shouldRefreshFeed", true);
       } else {
         this.$router.push("/");
+      }
+    },
+
+    redirectToProfile(canonicalName: string) {
+      const redirectTo = `/profile/${canonicalName}`;
+      if (this.$router.currentRoute.path === redirectTo) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        this.$router.push(redirectTo);
       }
     }
   },
@@ -377,8 +568,21 @@ export default Vue.extend({
   height: 2px;
   background: white;
 }
+
 .feed_link {
   cursor: pointer;
+}
+
+.header__notification__fromName {
+  cursor: pointer;
+}
+
+.header__notification__card {
+  overflow-y: auto;
+}
+
+.header__notification__follow-button {
+  opacity: 0.6;
 }
 </style>
 <style>

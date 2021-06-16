@@ -269,9 +269,13 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     imageURI: {
       get(): string {
         if (this.$store.state.userModule.user.canonicalName == this.post.publisher.canonicalName) {
-          return this.$store.state.userModule.user.imageURI ?? require("@/assets/images/default-avatar.png");
+          return this.$store.state.userModule.user.imageURI
+            ? this.$store.state.userModule.user.imageURI
+            : require("@/assets/images/default-avatar.png");
         } else {
-          return this.post.publisher.imageURI ?? require("@/assets/images/default-avatar.png");
+          return this.post.publisher.imageURI
+            ? this.post.publisher.imageURI
+            : require("@/assets/images/default-avatar.png");
         }
       }
     }

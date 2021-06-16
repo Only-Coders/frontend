@@ -112,8 +112,8 @@ export default Vue.extend({
       }
       this.loading = false;
     },
-    addMention(item: Item, key: string) {
-      if (key == "@") {
+    addMention(item: Item) {
+      if (this.selectedKey == "@") {
         this.users.push(item);
         this.post.mentionCanonicalNames.push(item.value);
         this.post.mentionsDictionary[item.value] = item.label;

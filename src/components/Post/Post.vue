@@ -219,8 +219,12 @@ import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
+import Prism from "prismjs";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
+  mounted() {
+    Prism.highlightAll();
+  },
   name: "Post",
 
   components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog, AvatarImagePreview },
@@ -439,5 +443,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
+}
+</style>
+<style>
+.post__mention-tag {
+  text-decoration: none !important;
+  color: #2780c4 !important;
 }
 </style>

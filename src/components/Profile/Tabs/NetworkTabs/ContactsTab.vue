@@ -65,7 +65,8 @@ export default Vue.extend({
     async removeContact(index: number) {
       await deleteContact(this.contactsPagination.content[index].canonicalName);
       const result = await getContacts(
-        this.contactsPagination.content.length > 1 ? this.currentPage - 1 : this.currentPage - 2,
+        this.contactsPagination.content.length > 1 ? this.currentPage - 1 : this.currentPage,
+
         this.$store.state.userPaginationModule.usersPerPage,
         this.$store.state.userPaginationModule.orderBySelected,
         this.$store.state.userPaginationModule.search,

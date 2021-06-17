@@ -60,7 +60,7 @@ export default Vue.extend({
     async unfollowUser(index: number) {
       await deleteFollow(this.followsPagination.content[index].canonicalName);
       const result = await getFollows(
-        this.followsPagination.content.length > 1 ? this.currentPage - 1 : this.currentPage - 2,
+        this.followsPagination.content.length > 1 ? this.currentPage - 1 : this.currentPage,
         this.$store.state.userPaginationModule.usersPerPage,
         this.$store.state.userPaginationModule.orderBySelected,
         this.$store.state.userPaginationModule.search,

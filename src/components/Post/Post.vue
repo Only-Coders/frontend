@@ -178,7 +178,7 @@
           </v-btn-toggle>
         </div>
         <v-col cols="auto">
-          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2"
+          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2" @click="loadComments"
             ><p class="font-weight-regular text--secondary text-capitalize my-auto">
               {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
@@ -186,9 +186,8 @@
         </v-col>
       </v-row>
 
+      <PostComments :comments="comments" :fetching="fetchingComments" v-if="showComments"></PostComments>
       <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
-      <!-- <PostComments :comments="comments"></PostComments> -->
-      <PostComments></PostComments>
     </v-card>
     <EditPostDialog
       v-if="showEditDialog"
@@ -228,6 +227,7 @@ import CreatePostDialog from "./CreatePostDialog.vue";
 import CreateComment from "@/components/Post/CreateComment.vue";
 import PostComments from "@/components/Post/PostComments.vue";
 import { Comment } from "@/models/comment";
+import { getPostComments } from "@/services/comment";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -276,7 +276,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     toggleApprove: null as number | null,
     showEditDialog: false,
     postMessageToEdit: "",
-    comments: [] as Comment[]
+    comments: [] as Comment[],
+    fetchingComments: true,
+    showComments: false
   }),
 
   computed: {
@@ -445,6 +447,16 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     },
     addCommentToPost(comment: Comment) {
       this.comments.push(comment);
+    },
+    async loadComments() {
+      if (this.showComments) {
+        this.showComments = false;
+      } else {
+        this.showComments = true;
+        this.fetchingComments = true;
+        this.comments = (await getPostComments(this.post.id, 0, 6)).content;
+        this.fetchingComments = false;
+      }
     }
   },
 

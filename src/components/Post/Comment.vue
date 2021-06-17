@@ -102,7 +102,7 @@
           <v-card-subtitle class="py-0 pl-0">{{ formattedPostDate }}</v-card-subtitle>
         </v-col>
       </v-row>
-      <!-- <v-row v-if="!commentIsCode">
+      <v-row v-if="!commentIsCode">
         <v-col class="py-0 px-10">
           <component :is="message"></component>
         </v-col>
@@ -111,7 +111,7 @@
         <v-col class="pt-0 pb-0 px-10">
           <CodePostVisualizer :code="comment.message"></CodePostVisualizer>
         </v-col>
-      </v-row> -->
+      </v-row>
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
         <div class="d-flex align-center">
           <v-btn-toggle rounded v-model="toggleApprove" color="primary">
@@ -161,11 +161,9 @@ import Prism from "prismjs";
 import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import { Comment } from "@/models/comment";
-import { CurrentPosition } from "@/models/currentPosition";
-import { Reaction } from "@/models/reaction";
-import { Publisher } from "@/models/publisher";
 import { ReactionType } from "@/models/Enums/reaction";
 import { formatDistance } from "date-fns";
+import { postCommentReaction } from "@/services/comment";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Comment",
@@ -177,10 +175,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   mixins: [medalsMixin],
 
   props: {
-    commentBORRRRRR: Object as PropType<Comment>
+    comment: Object as PropType<Comment>
   },
 
-  components: { AvatarImagePreview /* CodePostVisualizer */ },
+  components: { AvatarImagePreview, CodePostVisualizer },
 
   data: () => ({
     medals: {} as Medals,
@@ -196,41 +194,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     toggleApprove: null as number | null,
     isMyOwnComment: false,
     myReaction: null as ReactionType | null,
-    comment: {
-      createdAt: "2021-06-17T02:14:23.762+00:00",
-      id: "5c9966b3-31b9-4e2f-a8d8-7bdca109dfd8",
-      message: "Más un comentario",
-      myReaction: "APPROVE" as ReactionType,
-      publisher: {
-        amountOfMedals: 2,
-        canonicalName: "ramiroalves-KWYrE",
-        currentPosition: {
-          id: "a62818a3-5458-460c-8016-5b5d6deedaf0",
-          position: "Desarrollador Frontend Vue",
-          since: "2021-06-15T00:00:00.000+00:00",
-          until: "",
-          workplace: {
-            id: "1c5f7173-99d9-477a-a617-5329898594ee",
-            name: "Vairix"
-          }
-        } as CurrentPosition,
-        firstName: "Ramiro",
-        fullName: "Ramiro Alves",
-        imageURI:
-          "https://firebasestorage.googleapis.com/v0/b/onlycoders-cc609.appspot.com/o/images%2F1a840f83-215e-40ba-938c-59a217aa4ffa?alt=media&token=c81e194e-3332-4434-a589-31f1c2104f46",
-        lastName: "Alves"
-      } as Publisher,
-      reactions: [
-        {
-          reaction: "APPROVE",
-          quantity: 0
-        },
-        {
-          reaction: "REJECT",
-          quantity: 0
-        }
-      ] as Reaction[]
-    }
+    template: ""
   }),
 
   methods: {
@@ -264,7 +228,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.myReaction = reaction;
       this.toggleReject = this.myReaction === ReactionType.REJECT ? 0 : null;
       this.toggleApprove = this.myReaction === ReactionType.APPROVE ? 0 : null;
-      //TODO: await addPostComment(this.post.id, reaction);
+      await postCommentReaction(this.comment.id, reaction);
       this.isLoadingApprove = false;
       this.isLoadingReject = false;
       this.disabledApprove = false;
@@ -300,11 +264,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.formattedPostDate = formatDistance(new Date(this.comment.createdAt), new Date(), {
         addSuffix: true
       });
-    }
-    /* formatNewLine() {
+    },
+    formatNewLine() {
       this.comment.message = this.comment.message.replaceAll("\n", "<br/>");
     },
-    formatComment(comment: GetPost) {
+    formatComment(comment: Comment) {
       this.parseReactions();
       this.checkIfCommentIsCode();
       if (!this.commentIsCode) {
@@ -314,14 +278,19 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.template = `<div><p class="font-weight-regular text--secondary">${comment.message}</p></div>`;
       this.isMyOwnComment = comment.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
       this.medals = this.calculateMedals(comment.publisher.amountOfMedals);
-    } */
+    }
   },
 
   created() {
-    console.log(JSON.stringify(this.comment, null, 2));
+    this.formatComment(this.comment);
   },
 
   computed: {
+    message: {
+      get(): { template: string } {
+        return { template: this.template };
+      }
+    },
     imageURI: {
       get(): string {
         if (this.$store.state.userModule.user.canonicalName == this.comment.publisher.canonicalName) {
@@ -339,4 +308,16 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.user_name {
+  cursor: pointer;
+  font-size: 1.02rem;
+}
+.reaction-btn {
+  height: 36px !important;
+  background: transparent !important;
+}
+.theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
+  background: transparent !important;
+}
+</style>

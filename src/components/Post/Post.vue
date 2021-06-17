@@ -450,5 +450,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 .post__mention-tag {
   text-decoration: none !important;
   color: #2780c4 !important;
+  font-weight: bold !important;
 }
 </style>

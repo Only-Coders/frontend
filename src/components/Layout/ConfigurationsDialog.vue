@@ -140,9 +140,7 @@
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import { NotificationType } from "@/models/Enums/notificationType";
-import { getUserNotificationsConfig } from "@/services/notifications";
-import { putChangeNotifications } from "@/services/notifications";
-import { NotificationsConfig } from "@/models/notificationsConfig";
+import { getUserNotificationsConfig, putChangeNotifications } from "@/services/notifications";
 
 interface NotificationSettingData {
   id: string;
@@ -161,6 +159,38 @@ export default (Vue as VueConstructor<Vue>).extend({
 
   data: () => ({
     isButtonLoading: false,
+    originalState: {
+      NEW_POST: {
+        id: "",
+        email: false,
+        push: false
+      },
+      NEW_COMMENT: {
+        id: "",
+        email: false,
+        push: false
+      },
+      NEW_MENTION: {
+        id: "",
+        email: false,
+        push: false
+      },
+      NEW_FOLLOWER: {
+        id: "",
+        email: false,
+        push: false
+      },
+      CONTACT_REQUEST: {
+        id: "",
+        email: false,
+        push: false
+      },
+      CONTACT_ACCEPTED: {
+        id: "",
+        email: false,
+        push: false
+      }
+    } as Record<NotificationType, NotificationSettingData>,
     notifications: {
       NEW_POST: {
         id: "",
@@ -199,39 +229,38 @@ export default (Vue as VueConstructor<Vue>).extend({
     async getUserNotificationSettings() {
       const result = await getUserNotificationsConfig();
       result.forEach((setting) => {
-        if (this.notifications[setting.type]) {
-          this.notifications[setting.type].email = setting.email;
-          this.notifications[setting.type].push = setting.push;
-          if (setting.id) {
-            this.notifications[setting.type].id = setting.id;
-          }
-        }
+        this.notifications[setting.type].email = setting.email;
+        this.notifications[setting.type].push = setting.push;
+        this.notifications[setting.type].id = setting.id;
+
+        this.originalState[setting.type].email = setting.email;
+        this.originalState[setting.type].push = setting.push;
+        this.originalState[setting.type].id = setting.id;
       });
-      console.log(this.notifications);
     },
 
     async changeNotificationSettings() {
-      const settingsToSend = Object.entries(this.notifications).map((setting) => {
-        return {
-          id: setting[1].id,
-          data: {
-            type: setting[0],
-            email: setting[1].email,
-            push: setting[1].push
-          }
-        };
-      });
       this.isButtonLoading = true;
-      await Promise.all(
-        settingsToSend.map((setting) => {
-          return putChangeNotifications({
-            id: setting.id,
-            type: setting.data.type,
-            email: setting.data.email,
-            push: setting.data.push
-          } as NotificationsConfig);
+      const settingsToSend = Object.entries(this.notifications)
+        .filter((setting) => {
+          const type = setting[0] as NotificationType;
+          return (
+            this.originalState[type].push !== this.notifications[type].push ||
+            this.originalState[type].email !== this.notifications[type].email
+          );
         })
-      );
+        .map((setting) => {
+          const type = setting[0] as NotificationType;
+          const newConfig = {
+            id: setting[1].id,
+            push: setting[1].push,
+            email: setting[1].email,
+            type: setting[0] as NotificationType
+          };
+          this.originalState[type] = newConfig;
+          return putChangeNotifications(newConfig);
+        });
+      await Promise.all(settingsToSend);
       this.isButtonLoading = false;
     },
 

@@ -321,7 +321,6 @@ import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import { formatDistanceStrict } from "date-fns";
 import { postFollow } from "@/services/follow";
-import { postContactRequest } from "@/services/contact";
 import ConfigurationsDialog from "@/components/Layout/ConfigurationsDialog.vue";
 import { postContactRequestResponse } from "@/services/receivedContactRequests";
 

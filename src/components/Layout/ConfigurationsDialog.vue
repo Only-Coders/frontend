@@ -141,6 +141,7 @@ import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import { NotificationType } from "@/models/Enums/notificationType";
 import { getUserNotificationsConfig, putChangeNotifications } from "@/services/notifications";
+import { NotificationsConfig } from "@/models/notificationsConfig";
 
 interface NotificationSettingData {
   id: string;

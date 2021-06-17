@@ -160,7 +160,6 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
     userInfo: {
       handler() {
         if (this.userInfo.birthDate) {
-          console.log("En watch");
           this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");
         }
         if (this.userInfo.gitProfile) {

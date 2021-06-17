@@ -178,7 +178,7 @@
           </v-btn-toggle>
         </div>
         <v-col cols="auto">
-          <v-btn depressed rounded outlined color="#E0E0E0"
+          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2"
             ><p class="font-weight-regular text--secondary text-capitalize my-auto">
               {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
@@ -186,18 +186,9 @@
         </v-col>
       </v-row>
 
-      <v-row no-gutters justify="center">
-        <v-col cols="11" class="comment_divider">
-          <v-divider class="mb-10"></v-divider>
-        </v-col>
-        <v-col cols="11" class="d-flex justify-end">
-          <v-btn depressed rounded outlined color="#E0E0E0" class="mb-5" @click.stop="createPostDialog = true"
-            ><p class="font-weight-regular text--secondary text-capitalize my-auto">
-              {{ $i18n.t("comment") }}
-            </p></v-btn
-          >
-        </v-col>
-      </v-row>
+      <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
+      <!-- <PostComments :comments="comments"></PostComments> -->
+      <PostComments></PostComments>
     </v-card>
     <EditPostDialog
       v-if="showEditDialog"
@@ -212,8 +203,6 @@
       @deletePost="toggleDeletePostDialog"
       :postId="this.post.id"
     ></DeletePostDialog>
-
-    <CreatePostDialog v-if="createPostDialog" v-model="createPostDialog" :showPrivacyOptions="false"></CreatePostDialog>
   </div>
 </template>
 
@@ -236,6 +225,9 @@ import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import Prism from "prismjs";
 import CreatePostDialog from "./CreatePostDialog.vue";
+import CreateComment from "@/components/Post/CreateComment.vue";
+import PostComments from "@/components/Post/PostComments.vue";
+import { Comment } from "@/models/comment";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -250,7 +242,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     DeletePostDialog,
     EditPostDialog,
     AvatarImagePreview,
-    CreatePostDialog
+    CreatePostDialog,
+    CreateComment,
+    PostComments
   },
 
   mixins: [medalsMixin, notificationsMixin],
@@ -281,7 +275,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     toggleReject: null as number | null,
     toggleApprove: null as number | null,
     showEditDialog: false,
-    postMessageToEdit: ""
+    postMessageToEdit: "",
+    comments: [] as Comment[]
   }),
 
   computed: {
@@ -447,6 +442,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       if (post.type === "FILE") {
         this.getFileName();
       }
+    },
+    addCommentToPost(comment: Comment) {
+      this.comments.push(comment);
     }
   },
 
@@ -468,9 +466,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
-}
-.comment_divider {
-  height: 12px;
 }
 </style>
 

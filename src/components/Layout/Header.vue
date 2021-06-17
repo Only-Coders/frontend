@@ -278,7 +278,7 @@
                       </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item @click.prevent>
+                    <v-list-item @click="showConfigurationsDialog = true">
                       <v-list-item-icon class="mr-2">
                         <v-list-item-icon class="ma-0">
                           <v-icon>mdi-cog</v-icon>
@@ -303,6 +303,7 @@
         </v-col>
       </v-row>
     </v-app-bar>
+    <ConfigurationsDialog v-model="showConfigurationsDialog" :value="showConfigurationsDialog"></ConfigurationsDialog>
   </div>
 </template>
 
@@ -321,6 +322,7 @@ import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import { formatDistanceStrict } from "date-fns";
 import { postFollow } from "@/services/follow";
 import { postContactRequest } from "@/services/contact";
+import ConfigurationsDialog from "@/components/Layout/ConfigurationsDialog.vue";
 
 type Notification = {
   eventType: string;
@@ -340,7 +342,11 @@ type Notification = {
 export default Vue.extend({
   name: "Header",
 
-  components: { Search, AvatarImagePreview },
+  components: {
+    Search,
+    AvatarImagePreview,
+    ConfigurationsDialog
+  },
 
   data: () => ({
     userData: {} as UserData,
@@ -356,7 +362,8 @@ export default Vue.extend({
     tagsLoading: false,
     timer: 0,
     showOverlay: false,
-    showNotifications: false
+    showNotifications: false,
+    showConfigurationsDialog: false
   }),
 
   methods: {

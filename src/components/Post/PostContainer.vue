@@ -5,7 +5,7 @@
       @passPostToPostContainer="addPostToFeed"
       :isSelfProfile="isLoguedUserProfile"
       :userData="userInfo"
-      :isFlat="$route.name === 'ProfileChild'"
+      :class="$route.name === 'ProfileChild' ? 'mx-10' : ''"
     />
 
     <v-divider class="mt-8 mx-4 mx-md-8"></v-divider>
@@ -20,7 +20,7 @@
         @passDeletedPostAsFavorite="passDeletedPostAsFavorite"
         :isInFavoritesTab="isInFavoritesTab"
         @deletePost="deletePost"
-        :isFlat="$route.name === 'ProfileChild'"
+        :class="$route.name === 'ProfileChild' ? 'mx-10' : ''"
       />
     </div>
   </div>

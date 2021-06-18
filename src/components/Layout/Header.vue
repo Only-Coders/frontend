@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-app-bar app color="navbar" dark class="app_bar">
-      <v-row align="center" justify="space-between" no-gutters>
-        <v-col cols="4" md="4" class="hidden-sm-and-down">
+      <v-row align="center" no-gutters class="pr-0">
+        <v-col cols="3" class="hidden-sm-and-down ml-6 pr-10 ml-lg-16 pr-lg-14">
           <v-img
             alt="OnlyCoders logo"
             class="shrink ml-md-0 ml-lg-16 feed_link"
@@ -14,7 +14,7 @@
           />
         </v-col>
         <v-overlay :value="showOverlay" opacity="0.60"></v-overlay>
-        <v-col cols="10" md="4" lg="5">
+        <v-col cols="9" sm="9 offset-1" md="5" offset-md="0" lg="5">
           <transition name="scale-transition" mode="out-in" appear>
             <v-menu
               :close-on-content-click="false"
@@ -52,19 +52,21 @@
           </transition>
         </v-col>
         <v-col
-          cols="2"
-          md="3"
+          cols="1"
+          md="2"
           lg="2"
-          class="d-flex pa-0"
+          class="d-flex pa-0 ml-sm-0 ml-md-8 mr-0 mr-md-3 mr-lg-0"
           :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
         >
           <div class="icon-container hidden-sm-and-down">
-            <v-btn text rounded plain link to="/"><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn>
+            <v-btn text rounded plain link to="/" class="px-0 mx-0"
+              ><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn
+            >
             <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
           </div>
 
           <div class="icon-container">
-            <v-btn text rounded plain link to="/chat">
+            <v-btn text class="pl-12 pl-sm-6 pl-md-5" rounded plain link to="/chat">
               <v-badge :content="messages" :value="messages" color="primary" overlap>
                 <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
               </v-badge>
@@ -190,12 +192,8 @@
               <v-card-title class="font-weight-light subtitle-1">You have no notifications yet :(</v-card-title>
             </v-card>
           </v-menu>
-
-          <v-btn text rounded plain class="hidden-sm-and-down"
-            ><v-icon color="navbar_icon">mdi-account-plus</v-icon></v-btn
-          >
         </v-col>
-        <v-col cols="2" md="1" lg="1" class="d-flex flex-row-reverse hidden-sm-and-down">
+        <v-col cols="2" md="1" class="d-flex flex-row-reverse hidden-sm-and-down">
           <div class="hidden-sm-and-down">
             <transition name="scale-transition" mode="out-in" appear>
               <v-menu transition="slide-y-transition" nudge-bottom="45px" bottom avatar>
@@ -598,5 +596,9 @@ export default Vue.extend({
 }
 .app_bar {
   z-index: 9999 !important;
+}
+.v-toolbar__content {
+  margin: 0;
+  padding: 0;
 }
 </style>

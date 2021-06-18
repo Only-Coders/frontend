@@ -88,6 +88,7 @@
       v-model="createDialog"
       @unfollowTag="$emit('unfollowTag')"
       @updateData="updateUserData"
+      class="pt-10"
     ></EditDataDialog>
   </div>
 </template>

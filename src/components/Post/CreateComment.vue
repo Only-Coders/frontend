@@ -5,6 +5,11 @@
     </v-row>
 
     <div v-if="showCreateComment" class="mx-8">
+      <v-row no-gutters class="mb-3" justify="end">
+        <v-btn class="mr-2 mt-1" icon @click="showCreateComment = false">
+          <v-icon size="22"> mdi-close </v-icon>
+        </v-btn>
+      </v-row>
       <v-row no-gutters>
         <v-col cols="2" class="text-center">
           <AvatarImagePreview
@@ -29,36 +34,28 @@
             maxlength="512"
             clearable
           ></v-textarea>
-
-          <v-btn right fab depressed small class="mx-2" @click="insertCodeExample">
-            <v-icon size="23"> mdi-code-braces </v-icon>
-          </v-btn>
         </v-col>
 
-        <v-col cols="2" class="d-flex align-center">
-          <v-btn fab small depressed color="primary" class="ml-6">
+        <v-col cols="2">
+          <v-btn fab small depressed color="primary" :loading="isLoading" class="mt-2 ml-6 grow" @click="createComment">
             <v-icon>mdi-send</v-icon>
           </v-btn></v-col
         >
       </v-row>
 
-      <v-col cols="12" class="d-flex mt-3">
-        <v-btn fab depressed small class="mx-2" @click="insertCodeExample">
-          <v-icon size="23"> mdi-code-braces </v-icon>
-        </v-btn>
-        <!-- <v-spacer></v-spacer>
-        <v-btn :loading="isLoading" color="danger" depressed class="mx-5" @click="showCreateComment = false">{{
-          $i18n.t("cancel")
-        }}</v-btn>
-        <v-btn :loading="isLoading" color="primary" depressed :disabled="message == ''" @click="createComment">{{
-          $i18n.t("CreatePost.createPostBtn")
-        }}</v-btn> -->
-      </v-col>
+      <v-row no-gutters justify="end" class="pb-10">
+        <v-col cols="8 offset-2" class="text-right">
+          <v-btn fab depressed @click="insertCodeExample" :disabled="isLoading" class="grow" x-small>
+            <v-icon size="20"> mdi-code-braces </v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="2"></v-col>
+      </v-row>
     </div>
 
     <v-row no-gutters justify="center" v-else>
-      <v-col cols="11" class="d-flex justify-end">
-        <v-btn depressed rounded outlined color="#E0E0E0" class="mb-5" @click.stop="showCreateComment = true">
+      <v-col cols="12" class="d-flex justify-end">
+        <v-btn depressed rounded outlined color="#E0E0E0" class="mb-5 mr-6" @click.stop="showCreateComment = true">
           <v-icon color="primary" size="19" class="mr-2"> mdi-comment-text </v-icon>
           <p class="font-weight-regular text--secondary text-capitalize my-auto">
             {{ $i18n.t("comment") }}
@@ -95,16 +92,23 @@ export default Vue.extend({
 
     async createComment() {
       this.isLoading = true;
-      const result = postComment(this.postId, this.message);
+      const result = await postComment(this.postId, this.message);
       if (result) {
         this.$emit("addCommentToPost", result);
       }
       this.isLoading = false;
       this.showCreateComment = false;
-      //this.message = "";
+      this.message = "";
     }
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.grow {
+  transition: all 0.1s ease-in-out;
+}
+.grow:hover {
+  transform: scale(1.1);
+}
+</style>

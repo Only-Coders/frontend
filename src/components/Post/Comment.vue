@@ -1,17 +1,17 @@
 <template>
   <div>
-    <v-card flat>
+    <v-card flat color="#f4f4f4">
       <v-row class="px-3 px-md-7 py-3" align="start" justify-sm="center" no-gutters>
-        <v-col cols="2" md="2" lg="2" class="pt-4">
+        <v-col cols="2" class="pt-4 text-center">
           <AvatarImagePreview
-            class="pr-2 pb-0 user_name"
+            class="pb-0 user_name"
             @click="redirectToProfile"
             :src="imageURI"
             style="cursor: pointer"
             :imageSize="$vuetify.breakpoint.mdAndUp ? 60 : 55"
           ></AvatarImagePreview>
         </v-col>
-        <v-col cols="10" md="10" lg="10" class="ma-0 pl-md-0">
+        <v-col cols="10" class="ma-0 pl-md-0">
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
@@ -102,17 +102,17 @@
           <v-card-subtitle class="py-0 pl-0">{{ formattedPostDate }}</v-card-subtitle>
         </v-col>
       </v-row>
-      <v-row v-if="!commentIsCode">
-        <v-col class="py-0 px-10">
-          <component :is="message"></component>
+      <v-row v-if="!commentIsCode" no-gutters>
+        <v-col class="pt-0 pb-0 px-10">
+          <component :is="message" class="px-5 pt-4"></component>
         </v-col>
       </v-row>
-      <v-row v-else>
+      <v-row v-else no-gutters>
         <v-col class="pt-0 pb-0 px-10">
           <CodePostVisualizer :code="comment.message"></CodePostVisualizer>
         </v-col>
       </v-row>
-      <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
+      <v-row class="align-center justify-space-between px-4 mt-3 pb-4 pl-10" no-gutters>
         <div class="d-flex align-center">
           <v-btn-toggle rounded v-model="toggleApprove" color="primary">
             <v-btn
@@ -122,7 +122,7 @@
               depressed
               rounded
               color="#E0E0E0"
-              class="ml-2 mr-1 reaction-btn"
+              class="reaction-btn"
             >
               <v-img alt="approve" width="17" src="@/assets/images/chevron-up.png" />
               <p class="my-auto pl-2 pr-1" style="color: #00cdae">
@@ -131,7 +131,7 @@
             </v-btn>
           </v-btn-toggle>
 
-          <v-btn-toggle rounded v-model="toggleReject" color="error">
+          <v-btn-toggle rounded v-model="toggleReject" color="error" class="ml-2">
             <v-btn
               :loading="isLoadingReject"
               :disabled="disabledReject"
@@ -139,7 +139,7 @@
               depressed
               rounded
               color="#E0E0E0"
-              class="ml-1 reaction-btn"
+              class="reaction-btn"
             >
               <v-img alt="reject" width="17" src="@/assets/images/chevron-down.png" />
               <p class="my-auto pl-2" style="color: #ff0f0f">
@@ -275,7 +275,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
         this.formatNewLine();
       }
       this.formatPostDate();
-      this.template = `<div><p class="font-weight-regular text--secondary">${comment.message}</p></div>`;
+      this.template = `<div><p class="font-weight-regular text--secondary body-2">${comment.message}</p></div>`;
       this.isMyOwnComment = comment.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
       this.medals = this.calculateMedals(comment.publisher.amountOfMedals);
     }

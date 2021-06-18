@@ -6,9 +6,9 @@
       </span>
       <h3>{{ $i18n.t("ViewProfile.workExperience") }}</h3>
       <v-spacer></v-spacer>
-      <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
+      <!-- <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
         <v-icon size="28" color="grey darken-1"> mdi-plus </v-icon>
-      </v-btn>
+      </v-btn> -->
       <div class="divider-container mt-8">
         <v-divider></v-divider>
       </div>

@@ -2,9 +2,9 @@
   <div>
     <v-card :flat="!$vuetify.breakpoint.mdAndUp || isFlat">
       <v-row class="px-3 px-md-7 py-3" align="start" justify-sm="center" no-gutters>
-        <v-col cols="2" md="2" lg="2" class="pt-4">
+        <v-col cols="2" md="2" lg="2" class="pt-4 text-center">
           <AvatarImagePreview
-            class="pr-2 pb-0 user_name"
+            class="pb-0 user_name"
             @click="redirectToProfile"
             :src="imageURI"
             style="cursor: pointer"
@@ -116,7 +116,7 @@
       </v-row>
       <v-row v-if="!postIsCode">
         <v-col class="py-0 px-10">
-          <component :is="message"></component>
+          <component :is="message" class="px-12"></component>
         </v-col>
       </v-row>
       <v-row v-else>
@@ -178,7 +178,7 @@
           </v-btn-toggle>
         </div>
         <v-col cols="auto">
-          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2" @click="loadComments"
+          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2" @click="toggleComments"
             ><p class="font-weight-regular text--secondary text-capitalize my-auto">
               {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
@@ -186,7 +186,13 @@
         </v-col>
       </v-row>
 
-      <PostComments :comments="comments" :fetching="fetchingComments" v-if="showComments"></PostComments>
+      <PostComments
+        :comments="comments"
+        :fetching="fetchingComments"
+        v-if="showComments"
+        @hideComments="hideComments"
+        @loadMoreComments="loadMoreComments"
+      ></PostComments>
       <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
     </v-card>
     <EditPostDialog
@@ -278,7 +284,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     postMessageToEdit: "",
     comments: [] as Comment[],
     fetchingComments: true,
-    showComments: false
+    showComments: false,
+    currentPageOfComments: 0,
+    totalPagesOfComments: 0
   }),
 
   computed: {
@@ -446,16 +454,42 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
     },
     addCommentToPost(comment: Comment) {
-      this.comments.push(comment);
+      if (this.showComments) {
+        console.log("Se estan mostrando los comentarios");
+        this.comments.push(comment);
+      }
+      this.post.commentQuantity++;
     },
     async loadComments() {
-      if (this.showComments) {
-        this.showComments = false;
+      this.fetchingComments = true;
+      const result = await getPostComments(this.post.id, this.currentPageOfComments, 1);
+      if (this.totalPagesOfComments == 0) {
+        this.comments = result.content;
+        this.totalPagesOfComments = result.totalPages;
       } else {
-        this.showComments = true;
+        this.comments = this.comments.concat(result.content);
+      }
+      this.currentPageOfComments++;
+
+      this.fetchingComments = false;
+    },
+    hideComments() {
+      this.showComments = false;
+    },
+    async toggleComments() {
+      this.showComments = !this.showComments;
+      if (this.showComments) {
         this.fetchingComments = true;
-        this.comments = (await getPostComments(this.post.id, 0, 6)).content;
+        const result = await getPostComments(this.post.id, 0, 1);
+        this.currentPageOfComments = 1;
+        this.comments = result.content;
+        this.totalPagesOfComments = result.totalPages;
         this.fetchingComments = false;
+      }
+    },
+    loadMoreComments() {
+      if (this.currentPageOfComments + 1 <= this.totalPagesOfComments) {
+        this.loadComments();
       }
     }
   },

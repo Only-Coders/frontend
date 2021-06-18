@@ -69,7 +69,7 @@
               </v-col>
             </v-row>
 
-            <v-divider></v-divider>
+            <!-- <v-divider></v-divider>
 
             <p class="text-center my-5">O ingresa con</p>
             <v-row justify="center">
@@ -80,7 +80,7 @@
               <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
                 <v-img src="@/assets/images/github.png" @click="loginGithub" width="35" alt="github"></v-img>
               </v-btn>
-            </v-row>
+            </v-row> -->
           </v-form>
         </v-card>
       </v-col>

@@ -56,6 +56,7 @@
                     append-icon="mdi-calendar-month-outline"
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
+                    readonly
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="since" @input="showStartDatePicker = false"></v-date-picker>

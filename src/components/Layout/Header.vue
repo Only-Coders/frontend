@@ -181,13 +181,17 @@
                 <div v-if="notifications.length > 0">
                   <v-divider></v-divider>
                   <div class="d-flex justify-center">
-                    <v-btn text rounded plain @click="markAllNotificationAsRead">CLEAR ALL</v-btn>
+                    <v-btn text rounded plain @click="markAllNotificationAsRead">{{
+                      $i18n.t("Notifications.clearAll")
+                    }}</v-btn>
                   </div>
                 </div>
               </v-card>
             </div>
             <v-card v-else class="d-flex justify-center align-center" width="350px" height="150px">
-              <v-card-title class="font-weight-light subtitle-1">You have no notifications yet :(</v-card-title>
+              <v-card-title class="font-weight-light subtitle-1">{{
+                $i18n.t("Notifications.noNotifications")
+              }}</v-card-title>
             </v-card>
           </v-menu>
 
@@ -270,7 +274,7 @@
                             </v-col>
                             <v-col>
                               <v-list-item-content>
-                                <v-list-item-title>Profile</v-list-item-title>
+                                <v-list-item-title>{{ $i18n.t("Header.profile") }}</v-list-item-title>
                               </v-list-item-content>
                             </v-col>
                           </v-row>
@@ -284,7 +288,7 @@
                           <v-icon>mdi-cog</v-icon>
                         </v-list-item-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="ml-3"> Setting </v-list-item-title>
+                      <v-list-item-title class="ml-3">{{ $i18n.t("Header.settings") }}</v-list-item-title>
                     </v-list-item>
 
                     <v-list-item @click="logout">
@@ -293,7 +297,7 @@
                           <v-icon>mdi-logout-variant</v-icon>
                         </v-list-item-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="ml-3"> Logout </v-list-item-title>
+                      <v-list-item-title class="ml-3">{{ $i18n.t("Header.logout") }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-card>

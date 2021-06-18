@@ -211,6 +211,32 @@
     "follow": "Seguir",
     "following": "Siguiendo",
     "accept": "Aceptar",
-    "accepted": "Aceptado"
+    "accepted": "Aceptado",
+    "noNotifications": "Todavia no tienes notificaciones :(",
+    "clearAll": "Limpiar"
+  },
+  "Settings": {
+    "newPostTitle": "Nuevo Post",
+    "newCommentsTitle": "Nuevos Comentarios",
+    "newMentionsTitle": "Nuevas Menciones",
+    "newContactRequestTitle": "Nuevas Solicitudes de Contacto",
+    "newFollowerTitle": "Nuevos Seguidores",
+    "newContactAcceptedTitle": "Nuevo Contacto Aceptado",
+    "newPostText": "Enterate cuando un contacto crea un nuevo posteo",
+    "newCommentsText": "Enterate cuando alguien deja un nuevo comentario en uno de tus posts",
+    "newMentionsText": "Recibe un aviso cuando eres mencionado en el post de otro usuario",
+    "newContactRequestText": "Recibe una notificacion cuando alguien te envia una solicitud de contacto",
+    "newFollowerText": "Enterate cuando alguien te sigue",
+    "newContactAcceptedText": "Recibe una notificacion cuando alguien acepta tu solicitud de contacto",
+    "email": "Email",
+    "push": "Push",
+    "confirm": "Confirmar",
+    "settingsTitle": "Configuraciones",
+    "notificationsTitle": "Notificaciones"
+  },
+  "Header": {
+    "profile": "Perfil",
+    "settings": "Configuraciones",
+    "logout": "Cerrar Sesion"
   }
 }

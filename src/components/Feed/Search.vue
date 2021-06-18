@@ -26,7 +26,7 @@
             <v-list-item
               v-for="contact in filteredUsers.content"
               :key="contact.canonicalName"
-              :to="`profile/${contact.canonicalName}`"
+              :to="`/profile/${contact.canonicalName}`"
               link
             >
               <Contact :contactData="contact"></Contact>

@@ -323,6 +323,7 @@ import { formatDistanceStrict } from "date-fns";
 import { postFollow } from "@/services/follow";
 import { postContactRequest } from "@/services/contact";
 import ConfigurationsDialog from "@/components/Layout/ConfigurationsDialog.vue";
+import { postContactRequestResponse } from "@/services/receivedContactRequests";
 
 type Notification = {
   eventType: string;
@@ -449,23 +450,22 @@ export default Vue.extend({
     },
 
     async followUser(notification: Notification) {
-      if (!notification.sourceIsFollower) {
-        await postFollow(notification.canonicalName);
-        notification.sourceIsFollower = true;
-        await database
-          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
-          .update({ sourceIsFollower: true });
-      }
+      await postFollow(notification.canonicalName);
+      notification.sourceIsFollower = true;
+      await database
+        .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+        .update({ sourceIsFollower: true });
     },
 
     async acceptContactRequest(notification: Notification) {
-      if (!notification.sourceIsFollower) {
-        await postContactRequest({ canonicalName: notification.canonicalName });
-        notification.sourceIsContact = true;
-        await database
-          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
-          .update({ sourceIsContact: true });
-      }
+      await postContactRequestResponse({
+        requesterCanonicalName: notification.canonicalName,
+        acceptContact: true
+      });
+      notification.sourceIsContact = true;
+      await database
+        .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+        .update({ sourceIsContact: true });
     },
 
     redirectToFeed() {

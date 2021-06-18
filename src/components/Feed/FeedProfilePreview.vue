@@ -62,7 +62,7 @@
       </v-col>
     </v-row>
 
-    <v-btn text color="secondary" block class="text-caption" @click="$router.push('profile/' + userData.canonicalName)"
+    <v-btn text color="secondary" block class="text-caption" @click="$router.push('/profile/' + userData.canonicalName)"
       >{{ $i18n.t("Feed.viewProfile") }}
     </v-btn>
   </v-card>

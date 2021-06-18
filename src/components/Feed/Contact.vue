@@ -9,7 +9,7 @@
 
     <v-list-item-content>
       <v-list-item-title>
-        <h3 class="pa-0 font-weight-light text-truncate user_name" @click="$router.push('profile/' + canonicalName)">
+        <h3 class="pa-0 font-weight-light text-truncate user_name" @click="$router.push('/profile/' + canonicalName)">
           {{ firstName }} {{ lastName }}
         </h3>
       </v-list-item-title>

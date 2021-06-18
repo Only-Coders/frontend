@@ -178,8 +178,16 @@
           </v-btn-toggle>
         </div>
         <v-col cols="auto">
-          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2" @click="toggleComments"
-            ><p class="font-weight-regular text--secondary text-capitalize my-auto">
+          <v-btn
+            depressed
+            rounded
+            outlined
+            color="#E0E0E0"
+            class="mr-2"
+            @click="toggleComments"
+            :disabled="post.commentQuantity == 0"
+          >
+            <p class="font-weight-regular text--secondary text-capitalize my-auto">
               {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
           >
@@ -462,7 +470,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     },
     async loadComments() {
       this.fetchingComments = true;
-      const result = await getPostComments(this.post.id, this.currentPageOfComments, 1);
+      const result = await getPostComments(this.post.id, this.currentPageOfComments, 5);
       if (this.totalPagesOfComments == 0) {
         this.comments = result.content;
         this.totalPagesOfComments = result.totalPages;
@@ -480,7 +488,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.showComments = !this.showComments;
       if (this.showComments) {
         this.fetchingComments = true;
-        const result = await getPostComments(this.post.id, 0, 1);
+        const result = await getPostComments(this.post.id, 0, 5);
         this.currentPageOfComments = 1;
         this.comments = result.content;
         this.totalPagesOfComments = result.totalPages;

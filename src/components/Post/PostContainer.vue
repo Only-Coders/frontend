@@ -5,7 +5,7 @@
       @passPostToPostContainer="addPostToFeed"
       :isSelfProfile="isLoguedUserProfile"
       :userData="userInfo"
-      :isFlat="$route.name === 'ProfileChild'"
+      :class="$route.name === 'ProfileChild' ? 'mx-10' : ''"
     />
 
     <v-divider class="mt-8 mx-4 mx-md-8"></v-divider>
@@ -14,13 +14,13 @@
       <v-progress-circular align="center" indeterminate color="primary" class="my-12"></v-progress-circular>
     </v-col>
 
-    <div v-else v-for="post in posts" :key="post.id" class="mb-16 mt-8">
+    <div v-else v-for="post in posts" :key="post.id" class="mb-10 mt-8">
       <Post
         :post="post"
         @passDeletedPostAsFavorite="passDeletedPostAsFavorite"
         :isInFavoritesTab="isInFavoritesTab"
         @deletePost="deletePost"
-        :isFlat="$route.name === 'ProfileChild'"
+        :class="$route.name === 'ProfileChild' ? 'mx-10' : ''"
       />
     </div>
   </div>

@@ -1,29 +1,29 @@
 <template>
   <div>
     <v-card :flat="!$vuetify.breakpoint.mdAndUp || isFlat">
-      <v-row class="px-3 px-md-7 py-3" align="start" no-gutters>
-        <v-col cols="1" md="2" lg="1" class="pt-4">
+      <v-row class="px-3 px-md-7 py-3" align="start" justify-sm="center" no-gutters>
+        <v-col cols="2" md="2" lg="2" class="pt-4 text-center">
           <AvatarImagePreview
-            class="font-weight-ligth pr-2 pb-0 user_name"
+            class="pb-0 user_name"
             @click="redirectToProfile"
             :src="imageURI"
             style="cursor: pointer"
             :imageSize="$vuetify.breakpoint.mdAndUp ? 60 : 55"
           ></AvatarImagePreview>
         </v-col>
-        <v-col cols="11" md="10" lg="11" class="ma-0 pl-4 pl-md-0">
+        <v-col cols="10" md="10" lg="10" class="ma-0 pl-md-0">
           <v-row class="align-center justify-space-between" no-gutters>
             <div class="d-flex align-center">
               <v-col cols="auto" class="pa-0">
-                <v-card-title class="font-weight-ligth pr-2 pb-0 user_name" @click="redirectToProfile"
+                <v-card-title class="pr-2 pb-0 pl-0 user_name" @click="redirectToProfile"
                   >{{ post.publisher.firstName }} {{ post.publisher.lastName }}</v-card-title
                 >
               </v-col>
-              <v-col cols="auto" class="d-flex justify-start pa-0 pt-4">
+              <v-col cols="auto" md="12" lg="12" class="d-flex justify-start pa-0 pt-4">
                 <div class="pl-0 pl-md-2 my-auto">
                   <v-img
                     alt="gold-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/gold-medal.png"
                   />
                 </div>
@@ -33,7 +33,7 @@
                 <div class="my-auto">
                   <v-img
                     alt="silver-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/silver-medal.png"
                   />
                 </div>
@@ -42,7 +42,7 @@
                 <div class="my-auto">
                   <v-img
                     alt="bronce-medal"
-                    :width="$vuetify.breakpoint.mdAndUp ? '20' : '15'"
+                    :width="$vuetify.breakpoint.mdAndUp ? '18' : '15'"
                     src="@/assets/images/bronce-medal.png"
                   />
                 </div>
@@ -102,7 +102,7 @@
               </v-menu>
             </v-col>
           </v-row>
-          <v-card-subtitle class="py-0"
+          <v-card-subtitle class="py-0 pl-0"
             >{{ post.publisher.currentPosition ? post.publisher.currentPosition.position : "" }}
             {{ post.publisher.currentPosition ? $i18n.t("Feed.onPlace") : "" }}
             {{
@@ -111,12 +111,12 @@
                 : ""
             }}
           </v-card-subtitle>
-          <v-card-subtitle class="py-0">{{ formattedPostDate }}</v-card-subtitle>
+          <v-card-subtitle class="py-0 pl-0">{{ formattedPostDate }}</v-card-subtitle>
         </v-col>
       </v-row>
       <v-row v-if="!postIsCode">
         <v-col class="py-0 px-10">
-          <component :is="message"></component>
+          <component :is="message" class="px-12"></component>
         </v-col>
       </v-row>
       <v-row v-else>
@@ -178,13 +178,22 @@
           </v-btn-toggle>
         </div>
         <v-col cols="auto">
-          <v-btn depressed rounded outlined color="#E0E0E0"
+          <v-btn depressed rounded outlined color="#E0E0E0" class="mr-2" @click="toggleComments"
             ><p class="font-weight-regular text--secondary text-capitalize my-auto">
               {{ post.commentQuantity ? post.commentQuantity : 0 }} {{ $i18n.t("Feed.comments") }}
             </p></v-btn
           >
         </v-col>
       </v-row>
+
+      <PostComments
+        :comments="comments"
+        :fetching="fetchingComments"
+        v-if="showComments"
+        @hideComments="hideComments"
+        @loadMoreComments="loadMoreComments"
+      ></PostComments>
+      <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
     </v-card>
     <EditPostDialog
       v-if="showEditDialog"
@@ -220,6 +229,11 @@ import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 import Prism from "prismjs";
+import CreatePostDialog from "./CreatePostDialog.vue";
+import CreateComment from "@/components/Post/CreateComment.vue";
+import PostComments from "@/components/Post/PostComments.vue";
+import { Comment } from "@/models/comment";
+import { getPostComments } from "@/services/comment";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -227,7 +241,17 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
   name: "Post",
 
-  components: { LinkPreview, CodePostVisualizer, FileType, DeletePostDialog, EditPostDialog, AvatarImagePreview },
+  components: {
+    LinkPreview,
+    CodePostVisualizer,
+    FileType,
+    DeletePostDialog,
+    EditPostDialog,
+    AvatarImagePreview,
+    CreatePostDialog,
+    CreateComment,
+    PostComments
+  },
 
   mixins: [medalsMixin, notificationsMixin],
 
@@ -238,7 +262,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
 
   data: () => ({
-    createDialog: false,
+    createPostDialog: false,
     medals: {} as Medals,
     formattedPostDate: "",
     postIsCode: false,
@@ -257,7 +281,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     toggleReject: null as number | null,
     toggleApprove: null as number | null,
     showEditDialog: false,
-    postMessageToEdit: ""
+    postMessageToEdit: "",
+    comments: [] as Comment[],
+    fetchingComments: true,
+    showComments: false,
+    currentPageOfComments: 0,
+    totalPagesOfComments: 0
   }),
 
   computed: {
@@ -423,6 +452,45 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       if (post.type === "FILE") {
         this.getFileName();
       }
+    },
+    addCommentToPost(comment: Comment) {
+      if (this.showComments) {
+        console.log("Se estan mostrando los comentarios");
+        this.comments.push(comment);
+      }
+      this.post.commentQuantity++;
+    },
+    async loadComments() {
+      this.fetchingComments = true;
+      const result = await getPostComments(this.post.id, this.currentPageOfComments, 1);
+      if (this.totalPagesOfComments == 0) {
+        this.comments = result.content;
+        this.totalPagesOfComments = result.totalPages;
+      } else {
+        this.comments = this.comments.concat(result.content);
+      }
+      this.currentPageOfComments++;
+
+      this.fetchingComments = false;
+    },
+    hideComments() {
+      this.showComments = false;
+    },
+    async toggleComments() {
+      this.showComments = !this.showComments;
+      if (this.showComments) {
+        this.fetchingComments = true;
+        const result = await getPostComments(this.post.id, 0, 1);
+        this.currentPageOfComments = 1;
+        this.comments = result.content;
+        this.totalPagesOfComments = result.totalPages;
+        this.fetchingComments = false;
+      }
+    },
+    loadMoreComments() {
+      if (this.currentPageOfComments + 1 <= this.totalPagesOfComments) {
+        this.loadComments();
+      }
     }
   },
 
@@ -436,6 +504,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 <style scoped>
 .user_name {
   cursor: pointer;
+  font-size: 1.02rem;
 }
 .reaction-btn {
   height: 36px !important;

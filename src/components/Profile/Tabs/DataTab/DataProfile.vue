@@ -88,6 +88,7 @@
       v-model="createDialog"
       @unfollowTag="$emit('unfollowTag')"
       @updateData="updateUserData"
+      class="pt-10"
     ></EditDataDialog>
   </div>
 </template>
@@ -160,7 +161,6 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
     userInfo: {
       handler() {
         if (this.userInfo.birthDate) {
-          console.log("En watch");
           this.birthDate = format(new Date(this.userInfo.birthDate), "dd/MM/yyyy");
         }
         if (this.userInfo.gitProfile) {

@@ -2,13 +2,13 @@
   <div>
     <v-row class="py-10 px-sm-16 px-5 mt-9" align="center" no-gutters>
       <span class="pl-4 pl-sm-10 pr-6">
-        <v-icon size="30"> mdi-briefcase </v-icon>
+        <v-icon size="30"> mdi-school </v-icon>
       </span>
       <h3>{{ $i18n.t("ViewProfile.academicExperience") }}</h3>
       <v-spacer></v-spacer>
-      <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
+      <!-- <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
         <v-icon size="28" color="grey darken-1"> mdi-plus </v-icon>
-      </v-btn>
+      </v-btn> -->
       <div class="divider-container mt-8">
         <v-divider></v-divider>
       </div>

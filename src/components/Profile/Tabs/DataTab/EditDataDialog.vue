@@ -1,15 +1,15 @@
 <template>
   <v-dialog :value="value" @input="close" width="auto" transition="dialog-top-transition" max-width="650">
-    <v-toolbar color="primary" dark>
-      <h2 class="ml-4">{{ $i18n.t("editDataModalTitle") }}</h2>
-      <v-spacer></v-spacer>
-      <v-btn class="mr-2 mt-1" icon @click="close">
-        <v-icon size="27"> mdi-close </v-icon>
-      </v-btn>
-    </v-toolbar>
+    <v-card class="d-flex flex-column">
+      <v-toolbar color="primary" dark>
+        <h2 class="ml-4">{{ $i18n.t("editDataModalTitle") }}</h2>
+        <v-spacer></v-spacer>
+        <v-btn class="mr-2 mt-1" icon @click="close">
+          <v-icon size="27"> mdi-close </v-icon>
+        </v-btn>
+      </v-toolbar>
 
-    <v-card class="pt-8">
-      <v-card-text>
+      <v-card-text class="mt-10">
         <v-row justify="center" no-gutters class="overflow-y-auto">
           <v-col cols="10">
             <v-form ref="register-user" lazy-validation>
@@ -73,6 +73,7 @@
                         append-icon="mdi-calendar-month-outline"
                         v-bind="{ attrs, ...inputProps }"
                         v-on="on"
+                        readonly
                       ></v-text-field>
                     </template>
                     <v-date-picker no-title v-model="user.birthDate" @input="showDatePicker = false"></v-date-picker>

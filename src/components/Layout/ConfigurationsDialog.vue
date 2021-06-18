@@ -2,131 +2,131 @@
   <v-dialog :value="value" @input="close" transition="dialog-top-transition" width="670px" height="700px">
     <v-card max-width="670px" max-height="700px">
       <v-toolbar color="primary" dark>
-        <h2>Settings</h2>
+        <h2>{{ $i18n.t("Settings.settingsTitle") }}</h2>
         <v-spacer></v-spacer>
         <v-btn class="mt-1" icon @click="close">
           <v-icon size="20"> mdi-close </v-icon>
         </v-btn>
       </v-toolbar>
       <v-tabs vertical>
-        <v-tab>Notifications</v-tab>
-        <v-tab-item class="ml-10">
+        <v-tab>{{ $i18n.t("Settings.notificationsTitle") }}</v-tab>
+        <v-tab-item class="mx-10">
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Post</v-card-title>
-            <v-card-subtitle class="pa-0">Find out when a contact creates a new post</v-card-subtitle>
+            <v-card-title class="pl-0 font-weight-regular">{{ $i18n.t("Settings.newPostTitle") }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newPostText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.NEW_POST.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.NEW_POST.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Comments</v-card-title>
-            <v-card-subtitle class="pa-0"
-              >Find out when someone leves a new comment on one of your posts</v-card-subtitle
-            >
+            <v-card-title class="pl-0 font-weight-regular">{{ $i18n.t("Settings.newCommentsTitle") }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newCommentsText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.NEW_COMMENT.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.NEW_COMMENT.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Mentions</v-card-title>
-            <v-card-subtitle class="pa-0">Get a heads up when your mentioned on someone's post</v-card-subtitle>
+            <v-card-title class="pl-0 font-weight-regular">{{ $i18n.t("Settings.newMentionsTitle") }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newMentionsText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.NEW_MENTION.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.NEW_MENTION.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Contact Request</v-card-title>
-            <v-card-subtitle class="pa-0">Get notifications when someone sends you a contact request</v-card-subtitle>
+            <v-card-title class="pl-0 font-weight-regular">{{
+              $i18n.t("Settings.newContactRequestTitle")
+            }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newContactRequestText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.CONTACT_REQUEST.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.CONTACT_REQUEST.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Follower</v-card-title>
-            <v-card-subtitle class="pa-0">Get a notification when someone follows you</v-card-subtitle>
+            <v-card-title class="pl-0 font-weight-regular">{{ $i18n.t("Settings.newFollowerTitle") }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newFollowerText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.NEW_FOLLOWER.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.NEW_FOLLOWER.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <div>
-            <v-card-title class="pl-0 font-weight-regular">New Contact Accepted</v-card-title>
-            <v-card-subtitle class="pa-0"
-              >Recieve a notification when someone accepts your contact request</v-card-subtitle
-            >
+            <v-card-title class="pl-0 font-weight-regular">{{
+              $i18n.t("Settings.newContactAcceptedTitle")
+            }}</v-card-title>
+            <v-card-subtitle class="pa-0">{{ $i18n.t("Settings.newContactAcceptedText") }}</v-card-subtitle>
             <v-row no-gutters class="align-center">
               <v-col cols="auto">
                 <v-checkbox v-model="notifications.CONTACT_ACCEPTED.email"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Email</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.email") }}</h4>
               </v-col>
               <v-col cols="auto" class="ml-4">
                 <v-checkbox v-model="notifications.CONTACT_ACCEPTED.push"></v-checkbox>
               </v-col>
               <v-col cols="auto" class="pl-0">
-                <h4 class="ma-0 font-weight-light">Push</h4>
+                <h4 class="ma-0 font-weight-light">{{ $i18n.t("Settings.push") }}</h4>
               </v-col>
             </v-row>
           </div>
           <v-row no-gutters class="d-flex justify-end pt-8 pb-4">
             <v-col cols="auto">
-              <v-btn color="primary" class="mr-8" small @click="changeNotificationSettings" :loading="isButtonLoading">
-                {{ $i18n.t("confirm") }}
+              <v-btn color="primary" small @click="changeNotificationSettings" :loading="isButtonLoading">
+                {{ $i18n.t("Settings.confirm") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -141,6 +141,7 @@ import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import { NotificationType } from "@/models/Enums/notificationType";
 import { getUserNotificationsConfig, putChangeNotifications } from "@/services/notifications";
+import { NotificationsConfig } from "@/models/notificationsConfig";
 
 interface NotificationSettingData {
   id: string;

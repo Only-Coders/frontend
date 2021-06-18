@@ -94,7 +94,7 @@ export default Vue.extend({
       this.$store.commit("userPaginationModule/SET_USER_PAGINATION", this.filteredUsers);
       this.$store.commit("userPaginationModule/SET_SEARCH_TEXT", this.filters);
       this.$store.commit("userPaginationModule/SET_USER_PER_PAGE", 5);
-      this.$router.push({ path: "/search/results/all/", query: { keywords: this.filters } });
+      this.$router.push({ path: "/search/results/all", query: { keywords: this.filters } });
     }
   },
   computed: {

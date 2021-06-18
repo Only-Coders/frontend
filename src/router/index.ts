@@ -72,7 +72,7 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: "/search/results/all/:keywords",
+    path: "/search/results/all",
     name: "search-users",
     component: () => import(/* webpackChunkName: "profile" */ "../views/SearchUsers.vue"),
     meta: {

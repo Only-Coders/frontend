@@ -134,6 +134,11 @@
           <LinkPreview :url="post.url"></LinkPreview>
         </v-col>
       </v-row>
+      <v-row v-if="post.type === 'LINK' && isLinkVideo">
+        <v-col class="pt-0 pb-6 px-10">
+          <youtube-media :video-id="post.url"></youtube-media>
+        </v-col>
+      </v-row>
       <v-row v-if="post.type === 'FILE'">
         <v-col class="pt-0 pb-6 px-10">
           <a :href="post.url" download>
@@ -294,7 +299,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     fetchingComments: true,
     showComments: false,
     currentPageOfComments: 0,
-    totalPagesOfComments: 0
+    totalPagesOfComments: 0,
+    isLinkVideo: false
   }),
 
   computed: {
@@ -319,6 +325,11 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   },
 
   methods: {
+    isYoutubeVideo(url: string) {
+      const regex = /^(https?:\/\/)?(www\.youtube\.com|youtu\.?be)\/(?<id>\S+)/;
+      console.log(regex.test(url));
+      return regex.test(url);
+    },
     toggleDeletePostDialog(postId: string) {
       this.showDeletePostDialog = true;
       this.$emit("deletePost", postId);
@@ -447,6 +458,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.formatPost(this.post);
     },
     formatPost(post: GetPost) {
+      this.isLinkVideo = this.isYoutubeVideo(post.url);
       this.parseReactions();
       this.checkIfPostIsCode();
       if (!this.postIsCode) {

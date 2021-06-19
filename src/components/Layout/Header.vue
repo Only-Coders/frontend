@@ -78,8 +78,6 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                text
-                rounded
                 plain
                 class="hidden-sm-and-down"
                 @click="showNotifications = !showNotifications"
@@ -87,7 +85,7 @@
                 v-on="on"
               >
                 <v-badge :content="notificationsCount" :value="notificationsCount" color="primary" overlap>
-                  <v-icon color="navbar_icon">mdi-bell</v-icon>
+                  <v-icon color="#ffffff">mdi-bell</v-icon>
                 </v-badge>
               </v-btn>
             </template>

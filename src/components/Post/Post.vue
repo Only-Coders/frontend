@@ -353,9 +353,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       if (this.post.tags.length !== 0) {
         this.post.tags.forEach((tag) => {
           const regex = new RegExp(`#${this.escapeRegex(tag.displayName)}`, "g");
+
           this.post.message = this.post.message.replace(
             regex,
-            `<router-link to="/tag/${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
+            `<router-link to="/?tag=${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
           );
         });
       }

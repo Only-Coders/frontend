@@ -28,8 +28,9 @@ import FeedProfilePreview from "@/components/Feed/FeedProfilePreview.vue";
 import Suggestions from "@/components/Feed/Suggestions.vue";
 import PostContainer from "@/components/Post/PostContainer.vue";
 import InfiniteLoading from "vue-infinite-loading";
-import { getPost } from "@/services/post";
+import { getPost, getTagPosts } from "@/services/post";
 import { GetPost } from "@/models/post";
+import { Pagination } from "@/models/Pagination/pagination";
 
 export default Vue.extend({
   name: "Feed",
@@ -46,7 +47,13 @@ export default Vue.extend({
   methods: {
     async fetchPosts() {
       this.fetching = true;
-      const result = await getPost(this.currentPage, 5);
+      const tag = this.$route.query.tag as string;
+      let result: Pagination<GetPost>;
+      if (tag) {
+        result = await getTagPosts(this.currentPage, 5, tag);
+      } else {
+        result = await getPost(this.currentPage, 5);
+      }
       this.currentPage++;
       this.posts = result.content;
       if (result.totalElements !== 0) {
@@ -57,7 +64,13 @@ export default Vue.extend({
 
     async loadMore($state: { loaded: () => void; complete: () => void }) {
       setTimeout(async () => {
-        const result = await getPost(this.currentPage, 5);
+        const tag = this.$route.query.tag as string;
+        let result: Pagination<GetPost>;
+        if (tag) {
+          result = await getTagPosts(this.currentPage, 5, tag);
+        } else {
+          result = await getPost(this.currentPage, 5);
+        }
         if (result.content.length) {
           this.currentPage += 1;
           this.posts = this.posts.concat(result.content);

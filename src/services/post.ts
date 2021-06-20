@@ -14,6 +14,11 @@ export async function getPost(page: number, size: number): Promise<Pagination<Ge
   return response.data;
 }
 
+export async function getTagPosts(page: number, size: number, tagCanonicalName: string): Promise<Pagination<GetPost>> {
+  const response = await axios.get(`/api/tags/${tagCanonicalName}/posts`, { params: { page, size } });
+  return response.data;
+}
+
 export async function getUserPost(canonicalName: string, page: number, size: number): Promise<Pagination<GetPost>> {
   const response = await axios.get(`/api/posts/user/${canonicalName}`, { params: { page, size } });
   return response.data;

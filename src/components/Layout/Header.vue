@@ -478,6 +478,9 @@ export default Vue.extend({
           behavior: "smooth"
         });
         this.$store.commit("shouldRefreshFeed", true);
+        if (this.$route.query.tag) {
+          this.$router.push("/");
+        }
       } else {
         this.$router.push("/");
       }

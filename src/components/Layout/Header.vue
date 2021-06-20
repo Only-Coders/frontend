@@ -59,21 +59,15 @@
           class="d-flex pa-0 ml-sm-0 ml-md-8 mr-0 mr-md-3 mr-lg-0"
           :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
         >
-          <div class="icon-container hidden-sm-and-down">
-            <v-btn text rounded plain link to="/" class="px-0 mx-0"
-              ><v-icon color="navbar_icon">mdi-home-variant</v-icon></v-btn
-            >
-            <div v-if="this.$route.name === 'Feed'" class="indicator"></div>
-          </div>
+          <router-link link to="/" class="hidden-sm-and-down mx-6 mt-1"
+            ><v-icon color="navbar_icon">mdi-home-variant</v-icon></router-link
+          >
 
-          <div class="icon-container">
-            <v-btn text class="pl-12 pl-sm-6 pl-md-5" rounded plain link to="/chat">
-              <v-badge :content="messages" :value="messages" color="primary" overlap>
-                <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
-              </v-badge>
-              <div v-if="this.$route.name === 'Chat'" class="indicator"></div>
-            </v-btn>
-          </div>
+          <router-link class="mr-6 mt-1 ml-sm-6 ml-md-5" link to="/chat">
+            <v-badge :content="messages" :value="messages" color="primary" overlap>
+              <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
+            </v-badge>
+          </router-link>
 
           <v-menu
             :close-on-content-click="false"
@@ -85,8 +79,6 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                text
-                rounded
                 plain
                 class="hidden-sm-and-down"
                 @click="showNotifications = !showNotifications"
@@ -94,7 +86,7 @@
                 v-on="on"
               >
                 <v-badge :content="notificationsCount" :value="notificationsCount" color="primary" overlap>
-                  <v-icon color="navbar_icon">mdi-bell</v-icon>
+                  <v-icon color="#ffffff">mdi-bell</v-icon>
                 </v-badge>
               </v-btn>
             </template>
@@ -611,5 +603,8 @@ export default Vue.extend({
 .v-toolbar__content {
   margin: 0;
   padding: 0;
+}
+.router-link-exact-active {
+  border-bottom: 2px solid white !important;
 }
 </style>

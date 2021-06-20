@@ -6,16 +6,28 @@
           <v-card-title class="font-weight-light pt-0"><h3 class="font-weight-light">Recent</h3></v-card-title>
         </v-col>
         <v-col class="d-flex flex-row-reverse">
-          <v-btn text>
+          <v-btn text @click="clearHistory">
             <p class="font-weight-bold text--secondary text-capitalize pb-0 my-auto">Borrar</p>
           </v-btn>
         </v-col>
       </v-row>
       <v-row no-gutters>
-        <v-col cols="2" class="d-flex flex-column align-center">
-          <v-img alt="user" class="mb-2" width="60" :src="require('@/assets/images/default-avatar.png')" />
-          <h4 class="font-weight-light">Mateo</h4>
-          <h4 class="font-weight-light">Sayas</h4>
+        <v-col
+          cols="2"
+          class="d-flex flex-column align-center user_name"
+          v-for="recentSearch in recentSearches"
+          :key="recentSearch.canonicalName"
+          @click="goToProfile(recentSearch)"
+        >
+          <v-avatar size="50">
+            <v-img
+              alt="user"
+              class="mb-2"
+              width="60"
+              :src="recentSearch.imageURI ? recentSearch.imageURI : require('@/assets/images/default-avatar.png')"
+            />
+          </v-avatar>
+          <h4 class="font-weight-light text-center">{{ recentSearch.fullName }}</h4>
         </v-col>
       </v-row>
     </div>
@@ -27,6 +39,7 @@
               v-for="contact in filteredUsers.content"
               :key="contact.canonicalName"
               :to="`/profile/${contact.canonicalName}`"
+              @click="storeRecentSearch(contact)"
               link
             >
               <Contact :contactData="contact"></Contact>
@@ -72,14 +85,20 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { User } from "@/models/user";
+import { addRecentSearch, clearRecentSearches, getRecentSearches } from "@/services/recentSearch";
 import { Tag } from "@/models/tag";
 import Contact from "@/components/Feed/SearchContact.vue";
 import { Pagination } from "@/models/Pagination/pagination";
+import { RecentSearch } from "@/models/recentSearch";
 
 export default Vue.extend({
   name: "Search",
 
   components: { Contact },
+
+  data: () => ({
+    recentSearches: [] as RecentSearch[]
+  }),
 
   props: {
     filteredUsers: {} as PropType<Pagination<User>>,
@@ -90,6 +109,25 @@ export default Vue.extend({
   },
 
   methods: {
+    async clearHistory() {
+      await clearRecentSearches();
+      this.recentSearches = [];
+    },
+    async storeRecentSearch(contact: User) {
+      await addRecentSearch({
+        canonicalName: contact.canonicalName,
+        fullName: contact.fullName,
+        imageURI: contact.imageURI
+      });
+    },
+    async goToProfile(recentSearch: RecentSearch) {
+      this.$router.push(`/profile/${recentSearch.canonicalName}`);
+      await addRecentSearch({
+        canonicalName: recentSearch.canonicalName,
+        fullName: recentSearch.fullName,
+        imageURI: recentSearch.imageURI
+      });
+    },
     redirectSearchUsers() {
       this.$store.commit("userPaginationModule/SET_USER_PAGINATION", this.filteredUsers);
       this.$store.commit("userPaginationModule/SET_SEARCH_TEXT", this.filters);
@@ -99,8 +137,14 @@ export default Vue.extend({
   },
   computed: {
     shouldRenderRecents(): boolean {
-      return this.filteredUsers && this.filteredUsers.content && this.filteredUsers.content.length === 0;
+      return (
+        (this.filters.length === 0 && this.recentSearches.length !== 0) ||
+        (this.filteredUsers && this.filteredUsers.content && this.filteredUsers.content.length === 0)
+      );
     }
+  },
+  async created() {
+    this.recentSearches = await getRecentSearches();
   }
 });
 </script>
@@ -112,5 +156,9 @@ export default Vue.extend({
 
 .search__progress {
   height: 150px;
+}
+
+.user_name {
+  cursor: pointer;
 }
 </style>

@@ -14,7 +14,7 @@
           />
         </v-col>
         <v-overlay :value="showOverlay" opacity="0.60"></v-overlay>
-        <v-col cols="9" sm="9 offset-1" md="5" offset-md="0" lg="5">
+        <v-col cols="9" sm="9 offset-1" md="5" offset-md="0" lg="5" class="header__search__input">
           <transition name="scale-transition" mode="out-in" appear>
             <v-menu
               :close-on-content-click="false"
@@ -583,6 +583,10 @@ export default Vue.extend({
 
 .feed_link {
   cursor: pointer;
+}
+
+.header__search__input {
+  z-index: 9999 !important;
 }
 
 .header__notification__fromName {

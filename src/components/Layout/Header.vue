@@ -36,6 +36,7 @@
                   class="mx-auto"
                   placeholder="Search"
                   @focus="getRecommendedTags"
+                  autocomplete="off"
                   v-bind="attrs"
                   v-on="on"
                   @click="showOverlay = !showOverlay"

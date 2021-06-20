@@ -3,11 +3,13 @@
     <div v-if="shouldRenderRecents">
       <v-row class="d-flex justify-space-between align-center mt-4" no-gutters>
         <v-col>
-          <v-card-title class="font-weight-light pt-0"><h3 class="font-weight-light">Recent</h3></v-card-title>
+          <v-card-title class="font-weight-light pt-0"
+            ><h3 class="font-weight-light">{{ $i18n.t("Search.recent") }}</h3></v-card-title
+          >
         </v-col>
         <v-col class="d-flex flex-row-reverse">
           <v-btn text @click="clearHistory">
-            <p class="font-weight-bold text--secondary text-capitalize pb-0 my-auto">Borrar</p>
+            <p class="font-weight-bold text--secondary text-capitalize pb-0 my-auto">{{ $i18n.t("Search.delete") }}</p>
           </v-btn>
         </v-col>
       </v-row>
@@ -54,14 +56,16 @@
     <v-row class="d-flex flex-row-reverse" no-gutters>
       <v-col cols="auto">
         <v-btn @click="redirectSearchUsers" text>
-          <p class="font-weight-bold text--secondary text-capitalize mb-0">Ver todos</p></v-btn
+          <p class="font-weight-bold text--secondary text-capitalize mb-0">{{ $i18n.t("Search.seeAll") }}</p></v-btn
         >
       </v-col>
     </v-row>
     <v-divider class="search__divider"></v-divider>
     <v-row class="mt-4" no-gutters>
       <v-col>
-        <v-card-title class="font-weight-light py-0"><h4 class="font-weight-light">Prueba con</h4></v-card-title>
+        <v-card-title class="font-weight-light py-0"
+          ><h4 class="font-weight-light">{{ $i18n.t("Search.try") }}</h4></v-card-title
+        >
         <v-list v-if="!areTagsLoading">
           <v-list-item v-for="tag in tags" :key="tag.canonicalName">
             <v-list-item-icon class="mr-2">

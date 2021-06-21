@@ -167,8 +167,7 @@ import { postFollow, deleteFollow } from "@/services/follow";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
-import { editProfile } from "@/services/user";
-import { EditProfile } from "@/models/profile";
+import { editImageProfile } from "@/services/user";
 import ProfilePhoto from "@/components/Profile/ProfilePhoto.vue";
 import { storage } from "@/plugins/firebaseInit";
 
@@ -224,18 +223,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     },
 
     async confirmPhotoChange(imageURI: string, originalImage: string) {
-      const result = await editProfile({
-        firstName: this.userData.firstName,
-        lastName: this.userData.lastName,
-        description: this.userData.description,
-        imageURI: imageURI,
-        birthDate: this.userData.birthDate,
-        gitProfile: {
-          platform: this.userData.gitProfile.platform,
-          userName: this.userData.gitProfile.userName
-        },
-        countryCode: this.userData.country.code
-      } as EditProfile);
+      const result = await editImageProfile(imageURI);
 
       if (result) {
         this.userDataComputed.imageURI = imageURI;

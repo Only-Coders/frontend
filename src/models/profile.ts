@@ -34,8 +34,8 @@ export type EditProfile = {
   imageURI: string;
   birthDate: string;
   gitProfile: {
-    platform: "";
+    platform: string;
     userName: string;
-  };
+  } | null;
   countryCode: string;
 };

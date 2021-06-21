@@ -103,7 +103,7 @@ import { VueConstructor } from "vue/types/umd";
 import EditDataDialog from "@/components/Profile/Tabs/DataTab/EditDataDialog.vue";
 
 type GitProfile = {
-  platform: "";
+  platform: string;
   userName: string;
 };
 
@@ -126,15 +126,16 @@ export default (Vue as VueConstructor<Vue & GitPlatformsMixin & DateMixin>).exte
   methods: {
     updateUserData(userProfileUpdated: Profile) {
       this.userInfo.description = userProfileUpdated.description;
-      this.birthDate = format(new Date(userProfileUpdated.birthDate), "dd/MM/yyyy");
+      this.birthDate = userProfileUpdated.birthDate ? format(new Date(userProfileUpdated.birthDate), "dd/MM/yyyy") : "";
       this.userInfo.birthDate = userProfileUpdated.birthDate;
       this.userInfo.firstName = userProfileUpdated.firstName;
       this.userInfo.lastName = userProfileUpdated.lastName;
       this.userInfo.country.name = userProfileUpdated.country.name;
       this.userInfo.country.code = userProfileUpdated.country.code;
-      this.setGitPlatformImg(userProfileUpdated.gitProfile.platform);
-      this.userInfo.gitProfile.platform = userProfileUpdated.gitProfile.platform;
-      this.userInfo.gitProfile.userName = userProfileUpdated.gitProfile.userName;
+      this.userInfo.gitProfile = userProfileUpdated.gitProfile;
+      if (userProfileUpdated.gitProfile) {
+        this.setGitPlatformImg(userProfileUpdated.gitProfile.platform);
+      }
     },
 
     setGitPlatformImg(gitPlatform: string) {

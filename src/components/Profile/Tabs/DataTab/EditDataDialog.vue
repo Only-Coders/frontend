@@ -122,12 +122,11 @@
 </template>
 
 <script lang="ts">
-import { Profile } from "@/models/profile";
+import { EditProfile, Profile } from "@/models/profile";
 import Vue, { PropType, VueConstructor } from "vue";
 import { Country } from "@/models/country";
 import { getCountries } from "@/services/countries";
 import { editProfile } from "@/services/user";
-import { EditProfile } from "@/models/profile";
 import ruleMixin, { RuleMixin } from "@/mixins/rules";
 import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
@@ -156,7 +155,7 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & GitPla
         userName: ""
       },
       countryCode: ""
-    } as EditProfile,
+    },
     loading: false
   }),
 
@@ -166,8 +165,12 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & GitPla
     },
     async confirmEdition() {
       this.loading = true;
-      this.user.birthDate = new Date(this.user.birthDate).toISOString();
-      const result = await editProfile(this.user);
+      if (this.user.birthDate) this.user.birthDate = new Date(this.user.birthDate).toISOString();
+      const editedUser: EditProfile = { ...this.user };
+      if (!editedUser.gitProfile?.userName) {
+        editedUser.gitProfile = null;
+      }
+      const result = await editProfile(editedUser);
       this.loading = false;
       if (result) {
         this.$emit("updateData", result);
@@ -179,18 +182,18 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & GitPla
 
   async created() {
     this.countries = await getCountries();
-    this.user = {
-      firstName: this.userData.firstName,
-      lastName: this.userData.lastName,
-      description: this.userData.description,
-      imageURI: this.userData.imageURI,
-      birthDate: this.userData.birthDate,
-      gitProfile: {
-        platform: this.userData.gitProfile.platform,
-        userName: this.userData.gitProfile.userName
-      },
-      countryCode: this.userData.country.code
-    };
+
+    this.user.firstName = this.userData.firstName;
+    this.user.lastName = this.userData.lastName;
+    this.user.description = this.userData.description;
+    this.user.imageURI = this.userData.imageURI;
+    this.user.birthDate = this.userData.birthDate;
+
+    if (this.userData.gitProfile) {
+      this.user.gitProfile = this.userData.gitProfile;
+    }
+
+    this.user.countryCode = this.userData.country.code;
   },
 
   computed: {

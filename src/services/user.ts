@@ -49,3 +49,8 @@ export async function editProfile(editProfile: EditProfile): Promise<Profile> {
   const response = await axios.put(`/api/users`, editProfile);
   return response.data;
 }
+
+export async function editImageProfile(imageURI: string): Promise<Profile> {
+  const response = await axios.patch(`/api/users/image`, { imageURI: imageURI });
+  return response.data;
+}

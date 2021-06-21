@@ -488,7 +488,6 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     },
     addCommentToPost(comment: Comment) {
       if (this.showComments) {
-        console.log("Se estan mostrando los comentarios");
         this.comments.push(comment);
       }
       this.post.commentQuantity++;

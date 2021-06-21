@@ -72,6 +72,16 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/users",
+    name: "UserList",
+    component: () => import(/* webpackChunkName: "admin" */ "../views/AdminListUsers.vue"),
+    meta: {
+      layout: "AdminLayout",
+      requiresAuth: true,
+      requiresAdmin: true
+    }
+  },
+  {
     path: "/search/results/all",
     name: "search-users",
     component: () => import(/* webpackChunkName: "profile" */ "../views/SearchUsers.vue"),

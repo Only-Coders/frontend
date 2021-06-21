@@ -19,6 +19,12 @@
         </template>
         <span>{{ $i18n.t("Header.logout") }}</span>
       </v-tooltip>
+      <v-btn icon class="mr-2" @click="openAddAdmin">
+        <v-icon>mdi-account-plus</v-icon>
+      </v-btn>
+      <v-btn icon class="mr-2" @click="$router.push('/users')">
+        <v-icon>mdi-format-list-bulleted</v-icon>
+      </v-btn>
     </v-app-bar>
     <new-admin v-model="showAddAdmin"></new-admin>
   </div>

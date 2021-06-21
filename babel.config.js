@@ -6,14 +6,15 @@ module.exports = {
       {
         languages: [
           "javascript",
+          "typescript",
           "c",
-          "css",
+          "cpp",
           "html",
+          "css",
           "cypher",
           "sql",
           "bash",
           "csharp",
-          "cpp",
           "dart",
           "diff",
           "docker",

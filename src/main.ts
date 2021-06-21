@@ -7,11 +7,13 @@ import VueI18n from "vue-i18n";
 import Locale from "@/locale/index";
 import Notifications from "vue-notification";
 import VueApexCharts from "vue-apexcharts";
+import VueYouTubeEmbed from "vue-youtube-embed";
 
 Vue.use(VueApexCharts);
 Vue.use(VueI18n);
 Vue.use(Notifications);
 Vue.component("apexchart", VueApexCharts);
+Vue.use(VueYouTubeEmbed, { global: true, componentId: "youtube-media" });
 
 Vue.config.productionTip = false;
 

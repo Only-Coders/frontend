@@ -242,5 +242,11 @@
     "profile": "Perfil",
     "settings": "Configuraciones",
     "logout": "Cerrar Sesion"
+  },
+  "Search": {
+    "recent": "Recientes",
+    "try": "Prueba con",
+    "seeAll": "Ver todos",
+    "delete": "Borrar"
   }
 }

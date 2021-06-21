@@ -129,14 +129,16 @@
           <v-img alt="post-image" :max-width="$vuetify.breakpoint.mdAndUp ? '30vw' : '95vw'" :src="post.url" />
         </v-col>
       </v-row>
-      <v-row v-if="post.type === 'LINK'">
+      <v-row v-if="post.type === 'LINK' && !isLinkVideo">
         <v-col class="pt-0 pb-6 px-10">
           <LinkPreview :url="post.url"></LinkPreview>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'LINK' && isLinkVideo">
-        <v-col class="pt-0 pb-6 px-10">
-          <youtube-media :video-id="post.url"></youtube-media>
+        <v-col class="pt-0 pb-6 px-16">
+          <div class="youtube-container">
+            <youtube-media :video-id="youtubeVideoId" :player-width="'100%'"></youtube-media>
+          </div>
         </v-col>
       </v-row>
       <v-row v-if="post.type === 'FILE'">
@@ -300,7 +302,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     showComments: false,
     currentPageOfComments: 0,
     totalPagesOfComments: 0,
-    isLinkVideo: false
+    isLinkVideo: false,
+    youtubeVideoId: ""
   }),
 
   computed: {
@@ -327,8 +330,16 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   methods: {
     isYoutubeVideo(url: string) {
       const regex = /^(https?:\/\/)?(www\.youtube\.com|youtu\.?be)\/(?<id>\S+)/;
-      console.log(regex.test(url));
       return regex.test(url);
+    },
+    getYoutubeVideoId(url: string) {
+      const regex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      const match = url.match(regex);
+      if (match && match[7].length == 11) {
+        this.youtubeVideoId = match[7];
+      } else {
+        this.youtubeVideoId = "";
+      }
     },
     toggleDeletePostDialog(postId: string) {
       this.showDeletePostDialog = true;
@@ -459,6 +470,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     },
     formatPost(post: GetPost) {
       this.isLinkVideo = this.isYoutubeVideo(post.url);
+      this.isLinkVideo && this.getYoutubeVideoId(post.url);
       this.parseReactions();
       this.checkIfPostIsCode();
       if (!this.postIsCode) {
@@ -533,6 +545,9 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
 }
 .theme--light.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn-outlined) {
   background: transparent !important;
+}
+.youtube-container {
+  position: relative;
 }
 </style>
 

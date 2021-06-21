@@ -31,7 +31,7 @@ import { deletePost } from "@/services/post";
 export default Vue.extend({
   name: "DeletePostDialog",
 
-  props: { value: Boolean, postId: String },
+  props: { value: Boolean, postId: String, commentId: String },
 
   data: () => ({}),
 
@@ -40,6 +40,11 @@ export default Vue.extend({
       this.$emit("input");
     },
     async deletePost() {
+      await deletePost(this.postId);
+      this.$emit("deletePost", this.postId);
+      this.close();
+    },
+    async deleteComment() {
       await deletePost(this.postId);
       this.$emit("deletePost", this.postId);
       this.close();

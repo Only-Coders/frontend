@@ -58,7 +58,7 @@
                 </template>
 
                 <v-list>
-                  <v-list-item v-if="isMyOwnComment">
+                  <!-- <v-list-item v-if="isMyOwnComment">
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-pencil </v-icon>
                     </v-list-item-icon>
@@ -67,8 +67,8 @@
                         {{ $i18n.t("edit") }}
                       </h3>
                     </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item v-if="isMyOwnComment">
+                  </v-list-item> -->
+                  <v-list-item v-if="isMyOwnComment" @click="toggleDeleteCommentDialog">
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-delete </v-icon>
                     </v-list-item-icon>
@@ -78,14 +78,14 @@
                       </h3>
                     </v-list-item-title>
                   </v-list-item>
-                  <v-list-item @click.prevent>
+                  <!-- <v-list-item @click.prevent>
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-alert-octagon </v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>
                       <h3 class="my-auto text-capitalize" style="color: #5e5e5e">{{ $i18n.t("Feed.report") }}</h3>
                     </v-list-item-title>
-                  </v-list-item>
+                  </v-list-item> -->
                 </v-list>
               </v-menu>
             </v-col>
@@ -150,6 +150,13 @@
         </div>
       </v-row>
     </v-card>
+
+    <DeleteCommentDialog
+      v-model="showDeletePostDialog"
+      :value="showDeletePostDialog"
+      @deletePost="toggleDeletePostDialog"
+      :postId="this.post.id"
+    ></DeleteCommentDialog>
   </div>
 </template>
 
@@ -164,6 +171,7 @@ import { Comment } from "@/models/comment";
 import { ReactionType } from "@/models/Enums/reaction";
 import { formatDistance } from "date-fns";
 import { postCommentReaction } from "@/services/comment";
+import DeleteCommentDialog from "@/components/Post/DeletePostCommentDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Comment",

@@ -239,7 +239,7 @@ import CodePostVisualizer from "@/components/Post/CodePostVisualizer.vue";
 import { postSavePostAsFavorite, deletePostFromFavorite } from "@/services/user";
 import { addPostReaction } from "@/services/post";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
-import DeletePostDialog from "@/components/Post/DeletePostDialog.vue";
+import DeletePostDialog from "@/components/Post/DeletePostCommentDialog.vue";
 import { ReactionType } from "@/models/Enums/reaction";
 import EditPostDialog from "@/components/Post/EditPostDialog.vue";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";

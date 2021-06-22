@@ -16,3 +16,7 @@ export async function getPostComments(postId: string, page: number, size: number
 export async function postCommentReaction(commentId: string, reaction: ReactionType | null): Promise<void> {
   await axios.post(`/api/comments/${commentId}/reactions`, { reactionType: reaction });
 }
+
+export async function deleteComment(postId: string, commentId: string): Promise<void> {
+  await axios.delete(`/api/posts/${postId}/comments/${commentId}`);
+}

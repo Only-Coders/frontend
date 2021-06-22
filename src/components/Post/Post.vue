@@ -207,6 +207,9 @@
         v-if="showComments"
         @hideComments="hideComments"
         @loadMoreComments="loadMoreComments"
+        @deleteComment="deleteComment"
+        :postId="post.id"
+        :isCommentOfMyPost="isMyOwnPost"
       ></PostComments>
       <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
     </v-card>
@@ -522,6 +525,16 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     loadMoreComments() {
       if (this.currentPageOfComments + 1 <= this.totalPagesOfComments) {
         this.loadComments();
+      }
+    },
+    deleteComment(commentId: string) {
+      const commentIndex = this.comments.findIndex((comment) => comment.id == commentId);
+      if (commentIndex >= 0) {
+        this.comments.splice(commentIndex, 1);
+        this.post.commentQuantity--;
+        if (this.post.commentQuantity == 0) {
+          this.hideComments();
+        }
       }
     }
   },

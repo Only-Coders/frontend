@@ -50,7 +50,7 @@
               </v-col>
             </div>
             <v-col cols="auto">
-              <v-menu bottom left offset-x transition="slide-y-transition">
+              <v-menu bottom left offset-x transition="slide-y-transition" v-if="isMyOwnComment || isCommentOfMyPost">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn dark icon v-bind="attrs" v-on="on">
                     <v-icon color="#5E5E5E" size="30">mdi-dots-horizontal</v-icon>
@@ -58,17 +58,7 @@
                 </template>
 
                 <v-list>
-                  <v-list-item v-if="isMyOwnComment">
-                    <v-list-item-icon class="mr-2">
-                      <v-icon class="pr-2" color="#5E5E5E"> mdi-pencil </v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
-                        {{ $i18n.t("edit") }}
-                      </h3>
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item v-if="isMyOwnComment">
+                  <v-list-item @click="showDeleteCommentDialog = true">
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-delete </v-icon>
                     </v-list-item-icon>
@@ -76,14 +66,6 @@
                       <h3 class="my-auto text-capitalize" style="color: #5e5e5e">
                         {{ $i18n.t("Feed.deletePost") }}
                       </h3>
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click.prevent>
-                    <v-list-item-icon class="mr-2">
-                      <v-icon class="pr-2" color="#5E5E5E"> mdi-alert-octagon </v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                      <h3 class="my-auto text-capitalize" style="color: #5e5e5e">{{ $i18n.t("Feed.report") }}</h3>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -150,6 +132,14 @@
         </div>
       </v-row>
     </v-card>
+
+    <DeleteCommentDialog
+      v-model="showDeleteCommentDialog"
+      :value="showDeleteCommentDialog"
+      @deleteComment="$emit('deleteComment', comment.id)"
+      :commentId="this.comment.id"
+      :postId="this.postId"
+    ></DeleteCommentDialog>
   </div>
 </template>
 
@@ -164,6 +154,7 @@ import { Comment } from "@/models/comment";
 import { ReactionType } from "@/models/Enums/reaction";
 import { formatDistance } from "date-fns";
 import { postCommentReaction } from "@/services/comment";
+import DeleteCommentDialog from "@/components/Post/DeletePostCommentDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Comment",
@@ -175,10 +166,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   mixins: [medalsMixin],
 
   props: {
-    comment: Object as PropType<Comment>
+    comment: Object as PropType<Comment>,
+    postId: String,
+    isCommentOfMyPost: Boolean
   },
 
-  components: { AvatarImagePreview, CodePostVisualizer },
+  components: { AvatarImagePreview, CodePostVisualizer, DeleteCommentDialog },
 
   data: () => ({
     medals: {} as Medals,
@@ -194,7 +187,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     toggleApprove: null as number | null,
     isMyOwnComment: false,
     myReaction: null as ReactionType | null,
-    template: ""
+    template: "",
+    showDeleteCommentDialog: false
   }),
 
   methods: {
@@ -278,6 +272,10 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.template = `<div><p class="font-weight-regular text--secondary body-2">${comment.message}</p></div>`;
       this.isMyOwnComment = comment.publisher.canonicalName === this.$store.state.userModule.user.canonicalName;
       this.medals = this.calculateMedals(comment.publisher.amountOfMedals);
+    },
+    toggleDeleteCommentDialog(commentId: string) {
+      this.showDeleteCommentDialog = false;
+      this.$emit("deleteComment", commentId);
     }
   },
 

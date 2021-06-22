@@ -16,7 +16,13 @@
       </v-col>
 
       <v-col v-else cols="11" v-for="comment in comments" :key="comment.id">
-        <CommentComponent :comment="comment" class="mb-6 mx-10"></CommentComponent>
+        <CommentComponent
+          :comment="comment"
+          @deleteComment="$emit('deleteComment', comment.id)"
+          class="mb-6 mx-10"
+          :postId="postId"
+          :isCommentOfMyPost="isCommentOfMyPost"
+        ></CommentComponent>
       </v-col>
     </v-row>
 
@@ -39,15 +45,15 @@ import CommentComponent from "@/components/Post/Comment.vue";
 export default Vue.extend({
   name: "PostComments",
 
-  props: { comments: Array as PropType<Comment[]>, fetching: Boolean },
-
-  data: () => ({
-    comment: [] as Comment[]
-  }),
+  props: { comments: Array as PropType<Comment[]>, fetching: Boolean, postId: String, isCommentOfMyPost: Boolean },
 
   components: {
     CommentComponent
-  }
+  },
+
+  data: () => ({
+    comment: [] as Comment[]
+  })
 });
 </script>
 

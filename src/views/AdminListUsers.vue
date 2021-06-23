@@ -1,65 +1,31 @@
 <template>
-  <v-tabs vertical>
-    <v-tab>Administrators</v-tab>
-    <v-tab>Users</v-tab>
-    <v-tab-item class="mx-10">
-      <!-- <v-row no-gutters class="d-flex justify-center">
-        <v-col cols="12">
-          <v-card class="mt-12" min-height="85vh">
-            <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
-            <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
+  <v-row no-gutters class="d-flex justify-center">
+    <v-col cols="12">
+      <v-card class="mt-12" min-height="85vh">
+        <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
+        <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
-            <v-row no-gutters class="d-flex justify-center" v-if="userPagination.content.length !== 0">
-              <v-col cols="9">
-                <div v-for="user in userPagination.content" :key="user.canonicalName" class="my-8">
-                  <UserCompontent :adminData="user"></UserCompontent>
-                </div>
-                <v-pagination
-                  class="my-10"
-                  v-if="userPagination && userPagination.totalPages > 1"
-                  v-model="currentPage"
-                  :length="userPagination.totalPages"
-                  :total-visible="7"
-                  @input="nextPage"
-                ></v-pagination>
-              </v-col>
-            </v-row>
-            <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
-              <v-col cols="9"> <NoData></NoData> </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row> -->
-    </v-tab-item>
-    <v-tab-item class="mx-8">
-      <v-row no-gutters class="d-flex justify-center">
-        <v-col cols="12">
-          <v-card class="mt-12" min-height="85vh">
-            <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
-            <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
-
-            <v-row no-gutters class="d-flex justify-center" v-if="userPagination.content.length !== 0">
-              <v-col cols="9">
-                <div v-for="user in userPagination.content" :key="user.canonicalName" class="my-8">
-                  <UserCompontent :adminData="user"></UserCompontent>
-                </div>
-                <v-pagination
-                  class="my-10"
-                  v-if="userPagination && userPagination.totalPages > 1"
-                  v-model="currentPage"
-                  :length="userPagination.totalPages"
-                  :total-visible="7"
-                  @input="nextPage"
-                ></v-pagination>
-              </v-col>
-            </v-row>
-            <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
-              <v-col cols="9"> <NoData></NoData> </v-col>
-            </v-row>
-          </v-card>
-        </v-col> </v-row
-    ></v-tab-item>
-  </v-tabs>
+        <v-row no-gutters class="d-flex justify-center" v-if="adminPagination.content.length !== 0">
+          <v-col cols="9">
+            <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
+              <UserCompontent :adminData="user"></UserCompontent>
+            </div>
+            <v-pagination
+              class="my-10"
+              v-if="adminPagination && adminPagination.totalPages > 1"
+              v-model="currentPage"
+              :length="adminPagination.totalPages"
+              :total-visible="7"
+              @input="nextPageUsers"
+            ></v-pagination>
+          </v-col>
+        </v-row>
+        <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
+          <v-col cols="9"> <NoData></NoData> </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -67,13 +33,13 @@ import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import UserCompontent from "@/components/Admin/User.vue";
 import NoData from "@/components/NoData.vue";
-// import { Admin } from "@/models/admin";
-// import { getAdmin } from "@/services/admin";
-import { getUser } from "@/services/user";
-import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
+import { getAdminUsers } from "@/services/admin";
 import { Pagination } from "@/models/Pagination/pagination";
-import { Profile } from "@/models/profile";
 import UserSearchInput from "@/components/UserSearchInput.vue";
+import { Role } from "@/models/Enums/role";
+import { Admin } from "@/models/admin";
+import { AdminsOptionsSortBy } from "@/models/Enums/adminsOptionsSortBy";
+import { AdminsOptionsOrderBy } from "@/models/Enums/adminOptionsOrderBy";
 
 export default (Vue as VueConstructor<Vue>).extend({
   name: "AdminListUsers",
@@ -94,47 +60,35 @@ export default (Vue as VueConstructor<Vue>).extend({
   }),
 
   methods: {
-    searchUsers(
-      page: number,
-      size: number,
-      orderBy: UsersOptionsOrderBy,
-      partialName: string,
-      countryName: string,
-      skillName: string
-    ) {
-      return getUser({ partialName, orderBy, page, size, countryName, skillName });
+    searchUsers() {
+      return getAdminUsers("ma", Role.USER);
     },
-    async nextPage() {
-      const result = await getUser({
-        partialName: this.$store.state.userPaginationModule.search,
-        orderBy: this.$store.state.userPaginationModule.orderBySelected,
-        page: this.currentPage - 1,
-        size: 5,
-        countryName: this.$store.state.userPaginationModule.country,
-        skillName: this.$store.state.userPaginationModule.skill
-      });
+    async nextPageUsers() {
+      const result = await getAdminUsers(
+        this.$store.state.adminPaginationModule.search,
+        Role.USER,
+        this.$store.state.adminPaginationModule.orderBySelected,
+        this.$store.state.adminPaginationModule.sortBySelected,
+        this.currentPage - 1,
+        5
+      );
       this.currentPage = result.currentPage + 1;
-      this.$store.commit("userPaginationModule/SET_USER_PAGINATION", result);
+      this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
     }
   },
 
   computed: {
-    userPagination: {
-      get(): Pagination<Profile> {
-        return this.$store.state.userPaginationModule.userPagination;
+    adminPagination: {
+      get(): Pagination<Admin> {
+        return this.$store.state.adminPaginationModule.adminPagination;
       }
     }
   },
 
   async created() {
-    const result = await getUser({
-      partialName: "",
-      size: 5,
-      page: 0,
-      orderBy: UsersOptionsOrderBy.FIRSTNAME
-    });
-    this.$store.commit("userPaginationModule/SET_USER_PAGINATION", result);
-    this.$store.commit("userPaginationModule/SET_USER_PER_PAGE", 9);
+    const result = await getAdminUsers("", Role.USER, AdminsOptionsSortBy.FULLNAME, AdminsOptionsOrderBy.DESC, 0, 5);
+    this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
+    this.$store.commit("adminPaginationModule/SET_ADMIN_PER_PAGE", 9);
   }
 });
 </script>

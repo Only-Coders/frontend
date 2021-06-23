@@ -11,15 +11,16 @@ export default class AdminPagination extends VuexModule {
   adminsPerPage = 1;
   accountStatus: AccountStatus | null = null;
   role: Role | null = null;
-  orderBySelected = "FULLNAME";
+  orderBySelected = "DESC";
+  sortBySelected = "FULLNAME";
 
   @Mutation
-  SET_USER_PAGINATION(value: Pagination<Admin>): void {
+  SET_ADMIN_PAGINATION(value: Pagination<Admin>): void {
     this.adminPagination = value;
   }
 
   @Mutation
-  CLEAR_USER_PAGINATION(): void {
+  CLEAR_ADMIN_PAGINATION(): void {
     this.adminPagination = null;
   }
 
@@ -41,5 +42,10 @@ export default class AdminPagination extends VuexModule {
   @Mutation
   SET_ORDER_BY(value: string): void {
     this.orderBySelected = value;
+  }
+
+  @Mutation
+  SET_SORT_BY(value: string): void {
+    this.sortBySelected = value;
   }
 }

@@ -94,7 +94,7 @@ export default Vue.extend({
   computed: {
     followsPagination: {
       get(): Pagination<User> {
-        return this.$store.state.userPaginationModule.userPagination;
+        return this.$store.state.userPaginationModule.adminPagination;
       }
     }
   }

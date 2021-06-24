@@ -48,4 +48,9 @@ export default class AdminPagination extends VuexModule {
   SET_SORT_BY(value: string): void {
     this.sortBySelected = value;
   }
+
+  @Mutation
+  SET_ROLE(value: Role): void {
+    this.role = value;
+  }
 }

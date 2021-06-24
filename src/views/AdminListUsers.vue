@@ -1,14 +1,14 @@
 <template>
   <v-row no-gutters class="d-flex justify-center">
-    <v-col cols="12">
+    <v-col cols="8">
       <v-card class="mt-12" min-height="85vh">
-        <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
+        <AdminSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></AdminSearchInput>
         <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
         <v-row no-gutters class="d-flex justify-center" v-if="adminPagination.content.length !== 0">
           <v-col cols="9">
             <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
-              <UserCompontent :adminData="user"></UserCompontent>
+              <UserCompontent :data="user"></UserCompontent>
             </div>
             <v-pagination
               class="my-10"
@@ -35,9 +35,9 @@ import UserCompontent from "@/components/Admin/User.vue";
 import NoData from "@/components/NoData.vue";
 import { getAdminUsers } from "@/services/admin";
 import { Pagination } from "@/models/Pagination/pagination";
-import UserSearchInput from "@/components/UserSearchInput.vue";
 import { Role } from "@/models/Enums/role";
-import { Admin } from "@/models/admin";
+import AdminSearchInput from "@/components/Admin/Search/AdminSearchInput.vue";
+import { GetAdminUser } from "@/models/admin";
 import { AdminsOptionsSortBy } from "@/models/Enums/adminsOptionsSortBy";
 import { AdminsOptionsOrderBy } from "@/models/Enums/adminOptionsOrderBy";
 
@@ -46,7 +46,7 @@ export default (Vue as VueConstructor<Vue>).extend({
 
   components: {
     UserCompontent,
-    UserSearchInput,
+    AdminSearchInput,
     NoData
   },
 
@@ -61,12 +61,12 @@ export default (Vue as VueConstructor<Vue>).extend({
 
   methods: {
     searchUsers() {
-      return getAdminUsers("ma", Role.USER);
+      return getAdminUsers("", Role.USER);
     },
     async nextPageUsers() {
       const result = await getAdminUsers(
         this.$store.state.adminPaginationModule.search,
-        Role.USER,
+        Role.ADMIN,
         this.$store.state.adminPaginationModule.orderBySelected,
         this.$store.state.adminPaginationModule.sortBySelected,
         this.currentPage - 1,
@@ -79,17 +79,17 @@ export default (Vue as VueConstructor<Vue>).extend({
 
   computed: {
     adminPagination: {
-      get(): Pagination<Admin> {
+      get(): Pagination<GetAdminUser> {
         return this.$store.state.adminPaginationModule.adminPagination;
       }
     }
-  },
-
-  async created() {
-    const result = await getAdminUsers("", Role.USER, AdminsOptionsSortBy.FULLNAME, AdminsOptionsOrderBy.DESC, 0, 5);
-    this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
-    this.$store.commit("adminPaginationModule/SET_ADMIN_PER_PAGE", 9);
   }
+
+  // async created() {
+  //   const result = await getAdminUsers("", Role.USER, AdminsOptionsSortBy.FULLNAME, AdminsOptionsOrderBy.DESC, 0, 5);
+  //   this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
+  //   this.$store.commit("adminPaginationModule/SET_ADMIN_PER_PAGE", 5);
+  // }
 });
 </script>
 

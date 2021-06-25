@@ -3,16 +3,18 @@ import { Admin } from "@/models/admin";
 import { Pagination } from "@/models/Pagination/pagination";
 import { AccountStatus } from "@/models/Enums/accountStatus";
 import { Role } from "@/models/Enums/role";
-
+import { AdminsOptionsSortBy } from "@/models/Enums/adminsOptionsSortBy";
+import { AdminsOptionsOrderBy } from "@/models/Enums/adminOptionsOrderBy";
 @Module({ name: "adminPaginationModule", namespaced: true })
 export default class AdminPagination extends VuexModule {
   adminPagination: Pagination<Admin> | null = null;
-  search = ""; //partialName
-  adminsPerPage = 1;
+  search = "";
+  size = 5;
+  page = 0;
   accountStatus: AccountStatus | null = null;
-  role: Role | null = null;
-  orderBySelected = "DESC";
-  sortBySelected = "FULLNAME";
+  role: Role = Role.ADMIN;
+  orderBy = AdminsOptionsOrderBy.DESC;
+  sortBy = AdminsOptionsSortBy.FULLNAME;
 
   @Mutation
   SET_ADMIN_PAGINATION(value: Pagination<Admin>): void {
@@ -31,7 +33,7 @@ export default class AdminPagination extends VuexModule {
 
   @Mutation
   SET_ADMIN_PER_PAGE(value: number): void {
-    this.adminsPerPage = value;
+    this.size = value;
   }
 
   @Mutation
@@ -40,17 +42,22 @@ export default class AdminPagination extends VuexModule {
   }
 
   @Mutation
-  SET_ORDER_BY(value: string): void {
-    this.orderBySelected = value;
+  SET_ORDER_BY(value: AdminsOptionsOrderBy): void {
+    this.orderBy = value;
   }
 
   @Mutation
-  SET_SORT_BY(value: string): void {
-    this.sortBySelected = value;
+  SET_SORT_BY(value: AdminsOptionsSortBy): void {
+    this.sortBy = value;
   }
 
   @Mutation
   SET_ROLE(value: Role): void {
     this.role = value;
+  }
+
+  @Mutation
+  SET_PAGE(value: number): void {
+    this.page = value;
   }
 }

@@ -5,7 +5,7 @@
         <AdminSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></AdminSearchInput>
         <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
-        <v-row no-gutters class="d-flex justify-center" v-if="adminPagination.content.length !== 0">
+        <v-row no-gutters class="d-flex justify-center" v-if="adminPagination && adminPagination.content.length !== 0">
           <v-col cols="9">
             <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
               <UserCompontent :data="user"></UserCompontent>
@@ -60,15 +60,22 @@ export default (Vue as VueConstructor<Vue>).extend({
   }),
 
   methods: {
-    searchUsers() {
-      return getAdminUsers("", Role.USER);
+    searchUsers(
+      partialName: string,
+      role: Role,
+      sortBy?: AdminsOptionsSortBy,
+      orderBy?: AdminsOptionsOrderBy,
+      page?: number,
+      size?: number
+    ) {
+      return getAdminUsers(partialName, role, sortBy, orderBy, page, size);
     },
     async nextPageUsers() {
       const result = await getAdminUsers(
         this.$store.state.adminPaginationModule.search,
-        Role.ADMIN,
-        this.$store.state.adminPaginationModule.orderBySelected,
-        this.$store.state.adminPaginationModule.sortBySelected,
+        this.$store.state.adminPaginationModule.role,
+        this.$store.state.adminPaginationModule.sortBy,
+        this.$store.state.adminPaginationModule.orderBy,
         this.currentPage - 1,
         5
       );
@@ -83,13 +90,20 @@ export default (Vue as VueConstructor<Vue>).extend({
         return this.$store.state.adminPaginationModule.adminPagination;
       }
     }
-  }
+  },
 
-  // async created() {
-  //   const result = await getAdminUsers("", Role.USER, AdminsOptionsSortBy.FULLNAME, AdminsOptionsOrderBy.DESC, 0, 5);
-  //   this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
-  //   this.$store.commit("adminPaginationModule/SET_ADMIN_PER_PAGE", 5);
-  // }
+  async created() {
+    const result = await getAdminUsers(
+      this.$store.state.adminPaginationModule.search,
+      this.$store.state.adminPaginationModule.role,
+      this.$store.state.adminPaginationModule.sortBy,
+      this.$store.state.adminPaginationModule.orderBy,
+      0,
+      5
+    );
+    this.currentPage = result.currentPage + 1;
+    this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
+  }
 });
 </script>
 

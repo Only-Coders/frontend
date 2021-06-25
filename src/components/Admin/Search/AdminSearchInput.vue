@@ -14,7 +14,7 @@
             background-color="grey_input"
             flat
             height="48"
-            @keydown.enter.prevent="searchUsersWithFilters()"
+            @keydown.enter.prevent="searchUsersWithFilters"
           ></v-text-field>
         </v-form>
       </v-col>
@@ -147,7 +147,7 @@ export default Vue.extend({
         const result = await this.searchFunction(
           this.$store.state.adminPaginationModule.search,
           this.$store.state.adminPaginationModule.role,
-          this.$store.state.adminPaginationModule.sortedBy,
+          this.$store.state.adminPaginationModule.sortBy,
           this.$store.state.adminPaginationModule.orderBy,
           this.$store.state.adminPaginationModule.page,
           this.$store.state.adminPaginationModule.size
@@ -175,6 +175,7 @@ export default Vue.extend({
         return this.$store.state.adminPaginationModule.search;
       },
       async set(value: string) {
+        console.log(value);
         this.$store.commit("adminPaginationModule/SET_SEARCH_TEXT", value);
         if (!value) {
           await this.searchUsersWithFilters();

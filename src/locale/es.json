@@ -82,7 +82,7 @@
       "invalidEmail": "Por favor ingrese un email válido",
       "profileImageSize": "El archivo es muy grande",
       "fromDateToAnother": "a",
-      "passwordRule": "La contraseña debe contener 6 caracteres como minimo"
+      "passwordRule": "La contraseña debe contener 6 caracteres como mínimo"
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",
@@ -157,9 +157,9 @@
     "comments": "Comentarios",
     "savedFavorite": "Guardado como favorito !",
     "unsavedFavorite": "Borrado como favorito ",
-    "deletePost": "Eliminar",
-    "deletePostConfirmation": "Estas seguro de que quieres eliminar este post? Esta accion será permanente",
-    "deleteCommentConfirmation": "Estas seguro de que quieres eliminar este comentario? Esta accion será permanente",
+    "deletePost": "Eliminar",   
+    "deletePostConfirmation": "Estás seguro de que quieres eliminar este post? Esta accion será permanente",
+    "deleteCommentConfirmation": "Estás seguro de que quieres eliminar este comentario? Esta accion será permanente",
     "deleteButtonLabel": "Eliminar",
     "deletedAccountDate": "Su cuenta será eliminada el ",
     "cancelEliminationToast": "La eliminación de su cuenta fue cancelada"
@@ -252,7 +252,8 @@
   "Header": {
     "profile": "Perfil",
     "settings": "Configuraciones",
-    "logout": "Cerrar Sesion"
+    "logout": "Cerrar Sesión",
+    "addAdmin": "Agregar usuario administrador"
   },
   "Search": {
     "recent": "Recientes",

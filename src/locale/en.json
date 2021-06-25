@@ -253,7 +253,8 @@
   "Header": {
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "addAdmin": "Add admin user"
   },
   "Search": {
     "recent": "Recent",

@@ -40,6 +40,7 @@
                   v-bind="{ ...inputProps }"
                   type="password"
                   validate-on-blur
+                  @keydown.enter.prevent="login"
                 >
                 </v-text-field>
               </v-col>

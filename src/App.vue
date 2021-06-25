@@ -51,7 +51,7 @@ html {
 }
 
 .vue-notification-group {
-  top: 10px !important;
+  top: 70px !important;
   right: 10px !important;
 }
 

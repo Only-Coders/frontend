@@ -59,13 +59,13 @@
           class="d-flex pa-0 ml-sm-0 ml-md-8 mr-0 mr-md-3 mr-lg-0"
           :class="$vuetify.breakpoint.lgAndUp ? 'justify-end' : 'justify-center'"
         >
-          <router-link link to="/" class="hidden-sm-and-down mx-6 mt-1"
-            ><v-icon color="navbar_icon">mdi-home-variant</v-icon></router-link
+          <router-link link to="/" class="hidden-sm-and-down mx-6 mt-1" style="text-decoration: none"
+            ><v-icon>mdi-home-variant</v-icon></router-link
           >
 
           <router-link class="mr-6 mt-1 ml-sm-6 ml-md-5" link to="/chat">
             <v-badge :content="messages" :value="messages" color="primary" overlap>
-              <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'" color="navbar_icon">mdi-message-text</v-icon>
+              <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'">mdi-message-text</v-icon>
             </v-badge>
           </router-link>
 

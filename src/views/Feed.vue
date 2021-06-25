@@ -14,8 +14,19 @@
           @deletePost="deleteUserPost"
         ></PostContainer>
       </v-col>
-      <v-col cols="3" class="hidden-sm-and-down pl-14 pr-8">
-        <Suggestions style="position: fixed"></Suggestions>
+      <v-col cols="3" class="hidden-sm-and-down pl-14">
+        <v-alert
+          border="left"
+          color="orange"
+          prominent
+          text
+          type="warning"
+          icon="mdi-alert-outline"
+          v-if="$store.state.userModule.user.eliminationDate"
+          >{{ $i18n.t("Feed.deletedAccountDate") }} {{ accountEliminationDate }}</v-alert
+        >
+
+        <Suggestions></Suggestions>
       </v-col>
     </v-row>
     <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
@@ -31,6 +42,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import { getPost, getTagPosts } from "@/services/post";
 import { GetPost } from "@/models/post";
 import { Pagination } from "@/models/Pagination/pagination";
+import { format } from "date-fns";
 
 export default Vue.extend({
   name: "Feed",
@@ -41,7 +53,8 @@ export default Vue.extend({
     posts: [] as GetPost[],
     currentPage: 0,
     enableInfiniteScroll: false,
-    fetching: true
+    fetching: true,
+    accountEliminationDate: ""
   }),
 
   methods: {
@@ -91,6 +104,9 @@ export default Vue.extend({
 
   async created() {
     await this.fetchPosts();
+    if (this.$store.state.userModule.user.eliminationDate) {
+      this.accountEliminationDate = format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy");
+    }
   },
 
   computed: {

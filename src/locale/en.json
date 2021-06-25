@@ -160,7 +160,9 @@
     "deletePost": "Delete",
     "deletePostConfirmation": "Are you sure you want to delete this post? Thi will be a permanent action",
     "deleteCommentConfirmation": "Are you sure you want to delete this comment? Thi will be a permanent action",
-    "deleteButtonLabel": "Delete"
+    "deleteButtonLabel": "Delete",
+    "deletedAccountDate": "Your account will be deleted on the ",
+    "cancelEliminationToast": ""
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -237,7 +239,16 @@
     "push": "Push",
     "confirm": "Confirm",
     "settingsTitle": "Settings",
-    "notificationsTitle": "Notifications"
+    "notificationsTitle": "Notifications",
+    "accountTitle": "Account",
+    "deleteAccount": "Delete Account",
+    "deleteMessage": "Account deletion is final.",
+    "deleteMessage2": "If you delete your OnlyCoders account, you will not be able to recover the content, nor the information that you shared in OnlyCoders.",
+    "deleteMessage3": "Once the deletion process begins, you'll have 30 days to reactivate your account and cancel the deletion. After 30 days, your account will be eliminated.",
+    "areYouSureDeleteAccount": "Are you sure you want to delete your account?",
+    "cancelElimination" : "Cancel Elimination",
+    "cancelEliminationAccount": "Your account will be deleted on ",
+    "cancelEliminationAccount2": "Do you want to cancel the elimination of your account? "
   },
   "Header": {
     "profile": "Profile",

@@ -13,7 +13,7 @@ export default class AdminPagination extends VuexModule {
   page = 0;
   accountStatus: AccountStatus | null = null;
   role: Role = Role.ADMIN;
-  orderBy = AdminsOptionsOrderBy.DESC;
+  orderBy = AdminsOptionsOrderBy.ASC;
   sortBy = AdminsOptionsSortBy.FULLNAME;
 
   @Mutation

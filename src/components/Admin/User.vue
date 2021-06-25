@@ -27,9 +27,18 @@
         sm="4"
         class="mt-sm-0 mt-4 ml-8 d-flex justify-end"
       >
-        <v-btn v-if="!isUserBlocked" height="35" width="35%" color="#ee5e5e" depressed dark small> Block </v-btn>
-
-        <v-btn v-else color="#ee5e5e" height="35" width="35%" depressed dark small> Unblock </v-btn>
+        <v-btn
+          height="35"
+          width="35%"
+          color="#ee5e5e"
+          :loading="isLoading"
+          depressed
+          dark
+          small
+          @click="toggleUserBlockStatus"
+        >
+          {{ isUserBlocked ? "Unblock" : "Block" }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-card>
@@ -50,13 +59,16 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   },
 
   data: () => ({
-    isUserBlocked: false
+    isUserBlocked: false,
+    isLoading: false
   }),
 
   methods: {
     async toggleUserBlockStatus() {
+      this.isLoading = true;
+      await updateUserBlockStatus(this.data.canonicalName, !this.isUserBlocked);
+      this.isLoading = false;
       this.isUserBlocked = !this.isUserBlocked;
-      await updateUserBlockStatus(this.data.canonicalName, this.isUserBlocked);
     }
   },
 

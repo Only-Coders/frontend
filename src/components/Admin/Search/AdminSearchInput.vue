@@ -68,7 +68,7 @@
           solo
           height="48"
           background-color="grey_input"
-          label="DESC"
+          label="ASC"
           width="15%"
           class="mx-2"
         ></v-select>
@@ -80,7 +80,6 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { Pagination } from "@/models/Pagination/pagination";
-import { UsersOptionsOrderBy } from "@/models/Enums/usersOptionsOrderBy";
 // import { i18n } from "@/main";
 import { Role } from "@/models/Enums/role";
 import { GetAdminUser } from "@/models/admin";
@@ -135,8 +134,8 @@ export default Vue.extend({
     ] as Filter[],
     orderOptionSelected: "" as AdminsOptionsSortBy,
     orderAscDescOptions: [
-      { value: AdminsOptionsOrderBy.DESC, text: "DESC" },
-      { value: AdminsOptionsOrderBy.ASC, text: "ASC" }
+      { value: AdminsOptionsOrderBy.ASC, text: "ASC" },
+      { value: AdminsOptionsOrderBy.DESC, text: "DESC" }
     ] as OrderAscDesc[],
     orderAscDescSelected: "" as AdminsOptionsOrderBy
   }),

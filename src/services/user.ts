@@ -56,5 +56,5 @@ export async function editImageProfile(imageURI: string): Promise<Profile> {
 }
 
 export async function updateUserBlockStatus(canonicalName: string, blocked: boolean): Promise<void> {
-  await axios.patch(`/api/users${canonicalName}/blocked`, { blocked });
+  await axios.patch(`/api/users/${canonicalName}/blocked`, { blocked });
 }

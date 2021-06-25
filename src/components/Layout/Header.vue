@@ -63,7 +63,7 @@
             ><v-icon>mdi-home-variant</v-icon></router-link
           >
 
-          <router-link class="mr-6 mt-1 ml-sm-6 ml-md-5" link to="/chat">
+          <router-link class="mr-6 mt-1 ml-12 ml-sm-6 ml-md-5" link to="/chat">
             <v-badge :content="messages" :value="messages" color="primary" overlap>
               <v-icon :size="$vuetify.breakpoint.mdAndUp ? '24' : '33'">mdi-message-text</v-icon>
             </v-badge>

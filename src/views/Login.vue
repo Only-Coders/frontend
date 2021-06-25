@@ -121,7 +121,9 @@ type User = {
   fullName: string;
   canonicalName: string;
   roles: Role;
-  complete: string;
+  complete: boolean;
+  eliminationDate: string;
+  language: string;
 };
 
 export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin & RuleMixin>).extend({

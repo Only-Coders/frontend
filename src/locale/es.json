@@ -160,7 +160,9 @@
     "deletePost": "Eliminar",
     "deletePostConfirmation": "Estas seguro de que quieres eliminar este post? Esta accion será permanente",
     "deleteCommentConfirmation": "Estas seguro de que quieres eliminar este comentario? Esta accion será permanente",
-    "deleteButtonLabel": "Eliminar"
+    "deleteButtonLabel": "Eliminar",
+    "deletedAccountDate": "Su cuenta será eliminada el ",
+    "cancelEliminationToast": "La eliminación de su cuenta fue cancelada"
   },
   "CreatePost": {
     "PrivacyPost": {
@@ -237,7 +239,15 @@
     "push": "Push",
     "confirm": "Confirmar",
     "settingsTitle": "Configuraciones",
-    "notificationsTitle": "Notificaciones"
+    "notificationsTitle": "Notificaciones",
+    "accountTitle": "Cuenta",
+    "deleteAccount": "Eliminar Cuenta",
+    "deleteMessage": "La eliminación de la cuenta es definitiva.",
+    "deleteMessage2": "Si eliminas tu cuenta de OnlyCoders, no podrás recuperar el contenido, ni la información que compartiste en OnlyCoders.",
+    "deleteMessage3": "Una vez que comience el proceso de eliminación, tendrá 30 días para reactivar su cuenta y cancelar la eliminación. Después de 30 días, su cuenta será eliminada.",
+    "areYouSureDeleteAccount": "Está seguro de que desea eliminar su cuenta?",
+    "cancelElimination" : "Cancelar Eliminación",
+    "deletedAccountDate": "Su cuenta será eliminada el "
   },
   "Header": {
     "profile": "Perfil",

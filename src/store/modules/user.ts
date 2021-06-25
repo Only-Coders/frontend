@@ -6,10 +6,12 @@ export type UserData = {
   fullName: string;
   canonicalName: string;
   roles: Role;
-  complete: string;
+  complete: boolean;
   defaultPrivacy: boolean;
   sub: string;
   currentPosition: string;
+  eliminationDate: string;
+  language: string;
 };
 
 @Module({ name: "userModule", namespaced: true })
@@ -37,6 +39,13 @@ export default class User extends VuexModule {
   SET_USER_FULLNAME(fullName: string): void {
     if (this.user) {
       this.user.fullName = fullName;
+    }
+  }
+
+  @Mutation
+  SET_USER_ELIMINATION_DATE(eliminationDate: string): void {
+    if (this.user) {
+      this.user.eliminationDate = eliminationDate;
     }
   }
 }

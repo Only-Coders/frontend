@@ -160,7 +160,9 @@
     "deletePost": "Eliminar",
     "deletePostConfirmation": "Estas seguro de que quieres eliminar este post? Esta accion será permanente",
     "deleteCommentConfirmation": "Estas seguro de que quieres eliminar este comentario? Esta accion será permanente",
-    "deleteButtonLabel": "Eliminar"
+    "deleteButtonLabel": "Eliminar",
+    "deletedAccountDate": "Su cuenta será eliminada el ",
+    "cancelEliminationToast": "La eliminación de su cuenta fue cancelada"
   },
   "CreatePost": {
     "PrivacyPost": {

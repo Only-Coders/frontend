@@ -29,15 +29,15 @@
       >
         <v-btn
           height="35"
-          width="35%"
           color="#ee5e5e"
           :loading="isLoading"
           depressed
           dark
+          class="px-2"
           small
           @click="toggleUserBlockStatus"
         >
-          {{ isUserBlocked ? "Unblock" : "Block" }}
+          {{ isUserBlocked ? $i18n.t("backofficeListUsers.unblock") : $i18n.t("backofficeListUsers.block") }}
         </v-btn>
       </v-col>
     </v-row>

@@ -9,7 +9,7 @@
             clearable
             v-model="search"
             prepend-inner-icon="mdi-magnify"
-            :label="$i18n.t('search')"
+            :label="$i18n.t('backofficeListUsers.search')"
             solo
             background-color="grey_input"
             flat
@@ -32,7 +32,7 @@
           solo
           height="48"
           background-color="grey_input"
-          :label="$i18n.t('orderBy')"
+          :label="$i18n.t('backofficeListUsers.orderBy')"
           width="35%"
           class="mx-2"
         ></v-select>
@@ -50,7 +50,7 @@
           solo
           height="48"
           background-color="grey_input"
-          label="Role"
+          :label="$i18n.t('backofficeListUsers.role')"
           width="35%"
           class="mx-2"
         ></v-select>
@@ -80,7 +80,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { Pagination } from "@/models/Pagination/pagination";
-// import { i18n } from "@/main";
+import { i18n } from "@/main";
 import { Role } from "@/models/Enums/role";
 import { GetAdminUser } from "@/models/admin";
 import { AdminsOptionsOrderBy } from "@/models/Enums/adminOptionsOrderBy";
@@ -124,13 +124,13 @@ export default Vue.extend({
     page: 1,
     adminPagination: [] as Pagination<GetAdminUser>[],
     filterOptions: [
-      { value: Role.ADMIN, text: "Administrators" },
-      { value: Role.USER, text: "Users" }
+      { value: Role.ADMIN, text: i18n.t("backofficeListUsers.admin").toString() },
+      { value: Role.USER, text: i18n.t("backofficeListUsers.user").toString() }
     ] as OrderBy[],
     filterOptionSelected: "" as Role,
     orderOptions: [
-      { value: AdminsOptionsSortBy.FULLNAME, text: "Full Name" },
-      { value: AdminsOptionsSortBy.BLOCKED, text: "Blocked" }
+      { value: AdminsOptionsSortBy.FULLNAME, text: i18n.t("backofficeListUsers.fullName").toString() },
+      { value: AdminsOptionsSortBy.BLOCKED, text: i18n.t("backofficeListUsers.blocked").toString() }
     ] as Filter[],
     orderOptionSelected: "" as AdminsOptionsSortBy,
     orderAscDescOptions: [

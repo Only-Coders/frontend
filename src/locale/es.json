@@ -260,5 +260,16 @@
     "try": "Prueba con",
     "seeAll": "Ver todos",
     "delete": "Borrar"
+  },
+  "backofficeListUsers": {
+    "search": "Buscar contactos...",
+    "block": "Bloquear",
+    "unblock": "Desbloquear",
+    "orderBy": "Ordenar",
+    "fullName": "Nombre Completo",
+    "blocked": "Bloqueado",
+    "role": "Rol",
+    "admin": "Administradores",
+    "user": "Usuarios"
   }
 }

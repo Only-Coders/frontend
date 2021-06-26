@@ -41,10 +41,10 @@ export default new Vuex.Store<State>({
   },
   actions: {
     logout: async (context) => {
-      context.commit("userModule/CLEAR_USER");
       await logout();
       window.localStorage.clear();
       router.push("/login");
+      context.commit("userModule/CLEAR_USER");
     }
   },
   modules: {

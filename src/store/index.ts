@@ -36,7 +36,7 @@ const persist = new VuexPersist({
 
 export default new Vuex.Store<State>({
   state: {
-    lang: "es",
+    lang: "en",
     shouldRefreshFeed: false
   },
   mutations: {

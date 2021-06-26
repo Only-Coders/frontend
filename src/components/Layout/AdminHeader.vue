@@ -13,6 +13,15 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
+          <v-btn icon class="mr-5" @click="$router.push('/users')" v-bind="attrs" v-on="on">
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ $i18n.t("Header.list") }}</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
           <v-btn icon class="mr-2" @click="logout" v-bind="attrs" v-on="on">
             <v-icon>mdi-logout-variant</v-icon>
           </v-btn>

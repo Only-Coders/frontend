@@ -246,7 +246,7 @@
     "deleteMessage2": "If you delete your OnlyCoders account, you will not be able to recover the content, nor the information that you shared in OnlyCoders.",
     "deleteMessage3": "Once the deletion process begins, you'll have 30 days to reactivate your account and cancel the deletion. After 30 days, your account will be eliminated.",
     "areYouSureDeleteAccount": "Are you sure you want to delete your account?",
-    "cancelElimination" : "Cancel Elimination",
+    "cancelElimination": "Cancel Elimination",
     "cancelEliminationAccount": "Your account will be deleted on ",
     "cancelEliminationAccount2": "Do you want to cancel the elimination of your account? "
   },
@@ -254,12 +254,24 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "addAdmin": "Add admin user"
+    "addAdmin": "Add admin user",
+    "list": "List admins and users"
   },
   "Search": {
     "recent": "Recent",
     "try": "Try",
     "seeAll": "See All",
     "delete": "Delete"
+  },
+  "backofficeListUsers": {
+    "search": "Search contact...",
+    "block": "Block",
+    "unblock": "Unblock",
+    "orderBy": "Order by",
+    "fullName": "Full Name",
+    "blocked": "Blocked",
+    "role": "Role",
+    "admin": "Administrators",
+    "user": "Users"
   }
 }

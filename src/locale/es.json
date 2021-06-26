@@ -157,7 +157,7 @@
     "comments": "Comentarios",
     "savedFavorite": "Guardado como favorito !",
     "unsavedFavorite": "Borrado como favorito ",
-    "deletePost": "Eliminar",   
+    "deletePost": "Eliminar",
     "deletePostConfirmation": "Estás seguro de que quieres eliminar este post? Esta accion será permanente",
     "deleteCommentConfirmation": "Estás seguro de que quieres eliminar este comentario? Esta accion será permanente",
     "deleteButtonLabel": "Eliminar",
@@ -246,19 +246,31 @@
     "deleteMessage2": "Si eliminas tu cuenta de OnlyCoders, no podrás recuperar el contenido, ni la información que compartiste en OnlyCoders.",
     "deleteMessage3": "Una vez que comience el proceso de eliminación, tendrá 30 días para reactivar su cuenta y cancelar la eliminación. Después de 30 días, su cuenta será eliminada.",
     "areYouSureDeleteAccount": "Está seguro de que desea eliminar su cuenta?",
-    "cancelElimination" : "Cancelar Eliminación",
+    "cancelElimination": "Cancelar Eliminación",
     "deletedAccountDate": "Su cuenta será eliminada el "
   },
   "Header": {
     "profile": "Perfil",
     "settings": "Configuraciones",
     "logout": "Cerrar Sesión",
-    "addAdmin": "Agregar usuario administrador"
+    "addAdmin": "Agregar usuario administrador",
+    "list": "Listado de administradores y usuarios"
   },
   "Search": {
     "recent": "Recientes",
     "try": "Prueba con",
     "seeAll": "Ver todos",
     "delete": "Borrar"
+  },
+  "backofficeListUsers": {
+    "search": "Buscar contactos...",
+    "block": "Bloquear",
+    "unblock": "Desbloquear",
+    "orderBy": "Ordenar",
+    "fullName": "Nombre Completo",
+    "blocked": "Bloqueado",
+    "role": "Rol",
+    "admin": "Administradores",
+    "user": "Usuarios"
   }
 }

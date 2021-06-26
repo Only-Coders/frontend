@@ -3,8 +3,8 @@ import { User } from "@/models/user";
 import { Pagination } from "@/models/Pagination/pagination";
 
 @Module({ name: "userPaginationModule", namespaced: true })
-export default class UserPagination extends VuexModule {
-  userPagination: Pagination<User> | null = null;
+export default class adminPagination extends VuexModule {
+  adminPagination: Pagination<User> | null = null;
   search = "";
   usersPerPage = 1;
   country = "";
@@ -13,12 +13,12 @@ export default class UserPagination extends VuexModule {
 
   @Mutation
   SET_USER_PAGINATION(value: Pagination<User>): void {
-    this.userPagination = value;
+    this.adminPagination = value;
   }
 
   @Mutation
   CLEAR_USER_PAGINATION(): void {
-    this.userPagination = null;
+    this.adminPagination = null;
   }
 
   @Mutation

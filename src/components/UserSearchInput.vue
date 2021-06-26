@@ -122,7 +122,7 @@ export default Vue.extend({
 
   data: () => ({
     page: 1,
-    userPagination: [] as Pagination<User>[],
+    adminPagination: [] as Pagination<User>[],
     createDialog: false,
     country: "",
     skill: "",

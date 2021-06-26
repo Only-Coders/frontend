@@ -5,16 +5,16 @@
         <UserSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></UserSearchInput>
         <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
-        <v-row no-gutters class="d-flex justify-center" v-if="userPagination.content.length !== 0">
+        <v-row no-gutters class="d-flex justify-center" v-if="adminPagination.content.length !== 0">
           <v-col cols="9">
-            <div v-for="user in userPagination.content" :key="user.canonicalName" class="my-8">
+            <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
               <Contact :contactData="user"></Contact>
             </div>
             <v-pagination
               class="my-10"
-              v-if="userPagination && userPagination.totalPages > 1"
+              v-if="adminPagination && adminPagination.totalPages > 1"
               v-model="currentPage"
-              :length="userPagination.totalPages"
+              :length="adminPagination.totalPages"
               :total-visible="7"
               @input="nextPage"
             ></v-pagination>
@@ -75,9 +75,9 @@ export default Vue.extend({
   },
 
   computed: {
-    userPagination: {
+    adminPagination: {
       get(): Pagination<Profile> {
-        return this.$store.state.userPaginationModule.userPagination;
+        return this.$store.state.userPaginationModule.adminPagination;
       }
     }
   }

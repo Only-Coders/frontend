@@ -89,7 +89,7 @@ const router = new VueRouter({
 });
 router.beforeEach((to, _from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.state.userModule?.user) {
+    if (localStorage.getItem("accessToken") && store.state.userModule?.user) {
       if (to.matched.some((record) => record.meta.requiresAdmin)) {
         store.state.userModule.user.roles == "ADMIN" ? next() : next("/");
       } else {
@@ -99,7 +99,7 @@ router.beforeEach((to, _from, next) => {
       next("/login");
     }
   } else {
-    if (store.state.userModule?.user) {
+    if (localStorage.getItem("accessToken") && store.state.userModule?.user) {
       store.state.userModule.user.roles == "ADMIN" ? next("/admin") : next("/");
     } else {
       next();

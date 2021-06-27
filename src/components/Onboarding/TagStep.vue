@@ -1,6 +1,6 @@
 <template>
   <div class="tags">
-    <v-row class="pt-sm-0 pt-16">
+    <v-row>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.Tag.title") }}</h2>
         <p>
@@ -9,24 +9,22 @@
       </v-col>
     </v-row>
 
-    <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
-      <v-col
-        cols="10"
-        md="8"
-        lg="5"
-        class="overflow-y-auto"
-        :style="$vuetify.breakpoint.xs ? 'max-height: 350px' : 'max-height: 600px'"
-        v-for="(tag, index) in tags.slice(0, 4)"
-        :key="tag.canonicalName"
-      >
-        <TagComponent
-          v-bind="{ ...tag }"
-          :isFollowed="false"
-          :isSelfProfile="true"
-          @remove="removeTag(index)"
-        ></TagComponent>
-      </v-col>
-    </transition-group>
+    <v-row
+      :style="isLaptop() ? 'max-height: 60vh' : 'max-height: 70vh'"
+      class="overflow-y-auto overflow-x-hidden"
+      no-gutters
+    >
+      <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
+        <v-col cols="10" md="8" lg="5" class="overflow-y-auto" v-for="(tag, index) in tags" :key="tag.canonicalName">
+          <TagComponent
+            v-bind="{ ...tag }"
+            :isFollowed="false"
+            :isSelfProfile="true"
+            @remove="removeTag(index)"
+          ></TagComponent>
+        </v-col>
+      </transition-group>
+    </v-row>
     <v-row v-if="tags.length == 0" class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
       <v-col>
         <no-data></no-data>
@@ -63,6 +61,9 @@ export default Vue.extend({
   methods: {
     removeTag(index: number) {
       this.tags.splice(index, 1);
+    },
+    isLaptop() {
+      return window.innerHeight <= 597;
     }
   },
 
@@ -74,7 +75,7 @@ export default Vue.extend({
   },
 
   async created() {
-    const result = await getTag("", 10);
+    const result = await getTag("", 20);
     this.tags = result.content;
   }
 });
@@ -83,7 +84,7 @@ export default Vue.extend({
 <style scoped>
 .tags {
   position: relative;
-  margin-top: 85px;
+  margin-top: 75px;
   height: 765px;
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mt-10 mt-md-14 justify-sm-center justify-md-start" no-gutters>
-      <v-col cols="3" class="hidden-sm-and-down ml-6 pr-10 ml-lg-16 pr-lg-14 pl-lg-16">
+      <v-col cols="3" class="hidden-sm-and-down ml-6 pr-10 ml-lg-16 pr-lg-14 pl-lg-12">
         <FeedProfilePreview></FeedProfilePreview>
       </v-col>
 

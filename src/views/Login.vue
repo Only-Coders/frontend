@@ -2,11 +2,11 @@
   <div>
     <v-row no-gutters>
       <v-col>
-        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="mx-8 mt-6"></v-img>
+        <img src="@/assets/images/only-coders-logo.png" width="70vh" alt="logo" class="mx-8 mt-6 logo_img" />
       </v-col>
     </v-row>
 
-    <v-row justify="space-around" align="center" no-gutters class="mt-10">
+    <v-row justify="space-around" align="center" no-gutters class="mt-2">
       <v-col class="welcome pl-16 hidden-md-and-down">
         <v-card width="400px" class="mx-auto" flat>
           <h2 class="mb-4">{{ $i18n.t("Login.welcomeTitle") }}</h2>

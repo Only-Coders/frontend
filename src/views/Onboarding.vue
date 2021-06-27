@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pa-0 main-container">
-    <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="ma-8 logo"></v-img>
+    <img src="@/assets/images/only-coders-logo.png" width="70vh" alt="logo" class="ma-8 logo" />
 
     <div justify="center" align="center" no-gutters>
       <v-row no-gutters>
@@ -32,24 +32,49 @@
     <v-btn
       @click="noticeChild"
       color="primary"
-      class="stepButtons"
+      class="stepButtons mb-5"
       large
       depressed
       :loading="isLoading"
-      v-if="carouselIndex != steps.length - 1"
-      >Siguiente</v-btn
+      v-if="carouselIndex != steps.length - 1 && !$vuetify.breakpoint.xs"
+      >{{ $i18n.t("Onboarding.next") }}</v-btn
+    >
+
+    <v-btn
+      @click="noticeChild"
+      color="primary"
+      class="stepButtons mb-5"
+      small
+      fab
+      depressed
+      :loading="isLoading"
+      v-if="carouselIndex != steps.length - 1 && $vuetify.breakpoint.xs"
+      ><v-icon size="20"> mdi-arrow-right-bold </v-icon></v-btn
     >
 
     <v-btn
       @click="finishOnboarding"
       color="primary"
-      class="stepButtons"
+      class="stepButtons mb-5"
       large
       depressed
       :loading="isLoading"
-      v-if="carouselIndex == steps.length - 1"
+      v-if="carouselIndex == steps.length - 1 && !$vuetify.breakpoint.xs"
     >
-      Finalizar
+      {{ $i18n.t("Onboarding.finish") }}
+    </v-btn>
+
+    <v-btn
+      @click="finishOnboarding"
+      color="primary"
+      class="stepButtons mb-5"
+      small
+      fab
+      depressed
+      :loading="isLoading"
+      v-if="carouselIndex == steps.length - 1 && $vuetify.breakpoint.xs"
+    >
+      <v-icon size="20"> mdi-check </v-icon>
     </v-btn>
 
     <img src="@/assets/images/semi_circle.png" alt="semi_circle_wave" class="semi_circle_wave hidden-md-and-down" />
@@ -111,7 +136,7 @@ export default Vue.extend({
 
 .semi_circle_wave {
   position: absolute;
-  bottom: 0;
+  bottom: -200px;
   width: 400px;
   opacity: 0.7;
   z-index: 1;
@@ -121,8 +146,20 @@ export default Vue.extend({
   position: absolute !important;
 }
 
+@media (min-width: 690px) {
+  .v-carousel__controls {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 690px) {
+  .v-carousel__controls {
+    transform: scale(0.7);
+  }
+}
+
 .v-carousel__controls {
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 .carousel {
@@ -135,6 +172,6 @@ export default Vue.extend({
   z-index: 3;
   bottom: 0;
   margin-right: 80px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 </style>

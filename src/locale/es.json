@@ -86,7 +86,7 @@
     },
     "WorkExperience": {
       "title": "Experiencia Laboral",
-      "text": "Cuéntanos sobre tus experiencias laborales para que los reclutadores sepan más de tí !",
+      "text": "Cuéntanos sobre tus experiencias laborales para que los reclutadores sepan más de tí!",
       "addExperienceButton": "Agregar Experiencia",
       "organizationLabel": "Organización",
       "positionLabel": "Puesto",
@@ -140,7 +140,9 @@
       "invalidCredential": "Tu correo electrónico o contraseña es incorrecto",
       "emailAlreadyExists": "Este correo electrónico ya está en uso",
       "invalidEmail": "Correo electrónico incorrecto"
-    }
+    },
+    "next": "Siguiente",
+    "finish": "Finalizar"
   },
   "Feed": {
     "noSuggestions": "No tenemos sugerencias para ti :(",

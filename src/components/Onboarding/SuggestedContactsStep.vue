@@ -1,25 +1,31 @@
 <template>
   <div class="suggested-contacts">
-    <v-row class="pt-sm-0 pt-16">
+    <v-row>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.SuggestedContacts.title") }}</h2>
-        <p>
+        <p class="mx-10 mx-sm-0">
           {{ $i18n.t("Onboarding.SuggestedContacts.text") }}
         </p>
       </v-col>
     </v-row>
 
-    <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
-      <v-col
-        cols="10"
-        md="8"
-        lg="5"
-        v-for="(suggestedContact, index) in suggestedContacts.slice(0, 4)"
-        :key="suggestedContact.canonicalName"
-      >
-        <Contact v-bind="{ ...suggestedContact }" @remove="removeSuggestedContact(index)"></Contact>
-      </v-col>
-    </transition-group>
+    <v-row
+      :style="isLaptop() ? 'max-height: 55vh' : 'max-height: 70vh'"
+      class="overflow-y-auto overflow-x-hidden"
+      no-gutters
+    >
+      <transition-group name="list" tag="div" class="row flex-column align-center justify-center">
+        <v-col
+          cols="10"
+          md="8"
+          lg="5"
+          v-for="(suggestedContact, index) in suggestedContacts"
+          :key="suggestedContact.canonicalName"
+        >
+          <Contact v-bind="{ ...suggestedContact }" @remove="removeSuggestedContact(index)"></Contact>
+        </v-col>
+      </transition-group>
+    </v-row>
 
     <transition
       name="aaa"
@@ -61,11 +67,14 @@ export default Vue.extend({
   methods: {
     removeSuggestedContact(index: number) {
       this.suggestedContacts.splice(index, 1);
+    },
+    isLaptop() {
+      return window.innerHeight <= 597;
     }
   },
 
   async created() {
-    const result = await getSuggestedContacts(10);
+    const result = await getSuggestedContacts(20);
     this.suggestedContacts = result;
   }
 });
@@ -74,7 +83,7 @@ export default Vue.extend({
 <style scoped>
 .suggested-contacts {
   position: relative;
-  margin-top: 85px;
+  margin-top: 75px;
   height: 765px;
 }
 

@@ -35,6 +35,7 @@
                 :rules="[rules.required]"
                 :label="$i18n.t('Onboarding.StudyExperience.degreeLabel')"
                 v-bind="{ ...inputProps }"
+                hide-details
               ></v-text-field>
             </v-col>
           </v-row>
@@ -58,6 +59,7 @@
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     readonly
+                    hide-details
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="experience.since" @input="showStartDatePicker = false"></v-date-picker>
@@ -80,6 +82,7 @@
                     append-icon="mdi-calendar-month-outline"
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
+                    hide-details
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="experience.until" @input="showEndDatePicker = false"></v-date-picker>

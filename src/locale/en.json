@@ -86,7 +86,7 @@
     },
     "WorkExperience": {
       "title": "Work Experience",
-      "text": "Tell us about your work experiences so recruiters can know more about you !",
+      "text": "Tell us about your work experiences so recruiters can know more about you!",
       "addExperienceButton": "Add Experience",
       "organizationLabel": "Organization",
       "positionLabel": "Position",
@@ -140,7 +140,9 @@
       "invalidCredential": "Your email or password are invalid",
       "emailAlreadyExists": "This email is already taken",
       "invalidEmail": "Wrong email"
-    }
+    },
+    "next": "Next",
+    "finish": "Finish"
   },
   "Feed": {
     "noSuggestions": "We have no suggestions for you :(",

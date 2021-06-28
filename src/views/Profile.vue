@@ -66,7 +66,7 @@ export default Vue.extend({
 
 <style scoped>
 .profile_preview_col {
-  padding-left: 160px !important;
+  padding-left: 80px !important;
   padding-right: 40px !important;
 }
 .suggestions {

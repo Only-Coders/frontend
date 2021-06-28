@@ -1,6 +1,6 @@
 <template>
   <div class="skills">
-    <v-row class="pt-sm-0 pt-16">
+    <v-row>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.Skills.title") }}</h2>
         <p>
@@ -29,7 +29,7 @@
                 ></v-combobox>
               </v-col>
               <v-col cols="1">
-                <v-btn fab color="primary" @click.prevent="addSkill">
+                <v-btn fab depressed color="primary" @click.prevent="addSkill">
                   <v-icon> mdi-plus </v-icon>
                 </v-btn>
               </v-col>
@@ -150,7 +150,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .skills {
   position: relative;
-  margin-top: 85px;
+  margin-top: 75px;
   height: 765px;
 }
 

@@ -19,10 +19,10 @@
       </v-col>
 
       <v-col cols="12" sm="4" class="mt-sm-0 mt-4">
-        <v-btn v-if="!followed" color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
+        <v-btn v-if="!followed" color="primary" width="45%" small @click="followUser" outlined>
           {{ $i18n.t("Onboarding.SuggestedContacts.follow") }}
         </v-btn>
-        <v-btn v-else color="primary" width="35%" class="mx-3" small @click="followUser" outlined>
+        <v-btn v-else color="primary" width="45%" small @click="followUser" outlined>
           {{ $i18n.t("Onboarding.SuggestedContacts.unfollow") }}
         </v-btn>
 

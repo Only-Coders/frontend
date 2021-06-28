@@ -1,6 +1,6 @@
 <template>
   <div class="work-experience">
-    <v-row justify="center" class="pt-sm-0 pt-16" align="center" no-gutters>
+    <v-row justify="center" align="center" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.WorkExperience.title") }}</h2>
       </v-col>
@@ -20,7 +20,7 @@
         md="6"
         lg="4"
         class="pt-12 overflow-y-auto"
-        :style="$vuetify.breakpoint.xs ? 'max-height: 290px' : 'max-height: 580px'"
+        :style="isLaptop() ? 'max-height: 43vh' : 'max-height: 60vh'"
       >
         <div v-for="(exp, index) in experiences" :key="index">
           <experience
@@ -37,7 +37,7 @@
         <no-data></no-data>
       </v-col>
     </v-row>
-    <v-row justify="center" no-gutters>
+    <v-row justify="center" no-gutters class="mt-7">
       <v-col cols="4" sm="3" md="2" lg="1">
         <v-btn text @click="showAddDialog">
           <v-icon left dark> mdi-plus-circle-outline </v-icon>
@@ -119,6 +119,9 @@ export default Vue.extend({
     },
     deleteExperience() {
       this.experiences.splice(this.selectedIndex, 1);
+    },
+    isLaptop() {
+      return window.innerHeight <= 597;
     }
   },
 
@@ -141,7 +144,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .work-experience {
   position: relative;
-  margin-top: 85px;
+  margin-top: 75px;
   height: 765px;
 }
 

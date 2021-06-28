@@ -1,6 +1,6 @@
 <template>
   <div class="general-information">
-    <v-row justify="center" align="center" class="pt-sm-0 pt-16" no-gutters>
+    <v-row justify="center" align="center" no-gutters>
       <v-col align="center">
         <h2 class="mb-4">{{ $i18n.t("Onboarding.GeneralInformation.title") }}</h2>
       </v-col>
@@ -17,16 +17,17 @@
       justify="center"
       no-gutters
       class="overflow-y-auto"
-      :style="$vuetify.breakpoint.xs ? 'max-height: 365px' : 'max-height: 550px'"
+      :style="isLaptop() ? 'max-height: 55vh' : 'max-height: 65vh'"
     >
       <v-col cols="10" md="6" lg="4" no-gutters>
         <v-form ref="register-user" lazy-validation>
           <v-row no-gutters align="center">
-            <v-col class="py-2 py-sm-6 py-md-0" cols="12" md="4" lg="4" no-gutters>
+            <v-col class="py-2 py-md-0" cols="12" md="4" lg="4" no-gutters>
               <v-btn
                 v-if="!hasSelectedProfileImage"
                 class="pa-12 pa-md-14 pa-lg-16"
                 fab
+                depressed
                 dark
                 color="primary"
                 @click="handleShowFileSelector"
@@ -75,7 +76,7 @@
           </v-row>
 
           <v-row class="mt-0">
-            <v-col class="pt-0" cols="12" lg="6">
+            <v-col class="py-0" cols="12" lg="6">
               <v-select
                 v-model="user.gitProfile.platform"
                 v-if="user.gitProfile"
@@ -102,7 +103,7 @@
             </v-col>
           </v-row>
           <v-row class="mt-0">
-            <v-col class="pt-0" cols="12" lg="6">
+            <v-col class="py-0" cols="12" lg="6">
               <v-menu
                 v-model="showDatePicker"
                 :close-on-content-click="false"
@@ -120,6 +121,7 @@
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     readonly
+                    class="ma-0 pa-0"
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="birthDate" @input="showDatePicker = false"></v-date-picker>
@@ -254,6 +256,9 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
       setHeaders(ocToken.token);
       const user: UserData = jwtDecode(ocToken.token);
       this.$store.commit("userModule/SET_USER", user);
+    },
+    isLaptop() {
+      return window.innerHeight <= 597;
     }
   },
 
@@ -270,6 +275,8 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
           this.$router.push("/login");
         }
       }
+      this.$emit("moveNextStep");
+      this.$destroy();
     }
   },
 
@@ -282,7 +289,7 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
 <style lang="scss" scoped>
 .general-information {
   position: relative;
-  padding-top: 85px;
+  margin-top: 75px;
 }
 .profile-img {
   border-radius: 50%;

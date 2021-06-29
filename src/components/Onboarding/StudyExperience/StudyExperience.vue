@@ -20,7 +20,7 @@
         md="6"
         lg="4"
         class="pt-12 overflow-y-auto"
-        :style="isLaptop() ? 'max-height: 43vh' : 'max-height: 60vh'"
+        :style="isLaptop() ? 'max-height: 52vh' : 'max-height: 60vh'"
       >
         <div v-for="(exp, index) in experiences" :key="index">
           <experience
@@ -34,11 +34,11 @@
     </v-row>
     <v-row v-else class="pb-md-8 pb-lg-12 pb-8" justify="center" no-gutters>
       <v-col>
-        <no-data></no-data>
+        <no-data class="mb-n8"></no-data>
       </v-col>
     </v-row>
     <v-row justify="center" no-gutters class="mt-7">
-      <v-col cols="4" sm="3" md="2" lg="1">
+      <v-col cols="12">
         <v-btn text @click="showAddDialog">
           <v-icon left dark> mdi-plus-circle-outline </v-icon>
           {{ $i18n.t("Onboarding.WorkExperience.addExperienceButton") }}
@@ -60,7 +60,7 @@
     ></delete-experience>
     <img
       class="online_resume hidden-md-and-down"
-      src="@/assets/images/Onboarding/undraw_Designer.svg"
+      src="@/assets/images/Onboarding/undraw_education.svg"
       alt="online_resume"
     />
   </div>
@@ -121,7 +121,7 @@ export default Vue.extend({
       this.experiences.splice(this.selectedIndex, 1);
     },
     isLaptop() {
-      return window.innerHeight <= 597;
+      return window.innerHeight <= 800;
     }
   },
 
@@ -152,7 +152,7 @@ export default Vue.extend({
   width: 260px;
   z-index: 2;
   position: absolute;
-  bottom: 0;
+  bottom: 100px;
   left: 100px;
 }
 </style>

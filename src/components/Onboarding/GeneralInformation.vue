@@ -17,7 +17,7 @@
       justify="center"
       no-gutters
       class="overflow-y-auto"
-      :style="isLaptop() ? 'max-height: 55vh' : 'max-height: 65vh'"
+      :style="isLaptop() ? 'max-height: 60vh' : 'max-height: 65vh'"
     >
       <v-col cols="10" md="6" lg="4" no-gutters>
         <v-form ref="register-user" lazy-validation>
@@ -258,7 +258,7 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
       this.$store.commit("userModule/SET_USER", user);
     },
     isLaptop() {
-      return window.innerHeight <= 597;
+      return window.innerHeight <= 800;
     }
   },
 
@@ -275,8 +275,6 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
           this.$router.push("/login");
         }
       }
-      this.$emit("moveNextStep");
-      this.$destroy();
     }
   },
 

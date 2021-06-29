@@ -69,7 +69,7 @@ export default Vue.extend({
       this.suggestedContacts.splice(index, 1);
     },
     isLaptop() {
-      return window.innerHeight <= 597;
+      return window.innerHeight <= 800;
     }
   },
 
@@ -91,7 +91,7 @@ export default Vue.extend({
   width: 260px;
   z-index: 2;
   position: absolute;
-  bottom: 120px;
+  bottom: 100px;
   left: 100px;
 }
 

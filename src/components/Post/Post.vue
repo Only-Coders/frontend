@@ -90,7 +90,7 @@
                       </h3>
                     </v-list-item-title>
                   </v-list-item>
-                  <v-list-item @click.prevent>
+                  <v-list-item @click="showReportDialog = true">
                     <v-list-item-icon class="mr-2">
                       <v-icon class="pr-2" color="#5E5E5E"> mdi-alert-octagon </v-icon>
                     </v-list-item-icon>
@@ -226,6 +226,12 @@
       @deletePost="toggleDeletePostDialog"
       :postId="this.post.id"
     ></DeletePostDialog>
+    <ReportPostDialog
+      v-if="showReportDialog"
+      v-model="showReportDialog"
+      :value="showReportDialog"
+      :postId="this.post.id"
+    ></ReportPostDialog>
   </div>
 </template>
 
@@ -252,6 +258,7 @@ import CreateComment from "@/components/Post/CreateComment.vue";
 import PostComments from "@/components/Post/PostComments.vue";
 import { Comment } from "@/models/comment";
 import { getPostComments } from "@/services/comment";
+import ReportPostDialog from "@/components/Post/ReportPostDialog.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -268,7 +275,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     AvatarImagePreview,
     CreatePostDialog,
     CreateComment,
-    PostComments
+    PostComments,
+    ReportPostDialog
   },
 
   mixins: [medalsMixin, notificationsMixin],
@@ -306,7 +314,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     currentPageOfComments: 0,
     totalPagesOfComments: 0,
     isLinkVideo: false,
-    youtubeVideoId: ""
+    youtubeVideoId: "",
+    showReportDialog: false
   }),
 
   computed: {

@@ -32,6 +32,9 @@
   "writeComment": "Write a comment...",
   "hide": "hide",
   "loadMore": "load more",
+  "report": "Report",
+  "postReportDialog": "Post report",
+  "postReason": "Reason...",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",

@@ -11,7 +11,8 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "feed" */ "../views/Feed.vue"),
     meta: {
       layout: "HeaderLayout",
-      requiresAuth: true
+      requiresAuth: true,
+      requiresUserCompleted: true
     }
   },
   {
@@ -38,7 +39,8 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
     meta: {
       layout: "HeaderLayout",
-      requiresAuth: true
+      requiresAuth: true,
+      requiresUserCompleted: true
     },
     children: [
       {
@@ -47,7 +49,8 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: "profileChild" */ "../views/Profile.vue"),
         meta: {
           layout: "HeaderLayout",
-          requiresAuth: true
+          requiresAuth: true,
+          requiresUserCompleted: true
         }
       }
     ]
@@ -58,7 +61,8 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "chat" */ "../views/Chat.vue"),
     meta: {
       layout: "HeaderLayout",
-      requiresAuth: true
+      requiresAuth: true,
+      requiresUserCompleted: true
     }
   },
   {
@@ -74,7 +78,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/users",
     name: "UserList",
-    component: () => import(/* webpackChunkName: "admin" */ "../views/AdminListUsers.vue"),
+    component: () => import(/* webpackChunkName: "adminListUsers" */ "../views/AdminListUsers.vue"),
     meta: {
       layout: "AdminLayout",
       requiresAuth: true,
@@ -84,10 +88,11 @@ const routes: Array<RouteConfig> = [
   {
     path: "/search/results/all",
     name: "search-users",
-    component: () => import(/* webpackChunkName: "profile" */ "../views/SearchUsers.vue"),
+    component: () => import(/* webpackChunkName: "search" */ "../views/SearchUsers.vue"),
     meta: {
       layout: "HeaderLayout",
-      requiresAuth: true
+      requiresAuth: true,
+      requiresUserCompleted: true
     }
   }
 ];
@@ -97,20 +102,33 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+
 router.beforeEach((to, _from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (localStorage.getItem("accessToken") && store.state.userModule?.user) {
       if (to.matched.some((record) => record.meta.requiresAdmin)) {
         store.state.userModule.user.roles == "ADMIN" ? next() : next("/");
       } else {
-        store.state.userModule.user.roles == "ADMIN" ? next("/admin") : next();
+        if (store.state.userModule.user.roles == "ADMIN") {
+          next("/admin");
+        } else {
+          if (to.matched.some((record) => record.meta.requiresUserCompleted)) {
+            store.state.userModule.user.complete ? next() : next("/onboarding");
+          } else {
+            store.state.userModule.user.complete ? next("/feed") : next();
+          }
+        }
       }
     } else {
       next("/login");
     }
   } else {
     if (localStorage.getItem("accessToken") && store.state.userModule?.user) {
-      store.state.userModule.user.roles == "ADMIN" ? next("/admin") : next("/");
+      if (store.state.userModule.user.roles == "ADMIN") {
+        next("/admin");
+      } else {
+        store.state.userModule?.user.complete ? next("/") : next("/onboarding");
+      }
     } else {
       next();
     }

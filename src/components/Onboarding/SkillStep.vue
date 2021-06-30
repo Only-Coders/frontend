@@ -37,7 +37,7 @@
           </v-form>
         </v-row>
 
-        <v-row align="center" justify="center" class="mt-10">
+        <v-row align="center" justify="center" class="mt-10 px-5">
           <v-col cols="6">
             <v-chip
               v-for="(skill, index) in selectedSkills"
@@ -158,7 +158,7 @@ export default Vue.extend({
   width: 260px;
   z-index: 2;
   position: absolute;
-  bottom: 120px;
+  bottom: 100px;
   left: 100px;
 }
 </style>

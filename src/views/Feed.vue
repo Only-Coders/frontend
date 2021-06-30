@@ -53,8 +53,7 @@ export default Vue.extend({
     posts: [] as GetPost[],
     currentPage: 0,
     enableInfiniteScroll: false,
-    fetching: true,
-    accountEliminationDate: ""
+    fetching: true
   }),
 
   methods: {
@@ -104,15 +103,17 @@ export default Vue.extend({
 
   async created() {
     await this.fetchPosts();
-    if (this.$store.state.userModule.user.eliminationDate) {
-      this.accountEliminationDate = format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy");
-    }
   },
 
   computed: {
     search: {
       get(): boolean {
         return this.$store.state.shouldRefreshFeed;
+      }
+    },
+    accountEliminationDate: {
+      get(): string | null {
+        return format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy");
       }
     }
   },

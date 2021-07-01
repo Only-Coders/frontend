@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
 import UserModule from "@/store/modules/user";
-import UserPaginationModule from "@/store/modules/adminPagination";
+import UserPaginationModule from "@/store/modules/userPagination";
 import AdminPaginationModule from "@/store/modules/adminPagination";
 import ChatModule from "@/store/modules/chat";
 import { logout } from "@/services/auth";
@@ -26,7 +26,7 @@ const persist = new VuexPersist({
       user: state.userModule?.user
     },
     userPaginationModule: {
-      adminPagination: state.userPaginationModule?.adminPagination
+      userPagination: state.userPaginationModule?.userPagination
     },
     adminPaginationModule: {
       adminPagination: state.adminPaginationModule?.adminPagination
@@ -55,7 +55,7 @@ export default new Vuex.Store<State>({
   modules: {
     userModule: UserModule,
     userPaginationModule: UserPaginationModule,
-    adminPaginationModule: UserPaginationModule,
+    adminPaginationModule: AdminPaginationModule,
     chatModule: ChatModule
   },
   plugins: [persist.plugin]

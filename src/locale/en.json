@@ -1,4 +1,5 @@
 {
+  "searchBlacklist": "Search Blacklist users...",
   "cancel": "cancel",
   "add": "add",
   "accept": "accept",
@@ -266,7 +267,8 @@
     "logout": "Logout",
     "addAdmin": "Add admin user",
     "list": "List admins and users",
-    "home": "Home"
+    "home": "Home",
+    "blacklist": "List users in the Blacklist"
   },
   "Search": {
     "recent": "Recent",

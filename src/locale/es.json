@@ -1,4 +1,5 @@
 {
+  "searchBlacklist": "Buscar usuarios en Blacklist...",
   "cancel": "cancelar",
   "add": "agregar",
   "accept": "aceptar",
@@ -265,7 +266,8 @@
     "logout": "Cerrar Sesión",
     "addAdmin": "Agregar usuario administrador",
     "list": "Listado de administradores y usuarios",
-    "home": "Inicio"
+    "home": "Inicio",
+    "blacklist": "Listado de usuarios en la Blacklist"
   },
   "Search": {
     "recent": "Recientes",

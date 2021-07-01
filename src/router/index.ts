@@ -91,6 +91,16 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/blacklist",
+    name: "Blacklist",
+    component: () => import(/* webpackChunkName: "adminListUsers" */ "../views/AdminListBlacklist.vue"),
+    meta: {
+      layout: "AdminLayout",
+      requiresAuth: true,
+      requiresAdmin: true
+    }
+  },
+  {
     path: "/search/results/all",
     name: "search-users",
     component: () => import(/* webpackChunkName: "search" */ "../views/SearchUsers.vue"),

@@ -43,6 +43,15 @@
 
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
+              <v-btn icon class="mr-5" @click="$router.push('/blacklist')" v-bind="attrs" v-on="on">
+                <v-icon>mdi-ghost-off-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>{{ $i18n.t("Header.blacklist") }}</span>
+          </v-tooltip>
+
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
               <v-btn icon class="mr-2" @click="logout" v-bind="attrs" v-on="on">
                 <v-icon>mdi-logout-variant</v-icon>
               </v-btn>

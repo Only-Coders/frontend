@@ -6,7 +6,7 @@
     <v-card v-else>
       <v-card-title>{{ title }}</v-card-title>
       <v-card-text>
-        <apexchart type="pie" class="chart-pie" :options="chartOptions" :series="series"></apexchart>
+        <apexchart type="pie" class="chart-pie pa-4" :options="chartOptions" :series="series"></apexchart>
       </v-card-text>
     </v-card>
   </transition>
@@ -82,7 +82,8 @@ export default Vue.extend({
 <style scoped>
 .chart-pie {
   margin: auto;
-  max-width: 400px;
-  width: 400px;
+  max-width: 450px;
+  height: 350px;
+  width: 450px;
 }
 </style>

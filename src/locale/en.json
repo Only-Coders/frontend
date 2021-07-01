@@ -46,7 +46,9 @@
     "totalActiveUsers": "Total active users",
     "totalBlockedUsers": "Total blocked users",
     "totalBannedUsers": "Total banned users",
-    "languageUseTitle": "Most used language"
+    "languageUseTitle": "Most used language",
+    "postsAndReactionsPerHour": "Today's posts and reactions",
+    "postsPerDay": "Posts per day"
   },
   "ForgotPassword": {
     "forgotTitle": "Forgot password ?",

@@ -12,7 +12,7 @@
         ></chart-area>
       </v-col>
     </v-row>
-    <v-row no-gutters justify="center" class="mb-1>2">
+    <v-row no-gutters justify="center" class="mb-12">
       <v-col cols="5">
         <chart-heat-map
           style="width: 95%"

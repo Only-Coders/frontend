@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="suggestion__card">
     <v-card-title class="pt-4 pl-6 font-weight-light">{{ $i18n.t("Feed.suggestions") }}</v-card-title>
 
     <v-divider></v-divider>
@@ -9,7 +9,7 @@
         <v-divider v-if="index < suggestedContacts.length - 1" :key="index"></v-divider>
       </v-list>
     </div>
-    <v-row justify="center" v-if="suggestedContacts.length === 0" no-gutters>
+    <v-row justify="center" v-if="suggestedContacts.length === 0 && !hasFinishedLoading" no-gutters>
       <v-col class="pa-6">
         <v-img
           class="mx-auto mt-6 mb-2"
@@ -17,13 +17,14 @@
           width="180"
           alt="no data :("
         ></v-img>
-        <h4 class="text-center pt-4 pb-2 font-weight-light">{{ $i18n.t("Feed.noSuggestions") }}</h4>
+        <h4
+          v-if="suggestedContacts.length === 0 && !hasFinishedLoading"
+          class="text-center pt-4 pb-2 font-weight-light"
+        >
+          {{ $i18n.t("Feed.noSuggestions") }}
+        </h4>
       </v-col>
     </v-row>
-
-    <v-btn v-if="suggestedContacts.length !== 0" text color="primary" block class="text-caption"
-      >{{ $i18n.t("seeMore") }}
-    </v-btn>
   </v-card>
 </template>
 
@@ -39,7 +40,8 @@ export default Vue.extend({
   components: { Contact },
 
   data: () => ({
-    suggestedContacts: [] as User[]
+    suggestedContacts: [] as User[],
+    hasFinishedLoading: false
   }),
 
   methods: {
@@ -52,8 +54,14 @@ export default Vue.extend({
   },
   async created() {
     await this.getSuggestedContacts();
+    this.hasFinishedLoading = true;
   }
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.suggestion__card {
+  max-height: 68vh !important;
+  overflow: auto !important;
+}
+</style>

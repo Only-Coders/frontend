@@ -45,7 +45,8 @@
     "addAdminMessage": "Se creo el administrador correctamente",
     "totalActiveUsers": "Total usuarios activos",
     "totalBlockedUsers": "Total usuarios bloqueados",
-    "totalBannedUsers": "Total usuarios penalizados"
+    "totalBannedUsers": "Total usuarios penalizados",
+    "languageUseTitle": "Idioma mas utilizado"
   },
   "ForgotPassword": {
     "forgotTitle": "Olvidaste tu contraseña ?",

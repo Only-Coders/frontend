@@ -45,7 +45,8 @@
     "addAdminMessage": "Admin created successfully",
     "totalActiveUsers": "Total active users",
     "totalBlockedUsers": "Total blocked users",
-    "totalBannedUsers": "Total banned users"
+    "totalBannedUsers": "Total banned users",
+    "languageUseTitle": "Most used language"
   },
   "ForgotPassword": {
     "forgotTitle": "Forgot password ?",

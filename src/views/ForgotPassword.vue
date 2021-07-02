@@ -2,13 +2,19 @@
   <div>
     <v-row no-gutters>
       <v-col>
-        <v-img src="@/assets/images/only-coders-logo.png" width="100" alt="logo" class="mx-8 mt-6"></v-img>
+        <img
+          src="@/assets/images/only-coders-logo.png"
+          @click="$router.push('/login')"
+          width="80vh"
+          alt="logo"
+          class="mx-8 mt-6 logo_img"
+        />
       </v-col>
     </v-row>
 
     <v-row justify="center" align="center" no-gutters class="mt-10">
       <v-col cols="9" md="6" class="">
-        <v-card width="400px" class="mx-auto" tile elevation="16">
+        <v-card width="400px" class="mx-auto main_card" tile elevation="16">
           <h1 class="ml-6 pt-6 mb-2 text-left">{{ $i18n.t("ForgotPassword.forgotTitle") }}</h1>
           <v-card-text>
             <p class="ml-2" align="left">
@@ -107,24 +113,6 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
 </script>
 
 <style scoped>
-body {
-  overflow: auto;
-}
-
-#logo {
-  width: 100px;
-  margin: 20px;
-}
-
-.code_type_img {
-  width: 350px;
-}
-
-.welcome {
-  text-align: center;
-  padding: 150px;
-}
-
 .waves {
   position: absolute;
   bottom: -90px;
@@ -133,8 +121,11 @@ body {
   width: 4000px;
 }
 
-.v-sheet.v-card {
+.logo_img {
+  cursor: pointer;
+}
+
+.main_card {
   z-index: 2;
-  background: transparent;
 }
 </style>

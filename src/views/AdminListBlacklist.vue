@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters class="d-flex justify-center">
-    <v-col cols="8">
+    <v-col cols="6">
       <v-card class="mt-12" min-height="85vh">
         <v-text-field
           hide-no-data
@@ -25,11 +25,14 @@
             blacklistUsersPagination.content.length !== 0
           "
         >
-          <v-col cols="auto" v-for="user in blacklistUsersPagination.content" :key="user.email">
-            <BlacklistUserComponent :data="user" @deleteFromBlacklist="removeFromBlacklist"></BlacklistUserComponent>
+          <v-col cols="auto" v-for="(user, index) in blacklistUsersPagination.content" :key="user.email">
+            <BlacklistUserComponent
+              :data="user"
+              @deleteFromBlacklist="removeFromBlacklist(index)"
+            ></BlacklistUserComponent>
           </v-col>
           <v-pagination
-            class="my-10"
+            class="my-10 pb-4"
             v-model="currentPage"
             :length="blacklistUsersPagination.totalPages"
             :total-visible="7"
@@ -66,22 +69,23 @@ export default (Vue as VueConstructor<Vue>).extend({
   mixins: [],
 
   data: () => ({
-    usersPerPage: 5,
     currentPage: 1,
     searchParameters: "",
-    blacklistUsersPagination: {} as Pagination<BlacklistUser[]>,
+    blacklistUsersPagination: {} as Pagination<BlacklistUser>,
     fetchIsLoading: false,
     timer: 0
   }),
 
   methods: {
     async nextPageUsers() {
-      const result = await getBlacklistUsers("", this.currentPage - 1, 9);
+      const result = await getBlacklistUsers(this.searchParameters, this.currentPage - 1, 5);
       this.blacklistUsersPagination = result;
       this.currentPage = result.currentPage + 1;
     },
-    removeFromBlacklist() {
-      console.log("--->");
+    async removeFromBlacklist(index: number) {
+      this.blacklistUsersPagination.content.splice(index, 1);
+      let userEmail = this.blacklistUsersPagination.content[index].email;
+      await deleteBlacklistUser(userEmail);
     }
   },
 
@@ -95,7 +99,7 @@ export default (Vue as VueConstructor<Vue>).extend({
 
         this.timer = setTimeout(async () => {
           try {
-            const result = await getBlacklistUsers(this.searchParameters, 0, 9);
+            const result = await getBlacklistUsers(this.searchParameters, 0, 5);
             this.blacklistUsersPagination = result;
           } catch (error) {
             clearTimeout(this.timer);
@@ -108,7 +112,7 @@ export default (Vue as VueConstructor<Vue>).extend({
   },
 
   async created() {
-    const result = await getBlacklistUsers("", 0, 9);
+    const result = await getBlacklistUsers("", 0, 5);
     this.currentPage = result.currentPage + 1;
     this.blacklistUsersPagination = result;
   }

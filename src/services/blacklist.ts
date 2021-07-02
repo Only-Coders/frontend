@@ -6,7 +6,7 @@ export async function getBlacklistUsers(
   partialEmail: string,
   page?: number,
   size?: number
-): Promise<Pagination<BlacklistUser[]>> {
+): Promise<Pagination<BlacklistUser>> {
   const response = await axios.get(`/api/blacklist`, {
     params: { partialEmail, page, size }
   });

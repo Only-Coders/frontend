@@ -1,30 +1,22 @@
 <template>
   <v-card class="py-1">
-    <v-row align="center" no-gutters class="mt-3 mb-2">
-      <v-avatar size="70" class="ml-4">
-        <v-img
-          class="user__profile-image"
-          alt="user"
-          :src="data.imageURI ? data.imageURI : require('@/assets/images/default-avatar.png')"
-        />
+    <v-row align="center" justify="space-around" no-gutters class="my-2">
+      <v-avatar size="70" class="ml-6">
+        <v-img alt="user" :src="data.imageURI ? data.imageURI : require('@/assets/images/default-avatar.png')" />
       </v-avatar>
-      <v-col class="align-start mr-8 pl-4" cols="9" sm="5">
-        <v-row class="align-center justify-space-between" no-gutters>
-          <div class="d-flex align-start">
-            <v-col cols="auto" class="pa-0">
-              <div style="user__name">
-                <v-card-title class="pa-0 justify-center"
-                  ><h4>{{ data.email }}</h4></v-card-title
-                >
-                <v-card-text class="pa-0 mt-3 text-center"> User creation: {{ blockedDate }} </v-card-text>
-              </div>
-            </v-col>
-          </div>
+      <v-col class="mr-8" cols="9" sm="5">
+        <v-row class="justify-space-between" no-gutters>
+          <v-col cols="auto" class="pa-0">
+            <v-card-title class="pa-0 justify-center"
+              ><h4>{{ data.email }}</h4></v-card-title
+            >
+            <v-card-text class="pa-0"> User creation: {{ blockedDate }} </v-card-text>
+          </v-col>
         </v-row>
       </v-col>
       <v-col cols="3" sm="4" class="mt-sm-0 mt-4 ml-8 d-flex justify-end">
-        <v-btn class="mt-4" height="35" width="50%" color="#ee5e5e" depressed dark small @click="deleteFromBlacklist">
-          Unblock
+        <v-btn class="mt-4 mr-8" height="35" color="#ee5e5e" depressed dark small @click="deleteFromBlacklist">
+          {{ $i18n.t("remove") }}
         </v-btn>
       </v-col>
     </v-row>
@@ -48,7 +40,7 @@ export default Vue.extend({
 
   methods: {
     deleteFromBlacklist() {
-      this.$emit("deleteFromBlacklist");
+      this.$emit("deleteFromBlacklist", this.data.email);
     },
     formatedUserDate() {
       let date = new Date(this.data.createdAt);

@@ -25,7 +25,7 @@
           @click="addLink"
           :disabled="!validURL(link)"
         >
-          {{ $i18n.t("add") }}
+          {{ $i18n.t("unblock") }}
         </v-btn>
       </v-card-actions>
     </v-card>

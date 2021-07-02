@@ -1,27 +1,31 @@
 <template>
-  <v-card class="mt-0" shaped>
-    <AdminSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></AdminSearchInput>
-    <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
+  <v-row no-gutters class="d-flex justify-center">
+    <v-col cols="8">
+      <v-card class="mt-0">
+        <AdminSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></AdminSearchInput>
+        <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 
-    <v-row no-gutters class="d-flex justify-center" v-if="adminPagination && adminPagination.content.length !== 0">
-      <v-col cols="9">
-        <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
-          <UserCompontent :data="user"></UserCompontent>
-        </div>
-        <v-pagination
-          class="my-10"
-          v-if="adminPagination && adminPagination.totalPages > 1"
-          v-model="currentPage"
-          :length="adminPagination.totalPages"
-          :total-visible="7"
-          @input="nextPageUsers"
-        ></v-pagination>
-      </v-col>
-    </v-row>
-    <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
-      <v-col cols="9"> <NoData></NoData> </v-col>
-    </v-row>
-  </v-card>
+        <v-row no-gutters class="d-flex justify-center" v-if="adminPagination && adminPagination.content.length !== 0">
+          <v-col cols="9">
+            <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
+              <UserCompontent :data="user"></UserCompontent>
+            </div>
+            <v-pagination
+              class="my-10"
+              v-if="adminPagination && adminPagination.totalPages > 1"
+              v-model="currentPage"
+              :length="adminPagination.totalPages"
+              :total-visible="7"
+              @input="nextPageUsers"
+            ></v-pagination>
+          </v-col>
+        </v-row>
+        <v-row v-else no-gutters class="d-flex justify-center align-center py-16">
+          <v-col cols="9"> <NoData></NoData> </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

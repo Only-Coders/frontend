@@ -2,7 +2,7 @@
   <div>
     <v-row no-gutters>
       <v-col>
-        <img src="@/assets/images/only-coders-logo.png" width="70vh" alt="logo" class="mx-8 mt-6 logo_img" />
+        <img src="@/assets/images/only-coders-logo.png" width="80vh" alt="logo" class="mx-8 mt-6" />
       </v-col>
     </v-row>
 
@@ -23,7 +23,7 @@
         <v-card width="400px" class="mx-auto" flat>
           <h1 class="mb-4 text-center">{{ $i18n.t("Login.loginTitle") }}</h1>
           <v-form ref="login-register">
-            <v-row>
+            <v-row no-gutters>
               <v-col>
                 <v-text-field
                   v-model="email"
@@ -45,29 +45,28 @@
                 </v-text-field>
               </v-col>
             </v-row>
+
+            <v-row class="mb-4">
+              <v-col class="pt-0">
+                <v-btn block color="primary" large depressed :loading="isLoadingLogin" @click="login">
+                  {{ $i18n.t("Login.loginButton") }}
+                </v-btn>
+              </v-col>
+            </v-row>
+
             <v-row justify="center" class="mb-6">
               <a @click="$router.push('/forgot')" style="text-decoration: underline">{{
                 $i18n.t("Login.passwordReset")
               }}</a>
             </v-row>
-            <v-row class="mb-4">
-              <v-col>
-                <v-btn block color="primary" large depressed :loading="isLoadingLogin" @click="login">
-                  {{ $i18n.t("Login.loginButton") }}
-                </v-btn>
-              </v-col>
-              <v-col>
-                <v-btn
-                  block
-                  color="primary_light"
-                  class="primary--text"
-                  large
-                  depressed
-                  :loading="isLoadingRegister"
-                  @click="register"
-                  >{{ $i18n.t("Login.signInButton") }}</v-btn
-                >
-              </v-col>
+
+            <v-divider class="mb-6"></v-divider>
+
+            <v-row justify="center" class="mb-6">
+              <p>
+                {{ $i18n.t("Login.dontHaveAccount") }}
+                <a class="font-weight-black" @click="$router.push('/register')">{{ $i18n.t("Login.signInButton") }}</a>
+              </p>
             </v-row>
 
             <!-- <v-divider></v-divider>
@@ -137,50 +136,10 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
   data: () => ({
     email: "",
     password: "",
-    isLoadingLogin: false,
-    isLoadingRegister: false
+    isLoadingLogin: false
   }),
 
   methods: {
-    async register() {
-      try {
-        this.isLoadingRegister = true;
-        const result = await auth.createUserWithEmailAndPassword(this.email, this.password);
-
-        if (result.user && result.user.email) {
-          const actionCodeSettings = {
-            url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
-            handleCodeInApp: true
-          };
-          if (result.user && !result.user.emailVerified) {
-            result.user.sendEmailVerification(actionCodeSettings);
-            this.success(
-              this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
-              this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
-              2000
-            );
-          }
-        }
-        this.isLoadingRegister = false;
-      } catch (error) {
-        switch (error.code) {
-          case FirebaseErrors.INVALID_EMAIL:
-            this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
-            break;
-
-          case FirebaseErrors.EMAIL_EXISTS:
-          case FirebaseErrors.EMAIL_IN_USE:
-            this.error("Error", this.$i18n.t("Onboarding.Notifications.emailAlreadyExists").toString());
-            break;
-
-          default:
-            break;
-        }
-      } finally {
-        this.isLoadingRegister = false;
-      }
-    },
-
     async login() {
       if ((this.$refs["login-register"] as HTMLFormElement).validate()) {
         this.isLoadingLogin = true;
@@ -257,11 +216,6 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
 <style scoped>
 body {
   overflow: auto;
-}
-
-#logo {
-  width: 100px;
-  margin: 20px;
 }
 
 .code_type_img {

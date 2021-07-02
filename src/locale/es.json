@@ -41,7 +41,9 @@
     "welcomeTitle": "Bienvenido",
     "loginButton": "Ingresar",
     "signInButton": "Registrarme",
-    "passwordReset": "¿Olvidaste tu contraseña?"
+    "passwordReset": "¿Olvidaste tu contraseña?",
+    "dontHaveAccount": "¿Aún no tienes cuenta? Registrarse",
+    "haveAccount": "¿Ya tienes una cuenta?"
   },
   "Admin": {
     "addAdmin": "AGREGAR ADMINISTRADOR",

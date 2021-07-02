@@ -41,7 +41,9 @@
     "welcomeTitle": "Welcome",
     "loginButton": "Login",
     "signInButton": "Sign up",
-    "passwordReset": "Forgot password?"
+    "passwordReset": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "haveAccount": "Have an account already?"
   },
   "Admin": {
     "addAdmin": "ADD ADMIN",

@@ -70,6 +70,7 @@ export default Vue.extend({
   props: { profileImageURLProp: String, isSelfProfile: Boolean },
 
   data: () => ({
+    fileName: "",
     imageURL: "",
     temporalImageUploaded: false,
     profileImageData: null as File | null,
@@ -92,11 +93,11 @@ export default Vue.extend({
 
     async onUpload() {
       const profileImageData = this.profileImageData as File;
+      const fileName = this.fileName ?? uuid();
       const imageCompresor = new Promise<string>((resolve, reject) => {
         new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const fileName = uuid();
             const snapshot = await storage.ref(`images/${fileName}`).put(result);
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
@@ -125,6 +126,9 @@ export default Vue.extend({
 
   created() {
     this.imageURL = this.profileImageURLProp;
+    const regex = /images%2(?<img>.*)\?alt/g;
+    const matches = regex.exec(this.imageURL);
+    this.fileName = matches?.groups?.img ?? "";
   }
 });
 </script>

@@ -264,7 +264,8 @@
     "settings": "Configuraciones",
     "logout": "Cerrar Sesión",
     "addAdmin": "Agregar usuario administrador",
-    "list": "Listado de administradores y usuarios"
+    "list": "Listado de administradores y usuarios",
+    "home": "Inicio"
   },
   "Search": {
     "recent": "Recientes",

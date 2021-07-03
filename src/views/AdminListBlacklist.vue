@@ -2,20 +2,35 @@
   <v-row no-gutters class="d-flex justify-center">
     <v-col cols="6">
       <v-card class="mt-12" min-height="85vh">
-        <v-text-field
-          hide-no-data
-          hide-details
-          clearable
-          v-model="searchParameters"
-          prepend-inner-icon="mdi-magnify"
-          :label="$i18n.t('searchBlacklist')"
-          solo
-          background-color="grey_input"
-          flat
-          height="48"
-          class="pa-4"
-          @keydown.enter.prevent="searchUsersWithFilters()"
-        ></v-text-field>
+        <v-row no-gutters align="center" justify="space-between">
+          <v-col cols="11">
+            <v-text-field
+              hide-no-data
+              hide-details
+              clearable
+              v-model="searchParameters"
+              prepend-inner-icon="mdi-magnify"
+              :label="$i18n.t('searchBlacklist')"
+              solo
+              background-color="grey_input"
+              flat
+              height="48"
+              class="pa-4"
+              @keydown.enter.prevent="searchUsersWithFilters()"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="1">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon @click="showAddDialog = true" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $i18n.t("addBlacklistUser") }}</span>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+
         <v-divider class="mb-6 mx-4 mx-md-8 mt-2"></v-divider>
 
         <div
@@ -44,6 +59,7 @@
         </v-row>
       </v-card>
     </v-col>
+    <NewBlacklistUser v-model="showAddDialog" />
   </v-row>
 </template>
 
@@ -55,13 +71,15 @@ import BlacklistUserComponent from "@/components/Admin/BlacklistUser.vue";
 import { BlacklistUser } from "@/models/blacklistUser";
 import { Pagination } from "@/models/Pagination/pagination";
 import { getBlacklistUsers, deleteBlacklistUser } from "@/services/blacklist";
+import NewBlacklistUser from "@/components/Admin/NewBlackListUser.vue";
 
 export default (Vue as VueConstructor<Vue>).extend({
   name: "AdminListBlacklist",
 
   components: {
     NoData,
-    BlacklistUserComponent
+    BlacklistUserComponent,
+    NewBlacklistUser
   },
 
   props: {},
@@ -73,7 +91,8 @@ export default (Vue as VueConstructor<Vue>).extend({
     searchParameters: "",
     blacklistUsersPagination: {} as Pagination<BlacklistUser>,
     fetchIsLoading: false,
-    timer: 0
+    timer: 0,
+    showAddDialog: false
   }),
 
   methods: {

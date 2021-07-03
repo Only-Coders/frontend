@@ -1,5 +1,6 @@
 {
   "searchBlacklist": "Search Blacklist users...",
+  "addBlacklistUser": "Add User to Blacklist",
   "cancel": "cancel",
   "add": "add",
   "accept": "accept",
@@ -38,6 +39,8 @@
   "postReason": "Reason...",
   "remove": "Remove",
   "Add": "Add",
+  "addAdmin": "Add Adminstrator",
+  "addNotification": "The user has been added to the blacklist",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",

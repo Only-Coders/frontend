@@ -17,3 +17,8 @@ export async function deleteBlacklistUser(email: string): Promise<Pagination<Bla
   const response = await axios.delete(`/api/blacklist/${email}`);
   return response.data;
 }
+
+export async function postUserToBlacklist(email: string): Promise<BlacklistUser> {
+  const { data } = await axios.post(`/api/blacklist`, { email });
+  return data;
+}

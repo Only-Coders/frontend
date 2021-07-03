@@ -1,7 +1,7 @@
 <template>
   <v-dialog :value="value" @input="close" width="auto" max-width="650">
     <v-card class="add-admin">
-      <v-card-title class="justify-center"> Agregar Admin </v-card-title>
+      <v-card-title class="justify-center">{{ $i18n.t("addAdmin") }}</v-card-title>
       <v-card-text class="text-center px-16">
         <v-avatar class="my-4" size="100" color="primary" @click="selectImage">
           <v-icon v-if="!imagePreview" dark size="42">mdi-camera</v-icon>

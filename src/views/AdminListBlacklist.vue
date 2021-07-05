@@ -22,7 +22,7 @@
           <v-col cols="1">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn icon @click="showAddDialog = true" v-bind="attrs" v-on="on">
+                <v-btn fab color="primary" small @click="showAddDialog = true" v-bind="attrs" v-on="on">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
@@ -70,7 +70,7 @@ import NoData from "@/components/NoData.vue";
 import BlacklistUserComponent from "@/components/Admin/BlacklistUser.vue";
 import { BlacklistUser } from "@/models/blacklistUser";
 import { Pagination } from "@/models/Pagination/pagination";
-import { getBlacklistUsers, deleteBlacklistUser } from "@/services/blacklist";
+import { getBlacklistUsers } from "@/services/blacklist";
 import NewBlacklistUser from "@/components/Admin/NewBlackListUser.vue";
 
 export default (Vue as VueConstructor<Vue>).extend({
@@ -103,8 +103,6 @@ export default (Vue as VueConstructor<Vue>).extend({
     },
     async removeFromBlacklist(index: number) {
       this.blacklistUsersPagination.content.splice(index, 1);
-      let userEmail = this.blacklistUsersPagination.content[index].email;
-      await deleteBlacklistUser(userEmail);
     },
     addUserToCollection(userData: BlacklistUser) {
       this.blacklistUsersPagination.content.unshift(userData);

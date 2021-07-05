@@ -32,7 +32,7 @@
           solo
           height="48"
           background-color="grey_input"
-          :label="$i18n.t('backofficeListUsers.orderBy')"
+          :label="$i18n.t('fullName')"
           width="35%"
           class="mx-2"
         ></v-select>
@@ -50,7 +50,7 @@
           solo
           height="48"
           background-color="grey_input"
-          :label="$i18n.t('backofficeListUsers.role')"
+          :label="$i18n.t('administrator')"
           width="35%"
           class="mx-2"
         ></v-select>

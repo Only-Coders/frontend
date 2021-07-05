@@ -10,7 +10,7 @@
             <v-card-title class="pa-0 justify-center"
               ><h4>{{ data.email }}</h4></v-card-title
             >
-            <v-card-text class="pa-0"> User creation: {{ blockedDate }} </v-card-text>
+            <v-card-text class="pa-0"> {{ $i18n.t("userBannDate") }} {{ blockedDate }} </v-card-text>
           </v-col>
         </v-row>
       </v-col>
@@ -26,6 +26,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { BlacklistUser } from "@/models/blacklistUser";
+import { deleteBlacklistUser } from "@/services/blacklist";
 
 export default Vue.extend({
   name: "BlacklistUser",
@@ -39,13 +40,13 @@ export default Vue.extend({
   }),
 
   methods: {
-    deleteFromBlacklist() {
+    async deleteFromBlacklist() {
+      await deleteBlacklistUser(this.data.email);
       this.$emit("deleteFromBlacklist", this.data.email);
     },
     formatedUserDate() {
       let date = new Date(this.data.createdAt);
-      this.blockedDate =
-        date.getUTCDate().toString() + "/" + date.getUTCMonth().toString() + "/" + date.getUTCMonth().toString();
+      this.blockedDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
     }
   },
 

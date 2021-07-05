@@ -93,7 +93,7 @@ export default Vue.extend({
 
     async onUpload() {
       const profileImageData = this.profileImageData as File;
-      const fileName = this.fileName ?? uuid();
+      const fileName = this.fileName ? this.fileName : uuid();
       const imageCompresor = new Promise<string>((resolve, reject) => {
         new Compressor(profileImageData, {
           quality: 0.2,

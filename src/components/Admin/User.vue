@@ -35,12 +35,32 @@
           dark
           class="px-2"
           small
+          outlined
           @click="toggleUserBlockStatus"
         >
           {{ isUserBlocked ? $i18n.t("backofficeListUsers.unblock") : $i18n.t("backofficeListUsers.block") }}
         </v-btn>
+        <v-btn
+          height="35"
+          color="#ee5e5e"
+          :loading="isLoading"
+          depressed
+          dark
+          class="px-2 ml-4"
+          small
+          @click="showDeleteUserModal = true"
+        >
+          {{ $i18n.t("backofficeListUsers.delete") }}
+        </v-btn>
       </v-col>
     </v-row>
+    <DeleteUser
+      v-model="showDeleteUserModal"
+      :userFirstName="data.firstName"
+      :userLastName="data.lastName"
+      :userCanonicalName="data.canonicalName"
+      @deleteUser="handleDeleteUser"
+    />
   </v-card>
 </template>
 
@@ -50,9 +70,12 @@ import { VueConstructor } from "vue/types/umd";
 import { MedalsMixin } from "@/mixins/medals";
 import { GetAdminUser } from "@/models/admin";
 import { updateUserBlockStatus } from "@/services/user";
+import DeleteUser from "@/components/Admin/DeleteUser.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "User",
+
+  components: { DeleteUser },
 
   props: {
     data: Object as PropType<GetAdminUser>
@@ -60,10 +83,14 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 
   data: () => ({
     isUserBlocked: false,
-    isLoading: false
+    isLoading: false,
+    showDeleteUserModal: false
   }),
 
   methods: {
+    handleDeleteUser() {
+      this.$emit("deleteUserFromCollection", this.data.canonicalName);
+    },
     async toggleUserBlockStatus() {
       this.isLoading = true;
       await updateUserBlockStatus(this.data.canonicalName, !this.isUserBlocked);

@@ -58,3 +58,7 @@ export async function editImageProfile(imageURI: string): Promise<Profile> {
 export async function updateUserBlockStatus(canonicalName: string, blocked: boolean): Promise<void> {
   await axios.patch(`/api/users/${canonicalName}/blocked`, { blocked });
 }
+
+export async function deleteUser(canonicalName: string): Promise<void> {
+  await axios.delete(`/api/users/${canonicalName}`);
+}

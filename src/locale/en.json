@@ -283,6 +283,10 @@
     "blocked": "Blocked",
     "role": "Role",
     "admin": "Administrators",
-    "user": "Users"
+    "user": "Users",
+    "delete": "Delete",
+    "deleteTextBeginning": "Delete user",
+    "deleteTextEnd": "The user will be permanently deleted and you will not be able to recover it",
+    "notification": "User successfully deleted"
   }
 }

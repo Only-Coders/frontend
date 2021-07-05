@@ -282,6 +282,10 @@
     "blocked": "Bloqueado",
     "role": "Rol",
     "admin": "Administradores",
-    "user": "Usuarios"
+    "user": "Usuarios",
+    "delete": "Eliminar",
+    "deleteTextBeginning": "Eliminar usuario",
+    "deleteTextEnd": "El usuario va a ser borrado permanentemente y no podra ser recuperado",
+    "notification": "Usuario eliminado correctamente"
   }
 }

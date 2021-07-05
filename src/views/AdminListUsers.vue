@@ -7,8 +7,8 @@
 
         <v-row no-gutters class="d-flex justify-center" v-if="adminPagination && adminPagination.content.length !== 0">
           <v-col cols="9">
-            <div v-for="user in adminPagination.content" :key="user.canonicalName" class="my-8">
-              <UserCompontent :data="user"></UserCompontent>
+            <div v-for="(user, index) in adminPagination.content" :key="user.canonicalName" class="my-8">
+              <UserCompontent :data="user" @deleteUserFromCollection="deleteUser(index)"></UserCompontent>
             </div>
             <v-pagination
               class="my-10"
@@ -60,6 +60,35 @@ export default (Vue as VueConstructor<Vue>).extend({
   }),
 
   methods: {
+    async deleteUser(index: number) {
+      let currentUsersCollection = this.$store.state.adminPaginationModule.adminPagination.content;
+      currentUsersCollection.splice(index, 1);
+      if (!currentUsersCollection.length) {
+        if (this.currentPage !== this.$store.state.adminPaginationModule.adminPagination.totalPages) {
+          const result = await getAdminUsers(
+            this.$store.state.adminPaginationModule.search,
+            this.$store.state.adminPaginationModule.role,
+            this.$store.state.adminPaginationModule.sortBy,
+            this.$store.state.adminPaginationModule.orderBy,
+            this.currentPage - 1,
+            5
+          );
+          this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
+        } else {
+          const result = await getAdminUsers(
+            this.$store.state.adminPaginationModule.search,
+            this.$store.state.adminPaginationModule.role,
+            this.$store.state.adminPaginationModule.sortBy,
+            this.$store.state.adminPaginationModule.orderBy,
+            this.$store.state.adminPaginationModule.adminPagination.totalPages - 1,
+            5
+          );
+          this.$store.commit("adminPaginationModule/SET_ADMIN_PAGINATION", result);
+        }
+      } else {
+        this.$store.commit("adminPaginationModule/SET_ADMIN_DELETION", currentUsersCollection);
+      }
+    },
     searchUsers(
       partialName: string,
       role: Role,

@@ -17,6 +17,13 @@ export default class AdminPagination extends VuexModule {
   sortBy = AdminsOptionsSortBy.FULLNAME;
 
   @Mutation
+  SET_ADMIN_DELETION(value: Admin[]): void {
+    if (this.adminPagination) {
+      this.adminPagination.content = value;
+    }
+  }
+
+  @Mutation
   SET_ADMIN_PAGINATION(value: Pagination<Admin>): void {
     this.adminPagination = value;
   }

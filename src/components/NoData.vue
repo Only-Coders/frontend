@@ -7,7 +7,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="6" sm="8" md="6" lg="2" class="text-center">
-        <span>Mmm... Looks like there's no data here</span>
+        <span>{{ $i18n.t("Onboarding.Shared.noData") }}</span>
       </v-col>
     </v-row>
   </div>

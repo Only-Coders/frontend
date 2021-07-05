@@ -18,7 +18,7 @@ Vue.use(VueYouTubeEmbed, { global: true, componentId: "youtube-media" });
 Vue.config.productionTip = false;
 
 export const i18n = new VueI18n({
-  locale: store.state.lang,
+  locale: store.state.userModule?.user?.language ?? "en",
   messages: { es: Locale.es, en: Locale.en }
 });
 

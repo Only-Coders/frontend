@@ -13,7 +13,7 @@
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ contact.fullName }}</v-list-item-title>
-          <v-list-item-subtitle>Start a conversation...</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ $i18n.t("Chat.startConversation") }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>

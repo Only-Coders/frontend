@@ -160,6 +160,16 @@ export default Vue.extend({
   async created() {
     this.userData = await getUserByCanonicalName(this.$route.params.user);
     await this.fetchPosts();
+  },
+
+  watch: {
+    "$store.state.userModule.user.language": function () {
+      this.items[0].tab = i18n.t("ViewProfile.Data").toString();
+      this.items[1].tab = i18n.t("ViewProfile.Posts").toString();
+      this.items[2].tab = i18n.t("ViewProfile.MyNetwork").toString();
+      this.items[3].tab = i18n.t("ViewProfile.Favorites").toString();
+      this.items[4].tab = i18n.t("ViewProfile.Tags").toString();
+    }
   }
 });
 </script>

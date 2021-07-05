@@ -12,7 +12,6 @@ Vue.use(Vuex);
 
 type State = {
   userModule?: UserModule;
-  lang: string;
   shouldRefreshFeed: boolean;
   userPaginationModule?: UserPaginationModule;
   adminPaginationModule?: AdminPaginationModule;
@@ -36,7 +35,6 @@ const persist = new VuexPersist({
 
 export default new Vuex.Store<State>({
   state: {
-    lang: "en",
     shouldRefreshFeed: false
   },
   mutations: {

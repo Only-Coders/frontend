@@ -11,7 +11,7 @@ const instance = axios.create(config);
 export function setHeaders(token: string): void {
   localStorage.setItem("accessToken", token);
   instance.defaults.headers.common["Authorization"] = "Bearer " + token;
-  instance.defaults.headers.common["Accept-Language"] = store.state.lang;
+  instance.defaults.headers.common["Accept-Language"] = store.state.userModule?.user?.language;
 }
 
 type Callback = (token: string) => void;
@@ -73,7 +73,7 @@ instance.interceptors.request.use((request) => {
     if (token) {
       setHeaders(token);
       request.headers.Authorization = "Bearer " + token;
-      request.headers["Accept-Language"] = store.state.lang;
+      request.headers["Accept-Language"] = store.state.userModule?.user?.language;
       //TODO: revisar codigo lenguaje/idioma
     }
   }

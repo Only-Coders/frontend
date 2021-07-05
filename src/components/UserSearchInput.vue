@@ -190,6 +190,12 @@ export default Vue.extend({
       this.country = "";
       this.skill = "";
       this.orderBySelected = UsersOptionsOrderBy.FULLNAME;
+    },
+    "$store.state.userModule.user.language": function () {
+      this.orderByOptions = [
+        { value: UsersOptionsOrderBy.FULLNAME, text: i18n.t("fullname").toString() },
+        { value: UsersOptionsOrderBy.MEDALS, text: i18n.t("medals").toString() }
+      ] as OrderBy[];
     }
   }
 });

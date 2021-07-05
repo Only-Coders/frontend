@@ -159,13 +159,15 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
             if (!user.complete) {
               this.$router.push("/onboarding");
             } else {
+              this.$store.state.userModule.user.language = user.language;
+              this.$i18n.locale = user.language;
               switch (user.roles) {
                 case Role.USER:
-                  this.success("", `Welcome back ${user.fullName}`, 2000);
+                  this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
                   this.$router.push("/"); //push to feed
                   break;
                 case Role.ADMIN:
-                  this.success("", `Welcome back ${user.fullName}`, 2000);
+                  this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
                   this.$router.push("/admin"); //push to backoffice view
                   break;
                 default:
@@ -209,6 +211,11 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
     loginGithub() {
       alert("Me encanta, peeeero... esperá a la 2.1 capo.");
     }
+  },
+
+  created() {
+    const lang = window.navigator.language.trim().split("-")[0];
+    this.$i18n.locale = lang;
   }
 });
 </script>

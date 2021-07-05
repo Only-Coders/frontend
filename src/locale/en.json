@@ -49,7 +49,8 @@
     "signInButton": "Sign up",
     "passwordReset": "Forgot password?",
     "dontHaveAccount": "Don't have an account?",
-    "haveAccount": "Have an account already?"
+    "haveAccount": "Have an account already?",
+    "welcomeBack": "Welcome back "
   },
   "Admin": {
     "addAdmin": "ADD ADMIN",
@@ -264,7 +265,8 @@
     "areYouSureDeleteAccount": "Are you sure you want to delete your account?",
     "cancelElimination": "Cancel Elimination",
     "cancelEliminationAccount": "Your account will be deleted on ",
-    "cancelEliminationAccount2": "Do you want to cancel the elimination of your account? "
+    "cancelEliminationAccount2": "Do you want to cancel the elimination of your account? ",
+    "languageTitle": "Language"
   },
   "Header": {
     "profile": "Profile",
@@ -279,7 +281,8 @@
     "recent": "Recent",
     "try": "Try",
     "seeAll": "See All",
-    "delete": "Delete"
+    "delete": "Delete",
+    "search": "Search"
   },
   "backofficeListUsers": {
     "search": "Search contact...",
@@ -295,5 +298,15 @@
     "deleteTextBeginning": "Delete user",
     "deleteTextEnd": "The user will be permanently deleted and you will not be able to recover it",
     "notification": "User successfully deleted"
+  },
+  "Chat": {
+    "noMessages": "Mmm... Looks like there's no messages here",
+    "noChats": "Mmm... Looks like there's no chats here",
+    "searchContacts": "Search contacts...",
+    "startConversation": "Start a conversation..."
+  },
+  "Language": {
+    "es": "Spanish",
+    "en": "English"
   }
 }

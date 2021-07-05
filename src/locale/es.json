@@ -9,7 +9,7 @@
   "search": "Buscar contacto...",
   "filters": "Filtros +",
   "orderBy": "Ordenar por",
-  "delete": "Borrar",
+  "delete": "Eliminar",
   "edit": "Editar",
   "email": "Correo electronico",
   "name": "Nombre",
@@ -41,15 +41,17 @@
   "Add": "Agregar",
   "addAdmin": "Agregar Administrador",
   "addNotification": "El usuario fue agregado a la lista negra ",
+  "typeMessage": "Escribe un mensaje...",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
-    "loginTitle": "Ingreso",
+    "loginTitle": "Iniciar sesión",
     "welcomeTitle": "Bienvenido",
     "loginButton": "Ingresar",
     "signInButton": "Registrarme",
     "passwordReset": "¿Olvidaste tu contraseña?",
-    "dontHaveAccount": "¿Aún no tienes cuenta? Registrarse",
-    "haveAccount": "¿Ya tienes una cuenta?"
+    "dontHaveAccount": "¿Aún no tienes cuenta? ",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "welcomeBack": "Bienvenido "
   },
   "Admin": {
     "addAdmin": "AGREGAR ADMINISTRADOR",
@@ -91,7 +93,7 @@
       "addButtonLabel": "Agregar",
       "deleteButtonLabel": "Eliminar",
       "editButtonLabel": "Editar",
-      "noData": "Mmm... Parece que todavía no hay datos",
+      "noData": "Mmm... Parece que no hay datos",
       "requiredField": "Este campo es obligatorio",
       "invalidEmail": "Por favor ingrese un email válido",
       "profileImageSize": "El archivo es muy grande",
@@ -166,7 +168,7 @@
     "contacts": "contactos",
     "viewProfile": "ver perfil",
     "seeMore": "ver mas",
-    "onPlace": "at",
+    "onPlace": "en",
     "save": "Guardar",
     "unsave": "Borrar",
     "report": "Reportar",
@@ -186,7 +188,6 @@
       "private": "Mis contactos"
     },
     "InsertLink": "Agregar enlace",
-    "typeMessage": "Escribe un mensaje...",
     "loading": "cargando...",
     "noResults": "no hay resultados",
     "createPost": "Crear publicación",
@@ -200,7 +201,6 @@
       "private": "Mis contactos"
     },
     "InsertLink": "Agregar enlace",
-    "typeMessage": "Escribe un mensaje...",
     "loading": "cargando...",
     "noResults": "no hay resultados",
     "editPost": "Editar publicacion",
@@ -245,12 +245,12 @@
     "newContactRequestTitle": "Nuevas Solicitudes de Contacto",
     "newFollowerTitle": "Nuevos Seguidores",
     "newContactAcceptedTitle": "Nuevo Contacto Aceptado",
-    "newPostText": "Enterate cuando un contacto crea un nuevo posteo",
-    "newCommentsText": "Enterate cuando alguien deja un nuevo comentario en uno de tus posts",
+    "newPostText": "Entérate cuando un contacto crea un nuevo posteo",
+    "newCommentsText": "Entérate cuando alguien deja un nuevo comentario en uno de tus posts",
     "newMentionsText": "Recibe un aviso cuando eres mencionado en el post de otro usuario",
     "newContactRequestText": "Recibe una notificacion cuando alguien te envia una solicitud de contacto",
-    "newFollowerText": "Enterate cuando alguien te sigue",
-    "newContactAcceptedText": "Recibe una notificacion cuando alguien acepta tu solicitud de contacto",
+    "newFollowerText": "Entérate cuando alguien te sigue",
+    "newContactAcceptedText": "Recibe una notificación cuando alguien acepta tu solicitud de contacto",
     "email": "Email",
     "push": "Push",
     "confirm": "Confirmar",
@@ -263,7 +263,8 @@
     "deleteMessage3": "Una vez que comience el proceso de eliminación, tendrá 30 días para reactivar su cuenta y cancelar la eliminación. Después de 30 días, su cuenta será eliminada.",
     "areYouSureDeleteAccount": "Está seguro de que desea eliminar su cuenta?",
     "cancelElimination": "Cancelar Eliminación",
-    "deletedAccountDate": "Su cuenta será eliminada el "
+    "deletedAccountDate": "Su cuenta será eliminada el ",
+    "languageTitle": "Idioma"
   },
   "Header": {
     "profile": "Perfil",
@@ -278,7 +279,8 @@
     "recent": "Recientes",
     "try": "Prueba con",
     "seeAll": "Ver todos",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "search": "Buscar"
   },
   "backofficeListUsers": {
     "search": "Buscar contactos...",
@@ -294,5 +296,15 @@
     "deleteTextBeginning": "Eliminar usuario",
     "deleteTextEnd": "El usuario va a ser borrado permanentemente y no podra ser recuperado",
     "notification": "Usuario eliminado correctamente"
+  },
+  "Chat": {
+    "noMessages": "Mmm... Parece que no hay mensajes",
+    "noChats": "Mmm... Parece que no hay chats",
+    "searchContacts": "Buscar contactos...",
+    "startConversation": "Comenzar una conversación..."
+  },
+  "Language": {
+    "es": "Español",
+    "en": "Inglés"
   }
 }

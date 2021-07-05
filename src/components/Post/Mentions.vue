@@ -10,7 +10,7 @@
       @apply="addMention"
     >
       <v-textarea
-        :placeholder="$i18n.t('CreatePost.typeMessage')"
+        :placeholder="$i18n.t('typeMessage')"
         v-model="post.message"
         auto-grow
         maxlength="2048"

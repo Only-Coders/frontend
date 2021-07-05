@@ -4,7 +4,7 @@
       <v-img src="@/assets/images/no_data.svg" width="150" alt="no data"></v-img>
     </v-col>
     <v-col cols="12" class="text-center mt-5">
-      <span>Mmm... Looks like there's no chats here</span>
+      <span>{{ $i18n.t("Chat.noChats") }}</span>
     </v-col>
   </v-row>
 </template>

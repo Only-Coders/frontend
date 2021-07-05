@@ -259,6 +259,7 @@ import PostComments from "@/components/Post/PostComments.vue";
 import { Comment } from "@/models/comment";
 import { getPostComments } from "@/services/comment";
 import ReportPostDialog from "@/components/Post/ReportPostDialog.vue";
+import { es, enUS } from "date-fns/locale";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -359,7 +360,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     },
     formatPostDate() {
       this.formattedPostDate = formatDistance(new Date(this.post.createdAt), new Date(), {
-        addSuffix: true
+        addSuffix: true,
+        locale: this.$store.state.userModule?.user?.language == "es" ? es : enUS
       });
     },
     checkIfPostIsCode() {
@@ -551,6 +553,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
   created() {
     this.postMessageToEdit = this.post.message;
     this.formatPost(this.post);
+  },
+
+  watch: {
+    "$store.state.userModule.user.language": function () {
+      this.formatPostDate();
+    }
   }
 });
 </script>

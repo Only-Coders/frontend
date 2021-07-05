@@ -3,7 +3,7 @@
     <v-text-field
       class="px-4"
       v-model="partialName"
-      label="Search contacts..."
+      :label="$i18n.t('Chat.searchContacts')"
       v-bind="{ ...inputProps }"
     ></v-text-field>
     <v-progress-linear v-if="isLoading" indeterminate color="secondary"></v-progress-linear>
@@ -33,7 +33,7 @@
               user.canonicalName == chat.toCanonicalName ? chat.from : chat.to
             }}</v-list-item-title>
             <v-list-item-subtitle>{{
-              chat.lastMessage.text ? chat.lastMessage.text : "Start a conversation..."
+              chat.lastMessage.text ? chat.lastMessage.text : $i18n.t("Chat.startConversation")
             }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action class="pb-6">

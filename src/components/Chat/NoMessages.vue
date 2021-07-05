@@ -2,7 +2,7 @@
   <div class="no-messages">
     <div>
       <v-img src="@/assets/images/no-messages.svg" width="250" contain></v-img>
-      <p class="text-center pt-6">Mmm... Looks like there's no messages here</p>
+      <p class="text-center pt-6">{{ $i18n.t("Chat.noMessages") }}</p>
     </div>
   </div>
 </template>

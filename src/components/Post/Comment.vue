@@ -155,6 +155,7 @@ import { ReactionType } from "@/models/Enums/reaction";
 import { formatDistance } from "date-fns";
 import { postCommentReaction } from "@/services/comment";
 import DeleteCommentDialog from "@/components/Post/DeletePostCommentDialog.vue";
+import { es, enUS } from "date-fns/locale";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Comment",
@@ -256,7 +257,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
     },
     formatPostDate() {
       this.formattedPostDate = formatDistance(new Date(this.comment.createdAt), new Date(), {
-        addSuffix: true
+        addSuffix: true,
+        locale: this.$store.state.userModule?.user?.language == "es" ? es : enUS
       });
     },
     formatNewLine() {
@@ -301,6 +303,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
             : require("@/assets/images/default-avatar.png");
         }
       }
+    }
+  },
+
+  watch: {
+    "$store.state.userModule.user.language": function () {
+      this.formatPostDate();
     }
   }
 });

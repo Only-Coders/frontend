@@ -162,6 +162,26 @@
               </v-row>
             </div>
           </v-tab-item>
+
+          <v-tab>{{ $i18n.t("Settings.languageTitle") }}</v-tab>
+          <v-tab-item class="mx-10 mt-5 mb-10">
+            <v-select
+              v-model="languageOptionSelected"
+              :items="languageOptions"
+              item-value="value"
+              item-text="text"
+              @change="changeLanguage"
+              hide-details
+              hide-no-data
+              flat
+              solo
+              height="48"
+              background-color="grey_input"
+              :label="$i18n.t('orderBy')"
+              width="35%"
+              class="mx-2"
+            ></v-select>
+          </v-tab-item>
         </v-tabs>
       </v-card>
     </v-dialog>
@@ -183,12 +203,20 @@ import DeleteAccountDialog from "@/components/DeleteAccountDialog.vue";
 import { cancelAccountElimination } from "@/services/account";
 import { format } from "date-fns";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
+import { i18n } from "@/main";
+import { setLanguage } from "@/services/language";
+import { Language } from "@/models/language";
 
 interface NotificationSettingData {
   id: string;
   email: boolean;
   push: boolean;
 }
+
+type LanguageOptions = {
+  value: string;
+  text: string;
+};
 
 export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
   name: "ConfigurationsDialog",
@@ -266,7 +294,11 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
       }
     } as Record<NotificationType, NotificationSettingData>,
     showDeleteAccountDialog: false,
-    accountInEliminationProcess: Date
+    accountInEliminationProcess: Date,
+    languageOptions: [
+      { value: "es", text: i18n.t("Language.es").toString() },
+      { value: "en", text: i18n.t("Language.en").toString() }
+    ] as LanguageOptions[]
   }),
 
   methods: {
@@ -317,6 +349,16 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
       await cancelAccountElimination();
       this.$store.commit("userModule/SET_USER_ELIMINATION_DATE", null);
       this.close();
+    },
+
+    async changeLanguage() {
+      this.$i18n.locale = this.languageOptionSelected;
+      await setLanguage({ code: this.languageOptionSelected } as Language);
+
+      this.languageOptions = [
+        { value: "es", text: i18n.t("Language.es").toString() },
+        { value: "en", text: i18n.t("Language.en").toString() }
+      ] as LanguageOptions[];
     }
   },
 
@@ -330,6 +372,14 @@ export default (Vue as VueConstructor<Vue & NotificationMixin>).extend({
         return this.$store.state.userModule.user.eliminationDate
           ? format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy")
           : null;
+      }
+    },
+    languageOptionSelected: {
+      get(): string {
+        return this.$store.state.userModule.user.language;
+      },
+      set(language: string) {
+        this.$store.commit("userModule/SET_USER_LANGUAGE", language);
       }
     }
   }

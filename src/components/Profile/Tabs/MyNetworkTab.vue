@@ -93,6 +93,10 @@ export default Vue.extend({
       this.$store.commit("userPaginationModule/SET_COUNTRY", "");
       this.$store.commit("userPaginationModule/SET_SKILL", "");
       this.cleanSearch = !this.cleanSearch;
+    },
+    "$store.state.userModule.user.language": function () {
+      this.items[0].tab = i18n.t("ViewProfile.contacts").toString();
+      this.items[1].tab = i18n.t("ViewProfile.followings").toString();
     }
   }
 });

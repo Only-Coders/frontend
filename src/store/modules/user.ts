@@ -48,4 +48,11 @@ export default class User extends VuexModule {
       this.user.eliminationDate = eliminationDate;
     }
   }
+
+  @Mutation
+  SET_USER_LANGUAGE(language: string): void {
+    if (this.user) {
+      this.user.language = language;
+    }
+  }
 }

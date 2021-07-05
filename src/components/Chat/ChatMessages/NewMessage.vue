@@ -5,7 +5,7 @@
         <v-textarea
           v-model="message"
           v-bind="{ ...inputProps }"
-          label="Type a message..."
+          :label="$i18n.t('typeMessage')"
           rows="1"
           no-resize
           hide-details

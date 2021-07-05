@@ -34,7 +34,7 @@
                   rounded
                   height="35"
                   class="mx-auto"
-                  placeholder="Search"
+                  :placeholder="$i18n.t('Search.search')"
                   @focus="getRecommendedTags"
                   autocomplete="off"
                   v-bind="attrs"

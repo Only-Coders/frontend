@@ -51,6 +51,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
         try {
           this.isLoading = true;
           await postUserToBlacklist(this.blacklistUserEmail);
+          this.$emit("addBlacklistUser", { email: this.blacklistUserEmail, createdAt: new Date().toISOString() });
           this.success("", this.$i18n.t("addNotification").toString(), 3000);
           this.close();
         } catch (error) {

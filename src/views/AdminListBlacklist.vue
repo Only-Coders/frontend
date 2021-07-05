@@ -59,7 +59,7 @@
         </v-row>
       </v-card>
     </v-col>
-    <NewBlacklistUser v-model="showAddDialog" />
+    <NewBlacklistUser v-model="showAddDialog" @addBlacklistUser="addUserToCollection" />
   </v-row>
 </template>
 
@@ -105,6 +105,9 @@ export default (Vue as VueConstructor<Vue>).extend({
       this.blacklistUsersPagination.content.splice(index, 1);
       let userEmail = this.blacklistUsersPagination.content[index].email;
       await deleteBlacklistUser(userEmail);
+    },
+    addUserToCollection(userData: BlacklistUser) {
+      this.blacklistUsersPagination.content.unshift(userData);
     }
   },
 

@@ -1,4 +1,6 @@
 {
+  "searchBlacklist": "Buscar usuarios en Blacklist...",
+  "addBlacklistUser": "Agregar Usuario a Blacklist",
   "cancel": "cancelar",
   "add": "agregar",
   "accept": "aceptar",
@@ -35,6 +37,10 @@
   "report": "Reportar",
   "postReportDialog": "Reportar post",
   "postReason": "Razón...",
+  "remove": "Remover",
+  "Add": "Agregar",
+  "addAdmin": "Agregar Administrador",
+  "addNotification": "El usuario fue agregado a la lista negra ",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Ingreso",
@@ -265,7 +271,8 @@
     "logout": "Cerrar Sesión",
     "addAdmin": "Agregar usuario administrador",
     "list": "Listado de administradores y usuarios",
-    "home": "Inicio"
+    "home": "Inicio",
+    "blacklist": "Listado de usuarios en la Blacklist"
   },
   "Search": {
     "recent": "Recientes",

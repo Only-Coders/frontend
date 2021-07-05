@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters class="d-flex justify-center">
     <v-col cols="8">
-      <v-card class="mt-12" min-height="85vh">
+      <v-card class="mt-0">
         <AdminSearchInput class="pt-4" :searchFunction="searchUsers" :usersPerPage="usersPerPage"></AdminSearchInput>
         <v-divider class="mb-6 mx-4 mx-md-8 mt-8"></v-divider>
 

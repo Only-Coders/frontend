@@ -11,7 +11,7 @@
   "orderBy": "Ordenar por",
   "delete": "Eliminar",
   "edit": "Editar",
-  "email": "Correo electronico",
+  "email": "Correo electrónico",
   "name": "Nombre",
   "lastName": "Apellido",
   "deleteContact": "Eliminar contacto",
@@ -29,7 +29,7 @@
   "unfollowUser": "Dejar de seguir a usuario",
   "present": "Actualidad",
   "editDataModalTitle": "Editar datos",
-  "confirm": "Confirm",
+  "confirm": "Confirmar",
   "comment": "Comentar",
   "writeComment": "Escribe un comentario...",
   "hide": "ocultar",
@@ -58,16 +58,16 @@
   },
   "Admin": {
     "addAdmin": "AGREGAR ADMINISTRADOR",
-    "addAdminMessage": "Se creo el administrador correctamente",
+    "addAdminMessage": "Se creó el administrador correctamente",
     "totalActiveUsers": "Total usuarios activos",
     "totalBlockedUsers": "Total usuarios bloqueados",
     "totalBannedUsers": "Total usuarios penalizados",
-    "languageUseTitle": "Idioma mas utilizado",
+    "languageUseTitle": "Idioma más utilizado",
     "postsAndReactionsPerHour": "Reacciones y publicaciones de hoy",
-    "postsPerDay": "Publicaciones por dia"
+    "postsPerDay": "Publicaciones por día"
   },
   "ForgotPassword": {
-    "forgotTitle": "Olvidaste tu contraseña ?",
+    "forgotTitle": "Olvidaste tu contraseña?",
     "forgotMessage": "No te preocupes, le pasa hasta a los mejores.",
     "forgotMessage2": "Enviaremos un enlace de recuperación de contraseña al correo electrónico indicado.",
     "buttonLabel": "confirmar",
@@ -85,9 +85,9 @@
       "birthDate": "Fecha de Nacimiento",
       "country": "País",
       "city": "Ciudad",
-      "description": "Cuentanos sobre tí",
+      "description": "Cuéntanos sobre tí",
       "nextButton": "Siguiente",
-      "gitPlatformLabel": "Platforma Git"
+      "gitPlatformLabel": "Plataforma Git"
     },
     "Shared": {
       "nextButton": "Siguiente",
@@ -115,7 +115,7 @@
       "deleteExperienceTitleDialog": "Estás seguro de que quieres borrar la experiencia laboral seleccionada?",
       "deleteExperienceTextDialog1": "Borrar tu experiencia en",
       "deleteExperienceTextDialog2": "será algo permanente, estás seguro?",
-      "currentLabel": "A la Fecha"
+      "currentLabel": "la actualidad"
     },
     "Skills": {
       "title": "Habilidades",
@@ -137,7 +137,7 @@
       "cancelAdd": "Cancelar"
     },
     "StudyExperience": {
-      "title": "Experiencia Academica",
+      "title": "Experiencia Académica",
       "text": "Ingresa tus experiencias académicas para que todos sepan qué conocimientos tienes!",
       "addExperienceButton": "Agregar Experiencia",
       "institutionLabel": "Institución",
@@ -166,7 +166,7 @@
   "Feed": {
     "noSuggestions": "No tenemos sugerencias para ti :(",
     "suggestions": "Sugerencias",
-    "posts": "posteos",
+    "posts": "publicaciones",
     "followers": "seguidores",
     "contacts": "contactos",
     "viewProfile": "ver perfil",
@@ -226,9 +226,9 @@
     "skills": "HABILIDADES"
   },
   "NotificationType": {
-    "NEW_POST": "Nueva Publicacion",
+    "NEW_POST": "Nueva Publicación",
     "NEW_COMMENT": "Nuevo comentario",
-    "NEW_MENTION": "Nueva mencion",
+    "NEW_MENTION": "Nueva mención",
     "CONTACT_REQUEST": "Solicitud de contacto",
     "CONTACT_ACCEPTED": "Nuevo contacto",
     "NEW_FOLLOWER": "Nuevo Seguidor"
@@ -238,7 +238,7 @@
     "following": "Siguiendo",
     "accept": "Aceptar",
     "accepted": "Aceptado",
-    "noNotifications": "Todavia no tienes notificaciones :(",
+    "noNotifications": "Todavía no tienes notificaciones :(",
     "clearAll": "Limpiar"
   },
   "Settings": {
@@ -297,7 +297,7 @@
     "user": "Usuarios",
     "delete": "Eliminar",
     "deleteTextBeginning": "Eliminar usuario",
-    "deleteTextEnd": "El usuario va a ser borrado permanentemente y no podra ser recuperado",
+    "deleteTextEnd": "El usuario va a ser borrado permanentemente y no podrá ser recuperado",
     "notification": "Usuario eliminado correctamente"
   },
   "Chat": {

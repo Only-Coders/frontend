@@ -452,14 +452,20 @@ export default Vue.extend({
     },
 
     async acceptContactRequest(notification: Notification) {
-      await postContactRequestResponse({
-        requesterCanonicalName: notification.canonicalName,
-        acceptContact: true
-      });
-      notification.sourceIsContact = true;
-      await database
-        .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
-        .update({ sourceIsContact: true });
+      try {
+        await postContactRequestResponse({
+          requesterCanonicalName: notification.canonicalName,
+          acceptContact: true
+        });
+        notification.sourceIsContact = true;
+        await database
+          .ref(`notifications/${this.user.canonicalName}/${notification.id}`)
+          .update({ sourceIsContact: true });
+      } catch (error) {
+        if (error.response.data.statusCode == 404) {
+          this.markNotificationAsRead(notification);
+        }
+      }
     },
 
     redirectToFeed() {

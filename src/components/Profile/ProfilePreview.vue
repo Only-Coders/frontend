@@ -214,12 +214,19 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.userData.contactQty--;
     },
     async acceptContact() {
-      await postContactRequestResponse({
-        requesterCanonicalName: this.userData.canonicalName,
-        acceptContact: true
-      } as ContactRequestResponse);
-      this.userDataComputed.connected = true;
-      this.userData.contactQty++;
+      try {
+        await postContactRequestResponse({
+          requesterCanonicalName: this.userData.canonicalName,
+          acceptContact: true
+        } as ContactRequestResponse);
+        this.userDataComputed.connected = true;
+        this.userData.contactQty++;
+      } catch (error) {
+        if (error.response.data.statusCode == 404) {
+          this.userDataComputed.connected = true;
+          this.userData.contactQty++;
+        }
+      }
     },
 
     async confirmPhotoChange(imageURI: string, originalImage: string) {

@@ -8,7 +8,7 @@
         :class="{ profile_preview_col: $vuetify.breakpoint.lgAndUp }"
       ></ProfilePreview>
       <ReceivedContactRequests
-        class="mt-8"
+        class="mt-8 mb-10"
         :class="{ suggestions: $vuetify.breakpoint.lgAndUp }"
         @hideContactsRequests="showContactsRequests = false"
         v-if="isSelfProfile && showContactsRequests"

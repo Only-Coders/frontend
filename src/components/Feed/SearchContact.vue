@@ -1,13 +1,10 @@
 <template>
   <v-row no-gutters class="my-2 d-flex align-center">
     <v-col cols="auto" class="d-flex flex-column align-center">
-      <v-avatar size="50">
-        <v-img
-          alt="user"
-          class="mb-2"
-          :src="contactData.imageURI ? contactData.imageURI : require('@/assets/images/default-avatar.png')"
-        />
-      </v-avatar>
+      <AvatarImagePreview
+        :src="contactData.imageURI ? contactData.imageURI : require('@/assets/images/default-avatar.png')"
+        :imageSize="55"
+      ></AvatarImagePreview>
     </v-col>
     <v-col cols="auto">
       <v-card-title class="font-weight-light py-0 pr-2 contact__canonical-name"
@@ -36,9 +33,12 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import { User } from "@/models/user";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "Search",
+
+  components: { AvatarImagePreview },
 
   props: {
     contactData: Object as PropType<User>

@@ -2,12 +2,10 @@
   <v-card class="py-1">
     <v-row align="center" no-gutters class="mt-3 mb-2">
       <v-avatar size="70" class="ml-4">
-        <v-img
-          class="user__profile-image"
-          alt="user"
+        <AvatarImagePreview
           :src="contactData.imageURI ? contactData.imageURI : require('@/assets/images/default-avatar.png')"
-          @click="redirectToProfile"
-        />
+          :imageSize="55"
+        ></AvatarImagePreview>
       </v-avatar>
 
       <v-col class="align-start mr-8 pl-4" cols="9" sm="5">
@@ -177,6 +175,7 @@ import { postContactRequestResponse } from "@/services/receivedContactRequests";
 import { postFollow, deleteFollow } from "@/services/follow";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
 import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "Contact",
@@ -186,7 +185,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   },
 
   components: {
-    DeleteContactDialog
+    DeleteContactDialog,
+    AvatarImagePreview
   },
 
   mixins: [medalsMixin],

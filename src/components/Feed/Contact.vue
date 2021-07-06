@@ -1,6 +1,6 @@
 <template>
   <v-list-item class="pr-0">
-    <v-list-item-avatar size="55">
+    <v-list-item-avatar>
       <AvatarImagePreview
         :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')"
         :imageSize="55"

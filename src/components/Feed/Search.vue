@@ -21,19 +21,15 @@
           :key="recentSearch.canonicalName"
           @click="goToProfile(recentSearch)"
         >
-          <v-avatar size="50">
-            <v-img
-              alt="user"
-              class="mb-2"
-              width="60"
-              :src="recentSearch.imageURI ? recentSearch.imageURI : require('@/assets/images/default-avatar.png')"
-            />
-          </v-avatar>
+          <AvatarImagePreview
+            :src="recentSearch.imageURI ? recentSearch.imageURI : require('@/assets/images/default-avatar.png')"
+            :imageSize="55"
+          ></AvatarImagePreview>
           <h4 class="font-weight-light text-center">{{ recentSearch.fullName }}</h4>
         </v-col>
       </v-row>
     </div>
-    <v-row v-else class="mt-8">
+    <v-row v-else class="mt-3">
       <v-col>
         <div v-if="!areUsersLoading">
           <v-list>
@@ -44,7 +40,7 @@
               @click="storeRecentSearch(contact)"
               link
             >
-              <Contact :contactData="contact"></Contact>
+              <SearchContact :contactData="contact"></SearchContact>
             </v-list-item>
           </v-list>
         </div>
@@ -60,8 +56,10 @@
         >
       </v-col>
     </v-row>
+
     <v-divider class="search__divider"></v-divider>
-    <v-row class="mt-4" no-gutters>
+
+    <v-row class="mt-4" no-gutters v-if="!filters">
       <v-col>
         <v-card-title class="font-weight-light py-0"
           ><h4 class="font-weight-light">{{ $i18n.t("Search.try") }}</h4></v-card-title
@@ -83,6 +81,21 @@
         </div>
       </v-col>
     </v-row>
+
+    <v-row class="mt-0">
+      <v-col>
+        <div v-if="searchedTags">
+          <v-list>
+            <v-list-item v-for="tag in searchedTags" :key="tag.canonicalName">
+              <TagSearch v-bind="{ ...tag }" :isFollowed="false"></TagSearch>
+            </v-list-item>
+          </v-list>
+        </div>
+        <div v-else class="d-flex justify-center align-center search__progress">
+          <v-progress-circular :size="30" color="grey" indeterminate></v-progress-circular>
+        </div>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -91,14 +104,16 @@ import Vue, { PropType } from "vue";
 import { User } from "@/models/user";
 import { addRecentSearch, clearRecentSearches, getRecentSearches } from "@/services/recentSearch";
 import { Tag } from "@/models/tag";
-import Contact from "@/components/Feed/SearchContact.vue";
+import SearchContact from "@/components/Feed/SearchContact.vue";
 import { Pagination } from "@/models/Pagination/pagination";
 import { RecentSearch } from "@/models/recentSearch";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
+import TagSearch from "@/components/Search/TagSearch.vue";
 
 export default Vue.extend({
   name: "Search",
 
-  components: { Contact },
+  components: { SearchContact, AvatarImagePreview, TagSearch },
 
   data: () => ({
     recentSearches: [] as RecentSearch[]
@@ -109,7 +124,8 @@ export default Vue.extend({
     tags: Array as PropType<Tag[]>,
     areTagsLoading: Boolean,
     areUsersLoading: Boolean,
-    filters: String
+    filters: String,
+    searchedTags: Array as PropType<Tag[]>
   },
 
   methods: {

@@ -28,7 +28,6 @@
                 <v-text-field
                   hide-details
                   v-model="searchParameters"
-                  label=""
                   prepend-inner-icon="mdi-magnify"
                   background-color="searchInput"
                   rounded
@@ -48,6 +47,7 @@
                 :areTagsLoading="tagsLoading"
                 :areUsersLoading="usersLoading"
                 :filters="searchParameters"
+                :searchedTags="searchedTags"
               ></Search>
             </v-menu>
           </transition>
@@ -307,7 +307,7 @@ import Vue from "vue";
 import { UserData } from "@/store/modules/user";
 import { database } from "@/plugins/firebaseInit";
 import Search from "@/components/Feed/Search.vue";
-import { getTags } from "@/services/suggested-tags";
+import { getSuggestedTags } from "@/services/suggested-tags";
 import { User } from "@/models/user";
 import { getUser } from "@/services/user";
 import { Tag } from "@/models/tag";
@@ -318,6 +318,7 @@ import { formatDistanceStrict } from "date-fns";
 import { postFollow } from "@/services/follow";
 import ConfigurationsDialog from "@/components/Layout/ConfigurationsDialog.vue";
 import { postContactRequestResponse } from "@/services/receivedContactRequests";
+import { getTag } from "@/services/tag";
 
 type Notification = {
   eventType: string;
@@ -358,7 +359,8 @@ export default Vue.extend({
     timer: 0,
     showOverlay: false,
     showNotifications: false,
-    showConfigurationsDialog: false
+    showConfigurationsDialog: false,
+    searchedTags: [] as Tag[]
   }),
 
   methods: {
@@ -374,7 +376,7 @@ export default Vue.extend({
 
     async getRecommendedTags() {
       this.tagsLoading = true;
-      this.recommendedTags = await getTags(3);
+      this.recommendedTags = await getSuggestedTags(3);
       this.tagsLoading = false;
     },
 
@@ -506,6 +508,7 @@ export default Vue.extend({
 
   watch: {
     searchParameters() {
+      this.showOverlay = true;
       if (this.searchParameters) {
         this.usersLoading = true;
         if (this.timer != 0) {
@@ -514,12 +517,19 @@ export default Vue.extend({
 
         this.timer = setTimeout(async () => {
           try {
-            const result = await getUser({
+            const resultUsers = await getUser({
               partialName: this.searchParameters,
               size: 5,
               orderBy: UsersOptionsOrderBy.FIRSTNAME
             });
-            this.filteredUsers = result;
+            this.filteredUsers = resultUsers;
+
+            if (this.searchParameters) {
+              const resultTags = await getTag(this.searchParameters, 4);
+              this.searchedTags = resultTags.content;
+            } else {
+              this.searchedTags = [];
+            }
           } catch (error) {
             clearTimeout(this.timer);
           } finally {

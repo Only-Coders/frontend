@@ -236,12 +236,19 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       this.contactData.contactQty--;
     },
     async acceptContact() {
-      await postContactRequestResponse({
-        requesterCanonicalName: this.contactData.canonicalName,
-        acceptContact: true
-      } as ContactRequestResponse);
-      this.contactDataComputed.connected = true;
-      this.contactData.contactQty++;
+      try {
+        await postContactRequestResponse({
+          requesterCanonicalName: this.contactData.canonicalName,
+          acceptContact: true
+        } as ContactRequestResponse);
+        this.contactDataComputed.connected = true;
+        this.contactData.contactQty++;
+      } catch (error) {
+        if (error.response.data.statusCode == 404) {
+          this.contactDataComputed.connected = true;
+          this.contactData.contactQty++;
+        }
+      }
     },
 
     async deleteFromNetwork() {

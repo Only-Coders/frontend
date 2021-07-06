@@ -92,7 +92,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { PostType } from "@/models/Enums/postType";
-import { uuid } from "@/plugins/uuid";
+import { BUCKET_URI, uuid } from "@/plugins/uuid";
 import { post } from "@/services/post";
 import { Post } from "@/models/post";
 import Compressor from "compressorjs";
@@ -179,11 +179,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
           quality: 0.2,
           async success(result: File) {
             const fileName = uuid();
-            const snapshot = await storage
-              .ref(`images/${fileName}`)
-              .put(result, { cacheControl: "public,max-age=4000" });
-            const imageUrl = await snapshot.ref.getDownloadURL();
-            resolve(imageUrl);
+            await storage.ref(`images/${fileName}`).put(result, { cacheControl: "public,max-age=4000" });
+            resolve(BUCKET_URI + `images/${fileName}`);
           },
           error(err) {
             reject(err);
@@ -194,8 +191,8 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     },
     async onUploadFile() {
       if (this.fileData) {
-        const response = await storage.ref(`files/${this.fileData.name}`).put(this.fileData);
-        this.post.url = await response.ref.getDownloadURL();
+        await storage.ref(`files/${this.fileData.name}`).put(this.fileData);
+        this.post.url = BUCKET_URI + `files/${this.fileData.name}`;
       }
     },
     deleteFileShowed() {

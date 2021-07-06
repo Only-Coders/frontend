@@ -141,8 +141,9 @@ export default Vue.extend({
   },
   computed: {
     shouldRenderRecents(): boolean {
+      if (this.recentSearches.length === 0) return false;
       return (
-        (this.filters.length === 0 && this.recentSearches.length !== 0) ||
+        this.filters.length === 0 ||
         (this.filteredUsers && this.filteredUsers.content && this.filteredUsers.content.length === 0)
       );
     }

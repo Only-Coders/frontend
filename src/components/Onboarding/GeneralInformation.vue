@@ -176,7 +176,7 @@ import Compressor from "compressorjs";
 import { setHeaders } from "@/plugins/axios";
 import jwtDecode from "jwt-decode";
 import { UserData } from "@/store/modules/user";
-import { uuid } from "@/plugins/uuid";
+import { BUCKET_URI, uuid } from "@/plugins/uuid";
 
 export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMixin & GitPlatformsMixin>).extend({
   name: "GeneralInformation",
@@ -233,11 +233,8 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
           quality: 0.2,
           async success(result: File) {
             const fileName = uuid();
-            const snapshot = await storage
-              .ref(`images/${fileName}`)
-              .put(result, { cacheControl: "public,max-age=4000" });
-            const profileImageUrl = await snapshot.ref.getDownloadURL();
-            resolve(profileImageUrl);
+            await storage.ref(`images/${fileName}`).put(result, { cacheControl: "public,max-age=4000" });
+            resolve(BUCKET_URI + `images/${fileName}`);
           },
           error(err) {
             reject(err);

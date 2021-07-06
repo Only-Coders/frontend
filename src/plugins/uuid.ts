@@ -5,3 +5,5 @@ export function uuid(): string {
     return v.toString(16);
   });
 }
+
+export const BUCKET_URI = "https://storage.googleapis.com/onlycoders-cc609.appspot.com/";

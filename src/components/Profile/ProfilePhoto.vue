@@ -62,7 +62,7 @@
 import Vue from "vue";
 import { storage } from "@/plugins/firebaseInit";
 import Compressor from "compressorjs";
-import { uuid } from "@/plugins/uuid";
+import { BUCKET_URI, uuid } from "@/plugins/uuid";
 
 export default Vue.extend({
   name: "ProfilePhoto",
@@ -98,11 +98,8 @@ export default Vue.extend({
         new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage
-              .ref(`images/${fileName}`)
-              .put(result, { cacheControl: "public,max-age=4000" });
-            const profileImageUrl = await snapshot.ref.getDownloadURL();
-            resolve(profileImageUrl);
+            await storage.ref(`images/${fileName}`).put(result, { cacheControl: "public,max-age=4000" });
+            resolve(BUCKET_URI + `images/${fileName}`);
           },
           error(err) {
             reject(err);

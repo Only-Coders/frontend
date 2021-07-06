@@ -29,7 +29,10 @@
         <Suggestions></Suggestions>
       </v-col>
     </v-row>
-    <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore"></infinite-loading>
+    <infinite-loading v-if="enableInfiniteScroll" spinner="spiral" @infinite="loadMore">
+      <div slot="no-more"><v-icon size="40">mdi-circle-small</v-icon></div>
+      <div slot="no-results"><v-icon size="40">mdi-circle-small</v-icon></div>
+    </infinite-loading>
   </div>
 </template>
 

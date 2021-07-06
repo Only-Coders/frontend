@@ -2,9 +2,13 @@
   <v-card>
     <v-row align="center" no-gutters class="mb-3 mt-2 pt-3">
       <v-col cols="4" class="text-center">
-        <v-avatar size="70">
-          <v-img alt="user" :src="imageURI ? imageURI : require('@/assets/images/default-avatar.png')" />
-        </v-avatar>
+        <AvatarImagePreview
+          class="pb-0 user_name"
+          @click="redirectToProfile"
+          :src="imageURI"
+          style="cursor: pointer"
+          :imageSize="$vuetify.breakpoint.mdAndUp ? 60 : 55"
+        ></AvatarImagePreview>
       </v-col>
 
       <v-col class="align-start justify-center" cols="8">
@@ -37,9 +41,12 @@ import Vue, { PropType } from "vue";
 import { postContactRequestResponse } from "@/services/receivedContactRequests";
 import { CurrentPosition } from "@/models/currentPosition";
 import { ContactRequestResponse } from "@/models/contactRequestResponse";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 export default Vue.extend({
   name: "ContactRequest",
+
+  components: { AvatarImagePreview },
 
   props: {
     firstName: String,
@@ -69,6 +76,18 @@ export default Vue.extend({
     },
     removeContactRequest() {
       this.$emit("remove");
+    },
+    redirectToProfile() {
+      const redirectTo = `/profile/${this.canonicalName}`;
+      if (this.$router.currentRoute.path === redirectTo) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+      } else {
+        this.$router.push(redirectTo);
+      }
     }
   }
 });

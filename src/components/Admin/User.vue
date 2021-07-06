@@ -38,7 +38,7 @@
           outlined
           @click="toggleUserBlockStatus"
         >
-          {{ isUserBlocked ? $i18n.t("backofficeListUsers.unblock") : $i18n.t("backofficeListUsers.block") }}
+          {{ isUserBlocked ? $i18n.t("unblock") : $i18n.t("backofficeListUsers.block") }}
         </v-btn>
         <v-btn
           height="35"

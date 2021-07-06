@@ -45,6 +45,7 @@
   "administrator": "Administrador",
   "fullName": "Nombre Completo",
   "userBannDate": "Baneado el: ",
+  "unblock": "Desbloquear",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Iniciar sesión",
@@ -288,7 +289,6 @@
   "backofficeListUsers": {
     "search": "Buscar contactos...",
     "block": "Bloquear",
-    "unblock": "Desbloquear",
     "orderBy": "Ordenar",
     "fullName": "Nombre Completo",
     "blocked": "Bloqueado",

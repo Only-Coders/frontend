@@ -27,12 +27,10 @@
     </v-row>
 
     <v-row no-gutters justify="end" class="mx-16 mb-5 mt-6">
-      <v-btn depressed small rounded outlined color="#a4a4a4" class="mr-2" @click="$emit('loadMoreComments')">
+      <v-btn small text color="#a4a4a4" class="mr-2" @click="$emit('loadMoreComments')" :loading="loadingMoreComments">
         {{ $i18n.t("loadMore") }}</v-btn
       >
-      <v-btn depressed small rounded outlined color="#a4a4a4" @click="$emit('hideComments')">
-        {{ $i18n.t("hide") }}</v-btn
-      >
+      <v-btn small text color="#a4a4a4" @click="$emit('hideComments')"> {{ $i18n.t("hide") }}</v-btn>
     </v-row>
   </div>
 </template>
@@ -45,7 +43,13 @@ import CommentComponent from "@/components/Post/Comment.vue";
 export default Vue.extend({
   name: "PostComments",
 
-  props: { comments: Array as PropType<Comment[]>, fetching: Boolean, postId: String, isCommentOfMyPost: Boolean },
+  props: {
+    comments: Array as PropType<Comment[]>,
+    fetching: Boolean,
+    postId: String,
+    isCommentOfMyPost: Boolean,
+    loadingMoreComments: Boolean
+  },
 
   components: {
     CommentComponent

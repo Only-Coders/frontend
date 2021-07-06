@@ -44,6 +44,8 @@
   "administrator": "Administrator",
   "fullName": "Full Name",
   "userBannDate": "Banned on: ",
+  "typeMessage": "Type a message...",
+  "unblock": "Unblock",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -178,8 +180,8 @@
     "savedFavorite": "Successfully saved as favorite !",
     "unsavedFavorite": "Successfully deleted from favorites",
     "deletePost": "Delete",
-    "deletePostConfirmation": "Are you sure you want to delete this post? Thi will be a permanent action",
-    "deleteCommentConfirmation": "Are you sure you want to delete this comment? Thi will be a permanent action",
+    "deletePostConfirmation": "Are you sure you want to delete this post? This will be a permanent action",
+    "deleteCommentConfirmation": "Are you sure you want to delete this comment? This will be a permanent action",
     "deleteButtonLabel": "Delete",
     "deletedAccountDate": "Your account will be deleted on the ",
     "cancelEliminationToast": "Your account elimination has been cancelled"
@@ -190,7 +192,6 @@
       "private": "To my contacts"
     },
     "InsertLink": "Insert link",
-    "typeMessage": "Type a message...",
     "loading": "loading...",
     "noResults": "no result",
     "createPost": "Create post",
@@ -204,7 +205,6 @@
       "private": "To my contacts"
     },
     "InsertLink": "Insert link",
-    "typeMessage": "Type a message...",
     "loading": "loading...",
     "noResults": "no result",
     "editPost": "Edit post",
@@ -290,7 +290,6 @@
   "backofficeListUsers": {
     "search": "Search contact...",
     "block": "Block",
-    "unblock": "Unblock",
     "orderBy": "Order by",
     "fullName": "Full Name",
     "blocked": "Blocked",

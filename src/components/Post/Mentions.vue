@@ -39,14 +39,10 @@
         <div class="issue">
           <v-row align="center" justify="center">
             <v-col cols="2" class="d-flex justify-center">
-              <v-avatar size="30">
-                <v-img
-                  alt="user"
-                  :lazy-src="require('@/assets/images/default-avatar.png')"
-                  :src="item.imageURI ? item.imageURI : require('@/assets/images/default-avatar.png')"
-                >
-                </v-img>
-              </v-avatar>
+              <AvatarImagePreview
+                :src="item.imageURI ? item.imageURI : require('@/assets/images/default-avatar.png')"
+                :imageSize="55"
+              ></AvatarImagePreview>
             </v-col>
             <v-spacer />
             <v-col cols="9" class="user-name ml-10">
@@ -70,6 +66,7 @@ import { Mentionable } from "vue-mention";
 import { getUser } from "@/services/user";
 import { getTag } from "@/services/tag";
 import { Post } from "@/models/post";
+import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
 
 type Item = {
   value: string;
@@ -79,7 +76,8 @@ type Item = {
 
 export default Vue.extend({
   components: {
-    Mentionable
+    Mentionable,
+    AvatarImagePreview
   },
 
   props: {

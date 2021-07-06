@@ -210,6 +210,7 @@
         @deleteComment="deleteComment"
         :postId="post.id"
         :isCommentOfMyPost="isMyOwnPost"
+        :loadingMoreComments="fetchingMoreComments"
       ></PostComments>
       <CreateComment :postId="this.post.id" @addCommentToPost="addCommentToPost"></CreateComment>
     </v-card>
@@ -312,6 +313,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     postMessageToEdit: "",
     comments: [] as Comment[],
     fetchingComments: true,
+    fetchingMoreComments: false,
     showComments: false,
     currentPageOfComments: 0,
     totalPagesOfComments: 0,
@@ -506,17 +508,29 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       this.post.commentQuantity++;
     },
     async loadComments() {
-      this.fetchingComments = true;
+      this.fetchingMoreComments = true;
       const result = await getPostComments(this.post.id, this.currentPageOfComments, 5);
       if (this.totalPagesOfComments == 0) {
         this.comments = result.content;
         this.totalPagesOfComments = result.totalPages;
       } else {
+        //Si creo un nuevo comentario y después cargo más comentarios,
+        //es posible que ese nuevo comentario venga nuevamente.
+        //Para evitar duplicados y mostrar en orden de creación,
+        //se lo retira de los que ya se mostraban y se muestra en la nueva posición
+        for (var i = 0; i < this.comments.length; i++) {
+          for (var j = 0; j < result.content.length; j++) {
+            if (this.comments[i].id == result.content[j].id) {
+              this.comments.splice(i, 1);
+            }
+          }
+        }
+
         this.comments = this.comments.concat(result.content);
       }
       this.currentPageOfComments++;
 
-      this.fetchingComments = false;
+      this.fetchingMoreComments = false;
     },
     hideComments() {
       this.showComments = false;

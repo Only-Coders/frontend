@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters class="mb-4 d-flex align-center">
+  <v-row no-gutters class="my-2 d-flex align-center">
     <v-col cols="auto" class="d-flex flex-column align-center">
       <v-avatar size="50">
         <v-img

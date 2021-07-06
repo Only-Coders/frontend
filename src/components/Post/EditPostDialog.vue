@@ -179,7 +179,9 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
           quality: 0.2,
           async success(result: File) {
             const fileName = uuid();
-            const snapshot = await storage.ref(`images/${fileName}`).put(result);
+            const snapshot = await storage
+              .ref(`images/${fileName}`)
+              .put(result, { cacheControl: "public,max-age=4000" });
             const imageUrl = await snapshot.ref.getDownloadURL();
             resolve(imageUrl);
           },

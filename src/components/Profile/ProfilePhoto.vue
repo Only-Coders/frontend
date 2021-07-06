@@ -98,7 +98,9 @@ export default Vue.extend({
         new Compressor(profileImageData, {
           quality: 0.2,
           async success(result: File) {
-            const snapshot = await storage.ref(`images/${fileName}`).put(result);
+            const snapshot = await storage
+              .ref(`images/${fileName}`)
+              .put(result, { cacheControl: "public,max-age=4000" });
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
           },

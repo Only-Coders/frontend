@@ -233,7 +233,9 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
           quality: 0.2,
           async success(result: File) {
             const fileName = uuid();
-            const snapshot = await storage.ref(`images/${fileName}`).put(result);
+            const snapshot = await storage
+              .ref(`images/${fileName}`)
+              .put(result, { cacheControl: "public,max-age=4000" });
             const profileImageUrl = await snapshot.ref.getDownloadURL();
             resolve(profileImageUrl);
           },

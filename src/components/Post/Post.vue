@@ -260,6 +260,7 @@ import { Comment } from "@/models/comment";
 import { getPostComments } from "@/services/comment";
 import ReportPostDialog from "@/components/Post/ReportPostDialog.vue";
 import { es, enUS } from "date-fns/locale";
+import { BUCKET_URI } from "@/plugins/uuid";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).extend({
   mounted() {
@@ -406,9 +407,8 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
     },
     getFileName() {
-      this.fileName = decodeURIComponent(
-        this.post.url.match(/files%2F(?<fileName>\S+)\?alt=/)?.groups?.fileName ?? "File"
-      );
+      const regex = new RegExp(`${BUCKET_URI}files/(?<fileName>.*)$`, "g");
+      this.fileName = decodeURIComponent(regex.exec(this.post.url)?.groups?.fileName ?? "File");
     },
     formatNewLine() {
       this.post.message = this.post.message.replaceAll("\n", "<br/>");

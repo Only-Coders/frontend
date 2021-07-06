@@ -125,7 +125,7 @@ export default Vue.extend({
 
   created() {
     this.imageURL = this.profileImageURLProp;
-    const regex = /images%2(?<img>.*)\?alt/g;
+    const regex = /images\/(?<img>.*)/g;
     const matches = regex.exec(this.imageURL);
     this.fileName = matches?.groups?.img ?? "";
   }

@@ -229,15 +229,12 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
       }
     },
 
-    async confirmPhotoChange(imageURI: string, originalImage: string) {
+    async confirmPhotoChange(imageURI: string) {
       const result = await editImageProfile(imageURI);
 
       if (result) {
         this.userDataComputed.imageURI = imageURI;
         this.$store.commit("userModule/SET_USER_IMAGE", imageURI);
-        if (originalImage) {
-          await storage.refFromURL(originalImage).delete();
-        }
       }
     }
   },

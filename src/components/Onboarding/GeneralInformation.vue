@@ -279,6 +279,13 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
 
   created() {
     this.getCountries();
+    const googleUser = this.$route.params.userName;
+    this.user.firstName = googleUser.split(" ")[0];
+    this.user.lastName = googleUser.split(" ")[1];
+    this.user.imageURI = this.$route.params.photo;
+    this.profileImageURL = this.$route.params.photo;
+    // this.profileImageData
+    this.profileImageToShow = this.$route.params.photo;
   }
 });
 </script>

@@ -233,7 +233,7 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
           quality: 0.2,
           async success(result: File) {
             const fileName = uuid();
-            await storage.ref(`images/${fileName}`).put(result, { cacheControl: "public,max-age=4000" });
+            await storage.ref(`images/${fileName}`).put(result, { cacheControl: "private,max-age=0,no-transform" });
             resolve(BUCKET_URI + `images/${fileName}`);
           },
           error(err) {

@@ -23,6 +23,19 @@
         :class="$route.name === 'ProfileChild' ? 'mx-10' : ''"
       />
     </div>
+
+    <div v-if="!fetching && posts.length == 0">
+      <v-row justify="center" class="mt-8" no-gutters>
+        <v-col cols="3">
+          <v-img src="@/assets/images/no_data.svg" width="100%" alt="no data"></v-img>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="12" class="text-center">
+          <span>{{ $i18n.t("Onboarding.Shared.noData") }}</span>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 

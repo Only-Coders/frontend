@@ -1,42 +1,49 @@
 <template>
-  <div>
-    <v-row no-gutters style="width: 500px">
-      <v-col cols="10">
-        <v-icon size="20" class="mr-2">mdi-pound</v-icon>
-        <span class="font-weight-bold text--secondary text-capitalize">
+  <v-list-item>
+    <v-list-item-icon class="mr-2"> <v-icon size="20">mdi-pound</v-icon> </v-list-item-icon>
+
+    <v-list-item-content>
+      <v-list-item-title>
+        <span
+          class="font-weight-bold text--secondary text-capitalize txt"
+          @click="$router.push(`/?tag=${tag.canonicalName}`)"
+        >
           {{ tag.name }}
         </span>
 
-        <span class="font-weight-light text--secondary">
+        <span class="font-weight-light caption">
           <v-icon color="#737373" size="25">mdi-circle-small</v-icon> {{ tag.followerQuantity }}
           {{ $i18n.t("Onboarding.Tag.cardText") }}
         </span>
-      </v-col>
+      </v-list-item-title>
+    </v-list-item-content>
 
-      <v-col cols="2">
-        <v-btn
-          block
-          color="error"
-          small
-          @click="followUnfollowTag"
-          outlined
-          v-if="tag.isFollowing"
-          :loading="isLoading"
-          >{{ $i18n.t("unfollow") }}</v-btn
-        >
-        <v-btn
-          block
-          color="primary"
-          small
-          @click="followUnfollowTag"
-          outlined
-          v-if="!tag.isFollowing"
-          :loading="isLoading"
-          >{{ $i18n.t("Onboarding.Tag.follow") }}</v-btn
-        >
-      </v-col>
-    </v-row>
-  </div>
+    <v-list-item-action>
+      <v-btn
+        block
+        color="error"
+        small
+        @click="followUnfollowTag"
+        outlined
+        v-if="tag.isFollowing"
+        :loading="isLoading"
+        width="100"
+        >{{ $i18n.t("unfollow") }}
+      </v-btn>
+
+      <v-btn
+        block
+        color="primary"
+        small
+        @click="followUnfollowTag"
+        outlined
+        v-if="!tag.isFollowing"
+        :loading="isLoading"
+        width="100"
+        >{{ $i18n.t("Onboarding.Tag.follow") }}
+      </v-btn>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script lang="ts">
@@ -71,4 +78,9 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.txt:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+</style>

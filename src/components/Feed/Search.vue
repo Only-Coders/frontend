@@ -86,9 +86,7 @@
       <v-col>
         <div v-if="searchedTags && !areTagsLoading">
           <v-list>
-            <v-list-item v-for="tag in searchedTags" :key="tag.canonicalName">
-              <TagSearch :tag="tag" :isFollowed="false"></TagSearch>
-            </v-list-item>
+            <TagSearch :tag="tag" :isFollowed="false" v-for="tag in searchedTags" :key="tag.canonicalName"></TagSearch>
           </v-list>
         </div>
         <div v-else class="d-flex justify-center align-center search__progress">

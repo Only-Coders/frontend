@@ -360,7 +360,9 @@ export default Vue.extend({
     showOverlay: false,
     showNotifications: false,
     showConfigurationsDialog: false,
-    searchedTags: [] as Tag[]
+    searchedTags: [] as Tag[],
+    maxUsersToShow: 5,
+    maxTagsToShow: 4
   }),
 
   methods: {
@@ -497,6 +499,9 @@ export default Vue.extend({
       } else {
         this.$router.push(redirectTo);
       }
+    },
+    isLaptop() {
+      return window.innerHeight <= 800;
     }
   },
 
@@ -519,13 +524,13 @@ export default Vue.extend({
           try {
             const resultUsers = await getUser({
               partialName: this.searchParameters,
-              size: 5,
+              size: this.maxUsersToShow,
               orderBy: UsersOptionsOrderBy.FIRSTNAME
             });
             this.filteredUsers = resultUsers;
 
             if (this.searchParameters) {
-              const resultTags = await getTag(this.searchParameters, 4);
+              const resultTags = await getTag(this.searchParameters, this.maxTagsToShow);
               this.searchedTags = resultTags.content;
             } else {
               this.searchedTags = [];
@@ -544,6 +549,10 @@ export default Vue.extend({
     this.listenToUnreadMessages();
     this.listenToUnreadNotifications();
     this.getUserProfileFromToken();
+    if (this.isLaptop()) {
+      this.maxUsersToShow = 4;
+      this.maxTagsToShow = 3;
+    }
   }
 });
 </script>

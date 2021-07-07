@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="navbar" dark>
+    <v-app-bar app color="navbar" dark class="app_bar">
       <v-row align="center" justify="space-between" no-gutters class="mx-2">
         <v-col cols="3" class="hidden-sm-and-down">
           <v-img
@@ -94,5 +94,11 @@ export default Vue.extend({
 <style scoped>
 .feed_link {
   cursor: pointer;
+}
+</style>
+
+<style>
+.app_bar {
+  z-index: 9999 !important;
 }
 </style>

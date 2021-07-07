@@ -510,7 +510,7 @@ export default Vue.extend({
     searchParameters() {
       this.showOverlay = true;
       if (this.searchParameters) {
-        this.usersLoading = true;
+        this.usersLoading = this.tagsLoading = true;
         if (this.timer != 0) {
           clearTimeout(this.timer);
         }
@@ -533,7 +533,7 @@ export default Vue.extend({
           } catch (error) {
             clearTimeout(this.timer);
           } finally {
-            this.usersLoading = false;
+            this.usersLoading = this.tagsLoading = false;
           }
         }, 200);
       }

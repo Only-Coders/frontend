@@ -84,10 +84,10 @@
 
     <v-row class="mt-0">
       <v-col>
-        <div v-if="searchedTags">
+        <div v-if="searchedTags && !areTagsLoading">
           <v-list>
             <v-list-item v-for="tag in searchedTags" :key="tag.canonicalName">
-              <TagSearch v-bind="{ ...tag }" :isFollowed="false"></TagSearch>
+              <TagSearch :tag="tag" :isFollowed="false"></TagSearch>
             </v-list-item>
           </v-list>
         </div>

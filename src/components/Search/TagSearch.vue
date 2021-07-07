@@ -1,54 +1,71 @@
 <template>
   <div>
-    <v-row no-gutters style="width: 400px">
+    <v-row no-gutters style="width: 500px">
       <v-col cols="10">
         <v-icon size="20" class="mr-2">mdi-pound</v-icon>
-        <span class="font-weight-bold text--secondary text-capitalize"
-          >{{ canonicalName }} <v-icon color="#737373" size="25">mdi-circle-small</v-icon> {{ followerQuantity }}
-          {{ $i18n.t("Onboarding.Tag.cardText") }}</span
-        >
+        <span class="font-weight-bold text--secondary text-capitalize">
+          {{ tag.name }}
+        </span>
+
+        <span class="font-weight-light text--secondary">
+          <v-icon color="#737373" size="25">mdi-circle-small</v-icon> {{ tag.followerQuantity }}
+          {{ $i18n.t("Onboarding.Tag.cardText") }}
+        </span>
       </v-col>
 
       <v-col cols="2">
-        <v-btn block color="error" small @click.stop="createDialog = true" outlined v-if="isFollowed">{{
-          $i18n.t("unfollow")
-        }}</v-btn>
-        <v-btn block color="primary" small @click="followTag" outlined v-if="!isFollowed">{{
-          $i18n.t("Onboarding.Tag.follow")
-        }}</v-btn>
+        <v-btn
+          block
+          color="error"
+          small
+          @click="followUnfollowTag"
+          outlined
+          v-if="tag.isFollowing"
+          :loading="isLoading"
+          >{{ $i18n.t("unfollow") }}</v-btn
+        >
+        <v-btn
+          block
+          color="primary"
+          small
+          @click="followUnfollowTag"
+          outlined
+          v-if="!tag.isFollowing"
+          :loading="isLoading"
+          >{{ $i18n.t("Onboarding.Tag.follow") }}</v-btn
+        >
       </v-col>
     </v-row>
-
-    <UnfollowTagDialog
-      :canonicalName="canonicalName"
-      v-if="createDialog"
-      v-model="createDialog"
-      @unfollowTag="$emit('unfollowTag')"
-      :isFollow="true"
-    ></UnfollowTagDialog>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import UnfollowTagDialog from "@/components/UnfollowTagDialog.vue";
-import { post } from "@/services/tag";
+import Vue, { PropType } from "vue";
+import { post, unfollowTag } from "@/services/tag";
+import { Tag } from "@/models/tag";
 
 export default Vue.extend({
   name: "TagSearch",
 
-  components: { UnfollowTagDialog },
-
-  props: { canonicalName: String, followerQuantity: Number, isFollowed: Boolean },
+  props: { tag: {} as PropType<Tag> },
 
   data: () => ({
-    createDialog: false
+    createDialog: false,
+    isLoading: false
   }),
 
   methods: {
-    followTag() {
-      post(this.canonicalName);
-      this.$emit("remove");
+    async followUnfollowTag() {
+      this.isLoading = true;
+      if (!this.tag.isFollowing) {
+        await post(this.tag.canonicalName);
+        this.tag.followerQuantity++;
+      } else {
+        await unfollowTag(this.tag.canonicalName);
+        this.tag.followerQuantity--;
+      }
+      this.tag.isFollowing = !this.tag.isFollowing;
+      this.isLoading = false;
     }
   }
 });

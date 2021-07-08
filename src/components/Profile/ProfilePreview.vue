@@ -169,7 +169,6 @@ import DeleteContactDialog from "@/components/Profile/DeleteContactDialog.vue";
 import medalsMixin, { MedalsMixin } from "@/mixins/medals";
 import { editImageProfile } from "@/services/user";
 import ProfilePhoto from "@/components/Profile/ProfilePhoto.vue";
-import { storage } from "@/plugins/firebaseInit";
 
 export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
   name: "ProfilePreview",

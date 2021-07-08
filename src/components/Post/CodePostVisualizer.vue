@@ -11,6 +11,7 @@ import Vue from "vue";
 
 import CodeHighlight from "vue-code-highlight/src/CodeHighlight.vue";
 import "vue-code-highlight/themes/prism-okaidia.css";
+import Prism from "prismjs";
 
 export default Vue.extend({
   name: "CodePostVisualizer",
@@ -69,8 +70,8 @@ export default Vue.extend({
     },
 
     generateCodeTag(code: string, language: string) {
-      var ComponentClass = Vue.extend(CodeHighlight);
-      var instance = new ComponentClass({
+      const ComponentClass = Vue.extend(CodeHighlight);
+      const instance = new ComponentClass({
         propsData: { language: language }
       });
       const node = this.$createElement("pre", code);
@@ -99,6 +100,14 @@ export default Vue.extend({
   mounted() {
     this.codePost = this.code;
     this.formatCodePost();
+  },
+  watch: {
+    code(value: string): void {
+      (this.$refs.container as HTMLDivElement).innerHTML = "";
+      this.codePost = value;
+      this.formatCodePost();
+      Prism.highlightAll();
+    }
   }
 });
 </script>

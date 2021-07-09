@@ -33,12 +33,13 @@
       </v-row>
     </v-hover>
 
-    <update-experience v-if="updateDialog" v-model="updateDialog" :selectedExperience="study"></update-experience>
+    <update-experience v-if="updateDialog" v-model="updateDialog" :selectedExperience="tagUpdate"></update-experience>
 
     <delete-experience
       v-if="deleteDialog"
       v-model="deleteDialog"
-      :selectedExperienceName="study.degree"
+      :selectedExperienceName="study.institute.name"
+      @deleteExperienceData="$emit('deleteExperienceData')"
     ></delete-experience>
   </div>
 </template>
@@ -46,7 +47,7 @@
 <script lang="ts">
 import Vue, { PropType, VueConstructor } from "vue";
 import dateMixin, { DateMixin } from "@/mixins/formattedDate";
-import { UserStudyExperience } from "@/models/experience";
+import { StudyExperience, UserStudyExperience } from "@/models/experience";
 import UpdateExperience from "@/components/Onboarding/StudyExperience/UpdateExperience.vue";
 import DeleteExperience from "@/components/Onboarding/StudyExperience/DeleteExperience.vue";
 
@@ -61,8 +62,19 @@ export default (Vue as VueConstructor<Vue & DateMixin>).extend({
 
   data: () => ({
     updateDialog: false,
-    deleteDialog: false
-  })
+    deleteDialog: false,
+    tagUpdate: {} as StudyExperience
+  }),
+
+  created() {
+    this.tagUpdate = {
+      id: this.study.id,
+      name: this.study.institute.name,
+      degree: this.study.degree,
+      since: this.study.since,
+      until: this.study.until
+    } as StudyExperience;
+  }
 });
 </script>
 

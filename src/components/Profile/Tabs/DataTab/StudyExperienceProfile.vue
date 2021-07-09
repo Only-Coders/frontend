@@ -16,13 +16,13 @@
 
     <div v-if="studies.length > 0">
       <v-row no-gutters v-for="(study, index) in studies" :key="index">
-        <StudyExperienceItem :study="study"></StudyExperienceItem>
+        <StudyExperienceItem :study="study" @deleteExperienceData="deleteExperience(index)"></StudyExperienceItem>
       </v-row>
     </div>
 
     <no-data v-else></no-data>
 
-    <add-experience v-if="addDialog" v-model="addDialog"></add-experience>
+    <add-experience v-if="addDialog" v-model="addDialog" @passExperienceData="handleAddExperience"></add-experience>
   </div>
 </template>
 
@@ -33,6 +33,8 @@ import { UserStudyExperience } from "@/models/experience";
 import NoData from "@/components/NoData.vue";
 import StudyExperienceItem from "@/components/Profile/Tabs/DataTab/StudyExperienceItem.vue";
 import AddExperience from "@/components/Onboarding/StudyExperience/AddExperience.vue";
+import { postInstitute, deleteInstitute } from "@/services/studyExperience";
+import { StudyExperience } from "@/models/experience";
 
 export default Vue.extend({
   name: "StudyExperienceProfile",
@@ -45,6 +47,21 @@ export default Vue.extend({
     studies: [] as UserStudyExperience[],
     addDialog: false
   }),
+
+  methods: {
+    async handleAddExperience(study: StudyExperience) {
+      const result = await postInstitute(study);
+      this.studies.unshift(result);
+      //TODO: Ver de agregar entre las fechas correspondientes.
+      // Es donde el start date sea mayor a uno y menor al siguiente.
+      // Y fijarse que va mas arriba el que tenga null en endDate
+      // En caso de que hayan 2 o mas con endDate == null, mas arriba el de startDate mas actual
+    },
+    async deleteExperience(index: number) {
+      await deleteInstitute(this.studies[index].id!);
+      this.studies.splice(index, 1);
+    }
+  },
 
   async created() {
     const result = await getStudiesOfUser(this.$route.params.user, 0);

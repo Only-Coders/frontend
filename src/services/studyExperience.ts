@@ -8,7 +8,7 @@ export async function getInstitutes(instituteName: string): Promise<Pagination<I
   return response.data;
 }
 
-export async function postInstitute(experience: StudyExperience): Promise<StudyExperience> {
+export async function postInstitute(experience: StudyExperience): Promise<UserStudyExperience> {
   const response = await axios.post(`/api/users/institutes`, experience);
   return response.data;
 }
@@ -20,4 +20,8 @@ export async function getStudiesOfUser(
 ): Promise<Pagination<UserStudyExperience>> {
   const response = await axios.get(`/api/users/${canonicalName}/institutes`, { params: { page, size } });
   return response.data;
+}
+
+export async function deleteInstitute(id: string): Promise<void> {
+  await axios.delete(`/api/users/institutes/${id}`);
 }

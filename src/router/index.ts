@@ -35,7 +35,6 @@ const routes: Array<RouteConfig> = [
     path: "/onboarding",
     name: "Onboarding",
     component: () => import(/* webpackChunkName: "onboarding" */ "../views/Onboarding.vue"),
-    props: true,
     meta: {
       requiresAuth: true
     }

@@ -208,19 +208,16 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
 
           const googleUser: { name: string; picture: string } = jwtDecode(tokenId.token);
 
-          console.log(googleUser);
           //pegarle al backend para login
           const ocToken = await authenticate(tokenId.token);
 
           setHeaders(ocToken.token);
           const user: User = jwtDecode(ocToken.token);
           this.$store.commit("userModule/SET_USER", user);
+          this.$store.commit("userModule/SET_USER_IMAGE", googleUser.picture);
+          this.$store.commit("userModule/SET_USER_FULLNAME", googleUser.name);
           if (!user.complete) {
-            this.$router.push({
-              path: "onboarding",
-              name: "Onboarding",
-              params: { userName: googleUser.name, photo: googleUser.picture }
-            });
+            this.$router.push("/onboarding");
           } else {
             this.$store.state.userModule.user.language = user.language;
             this.$i18n.locale = user.language;

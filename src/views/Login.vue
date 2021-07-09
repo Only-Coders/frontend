@@ -71,7 +71,7 @@
 
             <v-divider></v-divider>
 
-            <p class="text-center my-5">O ingresa con</p>
+            <p class="text-center my-5">{{ $i18n.t("loginAlternative") }}</p>
             <v-row justify="center">
               <v-btn depressed color="transparent" class="pa-3 mr-3" fab>
                 <v-img src="@/assets/images/google.png" @click="loginGoogle" width="35" alt="google"></v-img>

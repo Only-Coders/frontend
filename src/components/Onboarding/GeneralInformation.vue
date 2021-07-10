@@ -24,7 +24,7 @@
           <v-row no-gutters align="center">
             <v-col class="py-2 py-md-0" cols="12" md="4" lg="4" no-gutters>
               <v-btn
-                v-if="!hasSelectedProfileImage"
+                v-if="!$store.state.userModule.user.imageURI && !hasSelectedProfileImage"
                 class="pa-12 pa-md-14 pa-lg-16"
                 fab
                 depressed
@@ -177,6 +177,7 @@ import { setHeaders } from "@/plugins/axios";
 import jwtDecode from "jwt-decode";
 import { UserData } from "@/store/modules/user";
 import { BUCKET_URI, uuid } from "@/plugins/uuid";
+import axios from "axios";
 
 export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMixin & GitPlatformsMixin>).extend({
   name: "GeneralInformation",
@@ -246,9 +247,20 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
 
     async handleRegisterUser() {
       if (this.profileImageToShow !== "") {
-        await this.onUpload();
+        if (!this.$store.state.userModule.user.imageURI) {
+          await this.onUpload();
+        } else {
+          const fileName = uuid();
+          const arrayFile = await this.profileImageData!.arrayBuffer();
+          await storage.ref(`images/${fileName}`).put(arrayFile, { cacheControl: "public,max-age=4000" });
+        }
       }
-      this.user.imageURI = this.profileImageURL;
+      if (!this.$store.state.userModule.user.imageURI) {
+        this.user.imageURI = this.profileImageURL;
+      } else {
+        this.user.imageURI = this.$store.state.userModule?.user?.imageURI;
+      }
+
       if (this.birthDate) this.user.birthDate = new Date(this.birthDate).toISOString();
       if (!this.user.gitProfile?.userName) delete this.user.gitProfile;
       const ocToken = await register(this.user);
@@ -256,8 +268,14 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
       const user: UserData = jwtDecode(ocToken.token);
       this.$store.commit("userModule/SET_USER", user);
     },
+
     isLaptop() {
       return window.innerHeight <= 800;
+    },
+
+    async getFileFromUrl(url: string) {
+      const response = await axios.get(url, { responseType: "blob" });
+      return new File([response.data], "profilePicture");
     }
   },
 
@@ -277,8 +295,15 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
     }
   },
 
-  created() {
+  async created() {
     this.getCountries();
+    const googleUser = {
+      fullName: this.$store.state.userModule?.user?.fullName,
+      photo: this.$store.state.userModule?.user?.imageURI
+    };
+    this.user.firstName = googleUser.fullName;
+    this.profileImageToShow = googleUser.photo;
+    this.profileImageData = await this.getFileFromUrl(this.profileImageToShow);
   }
 });
 </script>

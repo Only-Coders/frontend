@@ -69,18 +69,18 @@
               </p>
             </v-row>
 
-            <!-- <v-divider></v-divider>
+            <v-divider></v-divider>
 
-            <p class="text-center my-5">O ingresa con</p>
+            <p class="text-center my-5">{{ $i18n.t("loginAlternative") }}</p>
             <v-row justify="center">
               <v-btn depressed color="transparent" class="pa-3 mr-3" fab>
                 <v-img src="@/assets/images/google.png" @click="loginGoogle" width="35" alt="google"></v-img>
               </v-btn>
 
-              <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
+              <!-- <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
                 <v-img src="@/assets/images/github.png" @click="loginGithub" width="35" alt="github"></v-img>
-              </v-btn>
-            </v-row> -->
+              </v-btn> -->
+            </v-row>
           </v-form>
         </v-card>
       </v-col>
@@ -199,12 +199,43 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
     },
 
     async loginGoogle() {
-      //alert("Esperá a la 2.0 capo.");
       const result = await auth.signInWithPopup(google);
 
       if (result) {
-        //const idToken = await result.user.getIdToken(true);
-        //TODO: Esta obteniendo el token bien, continuar
+        const idToken = await result.user?.getIdToken(true);
+        if (idToken && result.user) {
+          const tokenId = await result.user.getIdTokenResult();
+
+          const googleUser: { name: string; picture: string } = jwtDecode(tokenId.token);
+
+          //pegarle al backend para login
+          const ocToken = await authenticate(tokenId.token);
+
+          setHeaders(ocToken.token);
+          const user: User = jwtDecode(ocToken.token);
+          this.$store.commit("userModule/SET_USER", user);
+          this.$store.commit("userModule/SET_USER_IMAGE", googleUser.picture);
+          this.$store.commit("userModule/SET_USER_FULLNAME", googleUser.name);
+          if (!user.complete) {
+            this.$router.push("/onboarding");
+          } else {
+            this.$store.state.userModule.user.language = user.language;
+            this.$i18n.locale = user.language;
+            switch (user.roles) {
+              case Role.USER:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/"); //push to feed
+                break;
+              case Role.ADMIN:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/admin"); //push to backoffice view
+                break;
+              default:
+                this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
+                this.isLoadingLogin = false;
+            }
+          }
+        }
       }
     },
 

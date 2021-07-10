@@ -46,6 +46,7 @@
   "userBannDate": "Banned on: ",
   "typeMessage": "Type a message...",
   "unblock": "Unblock",
+  "loginAlternative": "Or try loging with",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",

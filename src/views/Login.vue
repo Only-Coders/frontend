@@ -77,9 +77,9 @@
                 <v-img src="@/assets/images/google.png" @click="loginGoogle" width="35" alt="google"></v-img>
               </v-btn>
 
-              <!-- <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
+              <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
                 <v-img src="@/assets/images/github.png" @click="loginGithub" width="35" alt="github"></v-img>
-              </v-btn> -->
+              </v-btn>
             </v-row>
           </v-form>
         </v-card>
@@ -107,7 +107,7 @@
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
-import { auth, google } from "@/plugins/firebaseInit";
+import { auth, google, gitHub } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
 import { setHeaders } from "@/plugins/axios";
@@ -239,8 +239,10 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
       }
     },
 
-    loginGithub() {
-      alert("Me encanta, peeeero... esperá a la 2.1 capo.");
+    async loginGithub() {
+      const result = await auth.signInWithPopup(gitHub);
+
+      const credential = result.credential as firebase.auth.OAuthCredential;
     }
   },
 

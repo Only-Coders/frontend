@@ -52,7 +52,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formatDate(experience.since)"
+                    :value="formattedDateSince"
                     :rules="[rules.required]"
                     :label="$i18n.t('Onboarding.WorkExperience.startDateLabel')"
                     append-icon="mdi-calendar-month-outline"
@@ -77,12 +77,13 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    :value="formatDate(experience.until)"
+                    :value="formattedDateUntil"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     hide-details
+                    readonly
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="experience.until" @input="showEndDatePicker = false"></v-date-picker>
@@ -180,6 +181,28 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
             this.isLoading = false;
           }
         }, 200);
+      }
+    }
+  },
+
+  computed: {
+    formattedDateSince: {
+      get(): string {
+        if (this.experience.since) {
+          return this.formatDate(new Date(this.experience.since).toISOString().substring(0, 10));
+        } else {
+          return "";
+        }
+      }
+    },
+
+    formattedDateUntil: {
+      get(): string {
+        if (this.experience.until) {
+          return this.formatDate(new Date(this.experience.until).toISOString().substring(0, 10));
+        } else {
+          return "";
+        }
       }
     }
   }

@@ -6,8 +6,16 @@
       </span>
       <h3>{{ $i18n.t("ViewProfile.academicExperience") }}</h3>
       <v-spacer></v-spacer>
-      <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
-        <v-icon size="28" color="grey darken-1" @click="addDialog = !addDialog"> mdi-plus </v-icon>
+      <v-btn
+        class="mr-6"
+        fab
+        small
+        depressed
+        color="transparent"
+        v-if="isLoguedUserProfile"
+        @click="addDialog = !addDialog"
+      >
+        <v-icon size="28" color="grey darken-1"> mdi-plus </v-icon>
       </v-btn>
       <div class="divider-container mt-8">
         <v-divider></v-divider>
@@ -15,7 +23,7 @@
     </v-row>
 
     <div v-if="studies.length > 0">
-      <v-row no-gutters v-for="(study, index) in studies" :key="index">
+      <v-row no-gutters v-for="(study, index) in studies" :key="study.id">
         <StudyExperienceItem :study="study" @deleteExperienceData="deleteExperience(index)"></StudyExperienceItem>
       </v-row>
     </div>
@@ -28,12 +36,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { getStudiesOfUser } from "@/services/studyExperience";
+import { getStudiesOfUser, postInstitute, deleteInstitute } from "@/services/studyExperience";
 import { UserStudyExperience } from "@/models/experience";
 import NoData from "@/components/NoData.vue";
 import StudyExperienceItem from "@/components/Profile/Tabs/DataTab/StudyExperienceItem.vue";
 import AddExperience from "@/components/Onboarding/StudyExperience/AddExperience.vue";
-import { postInstitute, deleteInstitute } from "@/services/studyExperience";
 import { StudyExperience } from "@/models/experience";
 
 export default Vue.extend({
@@ -51,14 +58,14 @@ export default Vue.extend({
   methods: {
     async handleAddExperience(study: StudyExperience) {
       const result = await postInstitute(study);
-      this.studies.unshift(result);
+      this.studies.push(result);
       //TODO: Ver de agregar entre las fechas correspondientes.
       // Es donde el start date sea mayor a uno y menor al siguiente.
       // Y fijarse que va mas arriba el que tenga null en endDate
       // En caso de que hayan 2 o mas con endDate == null, mas arriba el de startDate mas actual
     },
     async deleteExperience(index: number) {
-      await deleteInstitute(this.studies[index].id!);
+      await deleteInstitute(this.studies[index].id ?? "");
       this.studies.splice(index, 1);
     }
   },

@@ -82,6 +82,7 @@
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     hide-details
+                    readonly
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="until" @input="showEndDatePicker = false"></v-date-picker>

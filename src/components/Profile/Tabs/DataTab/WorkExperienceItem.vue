@@ -1,22 +1,19 @@
 <template>
   <div>
     <v-hover v-slot="{ hover }">
-      <v-row no-gutters class="px-sm-16 ml-sm-10 mb-10" align="center">
-        <v-col cols="1" class="pl-12 pr-8 px-sm-12 pt-0 mt-0 d-flex justify-center"
-          ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
-        >
-        <v-col cols="auto" class="date_container">
+      <v-row no-gutters>
+        <v-col cols="auto" class="ma-0 pa-0">
           <p class="text-caption ma-0">
-            {{ formatDateMMYY(study.since) }}
+            {{ formatDateMMYY(work.since) }}
           </p>
-          <p class="text-caption ma-0">
-            {{ study.until ? formatDateMMYY(study.until) : $i18n.t("present") }}
+          <p class="text-caption">
+            {{ work.until ? formatDateMMYY(work.until) : $i18n.t("present") }}
           </p>
         </v-col>
 
         <v-col cols="7" sm="auto" class="pl-2 pl-sm-9">
-          <h5>{{ study.institute.name }}</h5>
-          <span class="text-caption">{{ study.degree }}</span>
+          <h5>{{ work.workplace.name }}</h5>
+          <p class="text-caption">{{ work.position }}</p>
         </v-col>
 
         <transition name="fade">
@@ -36,14 +33,14 @@
     <update-experience
       v-if="updateDialog"
       v-model="updateDialog"
-      :selectedExperience="studyUpdate"
+      :selectedExperience="workUpdate"
       @updateExperienceData="updateExperience"
     ></update-experience>
 
     <delete-experience
       v-if="deleteDialog"
       v-model="deleteDialog"
-      :selectedExperienceName="study.institute.name"
+      :selectedExperienceName="work.workplace.name"
       @deleteExperienceData="$emit('deleteExperienceData')"
     ></delete-experience>
   </div>
@@ -52,46 +49,46 @@
 <script lang="ts">
 import Vue, { PropType, VueConstructor } from "vue";
 import dateMixin, { DateMixin } from "@/mixins/formattedDate";
-import { StudyExperience, UserStudyExperience } from "@/models/experience";
-import UpdateExperience from "@/components/Onboarding/StudyExperience/UpdateExperience.vue";
-import DeleteExperience from "@/components/Onboarding/StudyExperience/DeleteExperience.vue";
-import { updateInstitute } from "@/services/studyExperience";
+import UpdateExperience from "@/components/Onboarding/WorkExperience/UpdateExperience.vue";
+import DeleteExperience from "@/components/Onboarding/WorkExperience/DeleteExperience.vue";
+import { UserWorkExperience, WorkExperience } from "@/models/experience";
+import { updateWorkExperience } from "@/services/workExperience";
 
 export default (Vue as VueConstructor<Vue & DateMixin>).extend({
-  name: "StudyExperienceItem",
+  name: "WorkExperienceItem",
 
   components: { UpdateExperience, DeleteExperience },
 
   mixins: [dateMixin],
 
-  props: { study: {} as PropType<UserStudyExperience> },
+  props: { work: {} as PropType<UserWorkExperience> },
 
   data: () => ({
     updateDialog: false,
     deleteDialog: false,
-    studyUpdate: {} as StudyExperience
+    workUpdate: {} as WorkExperience
   }),
 
   methods: {
-    async updateExperience(experience: StudyExperience) {
-      if (this.studyUpdate.id) {
-        const result = await updateInstitute(this.studyUpdate.id, experience);
-        this.study.institute.name = result.institute.name;
-        this.study.degree = result.degree;
-        this.study.since = result.since;
-        this.study.until = result.until;
+    async updateExperience(experience: WorkExperience) {
+      if (this.workUpdate.id) {
+        const result = await updateWorkExperience(this.workUpdate.id, experience);
+        this.work.workplace.name = result.workplace.name;
+        this.work.position = result.position;
+        this.work.since = result.since;
+        this.work.until = result.until;
       }
     }
   },
 
   created() {
-    this.studyUpdate = {
-      id: this.study.id,
-      name: this.study.institute.name,
-      degree: this.study.degree,
-      since: this.study.since,
-      until: this.study.until
-    } as StudyExperience;
+    this.workUpdate = {
+      id: this.work.id,
+      name: this.work.workplace.name,
+      position: this.work.position,
+      since: this.work.since,
+      until: this.work.until
+    } as WorkExperience;
   }
 });
 </script>

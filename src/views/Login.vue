@@ -219,6 +219,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
           this.$store.commit("userModule/SET_USER_FULLNAME", googleUser.name);
           if (!user.complete) {
             this.$router.push("/onboarding");
+            this.$store.commit("userModule/SET_LOGIN_PROVIDER", "google");
           } else {
             this.$store.state.userModule.user.language = user.language;
             this.$i18n.locale = user.language;
@@ -244,19 +245,43 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
       try {
         const result = await auth.signInWithPopup(gitHub);
         if (result.user) {
-          // revisar si tengo que checkear por email verified
+          if (!result.user.emailVerified) {
+            const actionCodeSettings = {
+              url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
+              handleCodeInApp: true
+            };
+            result.user.sendEmailVerification(actionCodeSettings);
+            this.success(
+              this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
+              this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
+              2000
+            );
+          }
+
+          const gitHubUser: {
+            fullName: string | null;
+            photoURL: string | null;
+            gitHubUserName: string | null | undefined;
+          } = {
+            fullName: result.user.displayName,
+            photoURL: result.user.photoURL,
+            gitHubUserName: result.additionalUserInfo?.username
+          };
 
           const idToken = await result.user?.getIdTokenResult();
-
           const ocToken = await authenticate(idToken.token);
 
           setHeaders(ocToken.token);
           const user: User = jwtDecode(ocToken.token);
-          console.log(user);
           this.$store.commit("userModule/SET_USER", user);
-
+          if (!user.complete) {
+            this.$store.commit("userModule/SET_USER_IMAGE", gitHubUser.photoURL);
+            this.$store.commit("userModule/SET_USER_FULLNAME", gitHubUser.fullName);
+            this.$store.commit("userModule/SET_GITHUB_USER_NAME", gitHubUser.gitHubUserName);
+          }
           if (!user.complete) {
             this.$router.push("/onboarding");
+            this.$store.commit("userModule/SET_LOGIN_PROVIDER", "github");
           } else {
             this.$store.state.userModule.user.language = user.language;
             this.$i18n.locale = user.language;
@@ -276,12 +301,8 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
           }
         }
       } catch (error) {
-        console.log(error);
-        // this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
-
         if (error.code == GitHubError.ALREADY_USED_EMAIL)
-          // creo que esto pasa cuando por ejemplo ya te logueaste con google tambien
-          this.error("Error", "You have signed up with a different provider for that email.");
+          this.error("Error", this.$i18n.t("Login.alreadyUsedEmail").toString());
       }
     }
   },

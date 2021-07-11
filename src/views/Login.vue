@@ -115,6 +115,7 @@ import { Role } from "@/models/Enums/role";
 import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import { GitHubError } from "@/models/Enums/gitHubErrors";
 
 type User = {
   imageURI: string;
@@ -240,9 +241,48 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
     },
 
     async loginGithub() {
-      const result = await auth.signInWithPopup(gitHub);
+      try {
+        const result = await auth.signInWithPopup(gitHub);
+        if (result.user) {
+          // revisar si tengo que checkear por email verified
 
-      const credential = result.credential as firebase.auth.OAuthCredential;
+          const idToken = await result.user?.getIdTokenResult();
+
+          const ocToken = await authenticate(idToken.token);
+
+          setHeaders(ocToken.token);
+          const user: User = jwtDecode(ocToken.token);
+          console.log(user);
+          this.$store.commit("userModule/SET_USER", user);
+
+          if (!user.complete) {
+            this.$router.push("/onboarding");
+          } else {
+            this.$store.state.userModule.user.language = user.language;
+            this.$i18n.locale = user.language;
+            switch (user.roles) {
+              case Role.USER:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/"); //push to feed
+                break;
+              case Role.ADMIN:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/admin"); //push to backoffice view
+                break;
+              default:
+                this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
+                this.isLoadingLogin = false;
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        // this.error("Error", this.$i18n.t("Onboarding.Notifications.askForEmailVerification").toString());
+
+        if (error.code == GitHubError.ALREADY_USED_EMAIL)
+          // creo que esto pasa cuando por ejemplo ya te logueaste con google tambien
+          this.error("Error", "You have signed up with a different provider for that email.");
+      }
     }
   },
 

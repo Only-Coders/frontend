@@ -56,7 +56,8 @@
     "passwordReset": "Forgot password?",
     "dontHaveAccount": "Don't have an account?",
     "haveAccount": "Have an account already?",
-    "welcomeBack": "Welcome back "
+    "welcomeBack": "Welcome back ",
+    "alreadyUsedEmail": "You have signed up with a different provider for that email."
   },
   "Admin": {
     "addAdmin": "ADD ADMIN",

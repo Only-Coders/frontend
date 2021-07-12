@@ -56,7 +56,8 @@
     "passwordReset": "¿Olvidaste tu contraseña?",
     "dontHaveAccount": "¿Aún no tienes cuenta? ",
     "haveAccount": "¿Ya tienes una cuenta?",
-    "welcomeBack": "Bienvenido "
+    "welcomeBack": "Bienvenido ",
+    "alreadyUsedEmail": "Ya has iniciado sesion con otro proveedor para este correo electrónico"
   },
   "Admin": {
     "addAdmin": "AGREGAR ADMINISTRADOR",

@@ -301,8 +301,21 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
       fullName: this.$store.state.userModule?.user?.fullName,
       photo: this.$store.state.userModule?.user?.imageURI
     };
-    this.user.firstName = googleUser.fullName;
-    this.profileImageToShow = googleUser.photo;
+    const gitHubUser = {
+      fullName: this.$store.state.userModule?.user?.fullName,
+      photo: this.$store.state.userModule?.user?.imageURI,
+      gitHubUserName: this.$store.state.userModule?.user?.gitHubUserName
+    };
+    const provider = this.$store.state.userModule?.user?.loginProvider;
+    if (provider === "github") {
+      this.user.firstName = gitHubUser.fullName;
+      this.profileImageToShow = gitHubUser.photo;
+      this.user.gitProfile!.userName = gitHubUser.gitHubUserName;
+    } else {
+      //provider is google
+      this.user.firstName = googleUser.fullName;
+      this.profileImageToShow = googleUser.photo;
+    }
     this.profileImageData = await this.getFileFromUrl(this.profileImageToShow);
   }
 });

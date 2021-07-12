@@ -5,6 +5,8 @@ export type UserData = {
   imageURI: string;
   fullName: string;
   canonicalName: string;
+  gitHubUserName: string;
+  loginProvider: string;
   roles: Role;
   complete: boolean;
   defaultPrivacy: boolean;
@@ -40,6 +42,26 @@ export default class User extends VuexModule {
     if (this.user) {
       this.user.fullName = fullName;
     }
+  }
+
+  @Mutation
+  SET_GITHUB_USER_NAME(value: string): void {
+    this.user!.gitHubUserName = value;
+  }
+
+  @Mutation
+  CLEAR_GITHUB_USER_NAME(): void {
+    this.user!.gitHubUserName = "";
+  }
+
+  @Mutation
+  SET_LOGIN_PROVIDER(value: string): void {
+    this.user!.loginProvider = value;
+  }
+
+  @Mutation
+  CLEAR_LOGIN_PROVIDER(): void {
+    this.user!.loginProvider = "";
   }
 
   @Mutation

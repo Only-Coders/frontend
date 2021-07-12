@@ -77,9 +77,9 @@
                 <v-img src="@/assets/images/google.png" @click="loginGoogle" width="35" alt="google"></v-img>
               </v-btn>
 
-              <!-- <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
+              <v-btn depressed color="transparent" class="pa-3 ml-3" fab>
                 <v-img src="@/assets/images/github.png" @click="loginGithub" width="35" alt="github"></v-img>
-              </v-btn> -->
+              </v-btn>
             </v-row>
           </v-form>
         </v-card>
@@ -107,7 +107,7 @@
 import Vue from "vue";
 import { VueConstructor } from "vue/types/umd";
 import inputPropsMixin, { InputPropsMixin } from "@/mixins/inputProps";
-import { auth, google } from "@/plugins/firebaseInit";
+import { auth, google, gitHub } from "@/plugins/firebaseInit";
 import { authenticate } from "@/services/auth";
 import jwtDecode from "jwt-decode";
 import { setHeaders } from "@/plugins/axios";
@@ -115,6 +115,7 @@ import { Role } from "@/models/Enums/role";
 import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import ruleMixin, { RuleMixin } from "@/mixins/rules";
+import { GitHubError } from "@/models/Enums/gitHubErrors";
 
 type User = {
   imageURI: string;
@@ -218,6 +219,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
           this.$store.commit("userModule/SET_USER_FULLNAME", googleUser.name);
           if (!user.complete) {
             this.$router.push("/onboarding");
+            this.$store.commit("userModule/SET_LOGIN_PROVIDER", "google");
           } else {
             this.$store.state.userModule.user.language = user.language;
             this.$i18n.locale = user.language;
@@ -239,8 +241,69 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
       }
     },
 
-    loginGithub() {
-      alert("Me encanta, peeeero... esperá a la 2.1 capo.");
+    async loginGithub() {
+      try {
+        const result = await auth.signInWithPopup(gitHub);
+        if (result.user) {
+          if (!result.user.emailVerified) {
+            const actionCodeSettings = {
+              url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
+              handleCodeInApp: true
+            };
+            result.user.sendEmailVerification(actionCodeSettings);
+            this.success(
+              this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
+              this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
+              2000
+            );
+          }
+
+          const gitHubUser: {
+            fullName: string | null;
+            photoURL: string | null;
+            gitHubUserName: string | null | undefined;
+          } = {
+            fullName: result.user.displayName,
+            photoURL: result.user.photoURL,
+            gitHubUserName: result.additionalUserInfo?.username
+          };
+
+          const idToken = await result.user?.getIdTokenResult();
+          const ocToken = await authenticate(idToken.token);
+
+          setHeaders(ocToken.token);
+          const user: User = jwtDecode(ocToken.token);
+          this.$store.commit("userModule/SET_USER", user);
+          if (!user.complete) {
+            this.$store.commit("userModule/SET_USER_IMAGE", gitHubUser.photoURL);
+            this.$store.commit("userModule/SET_USER_FULLNAME", gitHubUser.fullName);
+            this.$store.commit("userModule/SET_GITHUB_USER_NAME", gitHubUser.gitHubUserName);
+          }
+          if (!user.complete) {
+            this.$router.push("/onboarding");
+            this.$store.commit("userModule/SET_LOGIN_PROVIDER", "github");
+          } else {
+            this.$store.state.userModule.user.language = user.language;
+            this.$i18n.locale = user.language;
+            switch (user.roles) {
+              case Role.USER:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/"); //push to feed
+                break;
+              case Role.ADMIN:
+                this.success("", this.$i18n.t("Login.welcomeBack").toString() + `${user.fullName}`, 2000);
+                this.$router.push("/admin"); //push to backoffice view
+                break;
+              default:
+                this.error("Error", this.$i18n.t("Onboarding.Notifications.rolErrorMessage").toString());
+                this.isLoadingLogin = false;
+            }
+          }
+        }
+      } catch (error) {
+        if (error.code == GitHubError.ALREADY_USED_EMAIL)
+          this.error("Error", this.$i18n.t("Login.alreadyUsedEmail").toString());
+      }
     }
   },
 

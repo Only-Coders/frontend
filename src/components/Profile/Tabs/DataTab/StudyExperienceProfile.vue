@@ -6,58 +6,69 @@
       </span>
       <h3>{{ $i18n.t("ViewProfile.academicExperience") }}</h3>
       <v-spacer></v-spacer>
-      <!-- <v-btn class="mr-6" fab small depressed color="transparent" v-if="isLoguedUserProfile">
+      <v-btn
+        class="mr-6"
+        fab
+        small
+        depressed
+        color="transparent"
+        v-if="isLoguedUserProfile"
+        @click="addDialog = !addDialog"
+      >
         <v-icon size="28" color="grey darken-1"> mdi-plus </v-icon>
-      </v-btn> -->
+      </v-btn>
       <div class="divider-container mt-8">
         <v-divider></v-divider>
       </div>
     </v-row>
 
     <div v-if="studies.length > 0">
-      <v-row no-gutters class="px-sm-16 ml-sm-10 mb-6" v-for="(study, index) in studies" :key="index">
-        <v-col cols="1" class="pl-12 pr-8 px-sm-12 pt-0 mt-0 d-flex justify-center"
-          ><v-icon size="30" class="school-icon"> mdi-school </v-icon></v-col
-        >
-        <v-col cols="auto" class="ma-0 pa-0 date_container">
-          <p class="text-caption ma-0">
-            {{ formatDateMMYY(study.since) }}
-          </p>
-          <p class="text-caption">
-            {{ study.until ? formatDateMMYY(study.until) : $i18n.t("present") }}
-          </p>
-        </v-col>
-
-        <v-col cols="7" sm="auto" class="pl-2 pl-sm-9">
-          <h5>{{ study.institute.name }}</h5>
-          <span class="text-caption">{{ study.degree }}</span>
-        </v-col>
+      <v-row no-gutters v-for="(study, index) in studies" :key="study.id">
+        <StudyExperienceItem :study="study" @deleteExperienceData="deleteExperience(index)"></StudyExperienceItem>
       </v-row>
     </div>
 
     <no-data v-else></no-data>
+
+    <add-experience v-if="addDialog" v-model="addDialog" @passExperienceData="handleAddExperience"></add-experience>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from "vue";
-import { getStudiesOfUser } from "@/services/studyExperience";
+import Vue from "vue";
+import { getStudiesOfUser, postInstitute, deleteInstitute } from "@/services/studyExperience";
 import { UserStudyExperience } from "@/models/experience";
-import dateMixin, { DateMixin } from "@/mixins/formattedDate";
 import NoData from "@/components/NoData.vue";
+import StudyExperienceItem from "@/components/Profile/Tabs/DataTab/StudyExperienceItem.vue";
+import AddExperience from "@/components/Onboarding/StudyExperience/AddExperience.vue";
+import { StudyExperience } from "@/models/experience";
 
-export default (Vue as VueConstructor<Vue & DateMixin>).extend({
+export default Vue.extend({
   name: "StudyExperienceProfile",
 
-  mixins: [dateMixin],
-
-  components: { NoData },
+  components: { NoData, StudyExperienceItem, AddExperience },
 
   props: { isLoguedUserProfile: Boolean },
 
   data: () => ({
-    studies: [] as UserStudyExperience[]
+    studies: [] as UserStudyExperience[],
+    addDialog: false
   }),
+
+  methods: {
+    async handleAddExperience(study: StudyExperience) {
+      const result = await postInstitute(study);
+      this.studies.push(result);
+      //TODO: Ver de agregar entre las fechas correspondientes.
+      // Es donde el start date sea mayor a uno y menor al siguiente.
+      // Y fijarse que va mas arriba el que tenga null en endDate
+      // En caso de que hayan 2 o mas con endDate == null, mas arriba el de startDate mas actual
+    },
+    async deleteExperience(index: number) {
+      await deleteInstitute(this.studies[index].id ?? "");
+      this.studies.splice(index, 1);
+    }
+  },
 
   async created() {
     const result = await getStudiesOfUser(this.$route.params.user, 0);
@@ -72,9 +83,6 @@ export default (Vue as VueConstructor<Vue & DateMixin>).extend({
 }
 .divider-container {
   width: 100%;
-}
-.school-icon {
-  align-self: baseline;
 }
 .date_container {
   min-width: 62px;

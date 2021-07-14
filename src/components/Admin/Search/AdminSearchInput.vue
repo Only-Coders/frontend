@@ -174,7 +174,6 @@ export default Vue.extend({
         return this.$store.state.adminPaginationModule.search;
       },
       async set(value: string) {
-        console.log(value);
         this.$store.commit("adminPaginationModule/SET_SEARCH_TEXT", value);
         if (!value) {
           await this.searchUsersWithFilters();

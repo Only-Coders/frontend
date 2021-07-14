@@ -24,7 +24,7 @@
           <v-row no-gutters align="center">
             <v-col class="py-2 py-md-0" cols="12" md="4" lg="4" no-gutters>
               <v-btn
-                v-if="!$store.state.userModule.user.imageURI && !hasSelectedProfileImage"
+                v-if="!$store.state.userModule.user.loginProvider && !hasSelectedProfileImage"
                 class="pa-12 pa-md-14 pa-lg-16"
                 fab
                 depressed
@@ -247,18 +247,15 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
 
     async handleRegisterUser() {
       if (this.profileImageToShow !== "") {
-        if (!this.$store.state.userModule.user.imageURI) {
+        if (!this.$store.state.userModule?.user?.loginProvider) {
           await this.onUpload();
+          this.user.imageURI = this.profileImageURL;
         } else {
           const fileName = uuid();
           const arrayFile = await this.profileImageData!.arrayBuffer();
           await storage.ref(`images/${fileName}`).put(arrayFile, { cacheControl: "public,max-age=4000" });
+          this.user.imageURI = await storage.ref(`images/${fileName}`).getDownloadURL();
         }
-      }
-      if (!this.$store.state.userModule.user.imageURI) {
-        this.user.imageURI = this.profileImageURL;
-      } else {
-        this.user.imageURI = this.$store.state.userModule?.user?.imageURI;
       }
 
       if (this.birthDate) this.user.birthDate = new Date(this.birthDate).toISOString();
@@ -297,26 +294,27 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
 
   async created() {
     this.getCountries();
-    const googleUser = {
-      fullName: this.$store.state.userModule?.user?.fullName,
-      photo: this.$store.state.userModule?.user?.imageURI
-    };
-    const gitHubUser = {
-      fullName: this.$store.state.userModule?.user?.fullName,
-      photo: this.$store.state.userModule?.user?.imageURI,
-      gitHubUserName: this.$store.state.userModule?.user?.gitHubUserName
-    };
+
     const provider = this.$store.state.userModule?.user?.loginProvider;
     if (provider === "github") {
+      const gitHubUser = {
+        fullName: this.$store.state.userModule?.user?.fullName,
+        photo: this.$store.state.userModule?.user?.imageURI,
+        gitHubUserName: this.$store.state.userModule?.user?.gitHubUserName
+      };
       this.user.firstName = gitHubUser.fullName;
       this.profileImageToShow = gitHubUser.photo;
       this.user.gitProfile!.userName = gitHubUser.gitHubUserName;
-    } else {
+    } else if (provider === "google") {
       //provider is google
+      const googleUser = {
+        fullName: this.$store.state.userModule?.user?.fullName,
+        photo: this.$store.state.userModule?.user?.imageURI
+      };
       this.user.firstName = googleUser.fullName;
       this.profileImageToShow = googleUser.photo;
     }
-    this.profileImageData = await this.getFileFromUrl(this.profileImageToShow);
+    if (provider) this.profileImageData = await this.getFileFromUrl(this.profileImageToShow);
   }
 });
 </script>

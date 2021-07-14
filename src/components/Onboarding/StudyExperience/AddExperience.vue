@@ -59,6 +59,7 @@
                     v-on="on"
                     readonly
                     hide-details
+                    clearable
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="since" @input="showStartDatePicker = false"></v-date-picker>
@@ -83,6 +84,7 @@
                     v-on="on"
                     hide-details
                     readonly
+                    clearable
                   ></v-text-field>
                 </template>
                 <v-date-picker no-title v-model="until" @input="showEndDatePicker = false"></v-date-picker>

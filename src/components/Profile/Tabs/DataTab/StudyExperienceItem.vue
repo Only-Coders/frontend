@@ -20,7 +20,7 @@
         </v-col>
 
         <transition name="fade">
-          <v-col cols="auto" v-if="hover">
+          <v-col cols="auto" v-if="hover && isLoguedUserProfile">
             <v-btn class="ml-10" fab small depressed color="transparent" @click="updateDialog = !updateDialog">
               <v-icon size="18" color="grey darken-1"> mdi-pencil </v-icon>
             </v-btn>
@@ -64,7 +64,7 @@ export default (Vue as VueConstructor<Vue & DateMixin>).extend({
 
   mixins: [dateMixin],
 
-  props: { study: {} as PropType<UserStudyExperience> },
+  props: { study: {} as PropType<UserStudyExperience>, isLoguedUserProfile: Boolean },
 
   data: () => ({
     updateDialog: false,

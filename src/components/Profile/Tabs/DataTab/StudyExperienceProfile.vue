@@ -24,7 +24,11 @@
 
     <div v-if="studies.length > 0">
       <v-row no-gutters v-for="(study, index) in studies" :key="study.id">
-        <StudyExperienceItem :study="study" @deleteExperienceData="deleteExperience(index)"></StudyExperienceItem>
+        <StudyExperienceItem
+          :study="study"
+          @deleteExperienceData="deleteExperience(index)"
+          :isLoguedUserProfile="isLoguedUserProfile"
+        ></StudyExperienceItem>
       </v-row>
     </div>
 

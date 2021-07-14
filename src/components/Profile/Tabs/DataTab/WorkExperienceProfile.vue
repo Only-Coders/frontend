@@ -31,7 +31,11 @@
           small
           class="mx-0 px-0"
         >
-          <WorkExperienceItem :work="work" @deleteExperienceData="deleteExperience(index)"></WorkExperienceItem>
+          <WorkExperienceItem
+            :work="work"
+            @deleteExperienceData="deleteExperience(index)"
+            :isLoguedUserProfile="isLoguedUserProfile"
+          ></WorkExperienceItem>
         </v-timeline-item>
       </v-timeline>
     </v-row>

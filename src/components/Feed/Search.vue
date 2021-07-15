@@ -36,9 +36,7 @@
             <v-list-item
               v-for="contact in filteredUsers.content"
               :key="contact.canonicalName"
-              :to="`/profile/${contact.canonicalName}`"
-              @click="storeRecentSearch(contact)"
-              link
+              @click="goToProfile(contact)"
             >
               <SearchContact :contactData="contact"></SearchContact>
             </v-list-item>
@@ -131,20 +129,17 @@ export default Vue.extend({
       await clearRecentSearches();
       this.recentSearches = [];
     },
-    async storeRecentSearch(contact: User) {
-      await addRecentSearch({
-        canonicalName: contact.canonicalName,
-        fullName: contact.fullName,
-        imageURI: contact.imageURI
-      });
-    },
     async goToProfile(recentSearch: RecentSearch) {
-      this.$router.push(`/profile/${recentSearch.canonicalName}`);
-      await addRecentSearch({
+      addRecentSearch({
         canonicalName: recentSearch.canonicalName,
         fullName: recentSearch.fullName,
         imageURI: recentSearch.imageURI
-      });
+      }).catch((error) => console.error(error));
+      if (this.$router.currentRoute.path === `/profile/${recentSearch.canonicalName}`) {
+        this.$emit("closeOverlay");
+      } else {
+        this.$router.push(`/profile/${recentSearch.canonicalName}`);
+      }
     },
     redirectSearchUsers() {
       this.$store.commit("userPaginationModule/SET_USER_PAGINATION", this.filteredUsers);

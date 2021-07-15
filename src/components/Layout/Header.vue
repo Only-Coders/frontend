@@ -42,12 +42,14 @@
                 ></v-text-field>
               </template>
               <Search
+                @closeOverlay="closeOverlay"
                 :filteredUsers="filteredUsers"
                 :tags="recommendedTags"
                 :areTagsLoading="tagsLoading"
                 :areUsersLoading="usersLoading"
                 :filters="searchParameters"
                 :searchedTags="searchedTags"
+                :showOverlay="showOverlay"
               ></Search>
             </v-menu>
           </transition>
@@ -366,6 +368,9 @@ export default Vue.extend({
   }),
 
   methods: {
+    closeOverlay() {
+      this.showOverlay = false;
+    },
     getUserProfileFromToken() {
       this.userData = this.$store.state.userModule.user;
       if (this.userData.currentPosition) {

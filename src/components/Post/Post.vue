@@ -391,7 +391,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
     formatTagsAndMentions() {
       if (this.post.tags.length !== 0) {
         this.post.tags.forEach((tag) => {
-          const regex = new RegExp(`(?<![\\S])#${this.escapeRegex(tag.displayName)}(?![\\S])`, "g");
+          const regex = new RegExp(`(?<![\\S])#${this.escapeRegex(tag.displayName)}(?![\\S]<\\br>)`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/?tag=${tag.canonicalName}" class="post__mention-tag">#${tag.displayName} </router-link>`
@@ -400,7 +400,7 @@ export default (Vue as VueConstructor<Vue & MedalsMixin & NotificationMixin>).ex
       }
       if (this.post.mentions.length !== 0) {
         this.post.mentions.forEach((mention) => {
-          const regex = new RegExp(`(?<![\\S])@${mention.canonicalName}(?![\\S])`, "g");
+          const regex = new RegExp(`(?<![\\S])@${mention.canonicalName}(?![\\S]<\\br>)`, "g");
           this.post.message = this.post.message.replace(
             regex,
             `<router-link to="/profile/${mention.canonicalName}" class="post__mention-tag">@${mention.firstName} ${mention.lastName} </router-link>`

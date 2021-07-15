@@ -154,6 +154,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     previewImage(event: Event) {
       const target = event.target as HTMLInputElement;
       if (target.files && (target.files[0]["type"] === "image/jpeg" || target.files[0]["type"] === "image/png")) {
+        this.changedPost.url = "";
         this.imageData = target.files[0];
         this.imageToShow = URL.createObjectURL(target.files[0]);
         this.enabledButtons = false;
@@ -207,10 +208,12 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
 
         this.extractTags();
 
-        if (this.changedPost.type == PostType.IMAGE) {
-          await this.onUploadImage();
-        } else if (this.changedPost.type == PostType.FILE) {
-          await this.onUploadFile();
+        if (this.changedPost.url !== this.post.url) {
+          if (this.changedPost.type == PostType.IMAGE) {
+            await this.onUploadImage();
+          } else if (this.changedPost.type == PostType.FILE) {
+            await this.onUploadFile();
+          }
         }
         const editedPost = { ...this.changedPost };
 

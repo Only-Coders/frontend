@@ -87,7 +87,6 @@ export default Vue.extend({
   created() {
     Promise.all([getUsersQuantity(), getLanguageUse(), getPostsAndReactionsPerHour(), getPostsPerDay()]).then(
       (values) => {
-        console.log(values[3]);
         this.usersQuantity = values[0];
         this.languageUse = values[1];
         this.postsAndReactionsPerHour = values[2];

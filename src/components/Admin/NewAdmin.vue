@@ -125,9 +125,19 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
             this.$i18n.t("Admin.addAdminMessage").toString(),
             3000
           );
+          this.admin = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            imageURI: ""
+          };
+          this.imageFile = null;
+          this.imagePreview = "";
           this.close();
         } catch (error) {
-          console.log(error);
+          if (error.response.data.statusCode == 409) {
+            this.error("Error", this.$i18n.t("Admin.repeatedUserError").toString());
+          }
         } finally {
           this.isLoading = false;
         }

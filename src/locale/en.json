@@ -60,14 +60,15 @@
     "alreadyUsedEmail": "You have signed up with a different provider for that email."
   },
   "Admin": {
-    "addAdmin": "ADD ADMIN",
+    "addAdmin": "Add Administrator",
     "addAdminMessage": "Admin created successfully",
     "totalActiveUsers": "Total active users",
     "totalBlockedUsers": "Total blocked users",
     "totalBannedUsers": "Total banned users",
     "languageUseTitle": "Most used language",
     "postsAndReactionsPerHour": "Today's posts and reactions",
-    "postsPerDay": "Posts per day"
+    "postsPerDay": "Posts per day",
+    "repeatedUserError": "An admin with this email already exists, please choose another one"
   },
   "ForgotPassword": {
     "forgotTitle": "Forgot password ?",

@@ -60,14 +60,15 @@
     "alreadyUsedEmail": "Ya has iniciado sesion con otro proveedor para este correo electrónico"
   },
   "Admin": {
-    "addAdmin": "AGREGAR ADMINISTRADOR",
+    "addAdmin": "Agregar Administrador",
     "addAdminMessage": "Se creó el administrador correctamente",
     "totalActiveUsers": "Total usuarios activos",
     "totalBlockedUsers": "Total usuarios bloqueados",
     "totalBannedUsers": "Total usuarios penalizados",
     "languageUseTitle": "Idioma más utilizado",
     "postsAndReactionsPerHour": "Reacciones y publicaciones de hoy",
-    "postsPerDay": "Publicaciones por día"
+    "postsPerDay": "Publicaciones por día",
+    "repeatedUserError": "Ya existe un administrador con este mail, por favor elije otro"
   },
   "ForgotPassword": {
     "forgotTitle": "Olvidaste tu contraseña?",

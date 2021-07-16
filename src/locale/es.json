@@ -279,6 +279,7 @@
     "addAdmin": "Agregar usuario administrador",
     "list": "Listado de administradores y usuarios",
     "home": "Inicio",
+    "chat": "Chat",
     "blacklist": "Listado de usuarios en la Blacklist"
   },
   "Search": {

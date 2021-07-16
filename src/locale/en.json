@@ -280,6 +280,7 @@
     "addAdmin": "Add admin user",
     "list": "List admins and users",
     "home": "Home",
+    "chat": "Chat",
     "blacklist": "List users in the Blacklist"
   },
   "Search": {

@@ -99,6 +99,8 @@
           d="M0,288L26.7,256C53.3,224,107,160,160,154.7C213.3,149,267,203,320,213.3C373.3,224,427,192,480,170.7C533.3,149,587,139,640,160C693.3,181,747,235,800,261.3C853.3,288,907,288,960,256C1013.3,224,1067,160,1120,133.3C1173.3,107,1227,117,1280,144C1333.3,171,1387,213,1413,234.7L1440,256L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
         ></path>
       </svg>
+
+      <GetAPK />
     </v-row>
   </div>
 </template>
@@ -116,6 +118,7 @@ import { FirebaseErrors } from "@/models/Enums/firebaseErrors";
 import notificationsMixin, { NotificationMixin } from "@/mixins/notifications";
 import ruleMixin, { RuleMixin } from "@/mixins/rules";
 import { GitHubError } from "@/models/Enums/gitHubErrors";
+import GetAPK from "@/components/Login/GetAPK.vue";
 
 type User = {
   imageURI: string;
@@ -132,7 +135,9 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
 
   mixins: [ruleMixin, inputPropsMixin, notificationsMixin],
 
-  components: {},
+  components: {
+    GetAPK
+  },
 
   data: () => ({
     email: "",

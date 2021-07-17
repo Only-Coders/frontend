@@ -7,7 +7,7 @@
         <p>
           {{ $i18n.t("apkMessage") }}
         </p>
-        <v-btn color="indigo" dark>
+        <v-btn color="indigo" dark href="https://onlycoders.tech/app.apk">
           <v-img class="mr-2" src="@/assets/images/android.png" max-width="32"></v-img>
           <span>{{ $i18n.t("apkButton") }}</span>
         </v-btn>

@@ -46,7 +46,7 @@
           <v-icon size="30">mdi-rotate-270 mdi-attachment </v-icon>
         </v-btn>
 
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="insertCodeExample">
+        <v-btn icon class="mx-2" large @click="insertCodeExample">
           <v-icon size="30"> mdi-code-braces </v-icon>
         </v-btn>
 

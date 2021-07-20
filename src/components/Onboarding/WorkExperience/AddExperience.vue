@@ -60,9 +60,15 @@
                     readonly
                     hide-details
                     clearable
+                    @click:clear="clearSinceDate()"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="since" @input="showStartDatePicker = false"></v-date-picker>
+                <v-date-picker
+                  no-title
+                  v-model="since"
+                  @input="showStartDatePicker = false"
+                  :max="until"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="12" md="6" x>
@@ -80,14 +86,16 @@
                     :value="formatDate(until)"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
+                    :rules="[rules.required]"
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     hide-details
                     readonly
                     clearable
+                    @click:clear="clearUntilDate()"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="until" @input="showEndDatePicker = false"></v-date-picker>
+                <v-date-picker no-title v-model="until" @input="showEndDatePicker = false" :min="since"></v-date-picker>
               </v-menu>
             </v-col>
           </v-row>
@@ -136,6 +144,12 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
   }),
 
   methods: {
+    clearSinceDate() {
+      this.since = "";
+    },
+    clearUntilDate() {
+      this.until = "";
+    },
     async emitAddExperience() {
       if ((this.$refs["add-experience"] as HTMLFormElement).validate()) {
         const organization: WorkExperience = {

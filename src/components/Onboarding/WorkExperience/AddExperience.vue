@@ -140,9 +140,7 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
     search: "",
     isLoading: false,
     organizations: [] as Organization[],
-    timer: 0,
-    dateError: "Start date is greater than end date",
-    showDateError: false
+    timer: 0
   }),
 
   methods: {
@@ -154,7 +152,6 @@ export default (Vue as VueConstructor<Vue & InputPropsMixin & DateMixin & RuleMi
     },
     async emitAddExperience() {
       if ((this.$refs["add-experience"] as HTMLFormElement).validate()) {
-        this.showDateError = false;
         const organization: WorkExperience = {
           name: this.organizations.length === 0 ? this.search : this.organizations[0].name,
           position: this.position,

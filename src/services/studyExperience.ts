@@ -27,7 +27,7 @@ export async function deleteInstitute(id: string): Promise<void> {
 }
 
 export async function updateInstitute(id: string, experience: StudyExperience): Promise<UserStudyExperience> {
-  const response = await axios.put(`/api/users/institutes/${experience.id}`, {
+  const response = await axios.put(`/api/users/institutes/${id}`, {
     name: experience.name,
     degree: experience.degree,
     since: experience.since,

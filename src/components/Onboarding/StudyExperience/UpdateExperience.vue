@@ -61,9 +61,15 @@
                     readonly
                     hide-details
                     clearable
+                    @click:clear="clearSinceDate()"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="experience.since" @input="showStartDatePicker = false"></v-date-picker>
+                <v-date-picker
+                  no-title
+                  v-model="experience.since"
+                  @input="showStartDatePicker = false"
+                  :max="experience.until"
+                ></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="12" md="6">
@@ -86,9 +92,15 @@
                     hide-details
                     readonly
                     clearable
+                    @click:clear="clearUntilDate()"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title v-model="experience.until" @input="showEndDatePicker = false"></v-date-picker>
+                <v-date-picker
+                  no-title
+                  v-model="experience.until"
+                  @input="showEndDatePicker = false"
+                  :min="experience.since"
+                ></v-date-picker>
               </v-menu>
             </v-col>
           </v-row>
@@ -139,6 +151,12 @@ export default (Vue as VueConstructor<Vue & DateMixin & RuleMixin & InputPropsMi
   }),
 
   methods: {
+    clearSinceDate() {
+      this.experience.since = "";
+    },
+    clearUntilDate() {
+      this.experience.until = "";
+    },
     emitUpdateExperience() {
       if ((this.$refs["update-experience"] as HTMLFormElement).validate()) {
         const institution: StudyExperience = {

@@ -55,24 +55,15 @@
       </v-col>
     </v-row>
 
-    <v-divider class="search__divider"></v-divider>
+    <v-divider v-if="tags.length > 0 || filters" class="search__divider"></v-divider>
 
     <v-row class="mt-4" no-gutters v-if="!filters">
-      <v-col>
+      <v-col v-if="!areTagsLoading && tags.length > 0">
         <v-card-title class="font-weight-light py-0"
           ><h4 class="font-weight-light">{{ $i18n.t("Search.try") }}</h4></v-card-title
         >
         <v-list v-if="!areTagsLoading">
-          <v-list-item v-for="tag in tags" :key="tag.canonicalName">
-            <v-list-item-icon class="mr-2">
-              <v-list-item-icon class="ma-0">
-                <v-icon size="20">mdi-pound</v-icon>
-              </v-list-item-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>{{ tag.canonicalName }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <TagSearch :tag="tag" :isFollowed="false" v-for="tag in tags" :key="tag.canonicalName"></TagSearch>
         </v-list>
         <div v-else class="d-flex justify-center align-center search__progress">
           <v-progress-circular :size="30" color="grey" indeterminate></v-progress-circular>
@@ -80,7 +71,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="mt-0">
+    <v-row class="mt-0" v-if="filters">
       <v-col>
         <div v-if="searchedTags && !areTagsLoading">
           <v-list>

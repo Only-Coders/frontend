@@ -46,7 +46,7 @@
           <v-icon size="30">mdi-rotate-270 mdi-attachment </v-icon>
         </v-btn>
 
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="insertCodeExample">
+        <v-btn icon class="mx-2" large @click="insertCodeExample">
           <v-icon size="30"> mdi-code-braces </v-icon>
         </v-btn>
 
@@ -200,6 +200,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       this.enabledButtons = true;
       this.fileToShow = "";
       this.fileData = null;
+      this.changedPost.url = "";
       this.changedPost.type = PostType.TEXT;
     },
     async editPost() {
@@ -208,13 +209,12 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
 
         this.extractTags();
 
-        if (this.changedPost.url !== this.post.url) {
-          if (this.changedPost.type == PostType.IMAGE) {
-            await this.onUploadImage();
-          } else if (this.changedPost.type == PostType.FILE) {
-            await this.onUploadFile();
-          }
+        if (this.imageData && !this.changedPost.url) {
+          await this.onUploadImage();
+        } else if (this.fileData && !this.changedPost.url) {
+          await this.onUploadFile();
         }
+
         const editedPost = { ...this.changedPost };
 
         editedPost.tagNames = editedPost.tagNames.filter((tagName) => {
@@ -299,12 +299,25 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
           this.changedPost.message = this.changedPost.message.replace(regex, `@${mention.fullName}`);
         });
       }
+    },
+    getFileName() {
+      const regex = new RegExp(`${BUCKET_URI}files/(?<fileName>.*)$`, "g");
+      const fileName = decodeURIComponent(regex.exec(this.post.url)?.groups?.fileName ?? "File");
+      this.fileData = new File([], fileName);
     }
   },
 
   created() {
     this.changedPost.message = this.postMessageToEdit;
-    this.imageToShow = this.post.type === "IMAGE" ? this.post.url : "";
+    //this.imageToShow = this.post.type === "IMAGE" ? this.post.url : "";
+    if (this.post.type === "IMAGE") {
+      this.imageToShow = this.post.url;
+      this.fileToShow = "";
+    } else if (this.post.type === "FILE") {
+      this.fileToShow = this.post.url;
+      this.imageToShow = "";
+      this.getFileName();
+    }
     this.changedPost.isPublic = this.$store.state.userModule.user.defaultPrivacy
       ? this.$store.state.userModule.user.defaultPrivacy
       : true;
@@ -318,6 +331,9 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
     this.post.mentions.forEach((mention) => {
       this.changedPost.mentionsDictionary[mention.canonicalName] = mention.fullName;
     });
+    if (this.post.type !== PostType.TEXT) {
+      this.enabledButtons = false;
+    }
   }
 });
 </script>

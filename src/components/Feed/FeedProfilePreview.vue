@@ -7,7 +7,7 @@
             ? $store.state.userModule.user.imageURI
             : require('@/assets/images/default-avatar.png')
         "
-        :imageSize="90"
+        :imageSize="110"
         class="profile__banner__avatar"
       ></AvatarImagePreview>
     </div>
@@ -110,13 +110,13 @@ export default (Vue as VueConstructor<Vue & MedalsMixin>).extend({
 .profile__banner {
   position: relative;
   background: #00cdae;
-  height: 70px;
+  height: 80px;
   display: flex;
   justify-content: center;
 }
 .profile__banner__avatar {
   position: absolute;
-  top: 30px;
+  top: 20px;
 }
 .v-btn__content {
   text-transform: lowercase !important;

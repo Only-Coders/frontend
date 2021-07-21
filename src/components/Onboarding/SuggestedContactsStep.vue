@@ -11,7 +11,7 @@
 
     <v-row
       :style="isLaptop() ? 'max-height: 55vh' : 'max-height: 70vh'"
-      class="overflow-y-auto overflow-x-hidden"
+      class="overflow-y-auto overflow-x-hidden d-flex flex-column"
       no-gutters
     >
       <transition-group name="list" tag="div" class="row flex-column align-center justify-center">

@@ -86,7 +86,6 @@
                     :value="formatDate(until)"
                     :label="$i18n.t('Onboarding.WorkExperience.endDateLabel')"
                     append-icon="mdi-calendar-month-outline"
-                    :rules="[rules.required]"
                     v-bind="{ attrs, ...inputProps }"
                     v-on="on"
                     hide-details

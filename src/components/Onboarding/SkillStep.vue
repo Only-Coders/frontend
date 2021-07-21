@@ -22,7 +22,7 @@
                   :label="$i18n.t('Onboarding.Skills.skill')"
                   solo
                   background-color="grey_input"
-                  @keydown.enter.prevent="addSkill"
+                  @keyup.enter="addSkill"
                   @focus="doSearch"
                   append-icon=""
                   clearable
@@ -85,10 +85,15 @@ export default Vue.extend({
   methods: {
     addSkill() {
       if (this.search) {
-        const skill = this.skills.find((skill) => skill.canonicalName === this.search.toLowerCase());
+        const skill = this.skills.find((skill) => skill.name.toLowerCase() === this.search.toLowerCase());
 
         if (!skill) {
-          this.selectedSkills.push({ name: this.search });
+          const skillAlreadySelected = this.selectedSkills.find(
+            (skill) => skill.name.toLowerCase() === this.search.toLowerCase()
+          );
+          if (!skillAlreadySelected) {
+            this.selectedSkills.push({ name: this.search });
+          }
         } else {
           if (!this.selectedSkills.find((skill) => skill.canonicalName === this.search.toLowerCase())) {
             this.selectedSkills.push(skill);

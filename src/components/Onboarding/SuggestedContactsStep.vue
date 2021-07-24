@@ -9,7 +9,7 @@
       </v-col>
     </v-row>
 
-    <v-row
+    <div
       :style="isLaptop() ? 'max-height: 55vh' : 'max-height: 70vh'"
       class="overflow-y-auto overflow-x-hidden d-flex flex-column"
       no-gutters
@@ -25,7 +25,7 @@
           <Contact v-bind="{ ...suggestedContact }" @remove="removeSuggestedContact(index)"></Contact>
         </v-col>
       </transition-group>
-    </v-row>
+    </div>
 
     <transition
       name="aaa"

@@ -320,9 +320,9 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & InputPropsMixin 
 </script>
 
 <style scoped>
-body {
+/* body {
   overflow: auto;
-}
+} */
 
 .code_type_img {
   width: 350px;

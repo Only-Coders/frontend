@@ -17,7 +17,7 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .get-apk {
-  position: absolute;
+  position: fixed;
   padding: 0.75rem;
   bottom: 15px;
   right: 15px;

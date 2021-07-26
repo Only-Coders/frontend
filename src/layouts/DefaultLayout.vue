@@ -16,7 +16,8 @@ export default Vue.extend({
 
 <style scoped>
 .main {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
 }
 </style>

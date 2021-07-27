@@ -36,6 +36,7 @@ const routes: Array<RouteConfig> = [
     name: "Onboarding",
     component: () => import(/* webpackChunkName: "onboarding" */ "../views/Onboarding.vue"),
     meta: {
+      layout: "OnboardingLayout",
       requiresAuth: true
     }
   },
@@ -119,7 +120,7 @@ const router = new VueRouter({
   routes
 });
 
-/* router.beforeEach((to, _from, next) => {
+router.beforeEach((to, _from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (localStorage.getItem("accessToken") && store.state.userModule?.user) {
       if (to.matched.some((record) => record.meta.requiresAdmin)) {
@@ -149,6 +150,6 @@ const router = new VueRouter({
       next();
     }
   }
-}); */
+});
 
 export default router;

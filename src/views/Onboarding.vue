@@ -96,7 +96,7 @@ export default Vue.extend({
   components: { GeneralInformation, WorkExperience, StudyExperience, SkillStep, TagStep, SuggestedContactsStep },
 
   data: () => ({
-    carouselIndex: 1,
+    carouselIndex: 0,
     steps: [GeneralInformation, WorkExperience, StudyExperience, SkillStep, TagStep, SuggestedContactsStep],
     childStepAction: false,
     isLoading: false

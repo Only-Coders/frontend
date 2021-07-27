@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center" align="center" no-gutters class="mt-10" :class="isLaptop() ? 'pt-0' : 'pt-16'">
+  <v-row justify="center" align="center" no-gutters class="mt-10 pb-14" :class="isLaptop() ? 'pt-0' : 'pt-16'">
     <v-col cols="9" md="6" class="">
       <v-card width="400px" class="mx-auto main_card" tile elevation="16">
         <v-form ref="forgot-password">
@@ -50,14 +50,14 @@
       </v-card>
     </v-col>
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="waves">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="waves" v-if="!isLaptop()">
       <path
         fill="#bfbfbf"
         fill-opacity="0.25"
         d="M0,192L26.7,176C53.3,160,107,128,160,133.3C213.3,139,267,181,320,192C373.3,203,427,181,480,192C533.3,203,587,245,640,234.7C693.3,224,747,160,800,154.7C853.3,149,907,203,960,218.7C1013.3,235,1067,213,1120,202.7C1173.3,192,1227,192,1280,202.7C1333.3,213,1387,235,1413,245.3L1440,256L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
       ></path>
     </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="waves">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="waves" v-if="!isLaptop()">
       <path
         fill="#bfbfbf"
         fill-opacity="0.2"
@@ -139,7 +139,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
 <style scoped>
 .waves {
   position: absolute;
-  bottom: -90px;
+  bottom: 0;
   z-index: 1;
   height: 450px;
   width: 4000px;

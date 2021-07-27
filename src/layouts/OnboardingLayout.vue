@@ -10,14 +10,13 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "DefaultLayout"
+  name: "OnboardingLayout"
 });
 </script>
 
 <style scoped>
 .main {
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   height: 100%;
 }
 </style>

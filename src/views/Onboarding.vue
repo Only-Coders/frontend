@@ -2,7 +2,7 @@
   <v-container fluid class="pa-0 main-container">
     <img src="@/assets/images/only-coders-logo.png" width="70vh" alt="logo" class="ma-8 logo" />
 
-    <div justify="center" align="center" no-gutters>
+    <div justify="center" align="center">
       <v-row no-gutters>
         <v-col>
           <v-carousel
@@ -132,6 +132,7 @@ export default Vue.extend({
 
 .main-container {
   z-index: 0;
+  overflow: hidden;
 }
 
 .semi_circle_wave {

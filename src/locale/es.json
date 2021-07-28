@@ -51,6 +51,9 @@
   "userBannDate": "Baneado el: ",
   "unblock": "Desbloquear",
   "loginAlternative": "O prueba loguearte con",
+  "approvePost": "Aprobar",
+  "rejectPost": "Rechazar",
+  "putYourCode": "```javascript\n//Escribe tu código aquí...\n```",
   "Login": {
     "welcomeMessage": "Bienvenido a Only Coders, la red social número uno para los profesionales y aficionados al mundo del desarrollo de aplicaciones y la programación. ",
     "loginTitle": "Iniciar sesión",
@@ -204,7 +207,11 @@
     "createPost": "Crear publicación",
     "createPostBtn": "Crear",
     "successfullCreation": "Tu post se ha creado con exito !",
-    "errorCreation": "Opps... Hubo un error inesperado, por favor intentalo nuevamente"
+    "errorCreation": "Opps... Hubo un error inesperado, por favor intentalo nuevamente",
+    "addImage": "Agregar imagen",
+    "addFile": "Agregar archivo",
+    "addCodeExample": "Agregar ejemplo de código",
+    "addLink": "Agregar enlace"
   },
   "EditPost": {
     "PrivacyPost": {
@@ -271,7 +278,7 @@
     "deleteAccount": "Eliminar Cuenta",
     "deleteMessage": "La eliminación de la cuenta es definitiva.",
     "deleteMessage2": "Si eliminas tu cuenta de OnlyCoders, no podrás recuperar el contenido, ni la información que compartiste en OnlyCoders.",
-    "deleteMessage3": "Una vez que comience el proceso de eliminación, tendrá 30 días para reactivar su cuenta y cancelar la eliminación. Después de 30 días, su cuenta será eliminada.",
+    "deleteMessage3": "Una vez que comience el proceso de eliminación, tendrás 30 días para reactivar tu cuenta y cancelar la eliminación. Después de 30 días, tu cuenta será eliminada.",
     "areYouSureDeleteAccount": "Está seguro de que desea eliminar su cuenta?",
     "cancelElimination": "Cancelar Eliminación",
     "deletedAccountDate": "Su cuenta será eliminada el ",

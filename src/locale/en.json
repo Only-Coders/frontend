@@ -51,6 +51,9 @@
   "typeMessage": "Type a message...",
   "unblock": "Unblock",
   "loginAlternative": "Or try loging with",
+  "approvePost": "Approve",
+  "rejectPost": "Reject",
+  "putYourCode": "```javascript\n//Put your code here...\n```",
   "Login": {
     "welcomeMessage": "Welcome to Only Coders, the number one social media platform for profesionals and amateurs of the app development and programming world. ",
     "loginTitle": "Log in",
@@ -204,7 +207,11 @@
     "createPost": "Create post",
     "createPostBtn": "Create",
     "successfullCreation": "Your post has been successfully created !",
-    "errorCreation": "Opps... There was an unexpected error, please try again"
+    "errorCreation": "Opps... There was an unexpected error, please try again",
+    "addImage": "Add image",
+    "addFile": "Add file",
+    "addCodeExample": "Add code example",
+    "addLink": "Add link"
   },
   "EditPost": {
     "PrivacyPost": {

@@ -150,39 +150,53 @@
       </v-row>
       <v-row class="align-center justify-space-between px-4 pt-8 pb-4" no-gutters>
         <div class="d-flex align-center">
-          <v-btn-toggle rounded v-model="toggleApprove" color="primary">
-            <v-btn
-              :loading="isLoadingApprove"
-              :disabled="disabledApprove"
-              @click="reactToPost('APPROVE')"
-              depressed
-              rounded
-              color="#E0E0E0"
-              class="ml-2 mr-1 reaction-btn"
-            >
-              <v-img alt="approve" width="17" src="@/assets/images/chevron-up.png" />
-              <p class="my-auto pl-2 pr-1" style="color: #00cdae">
-                {{ approvedAmount }}
-              </p>
-            </v-btn>
-          </v-btn-toggle>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn-toggle rounded v-model="toggleApprove" color="primary">
+                <v-btn
+                  :loading="isLoadingApprove"
+                  :disabled="disabledApprove"
+                  @click="reactToPost('APPROVE')"
+                  depressed
+                  rounded
+                  color="#E0E0E0"
+                  class="ml-2 mr-1 reaction-btn"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-img alt="approve" width="17" src="@/assets/images/chevron-up.png" />
+                  <p class="my-auto pl-2 pr-1" style="color: #00cdae">
+                    {{ approvedAmount }}
+                  </p>
+                </v-btn>
+              </v-btn-toggle>
+            </template>
+            <span>{{ $i18n.t("approvePost") }}</span>
+          </v-tooltip>
 
-          <v-btn-toggle rounded v-model="toggleReject" color="error">
-            <v-btn
-              :loading="isLoadingReject"
-              :disabled="disabledReject"
-              @click="reactToPost('REJECT')"
-              depressed
-              rounded
-              color="#E0E0E0"
-              class="ml-1 reaction-btn"
-            >
-              <v-img alt="reject" width="17" src="@/assets/images/chevron-down.png" />
-              <p class="my-auto pl-2" style="color: #ff0f0f">
-                {{ rejectedAmount }}
-              </p>
-            </v-btn>
-          </v-btn-toggle>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn-toggle rounded v-model="toggleReject" color="error">
+                <v-btn
+                  :loading="isLoadingReject"
+                  :disabled="disabledReject"
+                  @click="reactToPost('REJECT')"
+                  depressed
+                  rounded
+                  color="#E0E0E0"
+                  class="ml-1 reaction-btn"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-img alt="reject" width="17" src="@/assets/images/chevron-down.png" />
+                  <p class="my-auto pl-2" style="color: #ff0f0f">
+                    {{ rejectedAmount }}
+                  </p>
+                </v-btn>
+              </v-btn-toggle>
+            </template>
+            <span>{{ $i18n.t("rejectPost") }}</span>
+          </v-tooltip>
         </div>
         <v-col cols="auto">
           <v-btn

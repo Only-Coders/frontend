@@ -70,6 +70,7 @@
 import Vue from "vue";
 import { postComment } from "@/services/comment";
 import AvatarImagePreview from "@/components/AvatarImagePreview.vue";
+import { i18n } from "@/main";
 
 export default Vue.extend({
   name: "CreateComment",
@@ -80,14 +81,18 @@ export default Vue.extend({
 
   data: () => ({
     message: "",
-    codeExample: "```javascript\n//Put your code here...\n```",
+    codeExample: i18n.t("putYourCode").toString(),
     showCreateComment: false,
     isLoading: false
   }),
 
   methods: {
     insertCodeExample() {
-      this.message = this.message + "\n" + this.codeExample;
+      if (this.message) {
+        this.message = this.message + "\n" + this.codeExample;
+      } else {
+        this.message = "\n" + this.codeExample;
+      }
     },
 
     async createComment() {

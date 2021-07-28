@@ -36,23 +36,68 @@
 
       <v-divider></v-divider>
       <v-card-actions class="my-1">
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="handleShowImageSelector">
-          <input type="file" ref="imageUp" @change="previewImage" style="display: none" lazy-src />
-          <v-icon size="30"> mdi-image </v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              :disabled="!enabledButtons"
+              icon
+              class="mx-2"
+              large
+              @click="handleShowImageSelector"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <input type="file" ref="imageUp" @change="previewImage" style="display: none" lazy-src />
+              <v-icon size="30"> mdi-image </v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $i18n.t("CreatePost.addImage") }}</span>
+        </v-tooltip>
 
-        <v-btn :disabled="!enabledButtons" icon class="mx-2" large @click="handleShowFileSelector">
-          <input type="file" ref="fileUp" @change="previewFile" style="display: none" lazy-src />
-          <v-icon size="30">mdi-rotate-270 mdi-attachment </v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              :disabled="!enabledButtons"
+              icon
+              class="mx-2"
+              large
+              @click="handleShowFileSelector"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <input type="file" ref="fileUp" @change="previewFile" style="display: none" lazy-src />
+              <v-icon size="30">mdi-rotate-270 mdi-attachment </v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $i18n.t("CreatePost.addFile") }}</span>
+        </v-tooltip>
 
-        <v-btn icon class="mx-2" large @click="insertCodeExample">
-          <v-icon size="30"> mdi-code-braces </v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon class="mx-2" large @click="insertCodeExample" v-bind="attrs" v-on="on">
+              <v-icon size="30"> mdi-code-braces </v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $i18n.t("CreatePost.addCodeExample") }}</span>
+        </v-tooltip>
 
-        <v-btn icon class="mx-2" large :disabled="!enabledButtons" @click="showLinkDialog = true">
-          <v-icon size="30"> mdi-link-variant </v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              class="mx-2"
+              large
+              :disabled="!enabledButtons"
+              @click="showLinkDialog = true"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon size="30"> mdi-link-variant </v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $i18n.t("CreatePost.addLink") }}</span>
+        </v-tooltip>
+
         <LinkModal @addLink="showLinkPreview" v-model="showLinkDialog"></LinkModal>
         <v-divider vertical class="ml-2"></v-divider>
 
@@ -130,7 +175,7 @@ export default (Vue as VueConstructor<Vue & CommonMethodsMixin & NotificationMix
       { text: i18n.t("CreatePost.PrivacyPost.public").toString(), public: true },
       { text: i18n.t("CreatePost.PrivacyPost.private").toString(), public: false }
     ] as PrivacyOption[],
-    codeExample: "```javascript\n//Put your code here...\n```",
+    codeExample: i18n.t("putYourCode").toString(),
     showLinkDialog: false,
     isLoading: false,
     post: {

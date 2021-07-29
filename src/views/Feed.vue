@@ -22,7 +22,7 @@
           text
           type="warning"
           icon="mdi-alert-outline"
-          v-if="$store.state.userModule.user.eliminationDate"
+          v-if="accountEliminationDate"
           >{{ $i18n.t("Feed.deletedAccountDate") }} {{ accountEliminationDate }}</v-alert
         >
 
@@ -116,7 +116,9 @@ export default Vue.extend({
     },
     accountEliminationDate: {
       get(): string | null {
-        return format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy");
+        return this.$store.state.userModule.user.eliminationDate
+          ? format(new Date(this.$store.state.userModule.user.eliminationDate), "dd/MM/yyyy")
+          : "";
       }
     }
   },

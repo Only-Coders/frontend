@@ -2,7 +2,7 @@
   <v-row justify="center" align="center" no-gutters class="mt-10 pb-14" :class="isLaptop() ? 'pt-0' : 'pt-16'">
     <v-col cols="9" md="6" class="">
       <v-card width="400px" class="mx-auto main_card" tile elevation="16">
-        <v-form ref="forgot-password">
+        <v-form ref="register">
           <v-row justify="center" no-gutters>
             <img src="@/assets/images/only-coders-logo.png" width="110vh" alt="logo" class="mx-8 my-12 logo_img" />
             <v-col cols="10" class="mt-4 mb-8">
@@ -91,41 +91,43 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
 
   methods: {
     async register() {
-      try {
-        this.isLoadingRegister = true;
-        const result = await auth.createUserWithEmailAndPassword(this.email, this.password);
+      if ((this.$refs["register"] as HTMLFormElement).validate()) {
+        try {
+          this.isLoadingRegister = true;
+          const result = await auth.createUserWithEmailAndPassword(this.email, this.password);
 
-        if (result.user && result.user.email) {
-          const actionCodeSettings = {
-            url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
-            handleCodeInApp: true
-          };
-          if (result.user && !result.user.emailVerified) {
-            result.user.sendEmailVerification(actionCodeSettings);
-            this.success(
-              this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
-              this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
-              2000
-            );
+          if (result.user && result.user.email) {
+            const actionCodeSettings = {
+              url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
+              handleCodeInApp: true
+            };
+            if (result.user && !result.user.emailVerified) {
+              result.user.sendEmailVerification(actionCodeSettings);
+              this.success(
+                this.$i18n.t("Onboarding.Notifications.emailVerificationTitle").toString(),
+                this.$i18n.t("Onboarding.Notifications.emailVerificationMessage").toString(),
+                2000
+              );
+            }
           }
-        }
-        this.isLoadingRegister = false;
-      } catch (error) {
-        switch (error.code) {
-          case FirebaseErrors.INVALID_EMAIL:
-            this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
-            break;
+          this.isLoadingRegister = false;
+        } catch (error) {
+          switch (error.code) {
+            case FirebaseErrors.INVALID_EMAIL:
+              this.error("Error", this.$i18n.t("Onboarding.Notifications.invalidEmail").toString());
+              break;
 
-          case FirebaseErrors.EMAIL_EXISTS:
-          case FirebaseErrors.EMAIL_IN_USE:
-            this.error("Error", this.$i18n.t("Onboarding.Notifications.emailAlreadyExists").toString());
-            break;
+            case FirebaseErrors.EMAIL_EXISTS:
+            case FirebaseErrors.EMAIL_IN_USE:
+              this.error("Error", this.$i18n.t("Onboarding.Notifications.emailAlreadyExists").toString());
+              break;
 
-          default:
-            break;
+            default:
+              break;
+          }
+        } finally {
+          this.isLoadingRegister = false;
         }
-      } finally {
-        this.isLoadingRegister = false;
       }
     },
 

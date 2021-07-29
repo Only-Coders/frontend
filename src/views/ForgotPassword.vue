@@ -40,7 +40,7 @@
 
             <v-row justify="end">
               <v-col cols="4" class="mr-8">
-                <v-btn block color="primary" class="primary" large depressed @click="resetPassword">{{
+                <v-btn block color="primary" large :loading="isLoading" depressed @click="resetPassword">{{
                   $i18n.t("ForgotPassword.buttonLabel")
                 }}</v-btn>
               </v-col>
@@ -83,13 +83,15 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
   components: {},
 
   data: () => ({
-    email: ""
+    email: "",
+    isLoading: false
   }),
 
   methods: {
     async resetPassword() {
       try {
         if ((this.$refs["forgot-password"] as HTMLFormElement).validate()) {
+          this.isLoading = true;
           const actionCodeSettings = {
             url: process.env.VUE_APP_FORGOT_PASSWORD_REDIRECT,
             handleCodeInApp: true
@@ -107,6 +109,7 @@ export default (Vue as VueConstructor<Vue & NotificationMixin & RuleMixin & Inpu
       } catch (error) {
         this.errorHandling(error, this.$i18n.t("ForgotPassword.errorNotificationMessage").toString());
       }
+      this.isLoading = false;
     },
 
     isLaptop() {
